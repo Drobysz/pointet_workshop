@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+.wrapper { @apply flex items-center justify-center; padding: clamp(28px, 6vw, 80px); }
+.wrapper form { @apply flex flex-col; width: min(100%, 390px); gap: 20px; }
+.wrapper h2 { font-size: 32px; font-weight: 600; letter-spacing: -.03em; line-height: 1.1; }
+.wrapper form > div p { color: var(--muted); margin-top: 7px; }
+.wrapper label { @apply flex flex-col; color: var(--ink); font-size: 14px; font-weight: 600; gap: 7px; }
+.wrapper input { border: 1px solid #86868b; border-radius: 10px; min-height: 48px; padding: 0 13px; font-weight: 400; outline: none; }
+.wrapper input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,113,227,.13); }
+.wrapper button { background: var(--blue); border-radius: 9px; color: #fff; min-height: 48px; font-weight: 600; }
+.wrapper button:disabled { cursor: wait; opacity: .65; }
+.wrapper button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.error { color: var(--danger); font-size: 14px; }
+

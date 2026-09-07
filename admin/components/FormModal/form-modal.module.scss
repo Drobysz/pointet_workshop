@@ -1,0 +1,132 @@
+@reference "tailwindcss";
+
+.form {
+  @apply flex flex-col;
+  gap: 18px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.field {
+  @apply flex flex-col;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  gap: 7px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  background: var(--surface);
+  border: 1px solid #86868b;
+  border-radius: 10px;
+  font-weight: 400;
+  min-height: 44px;
+  outline: none;
+  padding: 0 12px;
+  width: 100%;
+}
+
+.field textarea {
+  min-height: 110px;
+  padding-block: 10px;
+  resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
+}
+
+.field small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.fieldset legend {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 9px;
+}
+
+.checks {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.check {
+  @apply flex items-center;
+  background: var(--canvas);
+  border-radius: 10px;
+  cursor: pointer;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 11px;
+}
+
+.check input {
+  accent-color: var(--blue);
+  height: 16px;
+  width: 16px;
+}
+
+.swatch {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+  height: 18px;
+  width: 18px;
+}
+
+.error {
+  color: var(--danger);
+  margin: 0;
+}
+
+.actions {
+  @apply flex justify-end;
+  border-top: 1px solid var(--border);
+  gap: 8px;
+  margin-top: 2px;
+  padding-top: 18px;
+}
+
+.actions button {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  min-height: 42px;
+  padding: 0 15px;
+}
+
+.actions button[type="submit"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+  font-weight: 600;
+}
+
+.actions button:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+@media (max-width: 40rem) {
+  .grid,
+  .checks {
+    grid-template-columns: 1fr;
+  }
+}

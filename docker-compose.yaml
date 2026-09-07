@@ -1,0 +1,129 @@
+name: workshop-commerce
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-workshop}
+      POSTGRES_USER: ${POSTGRES_USER:-workshop}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-workshop} -d ${POSTGRES_DB:-workshop}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks: [commerce]
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [commerce]
+
+  api:
+    build:
+      context: ./api
+    command: sh -c "php artisan migrate --force && php artisan serve --no-reload --host=0.0.0.0 --port=8000"
+    env_file:
+      - ./api/.env
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: http://localhost:${HTTP_PORT:-8080}
+      ADMIN_URL: http://localhost:${HTTP_PORT:-8080}
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: ${POSTGRES_DB:-workshop}
+      DB_USERNAME: ${POSTGRES_USER:-workshop}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      REDIS_CLIENT: predis
+      REDIS_HOST: redis
+      CACHE_STORE: redis
+      QUEUE_CONNECTION: redis
+      AUTH_PENDING_STORE: redis
+      FRONTEND_VERIFY_URL: http://localhost:${HTTP_PORT:-8080}/verify
+      CORS_ALLOWED_ORIGINS: http://localhost:${HTTP_PORT:-8080},http://localhost:${ADMIN_PORT:-3000},http://127.0.0.1:${ADMIN_PORT:-3000}
+      AUTH_JWT_ISSUER: http://localhost:${HTTP_PORT:-8080}
+      AUTH_JWT_AUDIENCE: http://localhost:${HTTP_PORT:-8080}
+      AUTH_JWT_PRIVATE_KEY_PATH: /run/secrets/jwt-private.pem
+      AUTH_JWT_PUBLIC_KEY_PATH: /run/secrets/jwt-public.pem
+      SESSION_SECURE_COOKIE: "false"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./api:/var/www/html
+      - api-vendor:/var/www/html/vendor
+      - ./api/storage/keys:/run/secrets:ro
+    healthcheck:
+      test: ["CMD-SHELL", "php artisan about --only=environment >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [commerce]
+
+  admin:
+    build:
+      context: ./admin
+      target: development
+    environment:
+      NEXT_PUBLIC_API_URL: /api
+      INTERNAL_API_URL: http://api:8000/api
+      ADMIN_API_PROXY_TARGET: http://api:8000/api
+    depends_on:
+      api:
+        condition: service_healthy
+    volumes:
+      - ./admin:/app
+      - admin-node-modules:/app/node_modules
+      - admin-next:/app/.next
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:3000/login >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+    networks: [commerce]
+
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "${HTTP_PORT:-8080}:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      api:
+        condition: service_healthy
+      admin:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [commerce]
+
+volumes:
+  postgres-data:
+  redis-data:
+  api-vendor:
+  admin-node-modules:
+  admin-next:
+
+networks:
+  commerce:
+    driver: bridge

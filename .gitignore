@@ -1,0 +1,11 @@
+.DS_Store
+.env
+api/.env
+api/vendor/
+api/storage/logs/*.log
+admin/.env.local
+admin/.next/
+admin/node_modules/
+admin/coverage/
+.impeccable
+.env

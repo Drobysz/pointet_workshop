@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+.back { @apply inline-flex items-center; color: var(--link); font-size: 14px; font-weight: 600; gap: 6px; margin-bottom: 20px; }
+.grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, .8fr); gap: 16px; }
+.items, .customer, .summary { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+.items h2, .customer h2, .summary h2 { font-size: 19px; font-weight: 600; letter-spacing: -.02em; margin-bottom: 14px; }
+.items article { @apply grid items-center; grid-template-columns: 52px minmax(0, 1fr) auto auto; border-top: 1px solid var(--border); gap: 14px; padding: 16px 0; }
+.thumb { @apply flex items-center justify-center; background: var(--canvas); border-radius: 10px; color: var(--muted); height: 52px; font-size: 19px; font-weight: 600; }
+.product { @apply flex flex-col; min-width: 0; }
+.product a { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.product span, .customer span { color: var(--muted); font-size: 13px; margin-top: 3px; }
+.items article > span { color: var(--muted); }
+.items article > strong { min-width: 80px; text-align: right; }
+.grid aside { @apply flex flex-col; gap: 16px; }
+.customer { @apply flex flex-col; }
+.customer a, .customer strong { color: var(--link); font-weight: 600; }
+.summary > div { @apply flex items-center justify-between; border-top: 1px solid var(--border); padding: 12px 0; }
+.summary .total { color: var(--ink); font-size: 17px; padding-bottom: 0; }
+@media (max-width: 64rem) { .grid { grid-template-columns: 1fr; } }
+@media (max-width: 38rem) { .items article { grid-template-columns: 44px minmax(0, 1fr) auto; } .items article > strong { grid-column: 2 / 4; text-align: left; } }

@@ -1,0 +1,33 @@
+@reference "tailwindcss";
+.back { @apply inline-flex items-center; color: var(--link); font-size: 14px; font-weight: 600; gap: 6px; margin-bottom: 20px; }
+.hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, .8fr); background: #fff; border: 1px solid var(--border); border-radius: 18px; overflow: hidden; }
+.gallery { background: var(--canvas); padding: clamp(16px, 3vw, 30px); }
+.stage { aspect-ratio: 4 / 3; position: relative; overflow: hidden; }
+.stage img { object-fit: contain; }
+.placeholder { @apply flex items-center justify-center; border-radius: 16px; height: 100%; min-height: 300px; }
+.placeholder::after { content: ""; position: absolute; inset: 15%; background: rgba(255,255,255,.55); border-radius: 50%; filter: blur(30px); }
+.placeholder span { color: rgba(0,0,0,.65); font-size: clamp(28px, 5vw, 54px); font-weight: 600; letter-spacing: -.04em; position: relative; z-index: 1; text-align: center; }
+.controls { @apply absolute flex items-center; bottom: 14px; left: 50%; transform: translateX(-50%); background: rgba(29,29,31,.82); border-radius: 100px; color: #fff; gap: 7px; padding: 4px; }
+.controls button { @apply flex items-center justify-center; border-radius: 50%; height: 34px; width: 34px; }
+.controls span { font-size: 11px; min-width: 38px; text-align: center; }
+.colors { @apply flex flex-wrap; gap: 8px; margin-top: 16px; }
+.colors button { @apply flex items-center; background: #fff; border: 1px solid var(--border); border-radius: 9px; min-height: 42px; gap: 8px; padding: 0 11px; }
+.colors button[aria-pressed="true"] { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(0,113,227,.12); }
+.colors button span { border: 1px solid rgba(0,0,0,.14); border-radius: 50%; height: 18px; width: 18px; }
+.colors button strong { font-size: 13px; font-weight: 600; }
+.info { padding: clamp(24px, 4vw, 42px); }
+.price { font-size: 32px; font-weight: 600; letter-spacing: -.03em; }
+.info dl { border-bottom: 1px solid var(--border); margin: 20px 0 24px; }
+.info dl div { @apply flex justify-between gap-5; border-top: 1px solid var(--border); padding: 13px 0; }
+.info dt { color: var(--muted); }
+.info dd { font-weight: 600; text-align: right; }
+.info h2, .statistics h2 { font-size: 19px; font-weight: 600; letter-spacing: -.02em; }
+.info p { color: var(--muted); margin-top: 9px; white-space: pre-line; }
+.statistics { background: #000; border-radius: 18px; color: #fff; margin-top: 16px; padding: clamp(24px, 4vw, 40px); }
+.statistics > div { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 22px; }
+.statistics article { @apply flex flex-col; }
+.statistics article + article { border-left: 1px solid #424245; padding-left: 24px; }
+.statistics span { color: #a1a1a6; font-size: 13px; }
+.statistics strong { font-size: clamp(28px, 4vw, 42px); font-weight: 600; letter-spacing: -.035em; margin-top: 6px; }
+@media (max-width: 64rem) { .hero { grid-template-columns: 1fr; } }
+@media (max-width: 38rem) { .statistics > div { grid-template-columns: 1fr; gap: 16px; } .statistics article + article { border-left: 0; border-top: 1px solid #424245; padding-left: 0; padding-top: 16px; } }

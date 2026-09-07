@@ -1,0 +1,232 @@
+{
+  "common": {
+    "actions": "Actions",
+    "cancel": "Annuler",
+    "closeDialog": "Fermer la fenêtre",
+    "create": "Créer",
+    "creating": "Création…",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "email": "E-mail",
+    "language": "Langue",
+    "name": "Nom",
+    "no": "Non",
+    "notYet": "Pas encore",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "yes": "Oui"
+  },
+  "languages": {
+    "fr": "Français",
+    "ru": "Русский"
+  },
+  "navigation": {
+    "administration": "Administration",
+    "admins": "Administrateurs",
+    "close": "Fermer la navigation",
+    "dashboard": "Tableau de bord",
+    "goods": "Produits",
+    "markers": "Référentiels",
+    "open": "Ouvrir la navigation",
+    "orders": "Commandes",
+    "signOut": "Se déconnecter",
+    "users": "Utilisateurs"
+  },
+  "table": {
+    "next": "Suivant",
+    "paginationLabel": "Pagination du tableau",
+    "previous": "Précédent",
+    "results": "{count, plural, one {# résultat} other {# résultats}}",
+    "searchLabel": "Rechercher dans le tableau",
+    "searchPlaceholder": "Rechercher"
+  },
+  "states": {
+    "empty": {
+      "description": "Modifiez la recherche ou créez la première entrée.",
+      "title": "Aucun résultat"
+    },
+    "error": {
+      "description": "Vérifiez la connexion puis réessayez.",
+      "title": "Impossible de charger les données"
+    },
+    "loading": {
+      "description": "Les informations les plus récentes sont en préparation.",
+      "title": "Chargement des données"
+    },
+    "retry": "Réessayer"
+  },
+  "statuses": {
+    "cancelled": "Annulée",
+    "completed": "Terminée",
+    "confirmed": "Confirmée",
+    "delivered": "Livrée",
+    "pending": "En attente",
+    "processing": "En traitement",
+    "refunded": "Remboursée",
+    "shipped": "Expédiée"
+  },
+  "login": {
+    "adminOnly": "Ce compte ne dispose pas d’un accès administrateur.",
+    "description": "Gérez les produits, les clients, les commandes et le catalogue depuis un espace sécurisé.",
+    "email": "E-mail",
+    "emailOrPasswordIncorrect": "L’e-mail ou le mot de passe est incorrect.",
+    "heading": "Administration Workshop",
+    "password": "Mot de passe",
+    "signIn": "Se connecter",
+    "signingIn": "Connexion…",
+    "subtitle": "Utilisez votre compte administrateur.",
+    "title": "Connexion",
+    "validation": "Vérifiez les informations saisies."
+  },
+  "verify": {
+    "confirmed": "Votre compte est prêt. Vous pouvez maintenant continuer.",
+    "confirming": "Confirmation de votre e-mail…",
+    "goToLogin": "Aller à la connexion",
+    "incomplete": "Le lien de confirmation est incomplet.",
+    "invalid": "Ce lien de confirmation est invalide ou expiré.",
+    "title": "Confirmation de l’e-mail"
+  },
+  "dashboard": {
+    "description": "Un aperçu des ventes, des clients et des commandes.",
+    "latestOrders": "Dernières commandes",
+    "metrics": {
+      "orders": "Commandes",
+      "revenue": "Chiffre d’affaires du mois",
+      "users": "Utilisateurs"
+    },
+    "placed": "Passée le",
+    "ranges": {
+      "6months": "6 mois",
+      "month": "Mois",
+      "week": "Semaine",
+      "year": "Année"
+    },
+    "salesAnalytics": "Analyse des ventes",
+    "salesDescription": "Chiffre d’affaires enregistré et unités vendues.",
+    "title": "Tableau de bord",
+    "topProducts": "Meilleurs produits",
+    "units": "{count, plural, one {# unité} other {# unités}}",
+    "viewAll": "Tout afficher"
+  },
+  "users": {
+    "create": "Créer un utilisateur",
+    "createTitle": "Nouvel utilisateur",
+    "customer": "Client",
+    "description": "Comptes clients et historique de leurs commandes.",
+    "edit": "Modifier l’utilisateur",
+    "editTitle": "Modifier l’utilisateur",
+    "form": {
+      "avatar": "URL de l’avatar",
+      "email": "E-mail",
+      "fullName": "Nom complet",
+      "password": "Mot de passe",
+      "passwordCreateHint": "8 caractères minimum, avec une lettre et un chiffre.",
+      "passwordEditHint": "Laissez vide pour conserver le mot de passe actuel."
+    },
+    "joined": "Inscrit le",
+    "orders": "Commandes",
+    "profileDescription": "Profil client et historique des achats.",
+    "saveError": "Impossible d’enregistrer l’utilisateur.",
+    "title": "Utilisateurs",
+    "verification": "Vérification",
+    "verified": "Vérifié"
+  },
+  "goods": {
+    "all": "Tous les produits",
+    "available": "Disponible",
+    "catalog": "Catalogue",
+    "colors": "Couleurs",
+    "create": "Créer un produit",
+    "createTitle": "Nouveau produit",
+    "description": "Produits, stocks, options et performances.",
+    "edit": "Modifier le produit",
+    "editTitle": "Modifier le produit",
+    "form": {
+      "category": "Catégorie",
+      "colors": "Couleurs",
+      "description": "Description",
+      "materials": "Matières",
+      "name": "Nom du produit",
+      "price": "Prix en euros",
+      "selectCategory": "Sélectionnez une catégorie",
+      "selectSubcategory": "Sélectionnez une sous-catégorie",
+      "stock": "Stock",
+      "subcategory": "Sous-catégorie"
+    },
+    "materials": "Matières",
+    "nextImage": "Image suivante",
+    "orders": "Commandes",
+    "performance": "Performance du produit",
+    "previousImage": "Image précédente",
+    "price": "Prix",
+    "product": "Produit",
+    "productColors": "Couleurs du produit",
+    "revenue": "Chiffre d’affaires",
+    "saveError": "Impossible d’enregistrer le produit.",
+    "stock": "Stock",
+    "subcategory": "Sous-catégorie",
+    "title": "Produits",
+    "uncategorized": "Sans catégorie",
+    "units": "{count, plural, one {# unité} other {# unités}}",
+    "unitsSold": "Unités vendues"
+  },
+  "orders": {
+    "all": "Toutes les commandes",
+    "colorDefault": "Standard",
+    "customer": "Client",
+    "description": "Recherchez et consultez toutes les commandes passées.",
+    "each": "l’unité",
+    "items": "Articles",
+    "order": "Commande",
+    "placed": "Passée le {date}",
+    "placedColumn": "Date",
+    "shipping": "Livraison",
+    "status": "Statut",
+    "subtotal": "Sous-total",
+    "summary": "Récapitulatif",
+    "title": "Commandes",
+    "total": "Total"
+  },
+  "admins": {
+    "accountDescription": "Comptes disposant d’un accès opérationnel.",
+    "administrator": "Administrateur",
+    "create": "Créer un administrateur",
+    "createError": "Impossible de créer l’administrateur.",
+    "createTitle": "Nouvel administrateur",
+    "created": "Créé le",
+    "emailVerified": "E-mail vérifié",
+    "fullName": "Nom complet",
+    "role": "Rôle",
+    "temporaryPassword": "Mot de passe temporaire",
+    "title": "Administrateurs",
+    "verified": "Vérifié"
+  },
+  "markers": {
+    "categories": "Catégories",
+    "category": "Catégorie",
+    "color": "Couleur",
+    "colors": "Couleurs",
+    "create": "Créer une entrée",
+    "deleteConfirm": "Supprimer {name} ? Cette action est bloquée si l’entrée est encore utilisée dans le catalogue.",
+    "deleteTitle": "Supprimer l’entrée",
+    "description": "Catégories, sous-catégories, couleurs et matières du catalogue.",
+    "editLabel": "Modifier {name}",
+    "formTitleCreate": "Créer : {kind}",
+    "formTitleEdit": "Modifier : {kind}",
+    "hexColor": "Couleur hexadécimale",
+    "materials": "Matières",
+    "nameRequired": "Le nom est obligatoire.",
+    "removeError": "Cette entrée est utilisée et ne peut pas être supprimée.",
+    "saveError": "Impossible d’enregistrer cette entrée.",
+    "selectCategory": "Sélectionnez une catégorie",
+    "subcategories": "Sous-catégories",
+    "title": "Référentiels",
+    "typeLabel": "Type de référentiel",
+    "deleteLabel": "Supprimer {name}"
+  },
+  "validation": {
+    "checkForm": "Vérifiez les informations saisies.",
+    "password": "Le mot de passe doit contenir au moins 8 caractères, une lettre et un chiffre.",
+    "requiredSelections": "Sélectionnez au moins une couleur et une matière."
+  }
+}

@@ -1,0 +1,6 @@
+@reference "tailwindcss";
+.badge { display: inline-block; border-radius: 6px; background: #f0f0f2; color: #424245; font-size: 12px; font-weight: 600; padding: 4px 7px; text-transform: capitalize; }
+.delivered { background: #e8f5ec; color: #246338; }
+.reported, .cancelled { background: #fff0f0; color: #9b2c2c; }
+.sent { background: #eaf3ff; color: #075ea8; }
+

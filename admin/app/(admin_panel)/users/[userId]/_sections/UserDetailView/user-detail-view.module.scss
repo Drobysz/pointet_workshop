@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+.profile { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: #fff; border: 1px solid var(--border); border-radius: 14px; margin-bottom: 28px; }
+.profile div { @apply flex flex-col; padding: 18px 20px; }
+.profile div + div { border-left: 1px solid var(--border); }
+.profile span { color: var(--muted); font-size: 12px; }
+.profile strong { font-size: 15px; margin-top: 6px; overflow-wrap: anywhere; }
+.heading { font-size: 21px; font-weight: 600; letter-spacing: -.02em; margin-bottom: 12px; }
+@media (max-width: 48rem) { .profile { grid-template-columns: 1fr; } .profile div + div { border-left: 0; border-top: 1px solid var(--border); } }

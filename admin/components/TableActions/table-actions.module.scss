@@ -1,0 +1,26 @@
+@reference "tailwindcss";
+
+.primary {
+  @apply flex items-center justify-center;
+  background: var(--blue);
+  border-radius: 9px;
+  color: var(--surface);
+  font-weight: 600;
+  gap: 7px;
+  min-height: 42px;
+  padding: 0 15px;
+}
+
+.iconButton {
+  @apply inline-flex items-center justify-center;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  height: 36px;
+  width: 36px;
+}
+
+.primary:focus-visible,
+.iconButton:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}

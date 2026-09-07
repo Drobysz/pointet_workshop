@@ -1,0 +1,7 @@
+@reference "tailwindcss";
+.header { @apply flex items-end justify-between gap-6; margin-bottom: 24px; }
+.header h1 { color: var(--ink); font-size: clamp(28px, 3vw, 40px); font-weight: 600; letter-spacing: -0.035em; line-height: 1.05; }
+.header p { color: var(--muted); margin-top: 8px; max-width: 64ch; }
+.actions { @apply flex items-center gap-3; }
+@media (max-width: 40rem) { .header { @apply items-start flex-col; } .actions { width: 100%; } }
+

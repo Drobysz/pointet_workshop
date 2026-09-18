@@ -1,0 +1,31 @@
+@reference "tailwindcss";
+
+.form_content_container {
+    @apply flex 
+        flex-col 
+        gap-2 
+        shrink-0;
+}
+
+.label {
+    @apply block 
+        font-medium
+        pl-2 text-xl
+        text-zinc-500
+        leading-5;
+}
+
+.input_container {
+    @apply rounded-md
+        text-sm
+        border 
+        border-gray-300
+        px-4 py-3 w-full 
+        bg-white/70
+        focus:bg-white
+        focus:ring-2
+        focus:ring-zinc-500
+        focus:outline-0 
+        focus:ring-offset-2 
+        focus:ring-offset-white;
+}

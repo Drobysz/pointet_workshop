@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.cover_sign {
+    @apply absolute inset-0
+        overflow-hidden
+        flex items-center
+        duration-600 ease-out
+        transition-transform
+        text-white
+        font-semibold
+        whitespace-nowrap;
+}
+
+.feed {
+    @apply flex w-max 
+        will-change-transform;
+    .feed_group {
+        @apply flex items-center 
+            pr-2 gap-2 shrink-0;
+    }
+}

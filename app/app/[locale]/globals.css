@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  --cursor-default: url('/cursor/mouse.png') 0 0, auto;
+  --cursor-pointer: url('/cursor/pointer.png') 0 0, pointer;
+}
+
+/* Cursor customisation */
+html,
+body {
+  cursor: var(--cursor-default);
+}
+
+a,
+button,
+[role="button"],
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+.cursor-pointer {
+  cursor: var(--cursor-pointer) !important;
+}
+
+html.is-switcher-hovered,
+html.is-switcher-hovered * {
+  cursor: var(--cursor-pointer) !important;
+}
+
+@theme {
+  --color-chalky-50: #fef9ec;
+  --color-chalky-100: #faedcb;
+  --color-chalky-200: #f5dc99;
+  --color-chalky-300: #efc15a;
+  --color-chalky-400: #ebab34;
+  --color-chalky-500: #e38b1d;
+  --color-chalky-600: #c96916;
+  --color-chalky-700: #a74a16;
+  --color-chalky-800: #883a18;
+  --color-chalky-900: #703117;
+  --color-chalky-950: #401708;
+
+  --color-lilac-50: #fbf4fa;
+  --color-lilac-100: #f9eaf7;
+  --color-lilac-200: #f4d6ef;
+  --color-lilac-300: #eeb9e4;
+  --color-lilac-400: #e086cd;
+  --color-lilac-500: #d361b8;
+  --color-lilac-600: #c0429c;
+  --color-lilac-700: #a53180;
+  --color-lilac-800: #892b6a;
+  --color-lilac-900: #73285a;
+  --color-lilac-950: #451234;
+}

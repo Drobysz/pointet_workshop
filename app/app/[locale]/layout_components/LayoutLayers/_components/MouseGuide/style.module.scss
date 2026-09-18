@@ -1,0 +1,16 @@
+@reference "tailwindcss";;
+
+.body {
+    @apply px-2 py-1 text-zinc-600 
+        w-fit flex flex-wrap fixed 
+        pointer-events-none
+        z-30 rounded-2xl bg-gray-300
+        border border-zinc-500 text-xs
+        min-w-30 max-[780px]:hidden;
+}
+
+@media (max-width: 1024px) {
+    .body {
+        @apply max-w-80;
+    }
+}

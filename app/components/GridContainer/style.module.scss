@@ -1,0 +1,11 @@
+@reference "tailwindcss";
+
+.wrapper {
+    display: grid;
+    grid-template-columns: auto minmax(270px, 1270px) auto;
+    grid-template-areas: ". main .";
+}
+
+.main {
+    grid-area: main;
+}

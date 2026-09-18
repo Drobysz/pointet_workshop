@@ -1,0 +1,12 @@
+@reference "tailwindcss";
+
+.wrapper {
+    @apply grid px-5
+        min-h-screen;
+    grid-template-columns: auto minmax(270px, 1280px) auto;
+    grid-template-areas: ". main .";
+}
+
+.main {
+    grid-area: main;
+}

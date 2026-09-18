@@ -1,0 +1,42 @@
+@reference "tailwindcss";
+@reference "../../../../../globals.css";
+
+.tunnel {
+    @apply h-[550vh] 
+        pt-30 
+        relative;
+}
+
+.elevator {
+    @apply sticky top-5
+        h-screen
+        flex flex-col
+        justify-center
+        gap-5
+        py-10
+        px-2;
+}
+
+.title {
+    @apply text-4xl
+        font-semibold
+        bg-clip-text
+        text-transparent
+        bg-linear-to-t
+        from-red-100
+        from-5%
+        to-red-700
+        to-95%
+        pl-3;
+}
+
+.gallery_list {
+    @apply flex gap-3;
+}
+
+.img_frame {
+    @apply w-100 h-140 
+        shrink-0
+        overflow-hidden
+        rounded-xl;
+}

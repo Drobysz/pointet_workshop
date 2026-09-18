@@ -1,0 +1,266 @@
+{
+  "title": "Cookies Policy",
+  "lastUpdated": "2026-09-16",
+  "metadata": {
+    "title": "Cookies Policy | Pointet Workshop",
+    "description": "The authentication and language cookies used by Pointet Workshop, their duration and how to manage them."
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "blocks": [
+        {
+          "paragraph": [
+            "This policy explains which cookies Pointet Workshop uses for authentication and language preferences, why they are used and how you can manage them. For broader information about personal data and your rights, read our ",
+            {
+              "text": "Privacy Policy",
+              "href": "/docs/privacy_policy",
+              "internal": true
+            },
+            "."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "what-are-cookies",
+      "title": "What Are Cookies?",
+      "blocks": [
+        {
+          "paragraph": [
+            "Cookies are small pieces of information stored in or associated with your browser. They allow a website to recognise a session between requests or remember a preference, such as your selected language."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cookies-we-use",
+      "title": "Cookies We Use",
+      "blocks": [
+        {
+          "heading": "A. Strictly necessary / authentication cookies"
+        },
+        {
+          "list": [
+            [
+              {
+                "text": "Access token (access_token):",
+                "strong": true
+              },
+              " authenticates protected requests and maintains the authenticated user session."
+            ],
+            [
+              {
+                "text": "Refresh token (refresh_token):",
+                "strong": true
+              },
+              " securely renews authentication when the access token expires or needs to be refreshed. Successful renewal replaces the refresh token and revokes the previous one."
+            ]
+          ]
+        },
+        {
+          "paragraph": [
+            "These cookies are required for account authentication and session functionality. Their contents are authentication credentials, not advertising identifiers or ordinary profile information."
+          ]
+        },
+        {
+          "shared": "authenticationSecurity"
+        },
+        {
+          "heading": "B. Preference cookies"
+        },
+        {
+          "paragraph": [
+            {
+              "text": "Language / locale (NEXT_LOCALE):",
+              "strong": true
+            },
+            " remembers the language selected for the public website. It contains a language code, not an access or refresh token. It uses SameSite=Lax and is separate from the HttpOnly authentication cookies."
+          ]
+        },
+        {
+          "paragraph": [
+            "The separate administration interface also uses a language-only cookie named ",
+            {
+              "text": "admin_locale",
+              "strong": true
+            },
+            " when an administrator changes language. It does not authenticate the administrator."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "necessary-cookies",
+      "title": "Strictly Necessary Cookies",
+      "blocks": [
+        {
+          "paragraph": [
+            "Authentication cookies are necessary to log in, maintain an authenticated session, authenticate protected requests and securely renew authentication. They are not analytics, tracking or advertising cookies."
+          ]
+        },
+        {
+          "paragraph": [
+            "Cookies strictly necessary to provide a service you request do not require cookie consent under the applicable rules. The legal basis for processing the associated personal data depends on its purpose, as explained in the Privacy Policy; using a cookie does not automatically make consent the legal basis."
+          ]
+        },
+        {
+          "paragraph": [
+            "Removing or blocking these cookies may stop login and authenticated account features from working."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "preference-cookies",
+      "title": "Preference Cookies",
+      "blocks": [
+        {
+          "paragraph": [
+            "The public website uses NEXT_LOCALE only to remember your selected language. It may be set when your selected language differs from your browser preference, or updated when you change language. It helps preserve that choice as you move between pages."
+          ]
+        },
+        {
+          "paragraph": [
+            "No fixed expiry is configured for this cookie, so it is a session cookie rather than a promise to remember your choice indefinitely between visits. Your browser's session-restoration settings may preserve it after the browser is restarted. In the administration interface, admin_locale remembers the selected language between visits."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "duration",
+      "title": "Cookie Duration",
+      "blocks": [
+        {
+          "paragraph": [
+            "Session cookies have no fixed expiry and normally last for the browser session. Persistent cookies have an expiry or maximum age and can remain between visits until they expire or are deleted."
+          ]
+        },
+        {
+          "paragraph": [
+            "The application's configured defaults are:"
+          ]
+        },
+        {
+          "list": [
+            [
+              {
+                "text": "access_token:",
+                "strong": true
+              },
+              " persistent, 15 minutes from issue or renewal."
+            ],
+            [
+              {
+                "text": "refresh_token:",
+                "strong": true
+              },
+              " persistent, 30 days from issue or successful renewal. Renewal replaces the previous token and starts a new period."
+            ],
+            [
+              {
+                "text": "NEXT_LOCALE:",
+                "strong": true
+              },
+              " session cookie; no Max-Age or Expires value is configured."
+            ],
+            [
+              {
+                "text": "admin_locale (administration interface only):",
+                "strong": true
+              },
+              " persistent, 365 days from the most recent language selection; SameSite=Lax."
+            ]
+          ]
+        },
+        {
+          "paragraph": [
+            "Authentication lifetimes can be changed through deployment configuration; these are the verified project defaults, not a measurement of a live deployment. Signing out clears the authentication cookies in that browser. Revocation may make a credential unusable before its cookie expires. Cookie expiry does not determine how long account, order or server-side session records are retained."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "third-party",
+      "title": "Third-Party Cookies",
+      "blocks": [
+        {
+          "paragraph": [
+            "The website does not currently use third-party cookies for advertising or analytics. No embedded payment, external sign-in, analytics, advertising or support-widget integration that sets third-party cookies was identified in the current application."
+          ]
+        },
+        {
+          "paragraph": [
+            "The contact form opens WhatsApp as an external service after you submit the form. WhatsApp may use its own cookies when you visit it; those are governed by that service's cookie information. The website does not embed a WhatsApp tracking widget."
+          ]
+        },
+        {
+          "paragraph": [
+            "Product-media storage supports Amazon S3. Loading an image from a storage service is distinct from setting a cookie; no third-party cookie integration for this storage was identified."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "analytics-advertising",
+      "title": "Analytics and Advertising Cookies",
+      "blocks": [
+        {
+          "paragraph": [
+            "The website does not currently use analytics or advertising cookies. There are no visitor-analytics or advertising cookie categories to enable. If this changes, this policy will be updated and any consent required for the new use will be obtained before those cookies are used."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "managing-cookies",
+      "title": "Managing Cookies",
+      "blocks": [
+        {
+          "paragraph": [
+            "You can view, block or delete cookies in your browser's privacy or site-data settings. Use your browser's help pages for the controls available on your device."
+          ]
+        },
+        {
+          "list": [
+            [
+              "Deleting authentication cookies may log you out."
+            ],
+            [
+              "Blocking them may prevent authentication, session renewal and account-related features from working correctly."
+            ],
+            [
+              "Deleting a language cookie may reset your preference; you can select a language again."
+            ]
+          ]
+        },
+        {
+          "paragraph": [
+            "Browser cookie controls do not delete account or order records and do not stop processing that takes place independently of cookies. For personal-data requests, use the contact details below."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "title": "Changes to This Cookies Policy",
+      "blocks": [
+        {
+          "paragraph": [
+            "We may update this policy when cookies are introduced, their purposes change, website functionality changes or legal requirements change. The Last updated date will identify the latest revision."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "title": "Contact",
+      "blocks": [
+        {
+          "shared": "contact"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+@reference "tailwindcss";
+
+.nav_container {
+    @apply flex 
+        place-content-center 
+        h-fit;
+}
+
+.nav_list {
+    @apply inline-flex 
+        bg-zinc-700
+        rounded-b-2xl
+        p-3 pt-2
+        scale-150;
+}
+
+.nav_element {
+    @apply transition-all
+        px-3 border-r
+        bg-white text-lg
+        duration-200
+        relative font-semibold
+        overflow-hidden
+        before:absolute
+        before:inset-0
+        before:scale-x-[0.5]
+        before:rounded-[100%] 
+        before:transition-transform
+        before:-translate-y-full 
+        hover:before:translate-y-0
+        hover:before:scale-[1.5]
+        before:duration-600 
+        before:bg-radial 
+        before:from-red-200 
+        before:from-1% 
+        before:to-red-400
+        text-zinc-600;
+}
+
+.nav_element:first-child {
+    @apply rounded-l-md;
+}
+
+.nav_element:last-child {
+    @apply rounded-r-md
+        border-r-0;
+}
+
+.sign {
+    @apply whitespace-nowrap inline-block 
+        transition-transform duration-300;
+}

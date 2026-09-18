@@ -1,0 +1,38 @@
+@reference "tailwindcss";
+
+.back_blur {
+    @apply sticky 
+        top-0 z-50
+        backdrop-blur-xl
+        bg-linear-to-t
+        to-white/1
+        from-white/50
+        from-5%
+        rounded-b-4xl
+        ;
+}
+
+.header_wrapper {
+    @apply sticky 
+        top-0;
+}
+
+.header_container {
+    @apply px-5 grid 
+        grid-cols-3
+        items-center
+        pb-1;
+}
+
+.logo_title {
+    @apply text-transparent 
+        bg-clip-text
+        text-3xl 
+        bg-linear-to-t 
+        from-transparent 
+        from-5%
+		to-red-700 
+        to-95%
+        leading-8;
+}
+ 

@@ -1,0 +1,58 @@
+@reference "tailwindcss";
+
+.centralize {
+    @apply h-[90vh] flex 
+        justify-center 
+        items-center;
+}
+
+.contact_form_window{
+    @apply px-10 py-5 
+        bg-gray-500/10 
+        backdrop-blur-3xl
+        rounded-xl
+        flex flex-col 
+        gap-8 border
+        border-gray-300;
+}
+
+.title {
+    @apply text-center 
+        font-semibold 
+        text-4xl
+        bg-clip-text
+        text-transparent
+        bg-linear-to-t
+        from-transparent
+        to-gray-700;
+}
+
+.form_container {
+    @apply grid grid-cols-2
+        gap-x-3 gap-y-5;
+}
+
+.input {
+    @apply rounded-2xl border-zinc-500
+        bg-gray-100;
+}
+
+@media (max-width: 590px) {
+    .centralize {
+        @apply h-fit pt-21 pb-35 px-1.5;
+    }
+}
+
+@media (max-width: 430px) {
+    .centralize {
+        @apply h-fit pt-25 pb-50 px-3;
+    }
+
+    .contact_form_window {
+        @apply px-4 w-full;
+    }
+
+    .title {
+        @apply text-2xl;
+    }
+}

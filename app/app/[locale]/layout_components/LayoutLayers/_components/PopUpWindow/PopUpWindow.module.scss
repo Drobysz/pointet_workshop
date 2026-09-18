@@ -1,0 +1,10 @@
+.overlay {
+    position: fixed;
+    z-index: 40;
+    inset: 0;
+    display: grid;
+    padding: 0.5rem;
+    place-items: center;
+    overflow-y: auto;
+    background: rgba(36, 39, 45, 0.38);
+}

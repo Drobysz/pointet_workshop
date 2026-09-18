@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+.nav_container {
+    @apply flex justify-between;
+    
+        .title_column_distance {
+            @apply flex
+                flex-col
+                gap-3;
+        }
+
+    .column_element_gap {
+        @apply flex
+            flex-col
+            gap-2;
+    }
+}

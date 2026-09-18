@@ -1,0 +1,32 @@
+@reference "tailwindcss";
+@reference "../../globals.css";
+
+.footer_background {
+    @apply relative
+        bg-linear-to-t
+        from-red-400
+        from-5%
+        to-red-500
+        to-95%
+        text-white;
+}
+
+.inner_content {
+    @apply h-[80vh]
+        relative
+        flex
+        flex-col
+        gap-20
+        px-10;
+}
+
+.logo_tunnel {
+    @apply grow;
+}
+
+.logo_title {
+    @apply text-9xl
+        text-center
+        sticky
+        top-[83vh];
+}

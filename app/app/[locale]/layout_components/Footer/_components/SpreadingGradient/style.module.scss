@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+
+.upper_blur_background {
+    @apply absolute
+        h-screen
+        w-full top-0
+        -translate-y-full;
+}

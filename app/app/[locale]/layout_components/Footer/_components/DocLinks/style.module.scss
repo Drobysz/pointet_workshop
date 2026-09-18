@@ -1,0 +1,28 @@
+@reference "tailwindcss";
+
+.logo_tunnel {
+    @apply grow;
+}
+
+.logo_elevator {
+    @apply sticky
+        top-[83vh]
+        flex justify-between
+        items-end;
+}
+
+.logo_title {
+    @apply text-9xl
+        leading-28;
+}
+
+.doc_list {
+    @apply flex
+        gap-8
+        items-center
+        text-sm;
+}
+
+.developer_title {
+    @apply text-lg;
+}

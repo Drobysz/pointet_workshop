@@ -1,0 +1,40 @@
+@reference "tailwindcss";
+
+.container {
+    @apply flex flex-col 
+        gap-6
+        h-[70vh]
+        justify-center;
+}
+
+.title {
+    @apply text-7xl
+        text-center
+        font-semibold
+        text-zinc-400;
+}
+
+.card_list {
+    @apply flex 
+        justify-center
+        gap-4
+        h-75;
+}
+
+.card {
+    @apply justify-stretch 
+        w-full 
+        shrink-0
+        flex 
+        flex-col
+        gap-2;
+}
+
+.card_title {
+    @apply text-2xl
+        font-semibold;
+}
+
+.card_subtitle {
+    @apply text-sm text-zinc-500;
+}

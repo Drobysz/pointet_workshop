@@ -1,0 +1,66 @@
+@reference "tailwindcss";
+
+.button {
+    @apply px-2 py-2.5 text-sm
+        relative rounded-xl
+        overflow-hidden
+        active:scale-98
+        before:absolute 
+        before:inset-0
+        before:bg-radial
+        before:from-red-300
+        before:from-10%
+        before:via-red-200/70
+        before:via-75%
+        before:to-gray-300/60
+        before:-z-10
+        text-red-900
+        font-semibold;
+}
+
+.text {
+    @apply transition-transform 
+        duration-200 
+        ease-in;
+}
+
+
+
+.cover_text_space {
+    @apply absolute 
+        flex inset-0
+        items-center 
+        justify-center;
+}
+
+.cover_text {
+    @apply inline-block z-10 
+        transition-transform 
+        duration-100 ease-in;
+}
+
+.cover_text_animation {
+    @apply font-black -translate-0.5 text-white;
+}
+
+
+
+.btn_cover_back_space {
+    @apply absolute inset-0
+        flex items-center 
+        justify-center -z-10;
+}
+
+.btn_cover_back {
+    @apply bg-radial 
+        from-red-200 from-1%
+        to-red-600 rounded-full 
+        w-1 h-1 opacity-0;
+    transition: 
+        height 0.5s ease,
+        width 0.5s ease;
+}
+
+.back_cover_btn_animation {
+    @apply w-full h-full scale-130 opacity-100;
+}

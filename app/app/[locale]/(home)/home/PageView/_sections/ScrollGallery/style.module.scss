@@ -1,0 +1,41 @@
+@reference "tailwindcss";
+
+.tunnel {
+    @apply h-[1000vh] relative;
+}
+
+.title {
+    @apply absolute left-1/2 top-1/2 
+        -translate-1/2 z-50
+        text-7xl font-semibold
+        flex flex-col
+        items-start;
+}
+
+.elevator {
+    @apply 
+        sticky top-0
+        overflow-hidden
+        h-screen
+        flex justify-center;
+}
+
+.elevator_center_content {
+    @apply min-w-67.5
+        max-w-360
+        w-full
+        h-full
+        relative;
+    perspective: 1000px;
+}
+
+.gallery_image_container {
+    @apply w-60 h-45
+        overflow-hidden
+        ;
+}
+
+.gallery_image {
+    @apply w-auto h-full
+        scale-110;
+}

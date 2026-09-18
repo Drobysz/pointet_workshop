@@ -1,0 +1,79 @@
+[
+    {
+        "img_src": "/gallery/img1.jpg",
+        "left": "23%",
+        "top": "80%"
+    },
+    {
+        "img_src": "/gallery/img2.jpg",
+        "left": "12%",
+        "top": "13%"
+    },
+    {
+        "img_src": "/gallery/img3.jpg",
+        "left": "54%",
+        "top": "24%"
+    },
+    {
+        "img_src": "/gallery/img4.jpg",
+        "left": "34%",
+        "top": "45%"
+    },
+    {
+        "img_src": "/gallery/img5.jpg",
+        "left": "67%",
+        "top": "55%"
+    },
+
+    {
+        "img_src": "/gallery/img6.jpg",
+        "left": "23%",
+        "top": "67%"
+    },
+    {
+        "img_src": "/gallery/img7.jpg",
+        "left": "43%",
+        "top": "87%"
+    },
+    {
+        "img_src": "/gallery/img8.jpg",
+        "left": "13%",
+        "top": "47%"
+    },
+
+    {
+        "img_src": "/gallery/img9.jpg",
+        "left": "57%",
+        "top": "64%"
+    },
+    {
+        "img_src": "/gallery/img10.jpg",
+        "left": "32%",
+        "top": "84%"
+    },
+    {
+        "img_src": "/gallery/img11.jpg",
+        "left": "75%",
+        "top": "23%"
+    },
+    {
+        "img_src": "/gallery/img12.jpg",
+        "left": "55%",
+        "top": "89%"
+    },
+    {
+        "img_src": "/gallery/img13.jpg",
+        "left": "49%",
+        "top": "14%"
+    },
+    {
+        "img_src": "/gallery/img14.jpg",
+        "left": "22%",
+        "top": "28%"
+    },
+    {
+        "img_src": "/gallery/img15.jpg",
+        "left": "39%",
+        "top": "87%"
+    }
+]

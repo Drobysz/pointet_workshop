@@ -1,0 +1,11 @@
+@reference "tailwindcss";
+@reference "../../../../../globals.css";
+
+.title {
+    @apply absolute left-1/2 top-1/2 
+        -translate-1/2 
+        text-center 
+        text-6xl
+        leading-23
+        opacity-80;
+}

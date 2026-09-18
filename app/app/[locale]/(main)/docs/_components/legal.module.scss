@@ -1,0 +1,70 @@
+@reference "tailwindcss";
+
+.article {
+    @apply px-8 py-10 text-neutral-700;
+    max-width: 80ch;
+    overflow-wrap: anywhere;
+}
+
+.header {
+    @apply mb-10 border-b border-neutral-200 pb-6;
+}
+
+.title {
+    @apply text-4xl font-bold leading-tight;
+}
+
+.updated {
+    @apply mt-3 text-sm text-neutral-600;
+}
+
+.section {
+    @apply mb-10 leading-7;
+    scroll-margin-top: 6rem;
+
+    h2 {
+        @apply mb-4 text-2xl font-semibold leading-snug;
+    }
+
+    h3 {
+        @apply mt-6 mb-3 text-lg font-semibold;
+    }
+
+    p {
+        @apply mb-4;
+    }
+
+    ul {
+        @apply mb-4 list-disc pl-6;
+    }
+
+    li + li {
+        @apply mt-2;
+    }
+
+    a {
+        @apply text-amber-800 underline underline-offset-4;
+
+        &:hover {
+            @apply text-amber-950;
+        }
+
+        &:focus-visible {
+            @apply outline-2 outline-offset-4 outline-amber-800;
+        }
+    }
+}
+
+@media (max-width: 680px) {
+    .article {
+        @apply px-0 pt-6 pb-10;
+    }
+
+    .title {
+        @apply text-3xl;
+    }
+
+    .section h2 {
+        @apply text-xl;
+    }
+}

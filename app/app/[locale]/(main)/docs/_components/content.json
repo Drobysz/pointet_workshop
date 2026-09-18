@@ -1,0 +1,69 @@
+{
+  "lastUpdatedLabel": "Last updated",
+  "blocks": {
+    "contact": [
+      {
+        "paragraph": [
+          "For privacy or cookie questions, or to request access, correction, deletion or the exercise of another GDPR right, email ",
+          {
+            "text": "alexdrobyszfr@gmail.com",
+            "href": "mailto:alexdrobyszfr@gmail.com"
+          },
+          ". Please describe your request and the account or order it concerns. Do not send passwords or authentication tokens."
+        ]
+      },
+      {
+        "paragraph": [
+          "Website: Pointet Workshop.",
+          {
+            "text": "",
+            "breakBefore": true
+          },
+          "Data controller: [Operator's full legal name to be supplied].",
+          {
+            "text": "",
+            "breakBefore": true
+          },
+          "Postal address: [Operator's postal address to be supplied]."
+        ]
+      }
+    ],
+    "authenticationSecurity": [
+      {
+        "paragraph": [
+          "The default authentication cookie settings include:"
+        ]
+      },
+      {
+        "list": [
+          [
+            {
+              "text": "HttpOnly:",
+              "strong": true
+            },
+            " prevents JavaScript running in the browser from directly reading the authentication cookies."
+          ],
+          [
+            {
+              "text": "Secure:",
+              "strong": true
+            },
+            " restricts transmission to HTTPS when enabled."
+          ],
+          [
+            {
+              "text": "SameSite=Lax:",
+              "strong": true
+            },
+            " limits cross-site cookie transmission and helps reduce certain cross-site request risks."
+          ]
+        ]
+      },
+      {
+        "paragraph": [
+          "The local HTTP development setup disables Secure. The deployed HTTPS service must have it enabled; its live configuration has not yet been verified. These measures reduce risk but do not guarantee absolute security."
+        ]
+      }
+    ]
+  }
+}

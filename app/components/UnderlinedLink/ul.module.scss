@@ -1,0 +1,24 @@
+@reference "tailwindcss";
+
+.underline_link {
+	@apply relative inline-flex w-fit 
+		flex-col items-start active:scale-98
+		duration-300 transition-transform;
+}
+
+.underline_link > a {
+	@apply inline-flex w-fit flex-col 
+		items-start;
+}
+
+.underline {
+	@apply block h-px max-w-full
+		cursor-pointer w-full
+		duration-250 ease-initial 
+		transition-transform origin-right
+		scale-x-0;
+}
+
+.underline_link:hover .underline{
+	@apply origin-left scale-x-100;
+}

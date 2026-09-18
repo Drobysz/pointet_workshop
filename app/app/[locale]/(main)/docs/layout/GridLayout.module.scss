@@ -1,0 +1,43 @@
+@reference "tailwindcss";
+
+.wrapper {
+    @apply grid;
+    grid-template-columns: auto minmax(130px, 250px) minmax(0, 1080px) auto;
+    min-height: 90vh;
+    grid-template-areas: ". menu page .";
+}
+
+.aside {
+    grid-area: menu;
+    @apply py-10;
+}
+
+.page {
+    @apply relative; 
+    grid-area: page;
+    min-width: 0;
+}
+
+@media (max-width: 1270px) {
+    .wrapper {
+        @apply px-10;
+    }
+}
+
+@media (max-width: 680px) {
+    .wrapper {
+        @apply flex flex-col px-0;
+    }
+
+    .aside {
+        @apply flex 
+            items-center 
+            pt-3.5 pb-4;
+    }
+}
+
+@media (max-width: 560px) {
+    .aside {
+        @apply pt-2;
+    }
+}

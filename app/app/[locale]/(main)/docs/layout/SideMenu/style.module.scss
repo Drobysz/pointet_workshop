@@ -1,0 +1,68 @@
+@reference "tailwindcss";
+
+.sticky_nav {
+    @apply sticky 
+        top-20
+        flex
+        flex-col
+        gap-2;
+}
+
+.title {
+    @apply font-semibold 
+        text-center 
+        text-3xl
+        text-neutral-500
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.title_gradient {
+    @apply bg-clip-text
+        text-transparent
+        bg-linear-to-t
+        from-white
+        to-red-700;
+}
+
+.list_wrap {
+    @apply rounded-2xl w-full py-2
+        flex justify-center items-center
+        bg-white/40 backdrop-blur-3xl;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 3px 20px;
+}
+
+.list {
+    @apply relative flex flex-col
+        gap-1 pl-1 text-neutral-500
+        px-4;
+}
+
+@media (max-width: 680px) {
+    .list_wrap {
+        @apply overflow-x-auto py-1 px-3
+            w-fit;
+        
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .list_wrap::-webkit-scrollbar {
+        display: none;
+    }
+
+    .list {
+        @apply flex-row gap-6 h-7
+            overflow-y-auto overflow-visible 
+            w-max text-sm;
+        
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .list li,
+    .list a {
+        @apply whitespace-nowrap shrink-0;
+    }
+}

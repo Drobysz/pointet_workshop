@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+.cursor {
+    @apply text-amber-500 
+        pointer-events-none
+        absolute 
+        translate-y-1/2 
+        -translate-x-px;
+        // max-[680px]:translate-y-1/4
+        // max-[560px]:translate-y-1/5
+}
+
+.cursor_stick {
+    @apply w-0.5 h-3.5 
+        bg-red-500 
+        rounded-2xl;
+}

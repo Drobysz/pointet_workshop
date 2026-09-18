@@ -1,0 +1,10 @@
+@reference "tailwindcss";
+
+.centralize {
+    @apply absolute top-1/2 left-1/2
+        -translate-1/2;
+}
+
+.title {
+    @apply text-3xl text-center text-neutral-500;
+}

@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+
+.doc_category {
+    @apply cursor-pointer
+        transition-all
+        text-lg;
+}
+
+.chosen,
+.doc_category:hover {
+    @apply text-red-700 
+        translate-x-1.5;
+}

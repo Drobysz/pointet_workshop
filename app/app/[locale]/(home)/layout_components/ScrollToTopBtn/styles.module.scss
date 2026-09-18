@@ -1,0 +1,9 @@
+@reference "tailwindcss";
+
+.scrollTopBtn {
+    @apply fixed bottom-0 right-3
+        active:translate-y-2 px-3 pt-3 pb-3
+        rounded-t-full z-20 bg-zinc-500/30
+        backdrop-blur-xl transition-transform
+        duration-300 ease-in-out;
+}

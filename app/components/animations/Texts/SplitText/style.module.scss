@@ -1,0 +1,33 @@
+@reference "tailwindcss";
+
+.text {
+    @apply inline-block;
+}
+
+.word {
+    @apply inline-block 
+        overflow-hidden;
+}
+
+.char {
+    @apply
+        inline-block
+        duration-250
+        transition-[transform,opacity]  
+        ease-[cubic-bezier(0.33,1,0.68,1)];
+    transition-delay: var(--char-delay);
+}
+
+.unwrapping .char {
+    transform: translateY(3.125rem) rotate(45deg);
+}
+
+.blurred .char {
+    transform: translateY(0.5rem) scale(0.7);
+    opacity: 0;
+}
+
+.visible .char {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 1;
+}

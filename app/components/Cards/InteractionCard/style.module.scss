@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.card {
+    @apply overflow-hidden
+        max-w-87.5
+        max-h-75
+        p-4
+        h-full
+        rounded-3xl
+        border
+        border-zinc-300
+        bg-linear-to-br
+        from-gray-50
+        bg-gray-200
+        relative;
+    
+    transition: 
+        box-shadow 0.25s cubic-bezier(0.87, 0, 0.13, 1),
+        translate 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card:hover {
+    @apply -translate-y-1.5;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 25px 30px -10px;
+}

@@ -70,6 +70,7 @@ services:
       - ./api:/var/www/html
       - api-vendor:/var/www/html/vendor
       - ./api/storage/keys:/run/secrets:ro
+      - ./api/docker/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
     healthcheck:
       test: ["CMD-SHELL", "php artisan about --only=environment >/dev/null || exit 1"]
       interval: 10s

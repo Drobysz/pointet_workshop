@@ -9,7 +9,7 @@ import {
 
 export const PageView = ()=> {
     return (
-        <div className="pt-2">
+        <div>
             <Hero />
             <ScrollGallery />
             <ThreeDGlassGallery />

@@ -168,7 +168,15 @@
     "title": "Produits",
     "uncategorized": "Sans catégorie",
     "units": "{count, plural, one {# unité} other {# unités}}",
-    "unitsSold": "Unités vendues"
+    "unitsSold": "Unités vendues",
+    "images": {
+      "title": "Images du produit",
+      "color": "Couleur des images à ajouter",
+      "selectColor": "Sélectionnez d’abord une couleur",
+      "colorHint": "Les nouvelles images seront associées à cette couleur. Elles seront envoyées lors de l’enregistrement.",
+      "retryError": "Le produit est enregistré, mais certaines images n’ont pas été envoyées. Réessayez pour envoyer les images restantes.",
+      "colorError": "Une couleur associée aux images a été désélectionnée. Sélectionnez-la à nouveau ou retirez ces images."
+    }
   },
   "orders": {
     "all": "Toutes les commandes",
@@ -222,11 +230,54 @@
     "subcategories": "Sous-catégories",
     "title": "Référentiels",
     "typeLabel": "Type de référentiel",
-    "deleteLabel": "Supprimer {name}"
+    "deleteLabel": "Supprimer {name}",
+    "image": "Image de la catégorie"
   },
   "validation": {
     "checkForm": "Vérifiez les informations saisies.",
     "password": "Le mot de passe doit contenir au moins 8 caractères, une lettre et un chiffre.",
     "requiredSelections": "Sélectionnez au moins une couleur et une matière."
+  },
+  "images": {
+    "drop": "Glissez-déposez vos images ici",
+    "choose": "Choisir une image",
+    "chooseMany": "Choisir des images",
+    "hint": "JPEG, PNG ou WebP · 10 Mo maximum par image",
+    "invalidFile": "Choisissez une image JPEG, PNG ou WebP non vide de 10 Mo maximum.",
+    "singleOnly": "Choisissez une seule image pour cette catégorie.",
+    "remove": "Retirer {name}"
+  },
+  "picker": {
+    "search": "Rechercher : {label}",
+    "selected": "{count} sélectionné(s)",
+    "loading": "Chargement…",
+    "error": "Impossible de charger les options.",
+    "retry": "Réessayer",
+    "empty": "Aucun résultat. Essayez un autre terme.",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "inventory": {
+    "title": "Stock par couleur et taille",
+    "sizeHint": "Saisissez vos tailles : XL, XLL, 43, 43.5… Laissez vide pour un article sans taille. Pour remplacer une taille déjà enregistrée, ajoutez une ligne puis supprimez l’ancienne.",
+    "selectColors": "Sélectionnez au moins une couleur pour définir le stock.",
+    "size": "Taille",
+    "quantity": "Quantité en stock",
+    "noSize": "Sans taille",
+    "sizeFor": "Taille {index} — {color}",
+    "quantityFor": "Quantité {index} — {color}",
+    "removeFor": "Retirer la taille {index} — {color}",
+    "remove": "Retirer",
+    "addSize": "Ajouter une taille",
+    "total": "Stock total : {count}",
+    "restockHint": "Ajoutez uniquement les nouvelles unités reçues. Elles s’ajoutent au stock actuel.",
+    "available": "En stock : {count}",
+    "arriving": "Unités reçues",
+    "addFor": "Unités reçues — {variant}",
+    "addStock": "Ajouter au stock",
+    "saving": "Enregistrement…",
+    "added": "{count} unité(s) ajoutée(s) — {variant}.",
+    "restockError": "Impossible d’ajouter le stock. Vérifiez la quantité actuelle avant de réessayer.",
+    "conflict": "Le stock a changé depuis l’ouverture du formulaire. Fermez puis rouvrez le produit avant d’enregistrer."
   }
 }

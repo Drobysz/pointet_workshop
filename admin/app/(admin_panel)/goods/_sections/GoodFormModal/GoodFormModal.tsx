@@ -1,16 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";
 import { goodSchema } from "@/auth/FormSchemes";
 import { Modal, StatePanel } from "@/components";
-import type { Good, GoodPayload } from "@/interface/domain";
+import { ApiError } from "@/helpers";
+import { InventoryEditor, type InventoryDraft } from "@/components/InventoryEditor/InventoryEditor";
+import { ImageDropzone } from "@/components/ImageDropzone/ImageDropzone";
+import { MarkerPicker, type SelectableMarker } from "@/components/MarkerPicker/MarkerPicker";
+import type { Color, Good, GoodPayload } from "@/interface/domain";
 import {
   createGood,
   getCatalogOptions,
   getGood,
   updateGood,
+  uploadProductImage,
 } from "@/queries";
 import styles from "@/components/FormModal/form-modal.module.scss";
 
@@ -18,21 +23,22 @@ interface GoodFormModalProps {
   good?: Good;
   onClose: () => void;
   onSaved: () => Promise<void>;
+  onBusyChange?: (busy: boolean) => void;
 }
 
 function getNumberArray(formData: FormData, field: string): number[] {
   return formData.getAll(field).map((value) => Number(value));
 }
 
-function buildGoodPayload(formData: FormData): GoodPayload | null {
+function buildGoodPayload(formData: FormData, inventory: InventoryDraft[], inventoryVersion?: number): GoodPayload | null {
   const formValues = {
     name: formData.get("name"),
     category_id: formData.get("category_id"),
     subcategory_id: formData.get("subcategory_id"),
     price: formData.get("price"),
-    current_quantity: formData.get("current_quantity"),
+    inventory_version: inventoryVersion,
+    inventory: inventory.map(({ id, color_id, size, quantity }) => ({ id, color_id, size, quantity })),
     description: formData.get("description"),
-    color_ids: getNumberArray(formData, "color_ids"),
     material_ids: getNumberArray(formData, "material_ids"),
   };
   const parsed = goodSchema.safeParse(formValues);
@@ -44,14 +50,47 @@ function GoodForm({
   good,
   onClose,
   onSaved,
+  onBusyChange,
 }: GoodFormModalProps) {
   const t = useTranslations("goods");
   const common = useTranslations("common");
   const validation = useTranslations("validation");
+  const inventoryText = useTranslations("inventory");
   const options = useSWR("catalog-form-options", getCatalogOptions);
   const [categoryId, setCategoryId] = useState(good?.category_id ?? 0);
   const [error, setError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [selectedColors, setSelectedColors] = useState<Color[]>(good?.colors ?? []);
+  const [selectedMaterials, setSelectedMaterials] = useState<SelectableMarker[]>(good?.materials ?? []);
+  const [inventory, setInventory] = useState<InventoryDraft[]>(
+    (good?.inventory ?? []).map((row) => ({ ...row, key: String(row.id) })),
+  );
+  const savedVersion = useRef<number | undefined>(good?.inventory_version);
+  function changeColors(markers: SelectableMarker[]) {
+    const colors = markers as Color[];
+    setSelectedColors(colors);
+    setInventory((previous) => {
+      const kept = previous.filter((row) => colors.some((color) => color.id === row.color_id));
+      for (const color of colors) {
+        if (!kept.some((row) => row.color_id === color.id)) kept.push({ key: crypto.randomUUID(), color_id: color.id, size: null, quantity: 0 });
+      }
+      return kept;
+    });
+  }
+  const [uploadColor, setUploadColor] = useState(0);
+  const [images, setImages] = useState<{ id: string; file: File; url: string; colorId: number; colorName: string }[]>([]);
+  const savedId = useRef<number | undefined>(good?.id);
+  const uploadedIds = useRef(new Set<string>());
+  const objectUrls = useRef(new Set<string>());
+  useEffect(() => () => { objectUrls.current.forEach((url) => URL.revokeObjectURL(url)); }, []);
+  const activeColor = selectedColors.find((color) => color.id === uploadColor) ?? selectedColors[0];
+
+  function removeImage(id: string) {
+    const image = images.find((item) => item.id === id);
+    if (image) { URL.revokeObjectURL(image.url); objectUrls.current.delete(image.url); }
+    setImages((previous) => previous.filter((item) => item.id !== id));
+  }
+
 
   if (options.isLoading) {
     return <StatePanel state="loading" />;
@@ -70,41 +109,53 @@ function GoodForm({
     return category.id === categoryId;
   });
   const subcategories = selectedCategory?.subcategories ?? [];
-  const selectedColorIds = new Set(good?.colors.map((color) => color.id));
-  const selectedMaterialIds = new Set(
-    good?.materials?.map((material) => material.id),
-  );
-
   async function handleSubmit(formData: FormData) {
     setError("");
 
-    const payload = buildGoodPayload(formData);
+    const payload = buildGoodPayload(formData, inventory, savedVersion.current);
 
     if (!payload) {
       setError(validation("checkForm"));
       return;
     }
 
+    if (images.some((image) => !payload.inventory.some((row) => row.color_id === image.colorId))) {
+      setError(t("images.colorError"));
+      return;
+    }
     setIsSaving(true);
+    onBusyChange?.(true);
+    let productSaved = false;
 
     try {
-      if (good) {
-        await updateGood(good.id, payload);
-      } else {
-        await createGood(payload);
+      const result = savedId.current
+        ? await updateGood(savedId.current, payload)
+        : await createGood(payload);
+      savedId.current = result.data.id;
+      savedVersion.current = result.data.inventory_version;
+      setInventory(result.data.inventory.map((row) => ({ ...row, key: String(row.id) })));
+      productSaved = true;
+      for (const image of images) {
+        if (uploadedIds.current.has(image.id)) continue;
+        await uploadProductImage(savedId.current, image.colorId, image.file);
+        uploadedIds.current.add(image.id);
+        removeImage(image.id);
       }
-
       await onSaved();
       onClose();
-    } catch {
-      setError(t("saveError"));
+    } catch (failure) {
+      if (failure instanceof ApiError && failure.status === 409) {
+        setError(inventoryText("conflict"));
+      } else setError(productSaved && images.some((image) => !uploadedIds.current.has(image.id)) ? t("images.retryError") : t("saveError"));
     } finally {
       setIsSaving(false);
+      onBusyChange?.(false);
     }
   }
 
   return (
-    <form action={handleSubmit} className={styles.form}>
+    <form onSubmit={(event) => { event.preventDefault(); if (!isSaving) void handleSubmit(new FormData(event.currentTarget)); }} className={styles.form}>
+      <fieldset disabled={isSaving} className={styles.formFields}>
       <div className={styles.grid}>
         <label className={styles.field}>
           {t("form.name")}
@@ -162,17 +213,6 @@ function GoodForm({
           </select>
         </label>
 
-        <label className={styles.field}>
-          {t("form.stock")}
-          <input
-            name="current_quantity"
-            type="number"
-            defaultValue={good?.current_quantity ?? 0}
-            min="0"
-            step="1"
-            required
-          />
-        </label>
       </div>
 
       <label className={styles.field}>
@@ -184,48 +224,37 @@ function GoodForm({
         />
       </label>
 
-      <fieldset className={styles.fieldset}>
-        <legend>{t("form.colors")}</legend>
-        <div className={styles.checks}>
-          {options.data.colors.map((color) => (
-            <label className={styles.check} key={color.id}>
-              <input
-                name="color_ids"
-                type="checkbox"
-                value={color.id}
-                defaultChecked={selectedColorIds.has(color.id)}
-              />
-              <i
-                className={styles.swatch}
-                style={{ backgroundColor: color.hexcode }}
-              />
-              {color.name}
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <fieldset className={styles.fieldset}>
-        <legend>{t("form.materials")}</legend>
-        <div className={styles.checks}>
-          {options.data.materials.map((material) => (
-            <label className={styles.check} key={material.id}>
-              <input
-                name="material_ids"
-                type="checkbox"
-                value={material.id}
-                defaultChecked={selectedMaterialIds.has(material.id)}
-              />
-              {material.name}
-            </label>
-          ))}
-        </div>
+      <MarkerPicker kind="colors" name="color_ids" label={t("form.colors")} selected={selectedColors} onChange={changeColors} disabled={isSaving} />
+      <InventoryEditor colors={selectedColors} rows={inventory} onChange={setInventory} disabled={isSaving} />
+      <MarkerPicker kind="materials" name="material_ids" label={t("form.materials")} selected={selectedMaterials} onChange={setSelectedMaterials} disabled={isSaving} />
+      <label className={styles.field}>
+        {t("images.color")}
+        <select value={activeColor?.id ?? ""} onChange={(event) => setUploadColor(Number(event.target.value))} disabled={!selectedColors.length || isSaving}>
+          {!selectedColors.length ? <option value="">{t("images.selectColor")}</option> : null}
+          {selectedColors.map((color) => <option key={color.id} value={color.id}>{color.name}</option>)}
+        </select>
+        <small>{t("images.colorHint")}</small>
+      </label>
+      <ImageDropzone
+        label={t("images.title")} multiple disabled={isSaving} disableSelection={!activeColor}
+        images={images.map((image) => ({ id: image.id, name: image.file.name, url: image.url, detail: image.colorName }))}
+        onRemove={removeImage}
+        onFiles={(files) => {
+          if (!activeColor) return;
+          const added = files.map((file) => {
+            const url = URL.createObjectURL(file);
+            objectUrls.current.add(url);
+            return { id: crypto.randomUUID(), file, url, colorId: activeColor.id, colorName: activeColor.name };
+          });
+          setImages((previous) => [...previous, ...added]);
+        }}
+      />
       </fieldset>
 
       {error ? <p className={styles.error} role="alert">{error}</p> : null}
 
       <div className={styles.actions}>
-        <button type="button" onClick={onClose}>{common("cancel")}</button>
+        <button type="button" disabled={isSaving} onClick={onClose}>{common("cancel")}</button>
         <button type="submit" disabled={isSaving}>
           {isSaving ? common("saving") : common("save")}
         </button>
@@ -240,6 +269,7 @@ export function GoodFormModal({
   onSaved,
 }: GoodFormModalProps) {
   const t = useTranslations("goods");
+  const [busy, setBusy] = useState(false);
   const detail = useSWR(
     good ? ["good-form", good.id] as const : null,
     ([, goodId]) => getGood(goodId),
@@ -249,7 +279,7 @@ export function GoodFormModal({
   const title = good ? t("editTitle") : t("createTitle");
 
   return (
-    <Modal title={title} onClose={onClose}>
+    <Modal title={title} onClose={() => { if (!busy) onClose(); }}>
       {good && detail.isLoading ? <StatePanel state="loading" /> : null}
       {good && detail.error ? (
         <StatePanel state="error" onRetry={() => void detail.mutate()} />
@@ -259,6 +289,7 @@ export function GoodFormModal({
           good={formGood}
           onClose={onClose}
           onSaved={onSaved}
+          onBusyChange={setBusy}
         />
       ) : null}
     </Modal>

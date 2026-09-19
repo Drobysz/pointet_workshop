@@ -10,6 +10,7 @@ import { PageHeader, StatePanel } from "@/components";
 import { useAppFormatters } from "@/hooks";
 import type { Good } from "@/interface/domain";
 import { getGood, getProductStatistics } from "@/queries";
+import { InventoryStock } from "@/components/InventoryStock/InventoryStock";
 import styles from "./product-detail-view.module.scss";
 
 interface ProductGalleryProps {
@@ -173,6 +174,8 @@ export function ProductDetailView({ goodId }: { goodId: string }) {
           <p>{product.description}</p>
         </aside>
       </div>
+
+      <InventoryStock product={product} onUpdated={async (result) => { await productState.mutate(result, { revalidate: false }); }} />
 
       <section className={styles.statistics}>
         <h2>{t("performance")}</h2>

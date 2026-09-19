@@ -2,11 +2,8 @@ import { queryString, requestBackend } from "@/helpers";
 import type {
   ApiCollection,
   ApiEntity,
-  Category,
-  Color,
   Good,
   GoodPayload,
-  Material,
   ProductStatistics,
 } from "@/interface/domain";
 
@@ -34,21 +31,26 @@ export function updateGood(id: number, payload: GoodPayload) {
 }
 
 export async function getCatalogOptions() {
-  const [categoryResponse, colorResponse, materialResponse] = await Promise.all([
-    requestBackend<ApiCollection<Category>>("/categories?per_page=100"),
-    requestBackend<ApiCollection<Color>>("/colors?per_page=100"),
-    requestBackend<ApiCollection<Material>>("/materials?per_page=100"),
-  ]);
+  const { getAllCategories } = await import("../markers/markerQueries");
+  const categories = await getAllCategories();
+  return { categories: categories.data };
+}
 
-  return {
-    categories: categoryResponse.data,
-    colors: colorResponse.data,
-    materials: materialResponse.data,
-  };
+export function uploadProductImage(id: number, colorId: number, file: File) {
+  const body = new FormData();
+  body.set("color_id", String(colorId));
+  body.set("image", file);
+  return requestBackend(`/goods/${id}/images`, { method: "POST", body });
 }
 
 export function getProductStatistics(id: string) {
   return requestBackend<ApiEntity<ProductStatistics>>(
     `/goods/${id}/statistics`,
   );
+}
+
+export function restockInventory(goodId: number, registerId: number, quantity: number) {
+  return requestBackend<ApiEntity<Good>>(`/goods/${goodId}/inventory/${registerId}/restock`, {
+    method: "POST", body: JSON.stringify({ quantity }),
+  });
 }

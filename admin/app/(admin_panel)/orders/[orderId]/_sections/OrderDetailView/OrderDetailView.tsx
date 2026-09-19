@@ -60,6 +60,7 @@ export function OrderDetailView({ orderId }: { orderId: string }) {
                 </Link>
                 <span>
                   {item.color_name ?? t("colorDefault")} ·{` `}
+                  {item.size ? `${item.size} · ` : ""}
                   {formatCurrency(item.unit_price)} {t("each")}
                 </span>
               </div>

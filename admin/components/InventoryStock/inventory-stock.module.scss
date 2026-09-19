@@ -1,0 +1,15 @@
+.root { margin-block: 28px; padding: 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+.root h2 { font-size: 21px; font-weight: 600; margin: 0 0 8px; }
+.root p { font-size: 14px; color: var(--muted); }
+.rows { max-height: 440px; overflow-y: auto; overscroll-behavior: contain; padding: 3px; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) 140px auto; align-items: end; gap: 16px; padding-block: 16px; border-top: 1px solid var(--border); }
+.row > div { display: grid; gap: 6px; align-self: center; overflow-wrap: anywhere; }
+.row strong { font-size: 15px; font-weight: 600; }
+.row span, .row label { font-size: 14px; }
+.row span { color: var(--muted); }
+.row label { display: grid; gap: 6px; }
+.row input { width: 100%; min-width: 0; border: 1px solid #86868b; border-radius: 9px; min-height: 44px; padding: 0 12px; }
+.row button { min-height: 44px; padding: 0 12px; border: 1px solid var(--border); border-radius: 9px; font-size: 14px; background: var(--ink); color: var(--surface); }
+.row button:disabled { opacity: .6; }
+.row input:focus-visible, .row button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+@media (max-width: 40rem) { .row { grid-template-columns: minmax(0, 1fr) auto; gap: 12px; } .row > div { grid-column: 1 / -1; } }

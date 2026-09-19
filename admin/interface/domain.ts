@@ -29,10 +29,19 @@ export interface Color {
   images?: ProductImage[];
 }
 
+export interface CategoryImage {
+  id: number;
+  name: string;
+  path: string;
+  url: string | null;
+}
+
 export interface Category {
   id: number;
   name: string;
   subcategories?: Subcategory[];
+  image_id?: number | null;
+  image?: CategoryImage | null;
 }
 
 export interface Subcategory {
@@ -47,11 +56,25 @@ export interface Material {
   name: string;
 }
 
+export interface InventoryInput {
+  id?: number;
+  color_id: number;
+  size: string | null;
+  quantity: number;
+}
+
+export interface InventoryRow extends InventoryInput {
+  id: number;
+  good_id: number;
+}
+
 export interface Good {
   id: number;
   name: string;
   price: string;
   current_quantity: number;
+  inventory_version: number;
+  inventory: InventoryRow[];
   description: string;
   category_id: number;
   subcategory_id: number;
@@ -67,9 +90,9 @@ export interface GoodPayload {
   category_id: number;
   subcategory_id: number;
   price: number;
-  current_quantity: number;
+  inventory_version?: number;
+  inventory: InventoryInput[];
   description: string;
-  color_ids: number[];
   material_ids: number[];
 }
 
@@ -95,6 +118,8 @@ export interface OrderItem {
   good_id: number | null;
   product_name: string;
   color_name: string | null;
+  size: string | null;
+  good_register_id: number | null;
   unit_price: string;
   quantity: number;
   line_total: string;

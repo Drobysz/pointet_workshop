@@ -11,7 +11,8 @@ class GoodResource extends JsonResource
     {
         return [
             'id' => $this->id, 'name' => $this->name, 'price' => (string) $this->price,
-            'current_quantity' => $this->current_quantity, 'description' => $this->description,
+            'current_quantity' => $this->current_quantity, 'inventory_version' => $this->inventory_version,
+            'inventory' => GoodRegisterResource::collection($this->whenLoaded('inventory')), 'description' => $this->description,
             'category_id' => $this->category_id, 'subcategory_id' => $this->subcategory_id,
             'subcategory' => new SubcategoryResource($this->whenLoaded('subcategory')),
             'colors' => ColorResource::collection($this->whenLoaded('colors')),

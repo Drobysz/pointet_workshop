@@ -14,6 +14,9 @@ class BasketRequest extends FormRequest
 
     public function rules(): array
     {
-        return ['good_id' => [Rule::requiredIf($this->isMethod('post')), 'integer', 'exists:goods,id'], 'color_id' => ['nullable', 'integer', 'exists:colors,id'], 'quantity' => ['required', 'integer', 'min:1', 'max:1000']];
+        return [
+            'good_register_id' => [Rule::requiredIf($this->isMethod('post')), Rule::prohibitedIf(! $this->isMethod('post')), 'integer', 'exists:good_register,id'],
+            'quantity' => ['required', 'integer', 'min:1', 'max:1000'],
+        ];
     }
 }

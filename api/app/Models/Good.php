@@ -17,7 +17,7 @@ class Good extends Model
 
     protected function casts(): array
     {
-        return ['price' => 'decimal:2', 'current_quantity' => 'integer'];
+        return ['price' => 'decimal:2', 'current_quantity' => 'integer', 'inventory_version' => 'integer'];
     }
 
     public function category(): BelongsTo
@@ -32,7 +32,12 @@ class Good extends Model
 
     public function colors(): BelongsToMany
     {
-        return $this->belongsToMany(Color::class);
+        return $this->belongsToMany(Color::class, 'good_register')->distinct();
+    }
+
+    public function inventory(): HasMany
+    {
+        return $this->hasMany(GoodRegister::class)->orderBy('id');
     }
 
     public function materials(): BelongsToMany

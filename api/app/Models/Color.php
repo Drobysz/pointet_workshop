@@ -15,7 +15,7 @@ class Color extends Model
 
     public function goods(): BelongsToMany
     {
-        return $this->belongsToMany(Good::class);
+        return $this->belongsToMany(Good::class, 'good_register')->distinct();
     }
 
     public function images(): HasMany

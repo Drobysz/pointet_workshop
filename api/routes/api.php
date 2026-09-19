@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoodController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductImageController;
@@ -41,6 +42,7 @@ Route::middleware('auth.jwt')->group(function (): void {
         Route::post('/users', [UserController::class, 'store']);
 
         Route::post('/goods', [GoodController::class, 'store']);
+        Route::post('/goods/{good}/inventory/{register}/restock', [InventoryController::class, 'restock']);
         Route::put('/goods/{good}', [GoodController::class, 'update']);
         Route::delete('/goods/{good}', [GoodController::class, 'destroy']);
         Route::post('/goods/{good}/images', [ProductImageController::class, 'store']);

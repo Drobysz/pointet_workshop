@@ -15,6 +15,14 @@ class OrderRequest extends FormRequest
 
     public function rules(): array
     {
-        return ['status' => ['sometimes', Rule::enum(OrderStatus::class)], 'items' => ['required_without:status', 'array', 'min:1'], 'items.*.good_id' => ['required', 'integer', 'exists:goods,id'], 'items.*.quantity' => ['required', 'integer', 'min:1', 'max:1000'], 'items.*.color_id' => ['nullable', 'integer', 'exists:colors,id']];
+        if (! $this->isMethod('post')) {
+            return ['status' => ['required', Rule::enum(OrderStatus::class)]];
+        }
+
+        return [
+            'items' => ['required', 'array', 'min:1', 'max:100'],
+            'items.*.good_register_id' => ['required', 'integer', 'exists:good_register,id'],
+            'items.*.quantity' => ['required', 'integer', 'min:1', 'max:1000'],
+        ];
     }
 }

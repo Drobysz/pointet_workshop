@@ -10,7 +10,12 @@ class Basket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'good_id', 'color_id', 'quantity'];
+    protected $fillable = ['user_id', 'good_id', 'color_id', 'good_register_id', 'quantity'];
+
+    public function inventory(): BelongsTo
+    {
+        return $this->belongsTo(GoodRegister::class, 'good_register_id');
+    }
 
     public function user(): BelongsTo
     {

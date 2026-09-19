@@ -1,0 +1,3701 @@
+# Pointet Workshop Commerce API
+# Derived from the Laravel routes, requests, resources, controllers, and policies.
+openapi: 3.1.0
+info:
+  title: Pointet Workshop Commerce API
+  version: 1.0.0
+  description: >-
+    Contract for the implemented Laravel routes in api/routes/api.php. All paths
+    are relative to /api. Send Accept: application/json and JSON request bodies
+    unless multipart/form-data is specified. Laravel also supplies HEAD handlers
+    for GET routes.
+
+
+    Authentication uses HttpOnly access_token and refresh_token cookies. Protected endpoints alternatively accept Authorization: Bearer <access JWT>; a nonempty access cookie takes precedence over the bearer token. Login, verification, and refresh return tokens only through Set-Cookie. Browser clients must include credentials. Cookie names, lifetimes, domain, Secure, and SameSite are configurable; defaults are 15-minute access, 30-day refresh, HttpOnly, Path=/, Secure, and SameSite=Lax. The supplied local Docker configuration disables Secure for HTTP.
+
+
+    Non-safe requests with an Origin header must match the configured CORS allowlist, unless a bearer token is present. Requests without Origin pass that middleware. Public registration/login/logout endpoints are subject to this origin check as well. Authorization rules are described per operation; role requirements are not OAuth scopes.
+
+
+    Laravel resources use a data envelope. Paginated collections additionally return links and meta. Form validation returns message and errors, while explicit controller failures use error.code and error.message. Decimal amounts in resource responses are strings; raw dashboard aggregates may use database-dependent numeric types.
+
+
+    Inventory is stored per product/color/size row. A null size means an unsized variant. Product totals are derived from those rows and retained as a cached current_quantity for catalog responses. Product updates use inventory_version for optimistic concurrency; additive stock arrivals use the dedicated restock operation.
+  x-source-files:
+    - api/routes/api.php
+    - api/app/Http/Controllers
+    - api/app/Http/Requests
+    - api/app/Http/Resources
+    - api/app/Http/Middleware
+    - api/app/Policies
+    - api/config/auth_tokens.php
+servers:
+  - url: /api
+    description: Same-origin API (recommended behind the configured reverse proxy).
+  - url: http://localhost:8080/api
+    description: Default Docker Compose reverse proxy.
+tags:
+  - name: Authentication
+    description: Registration, verification, and cookie session lifecycle.
+  - name: Goods
+    description: Public product catalog, per-color/size inventory, and administrator product management.
+  - name: Categories
+    description: Product categories.
+  - name: Subcategories
+    description: Category-specific subcategories.
+  - name: Colors
+    description: Product colors.
+  - name: Materials
+    description: Product materials.
+  - name: Users
+    description: Customer profiles and administrator user management.
+  - name: Administrators
+    description: Administrator account provisioning and lookup.
+  - name: Basket
+    description: Current-user basket and authorized entry management.
+  - name: Orders
+    description: Order creation, history, and administrator status changes.
+  - name: Product images
+    description: S3-backed product-color image management.
+  - name: Dashboard
+    description: Administrator reporting and product statistics.
+security: []
+paths:
+  /account/register:
+    post:
+      tags:
+        - Authentication
+      summary: Request account registration
+      operationId: postAccountRegister
+      description: Normalizes the email address and sends a verification link for a
+        new account. Returns pending for existing accounts too. Pending tokens
+        expire after 24 hours by default. Limited to 10 requests/hour per IP and
+        4/hour per email/IP; registration and verification share the named
+        limiter.
+      security: []
+      responses:
+        "202":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegistrationPending"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+        "502":
+          description: Verification email delivery failed; code email_delivery_unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      x-access: public
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+  /account/verify:
+    post:
+      tags:
+        - Authentication
+      summary: Verify registration and start a session
+      operationId: postAccountVerify
+      description: Consumes a single-use verification token, creates a verified
+        customer, and sets both session cookies. Shares the registration rate
+        limiter (10/hour per IP and 4/hour per email/IP key). The request
+        supplies only token, so the email portion of that key is empty.
+      security: []
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+          headers:
+            Set-Cookie:
+              description: Multiple Set-Cookie headers set access_token and refresh_token (or
+                expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
+                by default. Secure, names, domain, and lifetimes are
+                configurable. Tokens are not returned in JSON.
+              schema:
+                type: string
+        "400":
+          description: Invalid or expired verification token; code
+            verification_token_invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          description: Previously consumed token (verification_token_reused), or duplicate
+            email (duplicate_email).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyRequest"
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Sign in
+      operationId: postAuthLogin
+      description: Sets access and refresh cookies. Default lifetimes are 15 minutes
+        and 30 days respectively. Invalid email/password combinations return
+        invalid_credentials. Limited to five requests per minute per normalized
+        email/IP.
+      security: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+          headers:
+            Set-Cookie:
+              description: Multiple Set-Cookie headers set access_token and refresh_token (or
+                expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
+                by default. Secure, names, domain, and lifetimes are
+                configurable. Tokens are not returned in JSON.
+              schema:
+                type: string
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Rotate the refresh session
+      operationId: postAuthRefresh
+      description: Uses the refresh cookie or the body fallback; the cookie takes
+        precedence. Rotates both cookies. A replayed token revokes all active
+        refresh sessions for the account. Missing/expired tokens return
+        refresh_token_invalid; replay returns refresh_token_reused. Limited to
+        30 requests/minute per IP.
+      security:
+        - refreshCookie: []
+        - {}
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Authenticated"
+          headers:
+            Set-Cookie:
+              description: Multiple Set-Cookie headers set access_token and refresh_token (or
+                expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
+                by default. Secure, names, domain, and lifetimes are
+                configurable. Tokens are not returned in JSON.
+              schema:
+                type: string
+        "401":
+          description: Refresh token invalid or reused; both cookies are cleared.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          headers:
+            Set-Cookie:
+              description: Multiple Set-Cookie headers set access_token and refresh_token (or
+                expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
+                by default. Secure, names, domain, and lifetimes are
+                configurable. Tokens are not returned in JSON.
+              schema:
+                type: string
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshTokenRequest"
+  /auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Sign out the current refresh session
+      operationId: postAuthLogout
+      description: Revokes the supplied refresh cookie or body token when present and
+        clears both cookies. Succeeds even without a valid session.
+        Already-issued access JWTs remain valid until expiry.
+      security:
+        - refreshCookie: []
+        - {}
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggedOut"
+          headers:
+            Set-Cookie:
+              description: Multiple Set-Cookie headers set access_token and refresh_token (or
+                expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
+                by default. Secure, names, domain, and lifetimes are
+                configurable. Tokens are not returned in JSON.
+              schema:
+                type: string
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshTokenRequest"
+  /auth/logout-all:
+    post:
+      tags:
+        - Authentication
+      summary: Sign out all refresh sessions
+      operationId: postAuthLogoutAll
+      description: Revokes every refresh session for the authenticated account and
+        clears this browser cookie pair. Already-issued access JWTs remain valid
+        until expiry.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggedOut"
+          headers:
+            Set-Cookie:
+              description: Multiple Set-Cookie headers set access_token and refresh_token (or
+                expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
+                by default. Secure, names, domain, and lifetimes are
+                configurable. Tokens are not returned in JSON.
+              schema:
+                type: string
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+  /auth/me:
+    get:
+      tags:
+        - Authentication
+      summary: Get the authenticated user
+      operationId: getAuthMe
+      description: Get the authenticated user.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+  /goods:
+    get:
+      tags:
+        - Goods
+      summary: List catalog products
+      operationId: getGoods
+      description: Public catalog ordered by descending ID. Search matches product
+        name or description; supports category, subcategory, and price filters.
+      security: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GoodPage"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - $ref: "#/components/parameters/Search"
+        - name: category_id
+          in: query
+          description: Category ID filter.
+          schema:
+            type: integer
+        - name: subcategory_id
+          in: query
+          description: Subcategory ID filter.
+          schema:
+            type: integer
+        - name: min_price
+          in: query
+          description: Inclusive minimum price.
+          schema:
+            type: number
+            minimum: 0
+        - name: max_price
+          in: query
+          description: Inclusive maximum price; validated with gte:min_price, so provide a
+            minimum price no greater than this value.
+          schema:
+            type: number
+    post:
+      tags:
+        - Goods
+      summary: Create a product
+      operationId: postGoods
+      description: Administrator access required. Create a product.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/GoodDetail"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GoodWriteRequest"
+  "/goods/{good}":
+    parameters:
+      - name: good
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags:
+        - Goods
+      summary: Get product details
+      operationId: getGoodsGood
+      description: Includes category, subcategory, materials, per-color inventory rows,
+        and colors with images grouped by color and ordered by sort_order.
+      security: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/GoodDetail"
+                required:
+                  - data
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+    put:
+      tags:
+        - Goods
+      summary: Replace product fields and assignments
+      operationId: putGoodsGood
+      description: Administrator access required. Base fields, materials, and the complete
+        per-color/size inventory are replaced atomically. Send the current inventory_version;
+        stale edits return 409. Existing row IDs preserve stock history and may only change
+        quantity. Detaching a color with product images returns 409.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/GoodDetail"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GoodUpdateRequest"
+    delete:
+      tags:
+        - Goods
+      summary: Delete a product
+      operationId: deleteGoodsGood
+      description: Administrator access required. Deletes the product. Historic order
+        item snapshots remain and their good_id becomes null.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  "/goods/{good}/inventory/{register}/restock":
+    parameters:
+      - name: good
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: register
+        in: path
+        required: true
+        description: Inventory row identifier belonging to the product.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    post:
+      tags:
+        - Goods
+      summary: Add stock to an inventory row
+      operationId: postGoodsGoodInventoryRegisterRestock
+      description: Administrator access required. Adds quantity atomically to the selected
+        color/size row and increments inventory_version. This operation is additive and
+        does not replace other rows.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Updated product detail.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/GoodDetail"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RestockRequest"
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: List categories
+      operationId: getCategories
+      description: Public list ordered by name. Search matches the name. Includes
+        subcategories.
+      security: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryPage"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/TaxonomyPerPage"
+        - $ref: "#/components/parameters/Search"
+    post:
+      tags:
+        - Categories
+      summary: Create a category
+      operationId: postCategories
+      description: Administrator access required. Create a category. Optional image
+        upload is saved with the category in a transaction; replaced/removed
+        files are cleaned up. Multipart updates may use POST with _method=PUT or
+        _method=PATCH.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Category"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryWriteRequest"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CategoryMultipartWriteRequest"
+  "/categories/{category}":
+    parameters:
+      - name: category
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    put:
+      tags:
+        - Categories
+      summary: Update a category
+      operationId: putCategoriesCategory
+      description: Administrator access required. Both PUT and PATCH require every
+        field in the write schema. Optional image upload is saved with the
+        category in a transaction; replaced/removed files are cleaned up.
+        Multipart updates may use POST with _method=PUT or _method=PATCH.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Category"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryWriteRequest"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CategoryMultipartWriteRequest"
+    patch:
+      tags:
+        - Categories
+      summary: Update a category
+      operationId: patchCategoriesCategory
+      description: Administrator access required. Both PUT and PATCH require every
+        field in the write schema. Optional image upload is saved with the
+        category in a transaction; replaced/removed files are cleaned up.
+        Multipart updates may use POST with _method=PUT or _method=PATCH.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Category"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryWriteRequest"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CategoryMultipartWriteRequest"
+    delete:
+      tags:
+        - Categories
+      summary: Delete a category
+      operationId: deleteCategoriesCategory
+      description: Administrator access required. Deletes the resource. Database
+        references can prevent deletion; the controller does not map foreign-key
+        failures to a dedicated conflict response.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  /subcategories:
+    get:
+      tags:
+        - Subcategories
+      summary: List subcategories
+      operationId: getSubcategories
+      description: Public list ordered by name. Search matches the name. Includes the
+        parent category.
+      security: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubcategoryPage"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/TaxonomyPerPage"
+        - $ref: "#/components/parameters/Search"
+    post:
+      tags:
+        - Subcategories
+      summary: Create a subcategory
+      operationId: postSubcategories
+      description: Administrator access required. Create a subcategory.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Subcategory"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubcategoryWriteRequest"
+  "/subcategories/{subcategory}":
+    parameters:
+      - name: subcategory
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    put:
+      tags:
+        - Subcategories
+      summary: Update a subcategory
+      operationId: putSubcategoriesSubcategory
+      description: Administrator access required. Both PUT and PATCH require every
+        field in the write schema.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Subcategory"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubcategoryWriteRequest"
+    patch:
+      tags:
+        - Subcategories
+      summary: Update a subcategory
+      operationId: patchSubcategoriesSubcategory
+      description: Administrator access required. Both PUT and PATCH require every
+        field in the write schema.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Subcategory"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubcategoryWriteRequest"
+    delete:
+      tags:
+        - Subcategories
+      summary: Delete a subcategory
+      operationId: deleteSubcategoriesSubcategory
+      description: Administrator access required. Deletes the resource. Database
+        references can prevent deletion; the controller does not map foreign-key
+        failures to a dedicated conflict response.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  /colors:
+    get:
+      tags:
+        - Colors
+      summary: List colors
+      operationId: getColors
+      description: "Public list ordered by name. Search matches the name. "
+      security: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ColorPage"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/TaxonomyPerPage"
+        - $ref: "#/components/parameters/Search"
+    post:
+      tags:
+        - Colors
+      summary: Create a color
+      operationId: postColors
+      description: Administrator access required. Create a color.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Color"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ColorWriteRequest"
+  "/colors/{color}":
+    parameters:
+      - name: color
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    put:
+      tags:
+        - Colors
+      summary: Update a color
+      operationId: putColorsColor
+      description: Administrator access required. Both PUT and PATCH require every
+        field in the write schema.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Color"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ColorWriteRequest"
+    patch:
+      tags:
+        - Colors
+      summary: Update a color
+      operationId: patchColorsColor
+      description: Administrator access required. Both PUT and PATCH require every
+        field in the write schema.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Color"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ColorWriteRequest"
+    delete:
+      tags:
+        - Colors
+      summary: Delete a color
+      operationId: deleteColorsColor
+      description: Administrator access required. Deletes the resource. Database
+        references can prevent deletion; the controller does not map foreign-key
+        failures to a dedicated conflict response.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  /materials:
+    get:
+      tags:
+        - Materials
+      summary: List materials
+      operationId: getMaterials
+      description: "Public list ordered by name. Search matches the name. "
+      security: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MaterialPage"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/TaxonomyPerPage"
+        - $ref: "#/components/parameters/Search"
+    post:
+      tags:
+        - Materials
+      summary: Create a material
+      operationId: postMaterials
+      description: Administrator access required. Create a material.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Material"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MaterialWriteRequest"
+  "/materials/{material}":
+    parameters:
+      - name: material
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    put:
+      tags:
+        - Materials
+      summary: Update a material
+      operationId: putMaterialsMaterial
+      description: Administrator access required. Both PUT and PATCH require every
+        field in the write schema.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Material"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MaterialWriteRequest"
+    patch:
+      tags:
+        - Materials
+      summary: Update a material
+      operationId: patchMaterialsMaterial
+      description: Administrator access required. Both PUT and PATCH require every
+        field in the write schema.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Material"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MaterialWriteRequest"
+    delete:
+      tags:
+        - Materials
+      summary: Delete a material
+      operationId: deleteMaterialsMaterial
+      description: Administrator access required. Deletes the resource. Database
+        references can prevent deletion; the controller does not map foreign-key
+        failures to a dedicated conflict response.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  /users:
+    get:
+      tags:
+        - Users
+      summary: List users
+      operationId: getUsers
+      description: Administrator access required. Lists users by descending ID. Search
+        matches full name or email.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - $ref: "#/components/parameters/Search"
+        - name: role
+          in: query
+          description: Optional role filter.
+          schema:
+            type: string
+            enum:
+              - user
+              - admin
+    post:
+      tags:
+        - Users
+      summary: Create a verified customer
+      operationId: postUsers
+      description: Administrator access required. Create a verified customer.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreateRequest"
+  "/users/{user}":
+    parameters:
+      - name: user
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags:
+        - Users
+      summary: Get a user
+      operationId: getUsersUser
+      description: Available to the account owner or an administrator.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+    put:
+      tags:
+        - Users
+      summary: Update a user
+      operationId: putUsersUser
+      description: Available to the account owner or an administrator. Both verbs
+        accept partial fields. Password changes revoke all refresh sessions, but
+        do not immediately invalidate issued access JWTs.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateRequest"
+    patch:
+      tags:
+        - Users
+      summary: Update a user
+      operationId: patchUsersUser
+      description: Available to the account owner or an administrator. Both verbs
+        accept partial fields. Password changes revoke all refresh sessions, but
+        do not immediately invalidate issued access JWTs.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateRequest"
+    delete:
+      tags:
+        - Users
+      summary: Delete a user
+      operationId: deleteUsersUser
+      description: Available to the owner or an administrator. Administrators cannot
+        delete their currently active account (409). Other database references
+        can also prevent deletion without a dedicated conflict response.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+  /admins:
+    post:
+      tags:
+        - Administrators
+      summary: Create a verified administrator
+      operationId: postAdmins
+      description: Administrator access required. Create a verified administrator.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminCreateRequest"
+  "/admins/{admin}":
+    parameters:
+      - name: admin
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags:
+        - Administrators
+      summary: Get an administrator
+      operationId: getAdminsAdmin
+      description: Administrator access required. Returns 404 if the user does not
+        exist or does not have the admin role.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  /basket:
+    get:
+      tags:
+        - Basket
+      summary: List the current user basket
+      operationId: getBasket
+      description: Always lists only the authenticated user basket, including for
+        administrators. Fixed page size of seven.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasketItemPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+      parameters:
+        - $ref: "#/components/parameters/Page"
+    post:
+      tags:
+        - Basket
+      summary: Create or replace a basket entry
+      operationId: postBasket
+      description: Matches entries by user and exact inventory row (color plus optional
+        size). Creates a new entry (201), or replaces the quantity of an existing entry
+        (200). Does not reserve stock.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Existing basket entry quantity replaced.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BasketItem"
+                required:
+                  - data
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BasketItem"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BasketCreateRequest"
+  "/basket/{basket}":
+    parameters:
+      - name: basket
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    put:
+      tags:
+        - Basket
+      summary: Update basket quantity
+      operationId: putBasketBasket
+      description: Available to the basket owner or an administrator. Only quantity is
+        updated and it must still fit the exact inventory row selected by the basket entry.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BasketItem"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BasketUpdateRequest"
+    patch:
+      tags:
+        - Basket
+      summary: Update basket quantity
+      operationId: patchBasketBasket
+      description: Available to the basket owner or an administrator. Only quantity is
+        updated and it must still fit the exact inventory row selected by the basket entry.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BasketItem"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BasketUpdateRequest"
+    delete:
+      tags:
+        - Basket
+      summary: Delete a basket entry
+      operationId: deleteBasketBasket
+      description: Available to the basket owner or an administrator.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+  /orders:
+    get:
+      tags:
+        - Orders
+      summary: List orders
+      operationId: getOrders
+      description: Customers see their own orders. Administrators see all orders and
+        may filter by user_id. Search matches customer name, email, or an exact
+        numeric order ID. Ordered by newest placed_at.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - $ref: "#/components/parameters/Search"
+        - name: user_id
+          in: query
+          description: Administrator-only filter; ignored for customers.
+          schema:
+            type: integer
+    post:
+      tags:
+        - Orders
+      summary: Place an order
+      operationId: postOrders
+      description: Creates an order for the authenticated user, snapshots current
+        product prices and customer details, checks exact color/size row availability and stock
+        under row locks, decrements stock, and clears the entire user basket
+        within a transaction. Initial order/item status is processing.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/OrderDetail"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderCreateRequest"
+  "/orders/{order}":
+    parameters:
+      - name: order
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags:
+        - Orders
+      summary: Get order details
+      operationId: getOrdersOrder
+      description: Available to the order owner or an administrator. Includes customer
+        and line-item snapshots.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/OrderDetail"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+    put:
+      tags:
+        - Orders
+      summary: Update order and item status
+      operationId: putOrdersOrder
+      description: Administrator access required. Sets the same status on the order
+        and all its line items. Any status enum value is accepted; there is no
+        transition validation or inventory restocking.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/OrderDetail"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderUpdateRequest"
+    patch:
+      tags:
+        - Orders
+      summary: Update order and item status
+      operationId: patchOrdersOrder
+      description: Administrator access required. Sets the same status on the order
+        and all its line items. Any status enum value is accepted; there is no
+        transition validation or inventory restocking.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/OrderDetail"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderUpdateRequest"
+    delete:
+      tags:
+        - Orders
+      summary: Delete an order
+      operationId: deleteOrdersOrder
+      description: Administrator access required. Deletes the order and its items.
+        Does not restore inventory.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  "/goods/{good}/images":
+    parameters:
+      - name: good
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    post:
+      tags:
+        - Product images
+      summary: Upload a product image
+      operationId: postGoodsGoodImages
+      description: Administrator access required. Uploads JPEG, PNG, or WebP to the
+        configured S3 disk. Maximum file size is 10 MiB. The selected color must
+        already belong to the product.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Image"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ImageUploadRequest"
+  "/images/{image}":
+    parameters:
+      - name: image
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    patch:
+      tags:
+        - Product images
+      summary: Update image metadata
+      operationId: patchImagesImage
+      description: Administrator access required. Update image metadata.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Image"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImageUpdateRequest"
+    delete:
+      tags:
+        - Product images
+      summary: Delete a product image
+      operationId: deleteImagesImage
+      description: Administrator access required. Removes the stored object when
+        present and deletes its database record.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  /dashboard/summary:
+    get:
+      tags:
+        - Dashboard
+      summary: Get dashboard summary
+      operationId: getDashboardSummary
+      description: Administrator access required. Get dashboard summary.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/DashboardSummary"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  /dashboard/analytics:
+    get:
+      tags:
+        - Dashboard
+      summary: Get revenue and unit history
+      operationId: getDashboardAnalytics
+      description: Administrator access required. Uses daily buckets for week/month
+        and monthly buckets for 6months/year. Returns only buckets with rows;
+        does not fill empty periods or filter by order status. The query applies
+        a lower date bound only.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AnalyticsPoint"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      parameters:
+        - name: range
+          in: query
+          description: "week: today and the previous six days; month: today and the
+            previous 29 days; 6months/year: from the start of the month
+            six/twelve months ago."
+          schema:
+            type: string
+            enum:
+              - week
+              - month
+              - 6months
+              - year
+            default: month
+  /dashboard/top-products:
+    get:
+      tags:
+        - Dashboard
+      summary: Get five top-selling products
+      operationId: getDashboardTopProducts
+      description: Administrator access required. All-time top five groups by good_id
+        and snapshot product_name, sorted by units sold. Does not filter order
+        status.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TopProduct"
+                    maxItems: 5
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  /dashboard/latest-orders:
+    get:
+      tags:
+        - Dashboard
+      summary: Get seven latest orders
+      operationId: getDashboardLatestOrders
+      description: Administrator access required. Returns an unpaginated data array of
+        up to seven orders, newest placed_at first.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Order"
+                    maxItems: 7
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  "/goods/{good}/statistics":
+    parameters:
+      - name: good
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags:
+        - Dashboard
+      summary: Get lifetime product statistics
+      operationId: getGoodsGoodStatistics
+      description: Administrator access required. Returns aggregate units, revenue,
+        and distinct order count for this product. Does not filter by date or
+        order status.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ProductStatistics"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+components:
+  securitySchemes:
+    accessCookie:
+      type: apiKey
+      in: cookie
+      name: access_token
+      description: Access JWT cookie; takes precedence over bearer credentials when
+        nonempty.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Alternative access JWT in the Authorization header.
+    refreshCookie:
+      type: apiKey
+      in: cookie
+      name: refresh_token
+      description: Rotating opaque refresh token; refresh/logout also accept a JSON
+        body fallback.
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Page number; GET routes also support Laravel-generated HEAD requests.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PerPage:
+      name: per_page
+      in: query
+      description: Number of records per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 7
+    TaxonomyPerPage:
+      name: per_page
+      in: query
+      description: Number of taxonomy records per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 50
+    Search:
+      name: search
+      in: query
+      description: Case-insensitive search; matching fields are described on each operation.
+      schema:
+        type: string
+        maxLength: 120
+  responses:
+    Unauthorized:
+      description: Missing, expired, or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Forbidden:
+      description: Authorization denied, or a supplied Origin is not trusted for a
+        non-safe request without a bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Requested resource does not exist. The error code can be not_found
+        or request_failed depending on exception handling.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Conflict:
+      description: Operation conflicts with the current resource state.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RateLimited:
+      description: Request rate limit exceeded; the error code is request_failed.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    ValidationFailed:
+      description: Invalid input. Form validation returns message/errors; controller
+        business-rule failures return error.code=request_failed and
+        error.message.
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/ValidationError"
+              - $ref: "#/components/schemas/Error"
+    NoContent:
+      description: Operation completed; no response body.
+    ServerError:
+      description: Unexpected server or storage/database failure. Error body depends
+        on deployment exception handling and debug configuration.
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+          required:
+            - code
+            - message
+      example:
+        error:
+          code: unauthenticated
+          message: Authentication is required.
+      required:
+        - error
+    ValidationError:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+      example:
+        message: The name field is required.
+        errors:
+          name:
+            - The name field is required.
+      required:
+        - message
+        - errors
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        full_name:
+          type: string
+        avatar_url:
+          anyOf:
+            - type: string
+              format: uri
+            - type: "null"
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+        email_verified_at:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+        created_at:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+      required:
+        - id
+        - email
+        - full_name
+        - avatar_url
+        - role
+        - email_verified_at
+        - created_at
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        name:
+          type: string
+        subcategories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Subcategory"
+        image_id:
+          anyOf:
+            - type: integer
+              minimum: 1
+            - type: "null"
+          description: Foreign key to category_images; null for categories without a cover.
+        image:
+          anyOf:
+            - $ref: "#/components/schemas/CategoryImage"
+            - type: "null"
+      description: Category with optional cover. The image relationship is loaded in
+        category list/create/update and product/subcategory parent-category
+        responses. Subcategories are included in category list/create/update
+        responses.
+      required:
+        - id
+        - name
+        - image_id
+    Subcategory:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        name:
+          type: string
+        category_id:
+          type: integer
+          format: int64
+          minimum: 1
+        category:
+          $ref: "#/components/schemas/Category"
+      description: The parent category is included when loaded. Nested subcategories
+        in category responses omit it.
+      required:
+        - id
+        - name
+        - category_id
+    Color:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        name:
+          type: string
+        hexcode:
+          type: string
+          pattern: ^#[0-9A-Fa-f]{6}$
+          example: "#A47C48"
+      required:
+        - id
+        - name
+        - hexcode
+    Material:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        name:
+          type: string
+      required:
+        - id
+        - name
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        name:
+          type: string
+        path:
+          type: string
+          example: goods/1/brown/front-abcdefghij.webp
+        url:
+          anyOf:
+            - type: string
+              format: uri
+            - type: "null"
+          description: Signed S3 URL valid for one hour by default; refetch the resource
+            to refresh it.
+        sort_order:
+          type: integer
+          minimum: 0
+          maximum: 65535
+      required:
+        - id
+        - name
+        - path
+        - url
+        - sort_order
+    ProductColor:
+      allOf:
+        - $ref: "#/components/schemas/Color"
+        - type: object
+          properties:
+            images:
+              type: array
+              items:
+                $ref: "#/components/schemas/Image"
+          required:
+            - images
+    InventoryRow:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        good_id:
+          type: integer
+          format: int64
+          minimum: 1
+        color_id:
+          type: integer
+          format: int64
+          minimum: 1
+        size:
+          anyOf:
+            - type: string
+              maxLength: 120
+            - type: "null"
+          description: Free-form size label; null represents an unsized variant.
+        quantity:
+          type: integer
+          minimum: 0
+          maximum: 2147483647
+      required:
+        - id
+        - good_id
+        - color_id
+        - size
+        - quantity
+    Good:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        name:
+          type: string
+        price:
+          type: string
+          pattern: ^\d+\.\d{2}$
+          example: "125.00"
+          description: Decimal monetary amount serialized as a string; the API does not
+            expose a currency field.
+        current_quantity:
+          type: integer
+          minimum: 0
+          readOnly: true
+          description: Cached sum of all inventory row quantities.
+        inventory_version:
+          type: integer
+          minimum: 0
+          readOnly: true
+          description: Increments whenever inventory rows change.
+        inventory:
+          type: array
+          items:
+            $ref: "#/components/schemas/InventoryRow"
+          description: Per-color/size stock rows. A null size is unsized stock.
+        description:
+          type: string
+        category_id:
+          type: integer
+          format: int64
+          minimum: 1
+        subcategory_id:
+          type: integer
+          format: int64
+          minimum: 1
+        subcategory:
+          $ref: "#/components/schemas/Subcategory"
+        colors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Color"
+        created_at:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+      description: The implemented catalog and basket responses load subcategory and
+        colors. Relationship keys are omitted if not loaded.
+      required:
+        - id
+        - name
+        - price
+        - current_quantity
+        - inventory_version
+        - inventory
+        - description
+        - category_id
+        - subcategory_id
+        - created_at
+    GoodDetail:
+      allOf:
+        - $ref: "#/components/schemas/Good"
+        - type: object
+          properties:
+            category:
+              $ref: "#/components/schemas/Category"
+            materials:
+              type: array
+              items:
+                $ref: "#/components/schemas/Material"
+            colors:
+              type: array
+              items:
+                $ref: "#/components/schemas/ProductColor"
+          required:
+            - category
+            - materials
+            - colors
+            - subcategory
+    BasketItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        quantity:
+          type: integer
+          minimum: 1
+        good:
+          $ref: "#/components/schemas/Good"
+        color:
+          anyOf:
+            - $ref: "#/components/schemas/Color"
+            - type: "null"
+        good_register_id:
+          anyOf:
+            - type: integer
+              format: int64
+              minimum: 1
+            - type: "null"
+        inventory:
+          anyOf:
+            - $ref: "#/components/schemas/InventoryRow"
+            - type: "null"
+      required:
+        - id
+        - good_register_id
+        - inventory
+        - quantity
+        - good
+        - color
+    OrderStatus:
+      type: string
+      enum:
+        - processing
+        - sent
+        - delivered
+        - reported
+        - cancelled
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        user_id:
+          anyOf:
+            - type: integer
+              format: int64
+              minimum: 1
+            - type: "null"
+        customer_name:
+          type: string
+        customer_email:
+          type: string
+          format: email
+          maxLength: 255
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        placed_at:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+        total:
+          type: string
+          pattern: ^\d+\.\d{2}$
+          example: "125.00"
+          description: Decimal monetary amount serialized as a string; the API does not
+            expose a currency field.
+      required:
+        - id
+        - user_id
+        - customer_name
+        - customer_email
+        - status
+        - placed_at
+        - total
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        good_id:
+          anyOf:
+            - type: integer
+              format: int64
+              minimum: 1
+            - type: "null"
+        product_name:
+          type: string
+        color_name:
+          anyOf:
+            - type: string
+            - type: "null"
+        size:
+          anyOf:
+            - type: string
+            - type: "null"
+          description: Size label snapshot at checkout.
+        good_register_id:
+          anyOf:
+            - type: integer
+              format: int64
+              minimum: 1
+            - type: "null"
+        unit_price:
+          type: string
+          pattern: ^\d+\.\d{2}$
+          example: "125.00"
+          description: Decimal monetary amount serialized as a string; the API does not
+            expose a currency field.
+        quantity:
+          type: integer
+          minimum: 1
+        line_total:
+          type: string
+          pattern: ^\d+\.\d{2}$
+          example: "125.00"
+          description: Decimal monetary amount serialized as a string; the API does not
+            expose a currency field.
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+      required:
+        - id
+        - good_id
+        - product_name
+        - color_name
+        - size
+        - good_register_id
+        - unit_price
+        - quantity
+        - line_total
+        - status
+    OrderDetail:
+      allOf:
+        - $ref: "#/components/schemas/Order"
+        - type: object
+          properties:
+            customer:
+              anyOf:
+                - $ref: "#/components/schemas/User"
+                - type: "null"
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/OrderItem"
+          required:
+            - customer
+            - items
+    PaginationLinks:
+      type: object
+      properties:
+        first:
+          anyOf:
+            - type: string
+              format: uri
+            - type: "null"
+        last:
+          anyOf:
+            - type: string
+              format: uri
+            - type: "null"
+        prev:
+          anyOf:
+            - type: string
+              format: uri
+            - type: "null"
+        next:
+          anyOf:
+            - type: string
+              format: uri
+            - type: "null"
+      required:
+        - first
+        - last
+        - prev
+        - next
+    PaginationMeta:
+      type: object
+      properties:
+        current_page:
+          type: integer
+          minimum: 1
+        from:
+          anyOf:
+            - type: integer
+              minimum: 1
+            - type: "null"
+        last_page:
+          type: integer
+          minimum: 1
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                anyOf:
+                  - type: string
+                    format: uri
+                  - type: "null"
+              label:
+                type: string
+              active:
+                type: boolean
+            required:
+              - url
+              - label
+              - active
+        path:
+          type: string
+          format: uri
+        per_page:
+          type: integer
+          minimum: 1
+        to:
+          anyOf:
+            - type: integer
+              minimum: 1
+            - type: "null"
+        total:
+          type: integer
+          minimum: 0
+      required:
+        - current_page
+        - from
+        - last_page
+        - links
+        - path
+        - per_page
+        - to
+        - total
+    GoodPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Good"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    CategoryPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    SubcategoryPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Subcategory"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    ColorPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Color"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    MaterialPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Material"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    UserPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    BasketItemPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/BasketItem"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    OrderPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Order"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        password:
+          type: string
+          format: password
+          minLength: 8
+          maxLength: 72
+          writeOnly: true
+          description: Must contain at least one alphabetic character and one digit.
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        refer_id:
+          anyOf:
+            - type: integer
+              format: int64
+              minimum: 1
+              description: Existing user ID, if a referrer is supplied.
+            - type: "null"
+      example:
+        email: customer@example.com
+        password: workshop123
+        full_name: Alex Smith
+      required:
+        - email
+        - password
+        - full_name
+    VerifyRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          minLength: 32
+          maxLength: 255
+          writeOnly: true
+      required:
+        - token
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        password:
+          type: string
+          format: password
+          maxLength: 72
+          writeOnly: true
+      required:
+        - email
+        - password
+    RefreshTokenRequest:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+          writeOnly: true
+          description: Fallback when the refresh_token cookie is absent or empty. A
+            nonempty cookie takes precedence.
+    RegistrationPending:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - pending
+        verification_url:
+          type: string
+          format: uri
+          description: Only returned in the local application environment when a new
+            verification email was sent.
+      required:
+        - status
+    Session:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            user:
+              $ref: "#/components/schemas/User"
+            authenticated:
+              type: boolean
+              const: true
+          required:
+            - user
+            - authenticated
+      required:
+        - data
+    Authenticated:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            authenticated:
+              type: boolean
+              const: true
+          required:
+            - authenticated
+      required:
+        - data
+    LoggedOut:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            logged_out:
+              type: boolean
+              const: true
+          required:
+            - logged_out
+      required:
+        - data
+    UserCreateRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        full_name:
+          type: string
+          minLength: 2
+          maxLength: 255
+        avatar_url:
+          anyOf:
+            - type: string
+              format: uri
+              maxLength: 2048
+            - type: "null"
+        password:
+          type: string
+          format: password
+          minLength: 8
+          maxLength: 72
+          writeOnly: true
+          description: Must contain at least one alphabetic character and one digit.
+      description: Email must be unique. Creates a verified user; a supplied role is
+        not accepted by the validated payload.
+      required:
+        - email
+        - full_name
+        - password
+    UserUpdateRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        avatar_url:
+          anyOf:
+            - type: string
+              format: uri
+              maxLength: 2048
+            - type: "null"
+        password:
+          type: string
+          format: password
+          minLength: 8
+          maxLength: 72
+          writeOnly: true
+          description: Must contain at least one alphabetic character and one digit.
+      description: All fields are optional. Email must remain unique. Role and
+        referral changes are not supported; a password change revokes all
+        refresh sessions.
+    AdminCreateRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        password:
+          type: string
+          format: password
+          minLength: 12
+          maxLength: 72
+          writeOnly: true
+          description: Must contain at least one alphabetic character and one digit.
+      description: Email must be unique. Creates a verified administrator.
+      required:
+        - email
+        - full_name
+        - password
+    GoodWriteRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        category_id:
+          type: integer
+          format: int64
+          minimum: 1
+        subcategory_id:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Must belong to the selected category.
+        price:
+          oneOf:
+            - type: number
+              minimum: 0
+              multipleOf: 0.01
+            - type: string
+              pattern: ^\d+(\.\d{1,2})?$
+          description: Nonnegative price with at most two decimal places.
+        description:
+          type: string
+          minLength: 1
+          maxLength: 65535
+        inventory:
+          type: array
+          items:
+            $ref: "#/components/schemas/InventoryInput"
+          minItems: 1
+          maxItems: 500
+        material_ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+            minimum: 1
+          uniqueItems: true
+      description: All base fields and inventory are required for creation. Inventory rows
+        use a free-form size label and a nonnegative quantity; null size means unsized stock.
+        Referenced IDs must exist; material_ids may be empty.
+      example:
+        name: Oak chair
+        category_id: 1
+        subcategory_id: 1
+        price: "125.00"
+        description: Restored oak chair.
+        inventory:
+          - color_id: 1
+            size: null
+            quantity: 5
+        material_ids:
+          - 1
+      required:
+        - name
+        - category_id
+        - subcategory_id
+        - price
+        - description
+        - inventory
+        - material_ids
+    GoodUpdateRequest:
+      allOf:
+        - $ref: "#/components/schemas/GoodWriteRequest"
+        - type: object
+          properties:
+            inventory_version:
+              type: integer
+              minimum: 0
+              description: Version returned by the previous product response.
+            inventory:
+              type: array
+              items:
+                $ref: "#/components/schemas/InventoryInputUpdate"
+              minItems: 1
+              maxItems: 500
+          required:
+            - inventory_version
+    InventoryInput:
+      type: object
+      properties:
+        color_id:
+          type: integer
+          format: int64
+          minimum: 1
+        size:
+          anyOf:
+            - type: string
+              maxLength: 120
+            - type: "null"
+        quantity:
+          type: integer
+          minimum: 0
+          maximum: 2147483647
+      required:
+        - color_id
+        - quantity
+    InventoryInputUpdate:
+      allOf:
+        - $ref: "#/components/schemas/InventoryInput"
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              minimum: 1
+    RestockRequest:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 2147483647
+          description: Units arriving for the selected color/size row.
+      required:
+        - quantity
+    CategoryWriteRequest:
+      type: object
+      properties:
+        name:
+          &a1
+          type: string
+          minLength: 1
+          maxLength: 255
+        remove_image:
+          type: boolean
+          description: Remove the current image on update. Cannot be combined with image.
+      description: Name must be unique among categories, excluding this category on update.
+      required:
+        - name
+    SubcategoryWriteRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        category_id:
+          type: integer
+          format: int64
+          minimum: 1
+      description: Category must exist; name must be unique within that category.
+      required:
+        - name
+        - category_id
+    ColorWriteRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        hexcode:
+          type: string
+          pattern: ^#[0-9A-Fa-f]{6}$
+          example: "#A47C48"
+      description: Name must be unique among colors.
+      required:
+        - name
+        - hexcode
+    MaterialWriteRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+      description: Name must be unique among materials.
+      required:
+        - name
+    BasketCreateRequest:
+      type: object
+      properties:
+        good_register_id:
+          type: integer
+          format: int64
+          minimum: 1
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      description: The exact inventory row must exist and quantity must not exceed its
+        stock. Replaces the quantity of a matching basket entry rather than adding to it.
+      required:
+        - good_register_id
+        - quantity
+    BasketUpdateRequest:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      description: Only quantity changes. It must not exceed the selected row's current stock.
+      required:
+        - quantity
+    OrderLineRequest:
+      type: object
+      properties:
+        good_register_id:
+          type: integer
+          format: int64
+          minimum: 1
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      required:
+        - good_register_id
+        - quantity
+    OrderCreateRequest:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderLineRequest"
+          minItems: 1
+      description: Supply exact inventory rows to create an order. New orders are always
+        processing and stock is decremented atomically.
+      required:
+        - items
+    OrderUpdateRequest:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+      description: Supply status to update successfully. Status is applied to the
+        order and all its items.
+      required:
+        - status
+    ImageUploadRequest:
+      type: object
+      properties:
+        color_id:
+          type: integer
+          format: int64
+          minimum: 1
+        image:
+          type: string
+          format: binary
+          description: JPEG, PNG, or WebP file; maximum 10,240 KiB (10 MiB).
+        name:
+          anyOf:
+            - type: string
+              maxLength: 120
+            - type: "null"
+        sort_order:
+          anyOf:
+            - type: integer
+              minimum: 0
+              maximum: 65535
+              default: 0
+            - type: "null"
+      description: The color must be assigned to this product. Images are stored on
+        the configured S3 disk using bucket-owner-full-control, compatible with
+        ACL-disabled buckets. A filename-derived name is used when omitted.
+      required:
+        - color_id
+        - image
+    ImageUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        sort_order:
+          type: integer
+          minimum: 0
+          maximum: 65535
+      description: Rename or reorder an image. Both fields are optional; file
+        replacement is not supported.
+    DashboardSummary:
+      type: object
+      properties:
+        users:
+          type: integer
+          minimum: 0
+        orders:
+          type: integer
+          minimum: 0
+        monthly_revenue:
+          type: string
+          pattern: ^\d+(\.\d+)?$
+      description: Users counts customer-role users only. Monthly revenue includes
+        order items in the current calendar month without filtering order
+        status.
+      required:
+        - users
+        - orders
+        - monthly_revenue
+    AnalyticsPoint:
+      type: object
+      properties:
+        bucket:
+          type: string
+          pattern: ^\d{4}-\d{2}(-\d{2})?$
+        revenue:
+          oneOf:
+            - type: number
+            - type: string
+              pattern: ^-?\d+(\.\d+)?$
+          description: Uncast database aggregate; the JSON type can vary by database driver.
+        units:
+          oneOf:
+            - type: integer
+              minimum: 0
+            - type: string
+              pattern: ^\d+$
+      required:
+        - bucket
+        - revenue
+        - units
+    TopProduct:
+      type: object
+      properties:
+        good_id:
+          anyOf:
+            - type: integer
+              format: int64
+              minimum: 1
+            - type: "null"
+        product_name:
+          type: string
+        units:
+          oneOf:
+            - type: integer
+              minimum: 0
+            - type: string
+              pattern: ^\d+$
+        revenue:
+          oneOf:
+            - type: number
+            - type: string
+              pattern: ^-?\d+(\.\d+)?$
+          description: Uncast database aggregate; the JSON type can vary by database driver.
+      required:
+        - good_id
+        - product_name
+        - units
+        - revenue
+    ProductStatistics:
+      type: object
+      properties:
+        units:
+          oneOf:
+            - type: integer
+              minimum: 0
+            - type: string
+              pattern: ^\d+$
+        revenue:
+          oneOf:
+            - type: number
+            - type: string
+              pattern: ^-?\d+(\.\d+)?$
+          description: Uncast database aggregate; the JSON type can vary by database driver.
+        orders:
+          oneOf:
+            - type: integer
+              minimum: 0
+            - type: string
+              pattern: ^\d+$
+      required:
+        - units
+        - revenue
+        - orders
+    CategoryImage:
+      type: object
+      required:
+        - id
+        - name
+        - path
+        - url
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        name:
+          type: string
+        path:
+          type: string
+          example: categories/1/9abe7b39-cover.png
+        url:
+          anyOf:
+            - type: string
+              format: uri
+            - type: "null"
+          description: Signed S3 URL valid for one hour by default. Fetch the category
+            again to refresh it; no expiring URL is persisted.
+    CategoryMultipartWriteRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name: *a1
+        image:
+          type: string
+          format: binary
+          description: Optional JPEG, PNG or WebP cover up to 10 MiB. Replaces the current
+            image.
+        remove_image:
+          type: string
+          enum:
+            - "0"
+            - "1"
+          description: Use 1 to remove the current cover. Do not supply together with image.
+      description: Multipart creation/update. For updates send POST to
+        /categories/{category} with _method=PUT or _method=PATCH. Existing
+        text-only JSON requests continue to work.

@@ -23,6 +23,7 @@ A production-oriented e-commerce foundation with a Laravel API, a Next.js admini
 - Public catalog reads and protected user, basket, order, admin, reference-data, image, and analytics operations.
 - Database-side filtering, search, sorting, aggregation, eager loading, indexes, and seven-item pagination.
 - Product/color image ownership, deterministic S3 prefixes, and compensating storage cleanup when a database change fails.
+- Per-color/size inventory rows with additive restocking and transactional checkout deductions.
 - Historical order-item snapshots so catalog edits do not rewrite past orders.
 - Responsive admin routes for Dashboard, Users, Orders, Goods, Admins, and Markers with loading, error, empty, retry, search, and pagination states.
 
@@ -153,3 +154,27 @@ The backend suite covers the verification lifecycle, normalized credentials, ref
 - Put TLS in front of Nginx, enable secure cookies, set exact origins, and keep Nginx upload limits aligned with Laravel validation.
 - Use a private PostgreSQL/Redis network, managed backups, S3 lifecycle/versioning as appropriate, centralized logs, and external health monitoring.
 - Build the admin production image using the Dockerfile’s `production` stage when deploying without the development Compose profile.
+
+### Category and product images
+
+Apply migrations with `docker compose exec api php artisan migrate --force` after updating the API. The category cover migration creates `category_images` and a nullable, unique `categories.image_id` foreign key, preserving existing categories. Category create/update accepts an optional multipart `image` (JPEG, PNG, WebP; up to 10 MiB). Use `POST /api/categories/{id}` with `_method=PUT` for multipart updates, or the existing JSON PUT/PATCH routes for text fields. `remove_image=true` removes the cover; do not combine it with an uploaded image. Saving a category and its cover is transactional, with storage cleanup on failure or replacement.
+
+Category images are stored under `categories/{categoryId}/`. Product creation/editing can queue multiple images for selected colors, uploaded under `goods/{goodId}/{color}/`. Failed product uploads remain available to retry against the already-created product. Color and material selectors search the API with pagination and keep selections across searches.
+
+S3 uploads use `bucket-owner-full-control`, compatible with Bucket owner enforced buckets. No public ACL or bucket-policy change is required. By default, category and product image resources return signed URLs valid for one hour; refresh the resource to obtain a new URL. Set `AWS_SIGNED_URLS=false` only when a public bucket policy or public CDN serves the configured image URLs. AWS credentials stay in `api/.env`; after changing them, recreate the API container with `docker compose up -d --no-deps api` so its environment is updated.
+
+### Inventory and sizes
+
+The `good_register` table is the stock ledger for a product. Each row references one
+product and color, stores a nonnegative unsigned quantity, and may carry a free-form
+size label such as `XL`, `43.5`, or `One size`. A null size is the unsized variant.
+The product's `current_quantity` is the cached sum of its register rows; checkout locks
+the selected rows and decrements them atomically. The admin product form edits all rows
+at once and uses `inventory_version` to reject stale saves. When new stock arrives, use
+the product detail page's Add stock control or `POST /api/goods/{good}/inventory/{register}/restock`.
+
+The migration preserves legacy product-wide totals. If a legacy product had several
+colors, its total becomes an `Unassigned stock` color row so an administrator can later
+allocate it to concrete colors and sizes. Legacy basket entries that identify exactly
+one replacement row are linked automatically; ambiguous entries remain available for
+the customer to select again.

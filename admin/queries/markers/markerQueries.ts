@@ -21,28 +21,39 @@ export function getMarkers<T extends Marker>(
   return requestBackend<ApiCollection<T>>(endpoint);
 }
 
-export function getAllCategories() {
-  return requestBackend<ApiCollection<Category>>("/categories?per_page=100");
+export async function getAllCategories() {
+  const first = await requestBackend<ApiCollection<Category>>("/categories?per_page=100");
+  const data = [...first.data];
+  for (let page = 2; page <= first.meta.last_page; page++) {
+    const next = await requestBackend<ApiCollection<Category>>(`/categories?per_page=100&page=${page}`);
+    data.push(...next.data);
+  }
+  return { ...first, data };
+}
+
+export function getMarkerOptions(kind: "colors" | "materials", page: number, search: string) {
+  return requestBackend<ApiCollection<Color | Material>>(`/${kind}?per_page=50&page=${page}&search=${encodeURIComponent(search)}`);
 }
 
 export function createMarker<T extends Marker>(
   kind: MarkerKind,
-  data: Record<string, string | number>,
+  data: Record<string, string | number> | FormData,
 ) {
   return requestBackend<{ data: T }>(`/${kind}`, {
     method: "POST",
-    body: JSON.stringify(data),
+    body: data instanceof FormData ? data : JSON.stringify(data),
   });
 }
 
 export function updateMarker<T extends Marker>(
   kind: MarkerKind,
   id: number,
-  data: Record<string, string | number>,
+  data: Record<string, string | number> | FormData,
 ) {
+  if (data instanceof FormData) data.set("_method", "PUT");
   return requestBackend<{ data: T }>(`/${kind}/${id}`, {
-    method: "PUT",
-    body: JSON.stringify(data),
+    method: data instanceof FormData ? "POST" : "PUT",
+    body: data instanceof FormData ? data : JSON.stringify(data),
   });
 }
 

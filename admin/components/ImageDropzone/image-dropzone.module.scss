@@ -1,0 +1,18 @@
+.root { min-width: 0; }
+.label { color: var(--ink); font-size: 14px; font-weight: 600; margin: 0 0 9px; }
+.dropzone { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 22px 16px; border: 1px dashed #86868b; border-radius: 10px; background: var(--canvas); text-align: center; transition: border-color 150ms, background-color 150ms; }
+.dropzone p { margin: 0; }
+.dropzone button { min-height: 40px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink); font-weight: 600; }
+.dropzone button:hover:not(:disabled) { border-color: var(--ink); }
+.dragging { border-color: var(--blue); background: var(--surface); }
+.hint { font-size: 12px; color: var(--muted); }
+.error { color: var(--danger); font-size: 14px; }
+.previews { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; max-height: 240px; overflow-y: auto; }
+.previews li { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.previews img { object-fit: cover; border: 1px solid var(--border); border-radius: 7px; flex-shrink: 0; }
+.previews li > span { display: grid; flex: 1; min-width: 0; font-size: 13px; }
+.previews strong { font-weight: 400; overflow-wrap: anywhere; }
+.previews span span { color: var(--muted); }
+.previews button { display: grid; place-items: center; min-width: 40px; min-height: 40px; border: 1px solid var(--border); border-radius: 8px; flex-shrink: 0; }
+.root button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.root button:disabled, .dropzone[aria-disabled="true"] { opacity: .6; cursor: not-allowed; }

@@ -9,6 +9,6 @@ class CategoryResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return ['id' => $this->id, 'name' => $this->name, 'subcategories' => SubcategoryResource::collection($this->whenLoaded('subcategories'))];
+        return ['id' => $this->id, 'name' => $this->name, 'image_id' => $this->image_id, 'image' => new CategoryImageResource($this->whenLoaded('image')), 'subcategories' => SubcategoryResource::collection($this->whenLoaded('subcategories'))];
     }
 }

@@ -3,6 +3,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  experimental: { proxyClientMaxBodySize: "12mb" },
   async rewrites() {
     if (process.env.NODE_ENV !== "development") return [];
 

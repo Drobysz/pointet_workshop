@@ -18,6 +18,8 @@ class CatalogAndAuthorizationTest extends TestCase
 
     public function test_goods_filters_pagination_and_color_image_structure(): void
     {
+        // This fixture uses an externally hosted image rather than a private S3 object.
+        config()->set('filesystems.disks.s3.signed_urls', false);
         [$category, $subcategory] = $this->catalogMarkers();
         $black = Color::create([
             'name' => 'Black',

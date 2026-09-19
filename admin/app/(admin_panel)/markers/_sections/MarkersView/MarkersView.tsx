@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";
 import { EntityTable, Modal, PageHeader, StatePanel } from "@/components";
 import { useTableQueryState } from "@/hooks";
-import type { Color, Subcategory } from "@/interface/domain";
+import { ImageDropzone } from "@/components/ImageDropzone/ImageDropzone";
+import Image from "next/image";
+import type { Category, Color, Subcategory } from "@/interface/domain";
 import {
   createMarker,
   deleteMarker,
@@ -33,6 +35,18 @@ export function MarkersView() {
   const [editingMarker, setEditingMarker] = useState<Marker | "new">();
   const [removingMarker, setRemovingMarker] = useState<Marker>();
   const [error, setError] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [categoryImage, setCategoryImage] = useState<{ file: File; url: string }>();
+  const [removeImage, setRemoveImage] = useState(false);
+  const objectUrl = useRef<string | undefined>(undefined);
+  useEffect(() => () => { if (objectUrl.current) URL.revokeObjectURL(objectUrl.current); }, []);
+  function resetImage() {
+    if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
+    objectUrl.current = undefined;
+    setCategoryImage(undefined);
+    setRemoveImage(false);
+  }
+
   const markers = useSWR(
     ["markers", kind, tableState.page, tableState.searchQuery],
     () => getMarkers(kind, tableState.page, tableState.searchQuery),
@@ -62,17 +76,27 @@ export function MarkersView() {
       return;
     }
 
+    setIsSaving(true);
+    const body = kind === "categories" ? formData : payload;
+    if (body instanceof FormData) {
+      if (categoryImage) body.set("image", categoryImage.file);
+      else if (removeImage) body.set("remove_image", "1");
+    }
     try {
       if (editingMarker === "new") {
-        await createMarker(kind, payload);
+        const saved = await createMarker(kind, body);
+        setEditingMarker(saved.data);
       } else if (editingMarker) {
-        await updateMarker(kind, editingMarker.id, payload);
+        await updateMarker(kind, editingMarker.id, body);
       }
+      resetImage();
 
       await refreshMarkerData();
       setEditingMarker(undefined);
     } catch {
       setError(t("saveError"));
+    } finally {
+      setIsSaving(false);
     }
   }
 
@@ -94,7 +118,12 @@ export function MarkersView() {
     {
       key: "name",
       label: common("name"),
-      render: (marker: Marker) => <strong>{marker.name}</strong>,
+      render: (marker: Marker) => (
+        <span className={styles.categoryName}>
+          {kind === "categories" && (marker as Category).image?.url ? <Image src={(marker as Category).image!.url!} alt="" width={40} height={40} unoptimized /> : null}
+          <strong>{marker.name}</strong>
+        </span>
+      ),
     },
     ...(kind === "subcategories" ? [{
       key: "category",
@@ -128,6 +157,7 @@ export function MarkersView() {
             aria-label={t("editLabel", { name: marker.name })}
             onClick={() => {
               setError("");
+              resetImage();
               setEditingMarker(marker);
             }}
           >
@@ -163,6 +193,7 @@ export function MarkersView() {
             className={styles.primary}
             onClick={() => {
               setError("");
+              resetImage();
               setEditingMarker("new");
             }}
           >
@@ -212,9 +243,10 @@ export function MarkersView() {
       {editingMarker ? (
         <Modal
           title={t(modalTitleKey, { kind: t(kind) })}
-          onClose={() => setEditingMarker(undefined)}
+          onClose={() => { if (!isSaving) { resetImage(); setEditingMarker(undefined); } }}
         >
-          <form action={handleSave} className={styles.form}>
+          <form onSubmit={(event) => { event.preventDefault(); if (!isSaving) void handleSave(new FormData(event.currentTarget)); }} className={styles.form}>
+            <fieldset disabled={isSaving} className={styles.formFields}>
             <label>
               {common("name")}
               <input
@@ -253,8 +285,23 @@ export function MarkersView() {
                 </select>
               </label>
             ) : null}
+            {kind === "categories" ? (
+              <ImageDropzone
+                label={t("image")}
+                disabled={isSaving}
+                images={categoryImage ? [{ id: "pending", name: categoryImage.file.name, url: categoryImage.url }] : !removeImage && (markerForDefaults as Category)?.image?.url ? [{ id: "existing", name: (markerForDefaults as Category).image!.name, url: (markerForDefaults as Category).image!.url! }] : []}
+                onFiles={([file]) => {
+                  if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
+                  objectUrl.current = URL.createObjectURL(file);
+                  setCategoryImage({ file, url: objectUrl.current });
+                  setRemoveImage(false);
+                }}
+                onRemove={() => { resetImage(); setRemoveImage(true); }}
+              />
+            ) : null}
+            </fieldset>
             {error ? <p role="alert">{error}</p> : null}
-            <button type="submit">{common("save")}</button>
+            <button type="submit" disabled={isSaving}>{isSaving ? common("saving") : common("save")}</button>
           </form>
         </Modal>
       ) : null}

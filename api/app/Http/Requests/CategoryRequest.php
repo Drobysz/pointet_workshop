@@ -14,6 +14,6 @@ class CategoryRequest extends FormRequest
 
     public function rules(): array
     {
-        return ['name' => ['required', 'string', 'max:255', Rule::unique('categories')->ignore($this->route('category'))]];
+        return ['image' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:10240'], 'remove_image' => ['sometimes', 'boolean', Rule::prohibitedIf(fn () => $this->hasFile('image'))], 'name' => ['required', 'string', 'max:255', Rule::unique('categories')->ignore($this->route('category'))]];
     }
 }

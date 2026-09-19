@@ -2,18 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Services\Catalog\CatalogImageUrl;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 class ImageResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $url = $this->url;
-        if (! $url && config('filesystems.disks.s3.bucket')) {
-            $url = Storage::disk('s3')->url($this->path);
-        }
+        $url = CatalogImageUrl::resolve($this->path, $this->url);
 
         return ['id' => $this->id, 'name' => $this->name, 'path' => $this->path, 'url' => $url, 'sort_order' => $this->sort_order];
     }

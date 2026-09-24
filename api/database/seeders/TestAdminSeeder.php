@@ -17,14 +17,17 @@ class TestAdminSeeder extends Seeder
             [
                 'full_name' => 'Demo Administrator',
                 'email' => 'admin@example.test',
+                'address' => '1 Workshop Way',
             ],
             [
                 'full_name' => 'Catalog Administrator',
                 'email' => 'catalog.admin@example.test',
+                'address' => '2 Workshop Way',
             ],
             [
                 'full_name' => 'Orders Administrator',
                 'email' => 'orders.admin@example.test',
+                'address' => '3 Workshop Way',
             ],
         ];
 
@@ -36,6 +39,9 @@ class TestAdminSeeder extends Seeder
                     'password' => 'password',
                     'role' => UserRole::Admin,
                     'email_verified_at' => now(),
+                    'address' => $admin['address'],
+                    'tel' => null,
+                    'language' => 'en',
                     'avatar_url' => null,
                     'refer_id' => null,
                 ])

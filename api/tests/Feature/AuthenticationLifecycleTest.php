@@ -16,7 +16,7 @@ class AuthenticationLifecycleTest extends TestCase
     public function test_registration_verification_login_refresh_replay_and_logout(): void
     {
         Mail::fake();
-        $register = $this->postJson('/api/account/register', ['email' => ' PERSON@Example.COM ', 'password' => 'secure123', 'full_name' => 'Person Name']);
+        $register = $this->postJson('/api/account/register', ['email' => ' PERSON@Example.COM ', 'password' => 'secure123', 'full_name' => 'Person Name', 'address' => '10 Example Street', 'tel' => '+33 6 12 34 56 78', 'language' => 'fr']);
         $register->assertAccepted()->assertJsonPath('status', 'pending');
         $this->assertDatabaseCount('users', 0);
 
@@ -28,7 +28,7 @@ class AuthenticationLifecycleTest extends TestCase
         });
         parse_str((string) parse_url((string) $url, PHP_URL_QUERY), $query);
         $verify = $this->postJson('/api/account/verify', ['token' => $query['token']]);
-        $verify->assertCreated()->assertJsonPath('data.user.email', 'person@example.com');
+        $verify->assertCreated()->assertJsonPath('data.user.email', 'person@example.com')->assertJsonPath('data.user.address', '10 Example Street')->assertJsonPath('data.user.tel', '+33 6 12 34 56 78')->assertJsonPath('data.user.language', 'fr');
         $this->assertDatabaseCount('users', 1);
         $this->postJson('/api/account/verify', ['token' => $query['token']])->assertStatus(409)->assertJsonPath('error.code', 'verification_token_reused');
 

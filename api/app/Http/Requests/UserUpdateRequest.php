@@ -16,6 +16,6 @@ class UserUpdateRequest extends FormRequest
     {
         $user = $this->route('user');
 
-        return ['email' => ['sometimes', 'email:rfc', 'max:255', Rule::unique('users')->ignore($user)], 'full_name' => ['sometimes', 'string', 'max:255'], 'avatar_url' => ['nullable', 'url', 'max:2048'], 'password' => ['sometimes', 'string', 'min:8', 'max:72', 'regex:/[[:alpha:]]/', 'regex:/[[:digit:]]/']];
+        return ['email' => ['sometimes', 'email:rfc', 'max:255', Rule::unique('users')->ignore($user)], 'full_name' => ['sometimes', 'string', 'max:255'], 'address' => ['sometimes', 'string', 'max:255'], 'tel' => ['nullable', 'string', 'max:255'], 'language' => ['sometimes', Rule::in(['en', 'it', 'fr', 'ru', 'de'])], 'avatar_url' => ['nullable', 'url', 'max:2048'], 'password' => ['sometimes', 'string', 'min:8', 'max:72', 'regex:/[[:alpha:]]/', 'regex:/[[:digit:]]/']];
     }
 }

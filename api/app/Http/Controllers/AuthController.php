@@ -31,7 +31,15 @@ class AuthController extends Controller
         $raw = rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
         $hash = hash('sha256', $raw);
         if (! User::query()->whereRaw('LOWER(email) = ?', [$email])->exists()) {
-            $this->pending->put($hash, ['email' => $email, 'password_hash' => Hash::make($data['password']), 'full_name' => trim($data['full_name']), 'refer_id' => $data['refer_id'] ?? null]);
+            $this->pending->put($hash, [
+                'email' => $email,
+                'password_hash' => Hash::make($data['password']),
+                'full_name' => trim($data['full_name']),
+                'address' => trim($data['address']),
+                'tel' => isset($data['tel']) ? trim($data['tel']) : null,
+                'language' => $data['language'] ?? 'en',
+                'refer_id' => $data['refer_id'] ?? null,
+            ]);
             $url = rtrim(config('services.frontend.verify_url', env('FRONTEND_VERIFY_URL')), '?').'?'.http_build_query(['token' => $raw]);
             try {
                 Mail::to($email)->send(new VerifyEmailMail($url));
@@ -62,7 +70,15 @@ class AuthController extends Controller
         }
         try {
             $user = DB::transaction(function () use ($pending): User {
-                $user = User::create(['email' => $pending['email'], 'password' => $pending['password_hash'], 'full_name' => $pending['full_name'], 'refer_id' => $pending['refer_id']]);
+                $user = User::create([
+                    'email' => $pending['email'],
+                    'password' => $pending['password_hash'],
+                    'full_name' => $pending['full_name'],
+                    'address' => $pending['address'],
+                    'tel' => $pending['tel'],
+                    'language' => $pending['language'],
+                    'refer_id' => $pending['refer_id'],
+                ]);
                 $user->forceFill(['email_verified_at' => now(), 'role' => UserRole::User])->save();
 
                 return $user;

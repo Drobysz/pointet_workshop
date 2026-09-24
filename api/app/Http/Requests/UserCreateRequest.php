@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserCreateRequest extends FormRequest
 {
@@ -25,6 +26,20 @@ class UserCreateRequest extends FormRequest
                 'string',
                 'min:2',
                 'max:255',
+            ],
+            'address' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'tel' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'language' => [
+                'nullable',
+                Rule::in(['en', 'it', 'fr', 'ru', 'de']),
             ],
             'avatar_url' => [
                 'nullable',

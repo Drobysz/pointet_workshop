@@ -58,6 +58,9 @@ class UserController extends Controller
         $user = User::create([
             'email' => Str::lower(trim($data['email'])),
             'full_name' => trim($data['full_name']),
+            'address' => trim($data['address']),
+            'tel' => isset($data['tel']) ? trim($data['tel']) : null,
+            'language' => $data['language'] ?? 'en',
             'avatar_url' => $data['avatar_url'] ?? null,
             'password' => Hash::make($data['password']),
         ]);
@@ -84,6 +87,12 @@ class UserController extends Controller
 
         if (isset($data['email'])) {
             $data['email'] = Str::lower(trim($data['email']));
+        }
+
+        foreach (['full_name', 'address', 'tel'] as $field) {
+            if (isset($data[$field])) {
+                $data[$field] = trim($data[$field]);
+            }
         }
 
         $passwordChanged = isset($data['password']);

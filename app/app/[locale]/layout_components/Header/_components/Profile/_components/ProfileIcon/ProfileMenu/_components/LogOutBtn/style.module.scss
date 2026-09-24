@@ -1,0 +1,14 @@
+@reference "tailwindcss";
+
+.btn_logout {
+    @apply border-t
+        border-t-gray-200
+        text-[0,875rem]
+        w-full
+        text-start
+        px-2.5 pt-1 pb-2
+        relative
+        cursor-pointer
+        flex gap-1 items-center
+        transition-all duration-300;
+}

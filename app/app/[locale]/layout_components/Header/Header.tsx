@@ -3,11 +3,11 @@
 import { GridContainer } from "@/components"
 import s from "./style.module.scss";
 import {
-    Navigation,
     HeaderWrapper,
     Logo,
+    Navigation,
+    Profile,
 } from "./_components";
-import { MainBtn } from "@/components";
 
 export const Header = ()=> {
     return (
@@ -18,13 +18,7 @@ export const Header = ()=> {
             >
                 <Logo />
                 <Navigation />
-                <div>
-                    <MainBtn 
-                        className="justify-self-end"
-                    >
-                        Sign Up
-                    </MainBtn>
-                </div>
+                <Profile />
             </GridContainer>
         </HeaderWrapper>
     )

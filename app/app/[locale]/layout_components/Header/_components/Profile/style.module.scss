@@ -1,0 +1,7 @@
+@reference "tailwindcss";
+
+.profile_section {
+    @apply justify-self-end
+        flex gap-6
+        items-center;
+}

@@ -1,0 +1,50 @@
+@reference "tailwindcss";
+
+.lang_btn {
+    @apply p-1.25
+    hover:bg-gray-200
+    rounded-full
+    text-zinc-700;
+
+    transition: background-color 0.2s ease-in;
+}
+
+.lang_list {
+    @apply absolute
+        -translate-x-1/3
+        translate-y-1
+        flex
+        flex-col
+        gap-2
+        bg-white
+        border
+        border-zinc-400
+        rounded-xl
+        overflow-hidden
+        text-zinc-700;
+
+    .lang_opt {
+        @apply cursor-pointer
+            overflow-hidden
+            relative
+            duration-200
+            transition-colors
+            px-2
+            py-0.5
+            first-of-type:pt-1
+            last-of-type:pb-1
+            before:to-red-400
+            before:absolute
+            before:inset-0
+            before:scale-x-[0.5]
+            before:rounded-[100%]
+            before:transition-transform
+            before:-translate-y-full
+            hover:before:translate-y-0
+            hover:before:scale-[1.5]
+            before:duration-600
+            before:bg-radial
+            before:from-red-200
+            before:from-1% ;
+    }
+}

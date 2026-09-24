@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.lang_opt_sect {
+    @apply flex
+    justify-between
+    items-center
+    pl-2 pr-1 py-1
+    text-gray-700
+    text-sm;
+}
+
+.lang_sign {
+    @apply text-sm;
+}
+
+.lang_opt {
+    @apply flex gap-1.25
+        items-center
+        cursor-pointer
+        py-1 px-1.5
+        rounded-2xl
+        hover:bg-gray-200
+        active:bg-gray-300/50;
+    white-space: nowrap;
+}

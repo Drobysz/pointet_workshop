@@ -2,7 +2,7 @@
 
 import { Transition, Variants } from "framer-motion";
 import motionTags from "./motionsTags";
-import { 
+import {
 	ViewRevealProps,
 	AnimationType,
 } from "./ViewReveal.props";
@@ -12,6 +12,7 @@ export const ViewReveal = ({
     children,
     className,
 	animationType = "blurred",
+	once=true,
 	...props
 }: ViewRevealProps) => {
 
@@ -25,6 +26,11 @@ export const ViewReveal = ({
 
 		"disclosure": {
 			duration: 1.3,
+			ease: [0.33, 1, 0.68, 1]
+		},
+
+		"up_down_disclosure": {
+			duration: 0.5,
 			ease: [0.33, 1, 0.68, 1]
 		}
 	}
@@ -42,6 +48,16 @@ export const ViewReveal = ({
 			}
 		},
 
+		"up_down_disclosure": {
+			"initial": {
+				clipPath: "inset(0% 0% 100% 0%)"
+			},
+
+			"appear": {
+				clipPath: "inset(0% 0% 0% 0%)",
+			}
+		},
+
 		"disclosure": {
 			"initial": {
 				clipPath: "inset(48% 48% 48% 48% round 24px)"
@@ -54,19 +70,21 @@ export const ViewReveal = ({
 	}
 
     return (
-        <Component
+		<Component
 			{...props}
-            className={className}
+			className={className}
 
-            viewport={{
-				once: true,
+			viewport={{
+				once,
 			}}
 			initial="initial"
-			whileInView="appear"
+			whileInView={once ? "appear" : undefined}
+			animate={!once && "appear"}
+			exit="initial"
 			variants={animLib[animationType]}
 			transition={transLib[animationType]}
-        >
-            {children}
-        </Component>
+		>
+			{children}
+		</Component>
     );
 };

@@ -1,0 +1,23 @@
+@reference "tailwindcss";
+
+.user_info_header {
+    @apply flex
+        flex-col
+        items-start
+        p-2 pb-1
+        border-b
+        border-b-zinc-200;
+
+    .full_name {
+        @apply leading-4
+            text-zinc-700
+            text-sm
+            ;
+    }
+
+    .email {
+        @apply
+            text-sm
+            text-zinc-500;
+    }
+}

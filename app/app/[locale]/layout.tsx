@@ -13,6 +13,7 @@ import {
 import LayoutOverlays from "./layout_components/LayoutLayers/LayoutLayers";
 import { inter_regular } from "@/fonts/fonts";
 import s from "./layout_components/layout_style.module.scss";
+import { cn } from "@/helpers";
 
 export const metadata: Metadata = {
   title: "Pointet Workshop",
@@ -23,7 +24,7 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({locale}));
 }
 
-export default async function RootLayout({ 
+export default async function RootLayout({
   children,
   params
 }: Readonly<{
@@ -39,7 +40,10 @@ export default async function RootLayout({
     <html
       lang={locale}
     >
-        <body className={inter_regular.className}>
+        <body className={cn(
+          inter_regular.className,
+          "bg-gray-100"
+        )}>
           <NextIntlClientProvider
             locale={locale}
           >

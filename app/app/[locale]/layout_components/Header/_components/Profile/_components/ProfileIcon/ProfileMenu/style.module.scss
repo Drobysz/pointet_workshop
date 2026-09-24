@@ -1,0 +1,15 @@
+@reference "tailwindcss";
+
+.menu_window {
+    @apply absolute
+        translate-x-[-83%]
+        translate-y-5
+        w-48
+        bg-white
+        border
+        border-zinc-100
+        rounded-xl
+        max-h-100
+        z-50
+        overflow-hidden;
+}

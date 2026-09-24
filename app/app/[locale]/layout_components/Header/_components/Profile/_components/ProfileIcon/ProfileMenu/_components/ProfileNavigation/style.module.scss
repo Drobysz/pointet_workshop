@@ -1,0 +1,18 @@
+@reference "tailwindcss";
+
+.divider {
+    @apply border-b
+        border-b-gray-200;
+}
+
+.profile_nav_el {
+    @apply transition-colors p-2
+        duration-200 text-sm
+        relative before:absolute
+        before:inset-0 before:-z-10 overflow-hidden
+        before:bg-red-100
+        before:scale-x-[0.5] hover:before:scale-[1.5]
+        before:rounded-[100%] before:transition-transform
+        before:translate-y-full hover:before:translate-y-0
+        before:duration-600 hover:text-red-700;
+}

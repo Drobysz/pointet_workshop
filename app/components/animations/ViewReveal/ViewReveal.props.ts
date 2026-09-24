@@ -4,7 +4,7 @@ import { HTMLMotionProps } from "framer-motion";
 
 export type MotionComponent = ComponentType<HTMLMotionProps<"div">>;
 export type ViewRevealTag = keyof typeof motionTags;
-export type AnimationType = "blurred" | "disclosure";
+export type AnimationType = "blurred" | "disclosure" | "up_down_disclosure";
 
 export type ViewRevealProps = Omit<
     HTMLMotionProps<"div">,
@@ -13,4 +13,5 @@ export type ViewRevealProps = Omit<
 > & {
     as?: ViewRevealTag;
     animationType?: AnimationType;
+    once?: boolean;
 };

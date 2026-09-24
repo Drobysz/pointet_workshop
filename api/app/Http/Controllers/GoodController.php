@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GoodRequest;
-use App\Http\Resources\GoodDetailResource;
 use App\Http\Resources\GoodResource;
 use App\Models\Good;
 use App\Services\Catalog\InventoryService;
@@ -13,22 +12,24 @@ use Illuminate\Support\Facades\DB;
 
 class GoodController extends Controller
 {
+    private const RESOURCE_RELATIONS = ['category.image', 'subcategory', 'colors', 'materials', 'inventory'];
+
     public function __construct(private readonly InventoryService $inventory) {}
 
     public function index(Request $request): AnonymousResourceCollection
     {
         $filters = $request->validate(['category_id' => ['nullable', 'integer'], 'subcategory_id' => ['nullable', 'integer'], 'min_price' => ['nullable', 'numeric', 'min:0'], 'max_price' => ['nullable', 'numeric', 'gte:min_price'], 'search' => ['nullable', 'string', 'max:120'], 'per_page' => ['nullable', 'integer', 'min:1', 'max:100'], 'page' => ['nullable', 'integer', 'min:1']]);
-        $goods = Good::query()->with(['subcategory', 'colors', 'inventory'])->catalogFilters($filters)->latest('id')->paginate($filters['per_page'] ?? 7)->withQueryString();
+        $goods = Good::query()->with([...self::RESOURCE_RELATIONS, 'images' => fn ($query) => $query->orderBy('sort_order')])->catalogFilters($filters)->latest('id')->paginate($filters['per_page'] ?? 7)->withQueryString();
 
         return GoodResource::collection($goods);
     }
 
-    public function show(Good $good): GoodDetailResource
+    public function show(Good $good): GoodResource
     {
-        return new GoodDetailResource($good->load(['category.image', 'subcategory', 'colors', 'materials', 'inventory', 'images' => fn ($q) => $q->orderBy('sort_order')]));
+        return new GoodResource($good->load([...self::RESOURCE_RELATIONS, 'images' => fn ($query) => $query->orderBy('sort_order')]));
     }
 
-    public function store(GoodRequest $request): GoodDetailResource
+    public function store(GoodRequest $request): GoodResource
     {
         $this->authorize('create', Good::class);
         $data = $request->validated();
@@ -40,10 +41,10 @@ class GoodController extends Controller
             return $good;
         });
 
-        return new GoodDetailResource($good->load(['category.image', 'subcategory', 'colors', 'materials', 'inventory', 'images']));
+        return new GoodResource($good->load([...self::RESOURCE_RELATIONS, 'images' => fn ($query) => $query->orderBy('sort_order')]));
     }
 
-    public function update(GoodRequest $request, Good $good): GoodDetailResource
+    public function update(GoodRequest $request, Good $good): GoodResource
     {
         $this->authorize('update', $good);
         $data = $request->validated();
@@ -55,7 +56,7 @@ class GoodController extends Controller
             $locked->materials()->sync($data['material_ids']);
         });
 
-        return new GoodDetailResource($good->fresh()->load(['category.image', 'subcategory', 'colors', 'materials', 'inventory', 'images']));
+        return new GoodResource($good->fresh()->load([...self::RESOURCE_RELATIONS, 'images' => fn ($query) => $query->orderBy('sort_order')]));
     }
 
     public function destroy(Good $good)

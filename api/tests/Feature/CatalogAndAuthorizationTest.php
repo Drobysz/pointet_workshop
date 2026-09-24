@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Good;
+use App\Models\Material;
 use App\Models\Order;
 use App\Models\ProductImage;
 use App\Models\Subcategory;
@@ -32,6 +33,7 @@ class CatalogAndAuthorizationTest extends TestCase
             120,
         );
         $chair->colors()->attach($black);
+        $chair->materials()->attach(Material::create(['name' => 'Oak'])->id);
 
         ProductImage::create([
             'good_id' => $chair->id,
@@ -53,8 +55,12 @@ class CatalogAndAuthorizationTest extends TestCase
         $this->getJson('/api/goods?search=oak&min_price=100&max_price=130')
             ->assertOk()
             ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.category.name', 'Home')
             ->assertJsonPath('data.0.subcategory.name', 'Furniture')
-            ->assertJsonPath('data.0.colors.0.name', 'Black');
+            ->assertJsonPath('data.0.materials.0.name', 'Oak')
+            ->assertJsonPath('data.0.inventory.0.color_id', $black->id)
+            ->assertJsonPath('data.0.colors.0.name', 'Black')
+            ->assertJsonPath('data.0.colors.0.images.0.url', 'https://example.test/front.webp');
 
         $this->getJson('/api/goods?per_page=7')
             ->assertOk()
@@ -100,6 +106,35 @@ class CatalogAndAuthorizationTest extends TestCase
             ->assertOk();
     }
 
+    public function test_customer_orders_are_not_paginated_while_admin_orders_remain_paginated(): void
+    {
+        $customer = User::factory()->create();
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        foreach (range(1, 8) as $index) {
+            Order::create([
+                'user_id' => $customer->id,
+                'customer_name' => $customer->full_name,
+                'customer_email' => $customer->email,
+                'status' => 'processing',
+                'placed_at' => now()->subMinutes($index),
+            ]);
+        }
+
+        $customerResponse = $this->withToken($this->accessToken($customer))
+            ->getJson('/api/orders')
+            ->assertOk()
+            ->assertJsonCount(8, 'data');
+        $this->assertArrayNotHasKey('links', $customerResponse->json());
+        $this->assertArrayNotHasKey('meta', $customerResponse->json());
+
+        $this->withToken($this->accessToken($admin))
+            ->getJson('/api/orders')
+            ->assertOk()
+            ->assertJsonCount(7, 'data')
+            ->assertJsonPath('meta.total', 8);
+    }
+
     public function test_only_an_admin_can_create_a_verified_customer(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
@@ -107,6 +142,9 @@ class CatalogAndAuthorizationTest extends TestCase
         $payload = [
             'full_name' => 'Test Customer',
             'email' => 'customer@example.test',
+            'address' => '10 Customer Street',
+            'tel' => null,
+            'language' => 'it',
             'password' => 'customer123',
             'avatar_url' => null,
         ];
@@ -119,7 +157,8 @@ class CatalogAndAuthorizationTest extends TestCase
             ->postJson('/api/users', $payload)
             ->assertCreated()
             ->assertJsonPath('data.role', 'user')
-            ->assertJsonPath('data.email', 'customer@example.test');
+            ->assertJsonPath('data.email', 'customer@example.test')
+            ->assertJsonPath('data.language', 'it');
 
         $createdUser = User::query()
             ->where('email', 'customer@example.test')

@@ -17,7 +17,7 @@ class BasketController extends Controller
 
     public function index(Request $request): AnonymousResourceCollection
     {
-        return BasketResource::collection($request->user()->basketItems()->with(self::RELATIONS)->paginate(7));
+        return BasketResource::collection($request->user()->basketItems()->with(self::RELATIONS)->get());
     }
 
     public function store(BasketRequest $request): BasketResource

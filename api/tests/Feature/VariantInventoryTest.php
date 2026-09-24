@@ -100,7 +100,9 @@ class VariantInventoryTest extends TestCase
         $this->postJson('/api/basket', ['good_register_id' => $small, 'quantity' => 4])->assertUnprocessable();
         $basket = $this->postJson('/api/basket', ['good_register_id' => $small, 'quantity' => 2])->assertCreated();
         $this->postJson('/api/basket', ['good_register_id' => $large, 'quantity' => 1])->assertCreated();
-        $this->getJson('/api/basket')->assertJsonCount(2, 'data');
+        $basketResponse = $this->getJson('/api/basket')->assertOk()->assertJsonCount(2, 'data');
+        $this->assertArrayNotHasKey('links', $basketResponse->json());
+        $this->assertArrayNotHasKey('meta', $basketResponse->json());
         $this->putJson('/api/basket/'.$basket->json('data.id'), ['quantity' => 4])->assertUnprocessable();
         $this->postJson('/api/orders', ['items' => [['good_register_id' => $small, 'quantity' => 2]]])->assertCreated()->assertJsonPath('data.items.0.size', 'XL')->assertJsonPath('data.items.0.color_name', 'Red');
         $this->assertDatabaseHas('good_register', ['id' => $small, 'quantity' => 1]);

@@ -26,6 +26,10 @@ class OrderController extends Controller
         }
         $query->when($data['search'] ?? null, fn ($q, $search) => $q->where(fn ($inner) => $inner->whereRaw('LOWER(customer_name) LIKE ?', ['%'.mb_strtolower($search).'%'])->orWhereRaw('LOWER(customer_email) LIKE ?', ['%'.mb_strtolower($search).'%'])->orWhere('id', ctype_digit($search) ? (int) $search : -1)));
 
+        if (! $request->user()->isAdmin()) {
+            return OrderResource::collection($query->latest('placed_at')->get());
+        }
+
         return OrderResource::collection($query->latest('placed_at')->paginate($data['per_page'] ?? 7)->withQueryString());
     }
 

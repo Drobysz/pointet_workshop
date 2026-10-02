@@ -1,0 +1,45 @@
+@reference "tailwindcss";
+
+.alert_actions_container {
+    @apply flex 
+        flex-col 
+        gap-3
+        max-w-200
+        w-full;
+}
+
+.alert_actions_subcontainer {
+    @apply flex
+        justify-between
+        content-center
+        w-full;
+
+    .alert_actions_title {
+        @apply text-2xl
+            font-medium
+            text-zinc-500;
+    }
+
+    .alert_actions_btn {
+        @apply px-3 py-2
+            rounded-lg
+            border
+            transition-transform
+            duration-200
+            ease-out
+            hover:scale-105
+            active:rotate-2
+            active:scale-100;
+    }
+
+    .logout_btn {
+        @apply border-red-500
+            text-red-500;
+    }
+
+    .delete_btn {
+        @apply border-red-500
+            text-white
+            bg-red-500;
+    }
+}

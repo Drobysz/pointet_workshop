@@ -1,0 +1,6 @@
+@reference "tailwindcss";
+
+.form_section_title {
+    @apply text-xl
+        font-semibold;
+}

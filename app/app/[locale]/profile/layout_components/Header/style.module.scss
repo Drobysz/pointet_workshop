@@ -1,0 +1,18 @@
+@reference "tailwindcss";
+
+.profile_header {
+    @apply flex 
+        justify-between
+        items-center
+        px-5;
+
+    .title {
+        @apply text-7xl
+            bg-clip-text
+            text-transparent
+            bg-linear-to-t
+            from-transparent
+            to-red-800;
+    }
+}
+

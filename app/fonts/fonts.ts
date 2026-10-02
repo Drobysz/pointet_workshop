@@ -6,8 +6,13 @@ import {
 	Climate_Crisis,
 	Cutive_Mono,
 	Tiny5,
+	Jersey_10,
 } from "next/font/google";
 import localFont from 'next/font/local';
+
+export const jersey10 = Jersey_10({
+	weight: "400",
+});
 
 export const climate_crisis = Climate_Crisis({
 	variable: '--font_climate_crisis_sm'

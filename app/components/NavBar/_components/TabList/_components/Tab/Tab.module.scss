@@ -1,0 +1,58 @@
+@reference "tailwindcss";
+
+.wrapper_default,
+.wrapper_list {
+	@apply relative z-20;
+}
+
+.wrapper_default {
+	@apply px-3;
+}
+
+.wrapper_list {
+	@apply pr-3 pl-1.5;
+}
+
+.tab_title {
+	@apply cursor-pointer 
+	duration-200 
+	transition
+	text-3xl
+	font-semibold
+	max-[540px]:text-base;
+}
+
+.tab_list {
+	@apply absolute top-10.5 flex w-max
+		flex-col gap-1 py-2 
+		px-3 left-1/2 -translate-x-1/2
+		rounded-2xl bg-neutral-200 text-zinc-500;
+}
+
+.tab_header {
+	@apply text-xl max-[620px]:text-lg;
+}
+
+.triangle {
+	@apply absolute -top-1 left-1/2 
+		-translate-1/2 text-neutral-200
+		w-6 h-6;
+}
+
+.chevron {
+	@apply duration-500 transition-transform;
+}
+
+@media (max-width: 340px) {
+	.wrapper_default {
+		@apply px-1.5;
+	}
+
+	.wrapper_list {
+		@apply pr-2 pl-1;
+	}
+
+	.tab_list {
+		@apply top-8 text-sm;
+	}
+}

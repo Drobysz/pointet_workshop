@@ -1,0 +1,64 @@
+@reference "tailwindcss";
+
+.section_container {
+    @apply flex 
+        items-center
+        gap-3
+        pb-4
+        px-3;
+}
+
+.user_icon_wrapper {
+    @apply relative w-fit 
+        z-10 px-3;
+
+    .user_icon {
+        @apply w-8 h-8
+            text-zinc-500;
+    }
+
+    .user_background {
+        @apply absolute
+            rounded-full
+            left-1/2 top-1/2
+            -translate-1/2
+            bg-gray-100
+            w-15 h-15
+            -z-10;
+    }
+}
+
+.form_section {
+    @apply flex flex-col;
+
+    .fullname_form {
+        @apply text-3xl
+            min-w-30
+            w-fit
+            leading-5
+            field-sizing-content
+            p-1
+            outline-0;
+    }
+
+    .edit_btn_frame {
+        @apply p-1 
+            rounded-lg 
+            cursor-pointer
+            hover:bg-gray-200;
+
+        .edit_btn {
+            @apply w-5 h-5 
+                text-zinc-700;
+        }
+    }
+
+    .fullname_submit_btn {
+        @apply w-fit 
+            text-xl
+            transition-colors
+            duration-200
+            ease-out
+            hover:text-red-500;
+    }
+}

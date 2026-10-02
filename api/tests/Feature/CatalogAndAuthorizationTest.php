@@ -146,7 +146,6 @@ class CatalogAndAuthorizationTest extends TestCase
             'tel' => null,
             'language' => 'it',
             'password' => 'customer123',
-            'avatar_url' => null,
         ];
 
         $this->withToken($this->accessToken($user))
@@ -158,7 +157,8 @@ class CatalogAndAuthorizationTest extends TestCase
             ->assertCreated()
             ->assertJsonPath('data.role', 'user')
             ->assertJsonPath('data.email', 'customer@example.test')
-            ->assertJsonPath('data.language', 'it');
+            ->assertJsonPath('data.language', 'it')
+            ->assertJsonMissingPath('data.avatar_url');
 
         $createdUser = User::query()
             ->where('email', 'customer@example.test')

@@ -35,7 +35,7 @@ class AuthController extends Controller
                 'email' => $email,
                 'password_hash' => Hash::make($data['password']),
                 'full_name' => trim($data['full_name']),
-                'address' => trim($data['address']),
+                'address' => isset($data['address']) ? trim($data['address']) : '',
                 'tel' => isset($data['tel']) ? trim($data['tel']) : null,
                 'language' => $data['language'] ?? 'en',
                 'refer_id' => $data['refer_id'] ?? null,

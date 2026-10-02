@@ -3,7 +3,7 @@
 return [
 
     'frontend' => [
-        'verify_url' => env('FRONTEND_VERIFY_URL', 'http://localhost:3000/verify'),
+        'verify_url' => env('FRONTEND_VERIFY_URL', 'http://localhost:3000/home'),
     ],
 
     /*

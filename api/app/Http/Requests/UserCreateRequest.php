@@ -41,11 +41,6 @@ class UserCreateRequest extends FormRequest
                 'nullable',
                 Rule::in(['en', 'it', 'fr', 'ru', 'de']),
             ],
-            'avatar_url' => [
-                'nullable',
-                'url',
-                'max:2048',
-            ],
             'password' => [
                 'required',
                 'string',

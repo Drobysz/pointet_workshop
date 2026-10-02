@@ -26,6 +26,7 @@ class AuthenticationLifecycleTest extends TestCase
 
             return true;
         });
+        $this->assertSame('/home', parse_url((string) $url, PHP_URL_PATH));
         parse_str((string) parse_url((string) $url, PHP_URL_QUERY), $query);
         $verify = $this->postJson('/api/account/verify', ['token' => $query['token']]);
         $verify->assertCreated()->assertJsonPath('data.user.email', 'person@example.com')->assertJsonPath('data.user.address', '10 Example Street')->assertJsonPath('data.user.tel', '+33 6 12 34 56 78')->assertJsonPath('data.user.language', 'fr');
@@ -55,5 +56,28 @@ class AuthenticationLifecycleTest extends TestCase
         $this->assertSame(2, AuthRefreshToken::query()->whereNull('revoked_at')->count());
         $this->withToken($first->getCookie('access_token', false)->getValue())->postJson('/api/auth/logout-all')->assertOk();
         $this->postJson('/api/auth/refresh', ['refresh_token' => $second->getCookie('refresh_token', false)->getValue()])->assertUnauthorized();
+    }
+
+    public function test_registration_allows_an_omitted_address(): void
+    {
+        Mail::fake();
+
+        $this->postJson('/api/account/register', [
+            'email' => 'no-address@example.com',
+            'password' => 'secure123',
+            'full_name' => 'No Address',
+        ])->assertAccepted();
+
+        $url = null;
+        Mail::assertSent(VerifyEmailMail::class, function (VerifyEmailMail $mail) use (&$url): bool {
+            $url = $mail->verificationUrl;
+
+            return true;
+        });
+        parse_str((string) parse_url((string) $url, PHP_URL_QUERY), $query);
+
+        $this->postJson('/api/account/verify', ['token' => $query['token']])
+            ->assertCreated()
+            ->assertJsonPath('data.user.address', '');
     }
 }

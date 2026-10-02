@@ -56,7 +56,7 @@ Laravel's generic session configuration also exists, but the commerce authentica
 Sources: the commerce migration, `User`, `Order`, `OrderItem`, `Basket`, `AuthRefreshToken`, registration/user/order request validation, and authentication/order controllers.
 
 - Required registration fields: email, full name and password; password is hashed.
-- User records: ID, email, full name, password hash, role, email-verification timestamp and creation/update timestamps. Avatar URL and referrer relationship are nullable.
+- User records: ID, email, full name, password hash, role, email-verification timestamp and creation/update timestamps. The referrer relationship is nullable.
 - Basket records associate a user with products, quantities and optional colours.
 - Orders store customer name/email snapshots, user relationship, status and placement date; order items store product/colour names, unit prices, quantities and statuses. These records support current orders and order history; there is no separate purchase-history table.
 - Authentication records store a refresh-token hash, account/session/family identifiers, expiry/revocation/usage timestamps, IP address and user agent. Raw token values were not documented.

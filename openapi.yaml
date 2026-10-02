@@ -2481,11 +2481,6 @@ components:
             - fr
             - ru
             - de
-        avatar_url:
-          anyOf:
-            - type: string
-              format: uri
-            - type: "null"
         role:
           type: string
           enum:
@@ -2508,7 +2503,6 @@ components:
         - address
         - tel
         - language
-        - avatar_url
         - role
         - email_verified_at
         - created_at
@@ -3152,7 +3146,6 @@ components:
         - email
         - password
         - full_name
-        - address
     VerifyRequest:
       type: object
       properties:
@@ -3271,12 +3264,6 @@ components:
             - ru
             - de
           default: en
-        avatar_url:
-          anyOf:
-            - type: string
-              format: uri
-              maxLength: 2048
-            - type: "null"
         password:
           type: string
           format: password
@@ -3319,12 +3306,6 @@ components:
             - fr
             - ru
             - de
-        avatar_url:
-          anyOf:
-            - type: string
-              format: uri
-              maxLength: 2048
-            - type: "null"
         password:
           type: string
           format: password

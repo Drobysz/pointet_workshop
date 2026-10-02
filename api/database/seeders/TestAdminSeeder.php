@@ -42,7 +42,6 @@ class TestAdminSeeder extends Seeder
                     'address' => $admin['address'],
                     'tel' => null,
                     'language' => 'en',
-                    'avatar_url' => null,
                     'refer_id' => null,
                 ])
                 ->save();

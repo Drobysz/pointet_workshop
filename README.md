@@ -72,7 +72,7 @@ When the admin panel runs directly on port 3000 in development, its `/api` reque
 
 ### Email verification
 
-For local work, `MAIL_MAILER=log` writes the confirmation URL to `api/storage/logs/laravel.log`. For a real mail provider, fill the standard Laravel `MAIL_*` values and keep `FRONTEND_VERIFY_URL` pointed at the admin `/verify` route. Pending records expire after `AUTH_PENDING_TTL_HOURS` and are consumed atomically on successful verification.
+For local work, `MAIL_MAILER=log` writes the confirmation URL to `api/storage/logs/laravel.log`. For a real mail provider, fill the standard Laravel `MAIL_*` values and point `FRONTEND_VERIFY_URL` at the customer-facing app's `/home` route (the default local URL is `http://localhost:3000/home`). The storefront's global context submits the token to `POST /api/account/verify`, which consumes it once and starts the session. Pending records expire after `AUTH_PENDING_TTL_HOURS` and are consumed atomically on successful verification.
 
 ### JWT keys and cookies
 

@@ -61,7 +61,6 @@ class UserController extends Controller
             'address' => trim($data['address']),
             'tel' => isset($data['tel']) ? trim($data['tel']) : null,
             'language' => $data['language'] ?? 'en',
-            'avatar_url' => $data['avatar_url'] ?? null,
             'password' => Hash::make($data['password']),
         ]);
 

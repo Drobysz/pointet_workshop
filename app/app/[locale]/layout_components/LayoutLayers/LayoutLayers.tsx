@@ -2,7 +2,6 @@ import {
     MouseGuide,
     NotificationBar,
     PopUpWindow,
-    LangBar,
 } from "./_components";
 
 const LayoutOverlays = ()=> {
@@ -11,7 +10,6 @@ const LayoutOverlays = ()=> {
             <PopUpWindow />
             <MouseGuide />
             <NotificationBar />
-            <LangBar />
         </>
     )
 }

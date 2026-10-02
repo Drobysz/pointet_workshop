@@ -1,12 +1,13 @@
 "use client";
 
-import { NotificationStatus } from "@/app/context/global.interface"
+import { NotificationStatus } from "@/app/[locale]/context/global.interface";
 import s from "./style.module.scss";
 import cn from "classnames";
 import {
     Ban,
     BookAlert,
-    Check
+    Check,
+    LucideIcon
 } from "lucide-react";
 
 export const NotificationPopUp = ({
@@ -16,7 +17,9 @@ export const NotificationPopUp = ({
     children: string,
     status: NotificationStatus
 })=> {
-    const icons = {
+    const icons: Record<
+        NotificationStatus, LucideIcon | null
+    > = {
         "error": Ban,
         "alert": BookAlert,
         "success": Check,
@@ -31,7 +34,7 @@ export const NotificationPopUp = ({
                 s.notif_popup, {
                     ["bg-red-200 border-red-500 text-red-500"]: status == "error",
                     ["bg-orange-100 border-amber-400 text-amber-400"]: status == "alert",
-                    ["bg-primary-200 border-primary-500 text-primary-500"]: status == "success",
+                    ["bg-green-200 border-green-500 text-green-500"]: status == "success",
                 }
             )}
         >

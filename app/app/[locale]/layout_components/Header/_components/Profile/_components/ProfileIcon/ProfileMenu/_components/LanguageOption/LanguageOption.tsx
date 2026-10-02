@@ -2,23 +2,43 @@
 
 import { useLocale } from "next-intl";
 import s from "./style.module.scss";
-import { ChangeEvent, useTransition } from "react";
+import { ChangeEvent, useContext, useTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { Globe } from "lucide-react";
 import { language } from "@/types/auth";
+import { CookiesClient } from "@/helpers";
+import { userApi } from "@/api/api";
+import { GlobalContext } from "@/app/[locale]/context/global.context";
 
 export const LanguageOption = ()=> {
+    const { user, mutateUser } = useContext(GlobalContext);
     const locale = useLocale();
     const pathname = usePathname();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
 
-    const switchLocale = (e: ChangeEvent<HTMLSelectElement>)=> {
+    const switchLocale = async (e: ChangeEvent<HTMLSelectElement>)=> {
         const newLocale = e.target.value as language;
 
         if (locale === newLocale) return;
 
-        startTransition(()=> {
+        startTransition(async ()=> {
+            const cookies = new CookiesClient();
+            
+            if (user) {
+                await userApi.updateUser(
+                    user.id,
+                    { language: newLocale }
+                )
+                mutateUser();
+            }
+        
+            cookies.setCookies(
+                "NEXT_LOCALE",
+                newLocale,
+                60 * 60 * 24 * 365,
+            );
+
             router.replace(
                 pathname,
                 { locale: newLocale }

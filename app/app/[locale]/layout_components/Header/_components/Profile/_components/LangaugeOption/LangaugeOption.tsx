@@ -4,7 +4,7 @@ import { Globe } from "lucide-react"
 import s from "./style.module.scss";
 import { useLocale } from "next-intl";
 import { language } from "@/types/auth";
-import { MouseEvent, ReactNode, useRef, useState, useTransition } from "react";
+import { MouseEvent, ReactNode, useContext, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { AnimatePresence } from "framer-motion";
 import { ViewReveal } from "@/components/animations/ViewReveal/ViewReveal";
@@ -12,6 +12,9 @@ import { cn } from "@/helpers";
 import { tinyFive } from "@/fonts/fonts";
 import { CoverFeed } from "@/components";
 import { useDismiss } from "@/hooks/useDismiss";
+import { CookiesClient } from "@/helpers/cookies";
+import { userApi } from "@/api/api";
+import { GlobalContext } from "@/app/[locale]/context/global.context";
 
 const HeaderLangOpt = ({
     value,
@@ -24,13 +27,30 @@ const HeaderLangOpt = ({
     const pathname = usePathname();
     const [_, startTransition] = useTransition();
     const [hover, setHover] = useState(false);
+    const { user, mutateUser } = useContext(GlobalContext);
 
-    const switchLocale = (e: MouseEvent<HTMLLIElement>)=> {
+    const switchLocale = async (e: MouseEvent<HTMLLIElement>)=> {
         const newLocale
             = e.currentTarget.getAttribute('value') as language;
 
         if (newLocale) {
-            startTransition(()=> {
+            startTransition(async ()=> {
+                const cookies = new CookiesClient();
+
+                if (user) {
+                    await userApi.updateUser(
+                        user.id,
+                        { language: newLocale }
+                    )
+                    mutateUser();
+                }
+            
+                cookies.setCookies(
+                    "NEXT_LOCALE",
+                    newLocale,
+                    60 * 60 * 24 * 365,
+                );
+
                 router.replace(
                     pathname,
                     { locale: newLocale }

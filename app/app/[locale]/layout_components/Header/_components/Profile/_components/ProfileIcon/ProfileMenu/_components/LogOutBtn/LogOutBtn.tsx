@@ -2,40 +2,25 @@
 
 import cn from "classnames";
 import { LogOut } from "lucide-react";
-import { useContext, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
-import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { CircularProgress } from "@mui/material";
-import { useRouter } from "@/i18n/navigation";
 import s from "./style.module.scss";
-// import { clearAuthenticatedCaches } from "@/hooks/userHooks";
-// import { logOutQuery } from "@/queries/auth_queries/authQueries";
+import { useLogout } from "@/hooks/useLogout";
 
-export const LogOutBtn = ()=> {
-    // const { setIsLoggedIn, setNotification } = useContext(GlobalContext);
+export const LogOutBtn = ({
+    setIsOpen
+}: {
+    setIsOpen: Dispatch<SetStateAction<boolean>>
+})=> {
     const [hover, setHover] = useState(false);
-    const [pending, setPending] = useState(false);
-    const router = useRouter();
+    const {
+        logOut,
+        isPending,
+    } = useLogout(setIsOpen);
 
     const animInitial = { opacity: 0, x: -10 };
     const animHovered = { opacity: 1, x: 0 };
-
-    const t = useTranslations('header');
-
-    // const handleClick = async () => {
-    //     setPending(true);
-    //     try {
-    //         await logOutQuery();
-    //     } catch {
-    //         setNotification({ status: "error", text: t("logoutError") });
-    //     } finally {
-    //         setIsLoggedIn("unauth");
-    //         await clearAuthenticatedCaches();
-    //         setPending(false);
-    //         router.push('/');
-    //     }
-    // };
 
     return (
         <button
@@ -44,10 +29,10 @@ export const LogOutBtn = ()=> {
                 "text-red-500 active:bg-red-500/10"
             )}
             type="button"
-            disabled={pending}
+            disabled={isPending}
             onMouseEnter={()=> setHover(true)}
             onMouseLeave={()=> setHover(false)}
-            // onClick={()=> handleClick()}
+            onClick={logOut}
         >
 
             <motion.span
@@ -63,7 +48,7 @@ export const LogOutBtn = ()=> {
             <motion.span
                 animate={hover ? {x: 20} : {x: 0}}
             >
-                {!pending
+                {!isPending
                     ? "Exit"
                     : <CircularProgress
                         size={16}

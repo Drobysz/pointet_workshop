@@ -27,7 +27,7 @@ export const UnderlinedInnerLink = ({
 					styles.underline, {
 						["bg-white"]: colorLine == "light",
 						["bg-gray-700"]: colorLine == "dark",
-						["bg-blue-500"]: colorLine == "primary",
+						["bg-red-300"]: colorLine == "primary",
 						["bg-red-700"]: colorLine == "red",
 						["bg-inherit"]: colorLine == "inherit",
 					}

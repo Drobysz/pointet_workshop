@@ -5,7 +5,7 @@ import { MainBtnProps } from "./MainBtn.props"
 import { useState, MouseEvent } from "react";
 import s from "./style.module.scss"
 import { motion } from "framer-motion";
-import { climate_crisis, tinyFive } from "@/fonts/fonts";
+import { tinyFive } from "@/fonts/fonts";
 
 export const MainBtn = ({
     children,

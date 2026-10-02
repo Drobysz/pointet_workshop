@@ -1,6 +1,6 @@
 'use client';
 
-import { after, climate_crisis, cutiveMono, inter_regular, monserrat_regular, sixCaps, tinyFive } from "@/fonts/fonts";
+import { monserrat_regular, tinyFive } from "@/fonts/fonts";
 import { InputLiteProps } from "./InputLite.props";
 import s from "./inputlite.module.scss";
 import cn from "classnames";

@@ -1,4 +1,7 @@
+import { User } from "@/api/types/user";
+import { LoginForm, RegisterForm } from "@/types/auth";
 import { Dispatch, SetStateAction } from "react";
+import { KeyedMutator } from "swr";
 
 export type NotificationStatus = "error" | "alert" | "success" | "none";
 
@@ -12,16 +15,32 @@ export interface Coords {
     y: number;
 }
 
+export type PopUpWindow = "LoginForm" | "RegisterForm" | "DeleteWindow" | "none";
+export type AuthStatus = "authenficated" | "unauthenficated";
+
 export interface GlobalContextInterface {
+    logFormData: LoginForm,
+    regFormData: RegisterForm,
+    authStatus: AuthStatus,
+
     notification: AppNotification;
     blur: boolean;
-    popUpWindow: string;
+    popUpWindow: PopUpWindow;
     mouseText: string,
     mouseGuide: Coords | null;
     isMouseVisible: boolean,
+    user?: User;
+    isUserLoading: boolean;
+    userError?: Error;
+
+    setLogFormData: Dispatch<SetStateAction<LoginForm>>,
+    setRegFormData: Dispatch<SetStateAction<RegisterForm>>,
+
+    setAuthStatus: Dispatch<SetStateAction<AuthStatus>>,
+    mutateUser: KeyedMutator<User>;
 
     setNotification: Dispatch<SetStateAction<AppNotification>>;
-    setPopUpWindow: Dispatch<SetStateAction<string>>;
+    setPopUpWindow: Dispatch<SetStateAction<PopUpWindow>>;
     setMouseText: Dispatch<SetStateAction<string>>;
     setMouseGuide: Dispatch<SetStateAction<Coords | null>>;
 }

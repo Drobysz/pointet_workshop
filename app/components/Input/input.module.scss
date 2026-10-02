@@ -1,0 +1,55 @@
+@reference "tailwindcss";
+
+.form_content_container {
+    @apply flex 
+        flex-col 
+        gap-0.5
+        shrink-0;
+    width: 100%;
+    min-width: 0;
+}
+
+.label {
+    @apply block 
+        font-medium 
+        text-gray-900
+        pl-2
+        text-xl;
+}
+
+.error {
+    @apply text-sm 
+        text-red-500
+        pb-0.5;
+}
+
+.input_container {
+    @apply rounded-full 
+        border 
+        border-gray-300
+        px-4 py-2 w-full 
+        outline-none 
+        transition-colors
+        placeholder:text-sm;
+    &:focus-visible {
+        @apply border-red-500 
+            ring-red-200
+            ring-2;
+    }
+    min-height: 2.75rem;
+    min-width: 0;
+}
+
+.eye {
+    @apply absolute 
+        right-3 
+        top-1/2 
+        -translate-y-1/2
+        text-gray-500 
+        cursor-pointer 
+        transition-colors
+        duration-200 
+        hover:bg-gray-200 
+        rounded-full
+        p-1;
+}

@@ -14,6 +14,7 @@ import LayoutOverlays from "./layout_components/LayoutLayers/LayoutLayers";
 import { inter_regular } from "@/fonts/fonts";
 import s from "./layout_components/layout_style.module.scss";
 import { cn } from "@/helpers";
+import { GlobalContextProvider } from "./context/global.context";
 
 export const metadata: Metadata = {
   title: "Pointet Workshop",
@@ -47,16 +48,18 @@ export default async function RootLayout({
           <NextIntlClientProvider
             locale={locale}
           >
-            <LayoutOverlays />
-            {/* <PageTransition> */}
-              <BlurWrapper>
-                <div className={s.wrapper}>
-                  <Header />
-                  {children}
-                  <Footer />
-                </div>
-              </BlurWrapper>
-            {/* </PageTransition> */}
+            <GlobalContextProvider>
+              <LayoutOverlays />
+              {/* <PageTransition> */}
+                <BlurWrapper>
+                  <div className={s.wrapper}>
+                    <Header />
+                    {children}
+                    <Footer />
+                  </div>
+                </BlurWrapper>
+              {/* </PageTransition> */}
+            </GlobalContextProvider>
           </NextIntlClientProvider>
         </body>
     </html>

@@ -1,0 +1,12 @@
+@reference "tailwindcss";
+
+.divider_wrapper {
+    @apply px-3;
+}
+
+.divider {
+    @apply h-px 
+        rounded-full
+        text-zinc-300
+        bg-zinc-400;
+}

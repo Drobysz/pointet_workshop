@@ -1,0 +1,30 @@
+@reference "tailwindcss";
+
+.form {
+    @apply flex 
+        flex-col 
+        gap-5;
+
+    .title {
+        @apply bg-clip-text
+            text-transparent
+            bg-linear-to-t
+            from-white
+            to-red-800
+            text-4xl
+            text-center;
+    }
+
+    .input_list {
+        @apply flex
+            flex-col
+            gap-4;
+    }
+    
+    .submit_container {
+        @apply flex 
+            flex-col 
+            gap-4 
+            pb-2;
+    }
+}

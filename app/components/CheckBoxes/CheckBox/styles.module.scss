@@ -1,0 +1,11 @@
+@reference "tailwindcss";
+
+.checkbox_view {
+	@apply flex justify-center cursor-pointer
+		items-center rounded-md w-5 h-5;
+}
+
+.line {
+	@apply h-0.5 w-2.5 rounded-xl
+		bg-white border-0;
+}

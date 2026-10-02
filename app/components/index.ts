@@ -5,3 +5,8 @@ export * from "./Btns/LinkBtn/LinkBtn";
 export * from "./Btns/MainBtn/MainBtn";
 export * from "./Cards/InteractionCard/InteractionCard";
 export * from "./InputLite/InputLite";
+export * from "./windows/AuthModalWindow/AuthModalWindow";
+export * from "./CheckBoxes/CheckBox/CheckBox";
+export * from "./CheckBoxes/CheckBox2/CheckBox2";
+export * from "./Input/Input";
+export * from "./Divider/Divider";

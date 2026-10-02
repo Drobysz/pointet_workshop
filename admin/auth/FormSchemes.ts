@@ -21,7 +21,6 @@ export const adminSchema = z.object({
 export const userSchema = z.object({
   full_name: z.string().trim().min(2).max(255),
   email: z.email(),
-  avatar_url: z.union([z.url(), z.literal("")]),
   password: z.union([passwordSchema, z.literal("")]),
 });
 

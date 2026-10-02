@@ -116,7 +116,6 @@
     "edit": "Modifier l’utilisateur",
     "editTitle": "Modifier l’utilisateur",
     "form": {
-      "avatar": "URL de l’avatar",
       "email": "E-mail",
       "fullName": "Nom complet",
       "password": "Mot de passe",

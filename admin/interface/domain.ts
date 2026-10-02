@@ -100,7 +100,6 @@ export interface User {
   id: number;
   email: string;
   full_name: string;
-  avatar_url: string | null;
   role: "user" | "admin";
   email_verified_at: string | null;
   created_at: string;
@@ -109,7 +108,6 @@ export interface User {
 export interface UserPayload {
   email: string;
   full_name: string;
-  avatar_url: string | null;
   password?: string;
 }
 

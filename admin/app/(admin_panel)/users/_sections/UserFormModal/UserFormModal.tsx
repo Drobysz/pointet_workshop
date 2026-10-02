@@ -24,7 +24,6 @@ function buildUserPayload(formData: FormData): UserPayload | null {
   const payload: UserPayload = {
     full_name: parsed.data.full_name,
     email: parsed.data.email,
-    avatar_url: parsed.data.avatar_url || null,
   };
 
   if (parsed.data.password) {
@@ -98,16 +97,6 @@ export function UserFormModal({
             defaultValue={user?.email ?? ""}
             autoComplete="email"
             required
-          />
-        </label>
-
-        <label className={styles.field}>
-          {t("form.avatar")}
-          <input
-            name="avatar_url"
-            type="url"
-            defaultValue={user?.avatar_url ?? ""}
-            placeholder="https://"
           />
         </label>
 

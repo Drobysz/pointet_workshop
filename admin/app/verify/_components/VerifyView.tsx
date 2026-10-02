@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { verifyAccount } from "@/queries";
@@ -7,14 +7,16 @@ import styles from "./VerifyView.module.scss";
 
 export const VerifyView = ({ token }: { token: string }) => {
   const t = useTranslations("verify");
+  const hasSubmitted = useRef(false);
   const [messageKey, setMessageKey] = useState<
     "confirming" | "incomplete" | "confirmed" | "invalid"
   >(token ? "confirming" : "incomplete");
 
   useEffect(() => {
-    if (!token) {
+    if (!token || hasSubmitted.current) {
       return;
     }
+    hasSubmitted.current = true;
 
     verifyAccount(token).then(
       () => setMessageKey("confirmed"),

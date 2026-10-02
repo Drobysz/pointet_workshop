@@ -28,7 +28,10 @@ export class AuthApi {
     public verify (
         data: VerifyRequest,
     ): Promise<SessionResponse> {
-        return this.apiPublic.post<SessionResponse>(
+        // Verification creates the session cookies returned by the API. Use
+        // the credentialed client so a storefront running on another origin
+        // (for example localhost:3000 vs localhost:8080) keeps that session.
+        return this.apiPrivate.post<SessionResponse>(
             "/account/verify",
             data,
         )
@@ -37,9 +40,10 @@ export class AuthApi {
     public login (
         data: LoginRequest,
     ): Promise<SessionResponse> {
-        return this.apiPublic.post<SessionResponse>(
+        return this.apiPrivate.post<SessionResponse>(
             "/auth/login",
             data,
+            false
         )
     }
 

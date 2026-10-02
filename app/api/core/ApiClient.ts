@@ -1,3 +1,6 @@
+import { AuthenticatedResponse } from "../types/auth";
+import { ApiError, ApiErrorResponse } from "./ApiError";
+
 export class ApiClient {
     constructor (
         protected readonly baseUrl: string,
@@ -5,7 +8,8 @@ export class ApiClient {
 
     protected async request<T>(
         endpoint: string,
-        options: RequestInit = {}
+        options: RequestInit = {},
+        canRetry: boolean = false,
     ): Promise<T> {
         const res = await fetch(
             `${this.baseUrl}${endpoint}`,
@@ -19,31 +23,86 @@ export class ApiClient {
         );
 
         if (!res.ok) {
-            throw new Error(
-                `API request Failed status: ${res.status}`
+            const shouldRefresh =
+                res.status === 401 &&
+                endpoint !== "/auth/refresh" &&
+                canRetry;
+
+            if (!shouldRefresh) {
+                throw await this.createApiError(res);
+            }
+
+            const authStatus = await this.refresh();
+
+            if (!authStatus.data.authenticated) {
+                throw await this.createApiError(res);
+            }
+
+            return await this.request(
+                endpoint,
+                options
             );
         }
 
-        const data = await res.json() as T;
-        return data;
+        return res.json();
     }
 
-    public get<T>(endpoint: string): Promise<T> {
-        return this.request<T>(endpoint, {
-            method: "GET",
-        });
+    private async createApiError (
+        res: Response
+    ): Promise<ApiError> {
+        let data: ApiErrorResponse | null = null;
+
+        try {
+            data = await res.json();
+        } catch {
+            // 
+        }
+
+        const message = data?.message ??
+            `API request failed with status ${res.status}`;
+
+        return new ApiError(
+            res.status,
+            message,
+            data?.errors,
+        );
+    }
+
+    private async refresh (): Promise<AuthenticatedResponse> {
+        return await this.request<AuthenticatedResponse>(
+            "/auth/refresh", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            }
+        );
+    }
+
+    public get<T>(
+        endpoint: string,
+        canRetry: boolean = true,
+    ): Promise<T> {
+        return this.request<T>(
+            endpoint, 
+            { method: "GET" },
+            canRetry,
+        );
     }
 
     public post<T>(
         endpoint: string,
         body?: unknown,
+        canRetry: boolean = true
     ): Promise<T> {
-        return this.request<T>(endpoint, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
+        return this.request<T>(
+            endpoint, 
+            {
+                method: "POST",
+                body: JSON.stringify(body),
             },
-            body: JSON.stringify(body),
-        });
+            canRetry
+        );
     }
 }

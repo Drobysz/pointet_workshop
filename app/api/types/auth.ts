@@ -2,18 +2,14 @@
 // Authentication
 // ============================================================
 
-import { ApiResponse, Id, Language } from "./api";
+import { ApiResponse } from "./api";
 import { User } from "./user";
 
 export interface RegisterRequest {
     email: string;
     password: string;
     full_name: string;
-    address: string;
-
-    tel?: string | null;
-    language?: Language;
-    refer_id?: Id | null;
+    address?: string;
 }
 
 export interface RegistrationPending {

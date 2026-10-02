@@ -9,7 +9,7 @@ export class CategoryApi {
     ) {}
 
     public getCategories (): Promise<CategoryPage> {
-        return this.api.get("/categories")
+        return this.api.get<CategoryPage>("/categories")
     }
 
     public getGoods (
@@ -24,7 +24,7 @@ export class CategoryApi {
     public getGood (
         goodId: Id,
     ): Promise<GoodResponse> {
-        return this.api.get(
+        return this.api.get<GoodResponse>(
             `/goods/${goodId}`
         )
     }

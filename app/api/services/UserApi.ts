@@ -16,17 +16,18 @@ export class UserApi {
     }
 
     public updateUser(
+        userId: Id,
         updateUserData: UserUpdateRequest
     ): Promise<UserResponse> {
         return this.api.patch<UserResponse>(
-            "auth/me",
+            `/users/${userId}`,
             updateUserData,
         );
     }
 
-    public deleteUser(userId: Id) {
-        return this.api.delete(
-            `user/${userId}`,
+    public deleteUser(userId: Id): Promise<void> {
+        return this.api.delete<void>(
+            `/users/${userId}`,
         );
     }
 }

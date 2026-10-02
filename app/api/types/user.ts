@@ -13,13 +13,12 @@ export interface User {
     id: Id;
     email: string;
     full_name: string;
-    address: string;
-    tel: string | null;
+    address?: string;
+    tel?: string | null;
     language: Language;
-    avatar_url: string | null;
     role: UserRole;
-    email_verified_at: string | null;
-    created_at: string | null;
+    email_verified_at?: string | null;
+    created_at?: string | null;
 }
 
 export interface UserUpdateRequest {
@@ -28,7 +27,6 @@ export interface UserUpdateRequest {
     address?: string;
     tel?: string | null;
     language?: Language;
-    avatar_url?: string | null;
     password?: string;
 }
 

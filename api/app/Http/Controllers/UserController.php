@@ -3,19 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
+use App\Http\Requests\EmailChangeRequest;
+use App\Http\Requests\EmailChangeVerificationRequest;
+use App\Http\Requests\PasswordChangeRequest;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\VerifyEmailChangeMail;
 use App\Models\User;
+use App\Services\Auth\EmailChangeService;
 use App\Services\Auth\SessionService;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class UserController extends Controller
 {
-    public function __construct(private readonly SessionService $sessions) {}
+    public function __construct(
+        private readonly SessionService $sessions,
+        private readonly EmailChangeService $emailChanges,
+    ) {}
 
     public function index(Request $request): AnonymousResourceCollection
     {
@@ -84,27 +96,78 @@ class UserController extends Controller
         $this->authorize('update', $user);
         $data = $request->validated();
 
-        if (isset($data['email'])) {
-            $data['email'] = Str::lower(trim($data['email']));
-        }
-
         foreach (['full_name', 'address', 'tel'] as $field) {
             if (isset($data[$field])) {
                 $data[$field] = trim($data[$field]);
             }
         }
 
-        $passwordChanged = isset($data['password']);
-
-        if ($passwordChanged) {
-            $data['password'] = Hash::make($data['password']);
-        }
-
         $user->update($data);
 
-        if ($passwordChanged) {
-            $this->sessions->revokeAll($user);
+        return new UserResource($user->fresh());
+    }
+
+    public function requestEmailChange(EmailChangeRequest $request, User $user)
+    {
+        $this->authorize('update', $user);
+        $email = $request->validated('email');
+        try {
+            $code = $this->emailChanges->request($user, $email);
+        } catch (QueryException) {
+            return response()->json(['error' => ['code' => 'email_change_pending', 'message' => 'This email already has a pending change request.']], 409);
         }
+
+        try {
+            Mail::to($email)->send(new VerifyEmailChangeMail($code));
+        } catch (Throwable $exception) {
+            $this->emailChanges->discard($user, $code);
+            report($exception);
+
+            return response()->json(['error' => ['code' => 'email_delivery_unavailable', 'message' => 'Verification email could not be sent.']], 502);
+        }
+
+        return response()->json(['data' => ['status' => 'pending_verification']], 202);
+    }
+
+    public function verifyEmailChange(EmailChangeVerificationRequest $request, User $user)
+    {
+        $this->authorize('update', $user);
+        try {
+            $result = $this->emailChanges->verify($user, $request->validated('code'));
+        } catch (QueryException) {
+            return response()->json(['error' => ['code' => 'duplicate_email', 'message' => 'This email is already registered.']], 409);
+        }
+
+        if ($result['status'] === 'verified') {
+            return new UserResource($result['user']);
+        }
+
+        if ($result['status'] === 'duplicate_email') {
+            return response()->json(['error' => ['code' => 'duplicate_email', 'message' => 'This email is already registered.']], 409);
+        }
+
+        throw ValidationException::withMessages([
+            'code' => [$result['status'] === 'expired'
+                ? 'The verification code has expired.'
+                : 'The verification code is invalid.'],
+        ]);
+    }
+
+    public function updatePassword(PasswordChangeRequest $request, User $user): UserResource
+    {
+        $this->authorize('update', $user);
+        $data = $request->validated();
+
+        if (! Hash::check($data['current_password'], $user->password)) {
+            throw ValidationException::withMessages(['current_password' => ['The current password is incorrect.']]);
+        }
+
+        if (Hash::check($data['new_password'], $user->password)) {
+            throw ValidationException::withMessages(['new_password' => ['The new password must differ from the current password.']]);
+        }
+
+        $user->forceFill(['password' => Hash::make($data['new_password'])])->save();
+        $this->sessions->revokeAll($user);
 
         return new UserResource($user->fresh());
     }

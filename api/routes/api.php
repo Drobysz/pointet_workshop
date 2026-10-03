@@ -31,6 +31,9 @@ Route::get('/materials', [MaterialController::class, 'index']);
 Route::middleware('auth.jwt')->group(function (): void {
     Route::get('/auth/me', [AuthController::class, 'me']);
     Route::post('/auth/logout-all', [AuthController::class, 'logoutAll']);
+    Route::patch('/users/{user}/email', [UserController::class, 'requestEmailChange'])->middleware('throttle:email-change');
+    Route::post('/users/{user}/email/verify', [UserController::class, 'verifyEmailChange'])->middleware('throttle:email-change-verify');
+    Route::patch('/users/{user}/password', [UserController::class, 'updatePassword'])->middleware('throttle:password-change');
     Route::apiResource('users', UserController::class)
         ->only(['index', 'show', 'update', 'destroy']);
     Route::apiResource('basket', BasketController::class)

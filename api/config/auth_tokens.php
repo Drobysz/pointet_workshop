@@ -6,6 +6,7 @@ return [
     'access_ttl_minutes' => (int) env('AUTH_ACCESS_TTL_MINUTES', 15),
     'refresh_ttl_days' => (int) env('AUTH_REFRESH_TTL_DAYS', 30),
     'pending_ttl_hours' => (int) env('AUTH_PENDING_TTL_HOURS', 24),
+    'email_change_code_ttl_minutes' => (int) env('AUTH_EMAIL_CHANGE_CODE_TTL_MINUTES', 15),
     'pending_store' => env('AUTH_PENDING_STORE', 'redis'),
     'private_key' => env('AUTH_JWT_PRIVATE_KEY'),
     'private_key_path' => env('AUTH_JWT_PRIVATE_KEY_PATH'),

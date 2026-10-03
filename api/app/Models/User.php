@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -37,6 +38,11 @@ class User extends Authenticatable
     public function refreshTokens(): HasMany
     {
         return $this->hasMany(AuthRefreshToken::class);
+    }
+
+    public function emailChangeVerification(): HasOne
+    {
+        return $this->hasOne(EmailChangeVerification::class);
     }
 
     public function basketItems(): HasMany

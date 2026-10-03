@@ -4,6 +4,7 @@ use App\Http\Middleware\AuthenticateAccessToken;
 use App\Http\Middleware\EnsureTrustedOrigin;
 use App\Http\Middleware\RequireCurrentAdmin;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -26,6 +27,11 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->render(function (AuthenticationException $exception, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json(['error' => ['code' => 'unauthenticated', 'message' => 'Authentication is required.']], 401);
+            }
+        });
         $exceptions->render(function (AuthorizationException $exception, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json(['error' => ['code' => 'forbidden', 'message' => 'You are not allowed to perform this action.']], 403);
@@ -38,7 +44,14 @@ return Application::configure(basePath: dirname(__DIR__))
         });
         $exceptions->render(function (HttpExceptionInterface $exception, Request $request) {
             if ($request->is('api/*')) {
-                return response()->json(['error' => ['code' => 'request_failed', 'message' => $exception->getMessage() ?: 'The request could not be completed.']], $exception->getStatusCode());
+                $status = $exception->getStatusCode();
+                $error = match ($status) {
+                    401 => ['code' => 'unauthenticated', 'message' => 'Authentication is required.'],
+                    403 => ['code' => 'forbidden', 'message' => 'You are not allowed to perform this action.'],
+                    default => ['code' => 'request_failed', 'message' => $exception->getMessage() ?: 'The request could not be completed.'],
+                };
+
+                return response()->json(['error' => $error], $status);
             }
         });
     })->create();

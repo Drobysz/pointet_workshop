@@ -1375,6 +1375,157 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/UserCreateRequest"
+  "/users/{user}/email":
+    parameters:
+      - name: user
+        in: path
+        required: true
+        description: User identifier. The authenticated account owner or an administrator must be authorized for this user.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    patch:
+      tags:
+        - Users
+      summary: Request an email-address change
+      operationId: patchUsersUserEmail
+      description: Available to the account owner or an administrator. The current email remains active while a single-use, hashed six-digit verification code is sent to the requested new address. A later request replaces the earlier pending code. Codes expire after 15 minutes by default. Limited to 5 requests/hour per user/IP and 3 requests/hour per new-email/IP.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailChangeRequest"
+      responses:
+        "202":
+          description: Verification code sent; the current email is unchanged.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailChangePending"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "502":
+          description: Verification email delivery failed; code email_delivery_unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      x-access: authenticated
+  "/users/{user}/email/verify":
+    parameters:
+      - name: user
+        in: path
+        required: true
+        description: User identifier. The authenticated account owner or an administrator must be authorized for this user.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    post:
+      tags:
+        - Users
+      summary: Confirm a pending email-address change
+      operationId: postUsersUserEmailVerify
+      description: Available to the account owner or an administrator. Atomically validates and consumes the single-use code, then updates the email address. Invalid or expired codes return validation errors. Limited to 10 attempts/minute per user/IP.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailChangeVerificationRequest"
+      responses:
+        "200":
+          description: Updated user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+  "/users/{user}/password":
+    parameters:
+      - name: user
+        in: path
+        required: true
+        description: User identifier. The authenticated account owner or an administrator must be authorized for this user.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    patch:
+      tags:
+        - Users
+      summary: Change a password
+      operationId: patchUsersUserPassword
+      description: Available to the account owner or an administrator. Requires the current password, stores only the standard Laravel password hash, and revokes all refresh sessions after a successful change. Existing access JWTs remain valid until their normal expiry. Limited to 5 attempts/minute per user/IP.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordChangeRequest"
+      responses:
+        "200":
+          description: Updated user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
   "/users/{user}":
     parameters:
       - name: user
@@ -1421,8 +1572,8 @@ paths:
       summary: Update a user
       operationId: putUsersUser
       description: Available to the account owner or an administrator. Both verbs
-        accept partial fields. Password changes revoke all refresh sessions, but
-        do not immediately invalidate issued access JWTs.
+        accept partial profile fields only. Email and password changes require their
+        dedicated endpoints.
       security:
         - accessCookie: []
         - bearerAuth: []
@@ -1461,8 +1612,8 @@ paths:
       summary: Update a user
       operationId: patchUsersUser
       description: Available to the account owner or an administrator. Both verbs
-        accept partial fields. Password changes revoke all refresh sessions, but
-        do not immediately invalidate issued access JWTs.
+        accept partial profile fields only. Email and password changes require their
+        dedicated endpoints.
       security:
         - accessCookie: []
         - bearerAuth: []
@@ -3281,10 +3432,6 @@ components:
     UserUpdateRequest:
       type: object
       properties:
-        email:
-          type: string
-          format: email
-          maxLength: 255
         full_name:
           type: string
           minLength: 1
@@ -3306,16 +3453,63 @@ components:
             - fr
             - ru
             - de
-        password:
+      description: All fields are optional. Email and password are prohibited here;
+        use their dedicated endpoints. Role and referral changes are not supported.
+    EmailChangeRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          example: new@example.com
+      required:
+        - email
+    EmailChangeVerificationRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          pattern: "^[0-9]{6}$"
+          minLength: 6
+          maxLength: 6
+          writeOnly: true
+          example: "123456"
+      required:
+        - code
+    PasswordChangeRequest:
+      type: object
+      properties:
+        current_password:
+          type: string
+          format: password
+          maxLength: 72
+          writeOnly: true
+          example: CurrentPassword123!
+        new_password:
           type: string
           format: password
           minLength: 8
           maxLength: 72
           writeOnly: true
-          description: Must contain at least one alphabetic character and one digit.
-      description: All fields are optional. Email must remain unique. Role and
-        referral changes are not supported; a password change revokes all
-        refresh sessions.
+          description: Must contain at least one alphabetic character and one digit, and differ from the current password.
+          example: NewPassword123!
+      required:
+        - current_password
+        - new_password
+    EmailChangePending:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            status:
+              type: string
+              const: pending_verification
+          required:
+            - status
+      required:
+        - data
     AdminCreateRequest:
       type: object
       properties:

@@ -21,6 +21,9 @@ info:
 
 
     Inventory is stored per product/color/size row. A null size means an unsized variant. Product totals are derived from those rows and retained as a cached current_quantity for catalog responses. Product updates use inventory_version for optimistic concurrency; additive stock arrivals use the dedicated restock operation.
+
+
+    Regular GET endpoints are limited to 300 requests/minute and ordinary POST, PATCH, PUT, and DELETE endpoints to 120 requests/minute. Authenticated requests are keyed by user ID; public requests are keyed by IP address. Local environments multiply configurable limits by default. Login, registration, password changes, email-code requests and verification, and refresh-token rotation use the dedicated limits described on their operations. All rate-limit failures return the standard JSON error envelope with HTTP 429 and Laravel retry headers.
   x-source-files:
     - api/routes/api.php
     - api/app/Http/Controllers
@@ -69,9 +72,8 @@ paths:
       operationId: postAccountRegister
       description: Normalizes the email address and sends a verification link for a
         new account. Returns pending for existing accounts too. Pending tokens
-        expire after 24 hours by default. Limited to 10 requests/hour per IP and
-        4/hour per email/IP; registration and verification share the named
-        limiter.
+        expire after 24 hours by default. Limited to 10 requests/minute per
+        normalized email/IP pair.
       security: []
       responses:
         "202":
@@ -108,9 +110,8 @@ paths:
       summary: Verify registration and start a session
       operationId: postAccountVerify
       description: Consumes a single-use verification token, creates a verified
-        customer, and sets both session cookies. Shares the registration rate
-        limiter (10/hour per IP and 4/hour per email/IP key). The request
-        supplies only token, so the email portion of that key is empty.
+        customer, and sets both session cookies. Limited to 10 requests/minute
+        per IP.
       security: []
       responses:
         "201":
@@ -164,7 +165,7 @@ paths:
       operationId: postAuthLogin
       description: Sets access and refresh cookies. Default lifetimes are 15 minutes
         and 30 days respectively. Invalid email/password combinations return
-        invalid_credentials. Limited to five requests per minute per normalized
+        invalid_credentials. Limited to 10 requests per minute per normalized
         email/IP.
       security: []
       responses:
@@ -209,7 +210,7 @@ paths:
         precedence. Rotates both cookies. A replayed token revokes all active
         refresh sessions for the account. Missing/expired tokens return
         refresh_token_invalid; replay returns refresh_token_reused. Limited to
-        30 requests/minute per IP.
+        60 requests/minute per IP.
       security:
         - refreshCookie: []
         - {}
@@ -263,7 +264,8 @@ paths:
       operationId: postAuthLogout
       description: Revokes the supplied refresh cookie or body token when present and
         clears both cookies. Succeeds even without a valid session.
-        Already-issued access JWTs remain valid until expiry.
+        Already-issued access JWTs remain valid until expiry. Uses the regular
+        API write limit of 120 requests/minute.
       security:
         - refreshCookie: []
         - {}
@@ -301,7 +303,7 @@ paths:
       operationId: postAuthLogoutAll
       description: Revokes every refresh session for the authenticated account and
         clears this browser cookie pair. Already-issued access JWTs remain valid
-        until expiry.
+        until expiry. Uses the regular API write limit of 120 requests/minute.
       security:
         - accessCookie: []
         - bearerAuth: []
@@ -333,7 +335,8 @@ paths:
         - Authentication
       summary: Get the authenticated user
       operationId: getAuthMe
-      description: Get the authenticated user.
+      description: Get the authenticated user. Uses the regular API read limit
+        of 300 requests/minute.
       security:
         - accessCookie: []
         - bearerAuth: []
@@ -1390,7 +1393,7 @@ paths:
         - Users
       summary: Request an email-address change
       operationId: patchUsersUserEmail
-      description: Available to the account owner or an administrator. The current email remains active while a single-use, hashed six-digit verification code is sent to the requested new address. A later request replaces the earlier pending code. Codes expire after 15 minutes by default. Limited to 5 requests/hour per user/IP and 3 requests/hour per new-email/IP.
+      description: Available to the account owner or an administrator. The current email remains active while a single-use, hashed six-digit verification code is sent to the requested new address. A later request replaces the earlier pending code. Codes expire after 15 minutes by default. Limited to 10 requests per 15 minutes per authenticated user.
       security:
         - accessCookie: []
         - bearerAuth: []
@@ -1439,7 +1442,7 @@ paths:
         - Users
       summary: Confirm a pending email-address change
       operationId: postUsersUserEmailVerify
-      description: Available to the account owner or an administrator. Atomically validates and consumes the single-use code, then updates the email address. Invalid or expired codes return validation errors. Limited to 10 attempts/minute per user/IP.
+      description: Available to the account owner or an administrator. Atomically validates and consumes the single-use code, then updates the email address. Invalid or expired codes return validation errors. Limited to 10 attempts/minute per authenticated user.
       security:
         - accessCookie: []
         - bearerAuth: []
@@ -1491,7 +1494,7 @@ paths:
         - Users
       summary: Change a password
       operationId: patchUsersUserPassword
-      description: Available to the account owner or an administrator. Requires the current password, stores only the standard Laravel password hash, and revokes all refresh sessions after a successful change. Existing access JWTs remain valid until their normal expiry. Limited to 5 attempts/minute per user/IP.
+      description: Available to the account owner or an administrator. Requires the current password, stores only the standard Laravel password hash, and revokes all refresh sessions after a successful change. Existing access JWTs remain valid until their normal expiry. Limited to 10 attempts/minute per authenticated user.
       security:
         - accessCookie: []
         - bearerAuth: []

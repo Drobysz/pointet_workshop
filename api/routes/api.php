@@ -16,54 +16,70 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/account/register', [AuthController::class, 'register'])->middleware('throttle:register');
-Route::post('/account/verify', [AuthController::class, 'verify'])->middleware('throttle:register');
+Route::post('/account/verify', [AuthController::class, 'verify'])->middleware('throttle:email-verify');
 Route::post('/auth/login', [AuthController::class, 'login'])->middleware('throttle:login');
 Route::post('/auth/refresh', [AuthController::class, 'refresh'])->middleware('throttle:refresh');
-Route::post('/auth/logout', [AuthController::class, 'logout']);
+Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('throttle:api-write');
 
-Route::get('/goods', [GoodController::class, 'index']);
-Route::get('/goods/{good}', [GoodController::class, 'show']);
-Route::get('/categories', [CategoryController::class, 'index']);
-Route::get('/subcategories', [SubcategoryController::class, 'index']);
-Route::get('/colors', [ColorController::class, 'index']);
-Route::get('/materials', [MaterialController::class, 'index']);
+Route::middleware('throttle:api-read')->group(function (): void {
+    Route::get('/goods', [GoodController::class, 'index']);
+    Route::get('/goods/{good}', [GoodController::class, 'show']);
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::get('/subcategories', [SubcategoryController::class, 'index']);
+    Route::get('/colors', [ColorController::class, 'index']);
+    Route::get('/materials', [MaterialController::class, 'index']);
+});
 
 Route::middleware('auth.jwt')->group(function (): void {
-    Route::get('/auth/me', [AuthController::class, 'me']);
-    Route::post('/auth/logout-all', [AuthController::class, 'logoutAll']);
     Route::patch('/users/{user}/email', [UserController::class, 'requestEmailChange'])->middleware('throttle:email-change');
-    Route::post('/users/{user}/email/verify', [UserController::class, 'verifyEmailChange'])->middleware('throttle:email-change-verify');
+    Route::post('/users/{user}/email/verify', [UserController::class, 'verifyEmailChange'])->middleware('throttle:email-verify');
     Route::patch('/users/{user}/password', [UserController::class, 'updatePassword'])->middleware('throttle:password-change');
-    Route::apiResource('users', UserController::class)
-        ->only(['index', 'show', 'update', 'destroy']);
-    Route::apiResource('basket', BasketController::class)
-        ->only(['index', 'store', 'update', 'destroy'])
-        ->parameters(['basket' => 'basket']);
-    Route::apiResource('orders', OrderController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
+
+    Route::middleware('throttle:api-read')->group(function (): void {
+        Route::get('/auth/me', [AuthController::class, 'me']);
+        Route::apiResource('users', UserController::class)->only(['index', 'show']);
+        Route::apiResource('basket', BasketController::class)
+            ->only(['index'])
+            ->parameters(['basket' => 'basket']);
+        Route::apiResource('orders', OrderController::class)->only(['index', 'show']);
+    });
+
+    Route::middleware('throttle:api-write')->group(function (): void {
+        Route::post('/auth/logout-all', [AuthController::class, 'logoutAll']);
+        Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
+        Route::apiResource('basket', BasketController::class)
+            ->only(['store', 'update', 'destroy'])
+            ->parameters(['basket' => 'basket']);
+        Route::apiResource('orders', OrderController::class)->only(['store', 'update', 'destroy']);
+    });
 
     Route::middleware('admin.current')->group(function (): void {
-        Route::post('/users', [UserController::class, 'store']);
+        Route::middleware('throttle:api-read')->group(function (): void {
+            Route::get('/admins/{admin}', [AdminController::class, 'show']);
+            Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
+            Route::get('/dashboard/analytics', [DashboardController::class, 'analytics']);
+            Route::get('/dashboard/top-products', [DashboardController::class, 'topProducts']);
+            Route::get('/dashboard/latest-orders', [DashboardController::class, 'latestOrders']);
+            Route::get('/goods/{good}/statistics', [DashboardController::class, 'product']);
+        });
 
-        Route::post('/goods', [GoodController::class, 'store']);
-        Route::post('/goods/{good}/inventory/{register}/restock', [InventoryController::class, 'restock']);
-        Route::put('/goods/{good}', [GoodController::class, 'update']);
-        Route::delete('/goods/{good}', [GoodController::class, 'destroy']);
-        Route::post('/goods/{good}/images', [ProductImageController::class, 'store']);
-        Route::patch('/images/{image}', [ProductImageController::class, 'update']);
-        Route::delete('/images/{image}', [ProductImageController::class, 'destroy']);
+        Route::middleware('throttle:api-write')->group(function (): void {
+            Route::post('/users', [UserController::class, 'store']);
 
-        Route::post('/admins', [AdminController::class, 'store']);
-        Route::get('/admins/{admin}', [AdminController::class, 'show']);
+            Route::post('/goods', [GoodController::class, 'store']);
+            Route::post('/goods/{good}/inventory/{register}/restock', [InventoryController::class, 'restock']);
+            Route::put('/goods/{good}', [GoodController::class, 'update']);
+            Route::delete('/goods/{good}', [GoodController::class, 'destroy']);
+            Route::post('/goods/{good}/images', [ProductImageController::class, 'store']);
+            Route::patch('/images/{image}', [ProductImageController::class, 'update']);
+            Route::delete('/images/{image}', [ProductImageController::class, 'destroy']);
 
-        Route::apiResource('categories', CategoryController::class)->only(['store', 'update', 'destroy']);
-        Route::apiResource('subcategories', SubcategoryController::class)->only(['store', 'update', 'destroy']);
-        Route::apiResource('colors', ColorController::class)->only(['store', 'update', 'destroy']);
-        Route::apiResource('materials', MaterialController::class)->only(['store', 'update', 'destroy']);
+            Route::post('/admins', [AdminController::class, 'store']);
 
-        Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
-        Route::get('/dashboard/analytics', [DashboardController::class, 'analytics']);
-        Route::get('/dashboard/top-products', [DashboardController::class, 'topProducts']);
-        Route::get('/dashboard/latest-orders', [DashboardController::class, 'latestOrders']);
-        Route::get('/goods/{good}/statistics', [DashboardController::class, 'product']);
+            Route::apiResource('categories', CategoryController::class)->only(['store', 'update', 'destroy']);
+            Route::apiResource('subcategories', SubcategoryController::class)->only(['store', 'update', 'destroy']);
+            Route::apiResource('colors', ColorController::class)->only(['store', 'update', 'destroy']);
+            Route::apiResource('materials', MaterialController::class)->only(['store', 'update', 'destroy']);
+        });
     });
 });

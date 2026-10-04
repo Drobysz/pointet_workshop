@@ -51,7 +51,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     default => ['code' => 'request_failed', 'message' => $exception->getMessage() ?: 'The request could not be completed.'],
                 };
 
-                return response()->json(['error' => $error], $status);
+                return response()->json(['error' => $error], $status, $exception->getHeaders());
             }
         });
     })->create();

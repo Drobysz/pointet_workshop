@@ -13,8 +13,8 @@ export function OrdersTable() {
   const { formatCurrency, formatDate } = useAppFormatters();
   const tableState = useTableQueryState();
   const orders = useSWR(
-    ["orders", tableState.page, tableState.searchQuery],
-    () => getOrders(tableState.page, tableState.searchQuery),
+    ["orders", tableState.searchQuery],
+    () => getOrders(tableState.searchQuery),
     { keepPreviousData: true },
   );
 
@@ -78,11 +78,8 @@ export function OrdersTable() {
           rows={orders.data.data}
           rowKey={(order) => order.id}
           search={tableState.searchInput}
-          page={orders.data.meta.current_page}
-          totalPages={orders.data.meta.last_page}
-          total={orders.data.meta.total}
+          total={orders.data.data.length}
           onSearch={tableState.setSearchInput}
-          onPage={tableState.setPage}
           columns={columns}
         />
       )}

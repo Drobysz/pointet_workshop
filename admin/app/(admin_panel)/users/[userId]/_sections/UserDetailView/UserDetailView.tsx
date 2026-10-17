@@ -18,8 +18,8 @@ export function UserDetailView({ userId }: { userId: string }) {
   const tableState = useTableQueryState();
   const user = useSWR(["user", userId], () => getUser(userId));
   const orders = useSWR(
-    ["user-orders", userId, tableState.page, tableState.searchQuery],
-    () => getOrders(tableState.page, tableState.searchQuery, userId),
+    ["user-orders", userId, tableState.searchQuery],
+    () => getOrders(tableState.searchQuery, userId),
     { keepPreviousData: true },
   );
 
@@ -103,11 +103,8 @@ export function UserDetailView({ userId }: { userId: string }) {
           rows={orders.data.data}
           rowKey={(order) => order.id}
           search={tableState.searchInput}
-          page={orders.data.meta.current_page}
-          totalPages={orders.data.meta.last_page}
-          total={orders.data.meta.total}
+          total={orders.data.data.length}
           onSearch={tableState.setSearchInput}
-          onPage={tableState.setPage}
           columns={columns}
         />
       ) : (

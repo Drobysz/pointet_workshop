@@ -1,6 +1,29 @@
 @reference "tailwindcss";
-.shell { min-height: 100vh; background: var(--canvas); }
-.main { margin-left: 248px; min-height: 100vh; padding: clamp(24px, 4vw, 52px); }
-@media (max-width: 60rem) { .main { margin-left: 76px; } }
-@media (max-width: 40rem) { .main { margin-left: 0; padding: 88px 16px 24px; } }
 
+.shell {
+  background: var(--canvas);
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.main {
+  height: 100dvh;
+  margin-left: 248px;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: clamp(24px, 4vw, 52px);
+  scrollbar-gutter: stable;
+}
+
+@media (max-width: 60rem) {
+  .main {
+    margin-left: 76px;
+  }
+}
+
+@media (max-width: 40rem) {
+  .main {
+    margin-left: 0;
+    padding: 88px 16px 24px;
+  }
+}

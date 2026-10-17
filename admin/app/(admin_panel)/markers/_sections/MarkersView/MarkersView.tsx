@@ -181,6 +181,13 @@ export function MarkersView() {
   const modalTitleKey = editingMarker === "new"
     ? "formTitleCreate"
     : "formTitleEdit";
+  const pagination = markers.data && "meta" in markers.data
+    ? {
+        page: markers.data.meta.current_page,
+        totalPages: markers.data.meta.last_page,
+        total: markers.data.meta.total,
+      }
+    : undefined;
 
   return (
     <>
@@ -228,9 +235,9 @@ export function MarkersView() {
           rows={markers.data.data}
           rowKey={(marker) => marker.id}
           search={tableState.searchInput}
-          page={markers.data.meta.current_page}
-          totalPages={markers.data.meta.last_page}
-          total={markers.data.meta.total}
+          page={pagination?.page}
+          totalPages={pagination?.totalPages}
+          total={pagination?.total ?? markers.data.data.length}
           onSearch={tableState.setSearchInput}
           onPage={tableState.setPage}
           columns={columns}

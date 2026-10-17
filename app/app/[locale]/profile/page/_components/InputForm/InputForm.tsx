@@ -9,6 +9,8 @@ import { jersey10, tinyFive } from "@/fonts/fonts";
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
 import { User, UserResponse } from "@/api/types/user";
 import { UserField, userFieldSchemas } from "@/auth/FormSchemes";
+import { MainBtn } from "@/components";
+import { CircularProgress } from "@mui/material";
 
 export const InputForm = ({
     userId,
@@ -16,13 +18,15 @@ export const InputForm = ({
     initialValue,
     param,
     inputType="text",
+    placeholder,
     request
 }: {
     userId: Id;
     label: string;
     initialValue: string;
     param: UserField;
-    inputType?: "email" | "text"
+    inputType?: "email" | "text";
+    placeholder?: string;
     request: (
         id: Id, 
         params: Partial<User>
@@ -30,11 +34,14 @@ export const InputForm = ({
 })=> {
     const { setNotification, mutateUser } = useContext(GlobalContext);
     const [value, setValue] = useState(initialValue);
+    const [isPending, setIsPending] = useState(false);
 
     const isButtonDisabled = value.trim() === initialValue;
     const schema = userFieldSchemas[param];
 
     const updateUserParam = async ()=> {
+        setIsPending(true);
+
         try {
             const result = schema.safeParse(value);
 
@@ -56,11 +63,14 @@ export const InputForm = ({
                 text: `${label} was updated`
             });
         } catch (error) {
+
             setNotification({
                 status: "error",
                 text: getApiErrorMessage(error)
             });
-        }
+        } finally {
+            setIsPending(false);
+        };
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>)=> {
@@ -86,10 +96,11 @@ export const InputForm = ({
                     className={s.input}
                     value={value}
                     type={inputType}
+                    placeholder={placeholder ?? ""}
                     onChange={handleChange}
                 />
 
-                <button
+                <MainBtn
                     disabled={isButtonDisabled}
                     className={cn(
                         tinyFive.className,
@@ -98,8 +109,15 @@ export const InputForm = ({
                             && "opacity-50 cursor-not-allowed"
                     )}
                 >
-                    Change
-                </button>
+                    {isPending 
+                        ? <CircularProgress 
+                            size={10}
+                            color="inherit"
+                            className="z-30"
+                        />
+                        : "Change"
+                    }
+                </MainBtn>
             </div>
         </form>
     )

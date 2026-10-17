@@ -5,19 +5,14 @@ import s from "./style.module.scss";
 import { GlobalContext } from "../../context/global.context";
 import {
     FullnameSection,
+    PersonalInfoSection,
+    SecuritySection,
     LogOutSection,
 } from "./_sections";
-import {
-    Loading,
-    InputForm,
-    FormSectionTitle,
-} from "./_components"
+import { Loading } from "./_components"
 import { cn } from "@/helpers";
 import { jersey10 } from "@/fonts/fonts";
-import {
-    Divider
-} from "@/components"
-import { userApi } from "@/api/api";
+import { Divider } from "@/components";
 
 const ProfilePageView = ()=> {
     const {
@@ -43,36 +38,15 @@ const ProfilePageView = ()=> {
                         className={s.divider}
                     />
                     <div className={s.forms_container}>
-                        <div className="flex flex-col gap-4 max-w-200 w-full">
-                            <FormSectionTitle>
-                                Personal information
-                            </FormSectionTitle>
-
-                            <InputForm
-                                userId={user.id}
-                                label="email"
-                                initialValue={user.email}
-                                param="email"
-                                inputType="email"
-                                request={userApi.updateUser}
-                            />
-
-                            <InputForm
-                                userId={user.id}
-                                label="phone number"
-                                initialValue={user.tel ?? ""}
-                                param="tel"
-                                request={userApi.updateUser}
-                            />
-                        </div>
+                        <PersonalInfoSection 
+                            user={user}
+                        />
 
                         <Divider />
 
-                        <div className="flex flex-col gap-5 max-w-200 w-full">
-                            <FormSectionTitle>
-                                Security
-                            </FormSectionTitle>
-                        </div>
+                        <SecuritySection 
+                            userId={user.id}
+                        />
 
                         <Divider />
 

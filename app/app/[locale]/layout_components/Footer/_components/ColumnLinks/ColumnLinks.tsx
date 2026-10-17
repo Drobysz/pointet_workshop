@@ -2,7 +2,7 @@ import { doppelganger } from "@/fonts/fonts";
 import { cn } from "@/helpers";
 import s from "./style.module.scss";
 import footer from "@/json/footer_links.json";
-import { UnderlinedLink } from "@/components/UnderlinedLink/UnderlinedLink";
+import { UnderlinedLink } from "@/components/animations/UnderlinedLink/UnderlinedLink";
 import { Fragment } from "react/jsx-runtime";
 import { LinkColumn } from "./types";
 

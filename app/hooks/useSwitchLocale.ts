@@ -1,6 +1,6 @@
 import { userApi } from "@/api/api";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
-import { CookiesClient } from "@/helpers";
+import { CookiesService } from "@/helpers";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { language } from "@/types/auth";
 import { useLocale } from "next-intl";
@@ -18,7 +18,7 @@ export const useSwitchLocale = (newLocale: language)=> {
 
         if (newLocale) {
             startTransition(async ()=> {
-                const cookies = new CookiesClient();
+                const cookies = new CookiesService();
 
                 if (user) {
                     await userApi.updateUser(

@@ -8,7 +8,7 @@ export default function ProfileLayout ({
     children: ReactNode;
 }>) {
     return (
-        <main className="min-h-screen py-20">
+        <main className="min-h-screen py-13">
             <GridContainer innerClassName="px-4">
                 <ProfileHeader />
                 <div>

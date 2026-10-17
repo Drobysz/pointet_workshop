@@ -1,3 +1,5 @@
+import { BasketItem } from "@/api/types/basket";
+import { Order } from "@/api/types/orders";
 import { User } from "@/api/types/user";
 import { LoginForm, RegisterForm } from "@/types/auth";
 import { Dispatch, SetStateAction } from "react";
@@ -15,7 +17,7 @@ export interface Coords {
     y: number;
 }
 
-export type PopUpWindow = "LoginForm" | "RegisterForm" | "DeleteWindow" | "none";
+export type PopUpWindow = "LoginForm" | "RegisterForm" | "DeleteWindow" | "VerifyCodeWindow" | "none";
 export type AuthStatus = "authenficated" | "unauthenficated";
 
 export interface GlobalContextInterface {
@@ -29,15 +31,26 @@ export interface GlobalContextInterface {
     mouseText: string,
     mouseGuide: Coords | null;
     isMouseVisible: boolean,
+
     user?: User;
     isUserLoading: boolean;
     userError?: Error;
+
+    basketList?: BasketItem[];
+    isBasketLoading: boolean;
+    basketError?: Error;
+
+    ordersList?: Order[];
+    isOrdersLoading: boolean;
+    ordersError?: Error;
 
     setLogFormData: Dispatch<SetStateAction<LoginForm>>,
     setRegFormData: Dispatch<SetStateAction<RegisterForm>>,
 
     setAuthStatus: Dispatch<SetStateAction<AuthStatus>>,
     mutateUser: KeyedMutator<User>;
+    mutateBasket: KeyedMutator<BasketItem[]>;
+    mutateOrders: KeyedMutator<Order[]>;
 
     setNotification: Dispatch<SetStateAction<AppNotification>>;
     setPopUpWindow: Dispatch<SetStateAction<PopUpWindow>>;

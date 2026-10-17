@@ -4,7 +4,7 @@ import { after, cutiveMono, tinyFive } from "@/fonts/fonts";
 import { cn } from "@/helpers";
 import s from "./style.module.scss";
 import footer_links from "@/json/footer_links.json";
-import { UnderlinedInnerLink } from "@/components/UnderlinedLink/UnderlinedInnerLink";
+import { UnderlinedInnerLink } from "@/components/animations/UnderlinedLink/UnderlinedInnerLink";
 import { Link } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 

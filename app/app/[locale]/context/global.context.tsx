@@ -9,6 +9,7 @@ import { authApi } from "@/api/api";
 import { useRouter } from "@/i18n/navigation";
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
 import { refreshErrorMessages } from "@/api/core/errorMessages";
+import { useUserData } from "@/hooks/useUserData";
 
 const noneNotification: AppNotification = { 
     status: "none", 
@@ -33,6 +34,9 @@ export const GlobalContext = createContext<GlobalContextInterface>({
     authStatus: "unauthenficated",
     isUserLoading: false,
 
+    isBasketLoading: false,
+    isOrdersLoading: false,
+
     notification: noneNotification,
     popUpWindow: "none",
 	blur: false,
@@ -45,6 +49,8 @@ export const GlobalContext = createContext<GlobalContextInterface>({
 
     setAuthStatus: () => {},
     mutateUser: async () => undefined,
+    mutateBasket: async () => undefined,
+    mutateOrders: async () => undefined,
 
     setPopUpWindow: () => {},
 	setMouseText: ()=> {},
@@ -58,6 +64,27 @@ export const GlobalContextProvider = ({
     children: ReactNode;
 })=> {
     const router = useRouter();
+
+    const {
+		data: user,
+		error: userError,
+		isLoading: isUserLoading,
+		mutate: mutateUser
+	} = useCurrentUser();
+
+    const {
+		data: basketList,
+		error: basketError,
+		isLoading: isBasketLoading,
+		mutate: mutateBasket
+	} = useUserData("basket");
+
+    const {
+		data: ordersList,
+		error: ordersError,
+		isLoading: isOrdersLoading,
+		mutate: mutateOrders
+	} = useUserData("orders");
 
     const [notification, setNotification] 
         = useState<AppNotification>(noneNotification);
@@ -74,13 +101,6 @@ export const GlobalContextProvider = ({
 
     const searchParams = useSearchParams();
     const token = searchParams.get("token");
-
-    const {
-		data: user,
-		error: userError,
-		isLoading: isUserLoading,
-		mutate: mutateUser
-	} = useCurrentUser();
 
     useEffect(()=> {
         const verifyUserAuthStatus = async ()=> {
@@ -117,7 +137,17 @@ export const GlobalContextProvider = ({
         }
 
         verifyUserAuthStatus();
-    }, [token]);
+    }, [token, router]);
+
+    useEffect(()=> {
+        const updateStatus = ()=> {
+            setAuthStatus("authenficated");
+        }
+
+        if (user && !userError) {
+            updateStatus();
+        }
+    }, [user, userError])
 
     return (
         <GlobalContext.Provider
@@ -128,12 +158,22 @@ export const GlobalContextProvider = ({
                 mouseText: mouseText,
                 mouseGuide: mouseGuide,
                 isMouseVisible: isMouseVisible,
+
                 logFormData: logFormData,
                 regFormData: regFormData,
                 authStatus: authStatus,
+
                 user: user,
                 isUserLoading: isUserLoading,
                 userError: userError,
+
+                basketList: basketList,
+                isBasketLoading: isBasketLoading,
+                basketError: basketError,
+
+                ordersList: ordersList,
+                isOrdersLoading: isOrdersLoading,
+                ordersError: ordersError,
 
                 setNotification,
                 setPopUpWindow,
@@ -142,7 +182,10 @@ export const GlobalContextProvider = ({
                 setLogFormData,
                 setRegFormData,
                 setAuthStatus,
-                mutateUser
+
+                mutateUser,
+                mutateBasket,
+                mutateOrders
             }}
         >
             {children}

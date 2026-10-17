@@ -6,7 +6,7 @@ import { ChangeEvent, useContext, useTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { Globe } from "lucide-react";
 import { language } from "@/types/auth";
-import { CookiesClient } from "@/helpers";
+import { CookiesService } from "@/helpers";
 import { userApi } from "@/api/api";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 
@@ -23,7 +23,7 @@ export const LanguageOption = ()=> {
         if (locale === newLocale) return;
 
         startTransition(async ()=> {
-            const cookies = new CookiesClient();
+            const cookies = new CookiesService();
             
             if (user) {
                 await userApi.updateUser(

@@ -34,7 +34,7 @@ export const NotificationPopUp = ({
                 s.notif_popup, {
                     ["bg-red-200 border-red-500 text-red-500"]: status == "error",
                     ["bg-orange-100 border-amber-400 text-amber-400"]: status == "alert",
-                    ["bg-green-200 border-green-500 text-green-500"]: status == "success",
+                    ["bg-green-200 border-teal-500 text-teal-500"]: status == "success",
                 }
             )}
         >

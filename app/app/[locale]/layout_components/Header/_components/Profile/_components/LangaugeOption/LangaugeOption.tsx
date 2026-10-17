@@ -12,7 +12,7 @@ import { cn } from "@/helpers";
 import { tinyFive } from "@/fonts/fonts";
 import { CoverFeed } from "@/components";
 import { useDismiss } from "@/hooks/useDismiss";
-import { CookiesClient } from "@/helpers/cookies";
+import { CookiesService } from "@/helpers/cookies";
 import { userApi } from "@/api/api";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 
@@ -35,7 +35,7 @@ const HeaderLangOpt = ({
 
         if (newLocale) {
             startTransition(async ()=> {
-                const cookies = new CookiesClient();
+                const cookies = new CookiesService();
 
                 if (user) {
                     await userApi.updateUser(

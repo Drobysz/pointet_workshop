@@ -1,6 +1,6 @@
 import { language } from "@/types/auth";
 
-export class CookiesClient {
+export class CookiesService {
     public getCookies(name: string): string | null {
         const value = document.cookie
             .split("; ")
@@ -14,16 +14,55 @@ export class CookiesClient {
     public setCookies(
         name: string,
         value: string,
-        maxAge: number,
+        days: number,
     ) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+
         document.cookie = [
             `${name}=${encodeURIComponent(value)}`,
             "path=/",
-            maxAge ? `max-age=${maxAge}` : "",
+            `expires=${date.toUTCString()}`,
             "samesite=lax",
         ]
             .filter(Boolean)
             .join("; ");
+    }
+
+    public deleteCookie(
+        name: string,
+    ) {
+        document.cookie = [
+            `${name}=`,
+            "path=/",
+            "expires=Thu, 01 Jan 1970 00:00:00 UTC",
+            "samesite=lax",
+        ]
+            .filter(Boolean)
+            .join("; ");
+    }
+
+    public setJSONCookie<T extends object>(
+        name: string, 
+        data: T,
+        days: number
+    ) {
+        const jsonData = JSON.stringify(data);
+        this.setCookies(name, jsonData, days);
+    }
+
+    public getJSONCookie<T extends object>(name: string): T | null {
+        const cookieValue = this.getCookies(name);
+        if (!cookieValue) {
+            return null;
+        }
+
+        try {
+            return JSON.parse(cookieValue);
+        } catch (error) {
+            console.error(`Error parsing JSON cookie "${name}":`, error);
+            return null;
+        }
     }
 
     public getLocale(): language {

@@ -1,33 +1,45 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import s from "./style.module.scss";
 import { Link } from "@/i18n/navigation";
+import { GlobalContext } from "@/app/[locale]/context/global.context";
+import { ActiveQuantityTag } from "@/components";
 
 export const ProfileNavigation = ({
     setIsOpen
 }: {
     setIsOpen: Dispatch<SetStateAction<boolean>>;
 })=> {
+    const { user } = useContext(GlobalContext);
+
     const profilePages = [
         { label: "My profile", href: "/profile" },
-        { label: "My orders", href: "/profile/orders" },
-        { label: "Purchases history", href: "/profile/history" },
+        { label: "My orders", href: "/profile/orders", qntty: user?.orders_count ?? 0 },
+        { label: "My Basket", href: "/profile/basket", qntty: user?.basket_goods_count ?? 0 },
     ];
 
     return (
         <nav className={s.divider}>
             <ul>
-                {profilePages.map(({label, href}, id)=>
+                {profilePages.map((item, id)=>
                     <Link
-                        href={href}
+                        href={item.href}
                         key={`profile-nav-el${id}`}
                         onClick={()=> setIsOpen(false)}
                     >
                         <li
                             className={s.profile_nav_el}
                         >
-                            {label}
+                            <span>
+                                {item.label}
+                            </span>
+
+                            {(item.qntty !== undefined && item.qntty > 0) &&
+                                <ActiveQuantityTag 
+                                    quantity={item.qntty}
+                                />
+                            }
                         </li>
                     </Link>
                 )}

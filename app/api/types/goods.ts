@@ -12,6 +12,7 @@ import { Material } from "./material";
 export interface Good {
     id: Id;
     name: string;
+    brand: string;
 
     /**
 
@@ -42,8 +43,10 @@ export type GoodPage =
     PaginatedResponse<Good>;
 
 export interface GoodListParams
-    extends PaginationParams,
-        SearchQueryParams {
+    extends 
+        PaginationParams, 
+        SearchQueryParams 
+{
     category_id?: Id;
     subcategory_id?: Id;
     min_price?: number;

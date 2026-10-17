@@ -2,7 +2,7 @@
 // Categories
 // ============================================================
 
-import { ApiResponse, Id, PaginatedResponse, PaginationParams, SearchQueryParams } from "./api";
+import { ApiResponse, Id, SearchQueryParams } from "./api";
 import { Subcategory } from "./subcategory";
 
 export interface CategoryImage {
@@ -32,9 +32,7 @@ export interface Category {
 export type CategoryResponse =
     ApiResponse<Category>;
 
-export type CategoryPage =
-    PaginatedResponse<Category>;
+export type CategoryList =
+    ApiResponse<Category[]>;
 
-export interface CategoryListParams
-    extends PaginationParams,
-        SearchQueryParams {}
+export type CategoryListParams = SearchQueryParams;

@@ -16,6 +16,7 @@ export class ApiClient {
             {
                 ...options,
                 headers: {
+                    Accept: "application/json",
                     "Content-Type": "application/json",
                     ...options.headers,
                 }

@@ -61,8 +61,8 @@ export type OrderResponse =
 export type OrderDetailResponse =
     ApiResponse<OrderDetail>;
 
-export type OrderPage =
-    PaginatedResponse<Order>;
+export type OrderListResponse =
+    ApiResponse<Order[]>;
 
 export interface OrderLineRequest {
     good_register_id: Id;

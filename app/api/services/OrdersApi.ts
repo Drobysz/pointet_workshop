@@ -1,6 +1,6 @@
 import { PublicApiClient } from "../core/PublicApiClient";
 import { Id } from "../types/api";
-import { OrderCreateRequest, OrderPage, OrderResponse } from "../types/orders";
+import { OrderCreateRequest, OrderResponse, OrderListResponse } from "../types/orders";
 
 export class OrdersApi {
     constructor (
@@ -8,8 +8,9 @@ export class OrdersApi {
     ) {}
 
     public getOrders(
-    ): Promise<OrderPage> {
-        return this.api.get<OrderPage>(
+        // 
+    ): Promise<OrderListResponse> {
+        return this.api.get<OrderListResponse>(
             "/orders"
         );
     }

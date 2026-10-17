@@ -1,6 +1,27 @@
 @reference "tailwindcss";
-.badge { display: inline-block; border-radius: 6px; background: #f0f0f2; color: #424245; font-size: 12px; font-weight: 600; padding: 4px 7px; text-transform: capitalize; }
-.delivered { background: #e8f5ec; color: #246338; }
-.reported, .cancelled { background: #fff0f0; color: #9b2c2c; }
-.sent { background: #eaf3ff; color: #075ea8; }
 
+.badge {
+  background: var(--canvas);
+  border-radius: 9px;
+  color: var(--ink);
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 7px;
+  text-transform: capitalize;
+}
+
+.visible,
+.delivered,
+.sent {
+  color: var(--link);
+}
+
+.hidden {
+  color: var(--muted);
+}
+
+.reported,
+.cancelled {
+  color: var(--danger);
+}

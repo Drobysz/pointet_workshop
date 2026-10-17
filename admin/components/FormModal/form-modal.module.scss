@@ -124,10 +124,75 @@
   opacity: 0.55;
 }
 
+.visibility {
+  align-items: center;
+  background: var(--canvas);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  padding: 14px;
+}
+
+.visibility > div {
+  display: grid;
+  gap: 3px;
+}
+
+.visibility strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.visibility span {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.visibility button {
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 600;
+  gap: 7px;
+  min-height: 42px;
+  padding: 0 13px;
+}
+
+.visibility button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.visibleButton {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.hiddenButton {
+  background: var(--ink);
+  border-color: var(--ink) !important;
+  color: var(--surface);
+}
+
 @media (max-width: 40rem) {
   .grid,
   .checks {
     grid-template-columns: 1fr;
+  }
+
+  .visibility {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .visibility button {
+    justify-content: center;
   }
 }
 

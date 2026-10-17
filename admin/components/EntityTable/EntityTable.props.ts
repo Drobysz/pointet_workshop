@@ -12,9 +12,9 @@ export interface EntityTableProps<T> {
   rows: T[];
   rowKey: (row: T) => string | number;
   search: string;
-  page: number;
-  totalPages: number;
+  page?: number;
+  totalPages?: number;
   total: number;
   onSearch: (value: string) => void;
-  onPage: (page: number) => void;
+  onPage?: (page: number) => void;
 }

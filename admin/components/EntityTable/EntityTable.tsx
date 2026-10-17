@@ -16,6 +16,59 @@ function getVisiblePages(page: number, totalPages: number): number[] {
   );
 }
 
+interface TablePaginationProps {
+  page: number;
+  totalPages: number;
+  onPage: (page: number) => void;
+}
+
+function TablePagination({
+  page,
+  totalPages,
+  onPage,
+}: TablePaginationProps) {
+  const t = useTranslations("table");
+  const pages = getVisiblePages(page, totalPages);
+
+  return (
+    <nav className={styles.pagination} aria-label={t("paginationLabel")}>
+      <button
+        type="button"
+        disabled={page <= 1}
+        onClick={() => onPage(page - 1)}
+      >
+        {t("previous")}
+      </button>
+      <div>
+        {pages.map((value, index) => {
+          const previousPage = pages[index - 1];
+          const hasGap = index > 0 && value - previousPage > 1;
+
+          return (
+            <span key={value}>
+              {hasGap ? <i>…</i> : null}
+              <button
+                type="button"
+                aria-current={value === page ? "page" : undefined}
+                onClick={() => onPage(value)}
+              >
+                {value}
+              </button>
+            </span>
+          );
+        })}
+      </div>
+      <button
+        type="button"
+        disabled={page >= totalPages}
+        onClick={() => onPage(page + 1)}
+      >
+        {t("next")}
+      </button>
+    </nav>
+  );
+}
+
 export function EntityTable<T>({
   columns,
   rows,
@@ -28,7 +81,11 @@ export function EntityTable<T>({
   onPage,
 }: EntityTableProps<T>) {
   const t = useTranslations("table");
-  const pages = getVisiblePages(page, totalPages);
+  const pagination = page !== undefined
+    && totalPages !== undefined
+    && onPage !== undefined
+    ? { page, totalPages, onPage }
+    : null;
 
   return (
     <section className={styles.panel}>
@@ -76,41 +133,9 @@ export function EntityTable<T>({
         </table>
       </div>
 
-      <nav className={styles.pagination} aria-label={t("paginationLabel")}>
-        <button
-          type="button"
-          disabled={page <= 1}
-          onClick={() => onPage(page - 1)}
-        >
-          {t("previous")}
-        </button>
-        <div>
-          {pages.map((value, index) => {
-            const previousPage = pages[index - 1];
-            const hasGap = index > 0 && value - previousPage > 1;
-
-            return (
-              <span key={value}>
-                {hasGap ? <i>…</i> : null}
-                <button
-                  type="button"
-                  aria-current={value === page ? "page" : undefined}
-                  onClick={() => onPage(value)}
-                >
-                  {value}
-                </button>
-              </span>
-            );
-          })}
-        </div>
-        <button
-          type="button"
-          disabled={page >= totalPages}
-          onClick={() => onPage(page + 1)}
-        >
-          {t("next")}
-        </button>
-      </nav>
+      {pagination ? (
+        <TablePagination {...pagination} />
+      ) : null}
     </section>
   );
 }

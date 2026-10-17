@@ -11,9 +11,13 @@ export function Modal({ title, children, onClose }: ModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
+    const adminScrollRoot = document.querySelector<HTMLElement>(
+      "[data-admin-scroll-root]",
+    );
+    const scrollRoot = adminScrollRoot ?? document.body;
+    const previousOverflow = scrollRoot.style.overflow;
 
-    document.body.style.overflow = "hidden";
+    scrollRoot.style.overflow = "hidden";
     closeRef.current?.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -25,7 +29,7 @@ export function Modal({ title, children, onClose }: ModalProps) {
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      scrollRoot.style.overflow = previousOverflow;
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);

@@ -1,0 +1,16 @@
+@reference "tailwindcss";
+
+.card {
+    @apply flex
+        flex-col
+        gap-1.5
+        shrink-0;
+    &__params {
+        @apply flex 
+            gap-x-5 
+            gap-y-1 
+            pl-1.5 
+            pt-1 
+            flex-wrap;
+    }
+}

@@ -1,0 +1,26 @@
+@reference "tailwindcss";
+
+.size_feed {
+    @apply flex
+        items-center
+        gap-1
+        flex-wrap;
+
+    &__item {
+        @apply rounded-md
+            text-zinc-600
+            border
+            border-zinc-600
+            px-1
+            flex
+            flex-col
+            items-center
+            cursor-pointer;
+    }
+}
+
+.size_feed__item:hover,
+.isActive {
+    @apply text-red-500
+        border-red-500;;
+}

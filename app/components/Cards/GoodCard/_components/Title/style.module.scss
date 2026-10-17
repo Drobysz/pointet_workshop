@@ -1,0 +1,16 @@
+@reference "tailwindcss";
+
+.title {
+    @apply pl-2 
+        text-2xl;
+    
+    transition: color 0.2s ease-out;
+}
+
+.title_covered {
+    @apply bg-clip-text
+        text-transparent
+        bg-linear-to-t
+        from-red-200
+        to-red-700;
+}

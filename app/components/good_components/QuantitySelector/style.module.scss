@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.qntty_selector {
+    @apply rounded-lg
+        border
+        border-zinc-600
+        text-zinc-600
+        px-1
+        leading-4
+        flex 
+        gap-2
+        items-center
+        text-sm
+        w-fit;
+    
+    &__sel_btn {
+        @apply text-xl 
+            h-fit
+            leading-4.5;
+    }
+}

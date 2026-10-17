@@ -1,0 +1,58 @@
+@reference "tailwindcss";
+
+.checkout_window {
+    @apply flex
+        flex-col
+        gap-3;
+    
+    &__price_container {
+        @apply flex 
+            items-center 
+            justify-center
+            gap-2;
+    }
+
+    &__price {
+        @apply text-4xl
+            text-red-700;
+    }
+
+    &__btns_container {
+        @apply flex 
+            flex-col 
+            gap-1.5;
+    }
+
+    &__buy_btn {
+        @apply w-full 
+            bg-red-700 
+            rounded-xl
+            text-white
+            h-10
+            hover:bg-red-700/80
+            active:scale-98;
+
+        transition: 
+            color 0.15s ease-out,
+            scale 0.15s ease-out,
+            rotate 0.15s ease-out;
+    }
+}
+
+.back_btn {
+    @apply bg-gray-200/80
+        max-w-80
+        px-2 py-1
+        text-2xl
+        flex
+        gap-1.5
+        items-center
+        justify-center
+        rounded-3xl
+        active:scale-99
+        hover:bg-gray-300/80;
+    
+    transition:
+        scale 0.15s ease-out,
+        color 0.15s ease-out;
+}

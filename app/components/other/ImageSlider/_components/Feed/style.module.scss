@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+
+.feed {
+    touch-action: pan-y;
+    @apply flex 
+        w-full 
+        h-full
+        overflow-x-hidden 
+        scroll-smooth
+        relative
+        shrink-0;
+    
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE/Edge
+}
+
+.feed::-webkit-scrollbar {
+    display: none; // Chrome/Safari
+}

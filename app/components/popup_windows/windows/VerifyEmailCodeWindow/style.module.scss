@@ -1,0 +1,32 @@
+@reference "tailwindcss";
+
+.title {
+    @apply text-center
+        font-semibold
+        text-3xl
+        bg-clip-text
+        text-transparent
+        bg-linear-to-t
+        from-white
+        to-red-800;
+}
+
+.input {
+    @apply text-sm
+        font-semibold
+        min-w-65
+        bg-white
+        px-3 py-2
+        rounded-xl;
+
+    box-shadow:
+	    0px 0px 30px -6px rgba(0, 0, 0, 0.35);
+}
+
+.input:focus {
+    @apply border-red-500
+        ring ring-red-500
+        outline-0
+        box-border
+        text-red-900;
+}

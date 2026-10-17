@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+
+.bounds {
+    @apply rounded-full flex gap-1 z-30
+        py-1 px-1.5 w-fit bg-gray-700
+        absolute bottom-3 left-1/2
+        -translate-x-1/2;
+}
+
+.point {
+    @apply rounded-full h-2 w-2
+        bg-gray-900 transition-colors
+        duration-200 ease-in hover:bg-gray-600
+        cursor-pointer;
+}
+
+.active {
+    @apply bg-gray-100;
+}

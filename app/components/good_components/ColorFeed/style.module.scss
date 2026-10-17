@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+
+.color_feed {
+    @apply flex 
+        items-center
+        gap-2;
+
+    &__color {
+        @apply 
+            ring-1
+            ring-offset-1
+            cursor-pointer
+            rounded-full
+            h-5 w-5
+            hover:scale-110;
+        
+        transition: scale 0.15s ease;
+    }
+}

@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.price_tag {
+    @apply flex
+        pl-1.5
+        gap-0.5
+        items-start
+        bg-clip-text
+        text-transparent
+        bg-linear-to-t;
+    
+    &__number {
+        @apply text-4xl
+            leading-5;
+    }
+
+    &__currency {
+        @apply text-lg
+            leading-3;
+    }
+}

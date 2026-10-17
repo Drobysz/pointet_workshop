@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+
+.slider {
+    @apply rounded-3xl
+        relative
+        overflow-hidden
+        w-full;
+}

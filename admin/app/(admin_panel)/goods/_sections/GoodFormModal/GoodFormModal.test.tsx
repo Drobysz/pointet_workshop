@@ -13,6 +13,8 @@ vi.mock("@/queries", () => ({
   createGood: vi.fn(async () => ({ data: { id: 42, inventory_version: 1, inventory: [{ id: 5, good_id: 42, color_id: 2, size: null, quantity: 0 }] } })),
   updateGood: vi.fn(async () => ({ data: { id: 42, inventory_version: 1, inventory: [{ id: 5, good_id: 42, color_id: 2, size: null, quantity: 0 }] } })),
   uploadProductImage: vi.fn(),
+  updateProductImage: vi.fn(),
+  deleteProductImage: vi.fn(),
 }));
 
 beforeEach(() => {
@@ -26,6 +28,7 @@ it("retries only remaining images on the same product after a partial upload fai
   vi.mocked(uploadProductImage).mockResolvedValueOnce({}).mockRejectedValueOnce(new Error("network")).mockResolvedValueOnce({});
   render(<NextIntlClientProvider locale="fr" messages={messages}><SWRConfig value={{ provider: () => new Map(), dedupingInterval: 0 }}><GoodFormModal onClose={vi.fn()} onSaved={saved} /></SWRConfig></NextIntlClientProvider>);
   fireEvent.change(await screen.findByLabelText(messages.goods.form.name), { target: { value: "Oak chair" } });
+  fireEvent.change(screen.getByLabelText(messages.goods.form.brand), { target: { value: "Atelier Nord" } });
   fireEvent.change(screen.getByLabelText(messages.goods.form.price), { target: { value: "25" } });
   fireEvent.change(screen.getByLabelText(messages.goods.form.category), { target: { value: "1" } });
   fireEvent.change(screen.getByLabelText(messages.goods.form.subcategory), { target: { value: "1" } });
@@ -41,7 +44,7 @@ it("retries only remaining images on the same product after a partial upload fai
   fireEvent.submit(screen.getByRole("button", { name: messages.common.save }).closest("form")!);
   await waitFor(() => expect(saved).toHaveBeenCalledTimes(1));
   expect(createGood).toHaveBeenCalledTimes(1);
-  expect(updateGood).toHaveBeenCalledWith(42, expect.objectContaining({ inventory_version: 1, inventory: [{ id: 5, color_id: 2, size: null, quantity: 0 }], material_ids: [3] }));
+  expect(updateGood).toHaveBeenCalledWith(42, expect.objectContaining({ brand: "Atelier Nord", inventory_version: 1, inventory: [{ id: 5, color_id: 2, size: null, quantity: 0 }], material_ids: [3] }));
   expect(uploadProductImage).toHaveBeenNthCalledWith(1, 42, 2, first);
   expect(uploadProductImage).toHaveBeenNthCalledWith(2, 42, 2, second);
   expect(uploadProductImage).toHaveBeenNthCalledWith(3, 42, 2, second);

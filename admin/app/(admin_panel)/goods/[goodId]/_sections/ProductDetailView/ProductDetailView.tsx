@@ -153,6 +153,10 @@ export function ProductDetailView({ goodId }: { goodId: string }) {
           <div className={styles.price}>{formatCurrency(product.price)}</div>
           <dl>
             <div>
+              <dt>{t("brand")}</dt>
+              <dd>{product.brand}</dd>
+            </div>
+            <div>
               <dt>{t("available")}</dt>
               <dd>{t("units", { count: product.current_quantity })}</dd>
             </div>

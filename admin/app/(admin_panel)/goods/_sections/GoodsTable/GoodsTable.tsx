@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Pencil, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";
-import { EntityTable, PageHeader, StatePanel } from "@/components";
+import { EntityTable, PageHeader, StatePanel, StatusBadge } from "@/components";
 import { useAppFormatters, useTableQueryState } from "@/hooks";
 import type { Good } from "@/interface/domain";
 import { getGoods } from "@/queries";
@@ -63,6 +63,11 @@ export function GoodsTable() {
       ),
     },
     {
+      key: "brand",
+      label: t("brand"),
+      render: (good: Good) => good.brand,
+    },
+    {
       key: "subcategory",
       label: t("subcategory"),
       render: (good: Good) => good.subcategory?.name ?? "—",
@@ -79,6 +84,13 @@ export function GoodsTable() {
       label: t("stock"),
       align: "right" as const,
       render: (good: Good) => good.current_quantity,
+    },
+    {
+      key: "visibility",
+      label: t("visibility"),
+      render: (good: Good) => (
+        <StatusBadge value={good.visible ? "visible" : "hidden"} />
+      ),
     },
     {
       key: "price",

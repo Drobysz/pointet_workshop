@@ -63,7 +63,9 @@
     "pending": "En attente",
     "processing": "En traitement",
     "refunded": "Remboursée",
-    "shipped": "Expédiée"
+    "shipped": "Expédiée",
+    "visible": "Visible",
+    "hidden": "Masqué"
   },
   "login": {
     "adminOnly": "Ce compte ne dispose pas d’un accès administrateur.",
@@ -133,6 +135,7 @@
   "goods": {
     "all": "Tous les produits",
     "available": "Disponible",
+    "brand": "Marque",
     "catalog": "Catalogue",
     "colors": "Couleurs",
     "create": "Créer un produit",
@@ -142,6 +145,7 @@
     "editTitle": "Modifier le produit",
     "form": {
       "category": "Catégorie",
+      "brand": "Marque",
       "colors": "Couleurs",
       "description": "Description",
       "materials": "Matières",
@@ -150,7 +154,9 @@
       "selectCategory": "Sélectionnez une catégorie",
       "selectSubcategory": "Sélectionnez une sous-catégorie",
       "stock": "Stock",
-      "subcategory": "Sous-catégorie"
+      "subcategory": "Sous-catégorie",
+      "visibility": "Visibilité du produit",
+      "visibilityDescription": "Les produits masqués restent accessibles uniquement aux administrateurs."
     },
     "materials": "Matières",
     "nextImage": "Image suivante",
@@ -165,6 +171,9 @@
     "stock": "Stock",
     "subcategory": "Sous-catégorie",
     "title": "Produits",
+    "visible": "Visible",
+    "hidden": "Masqué",
+    "visibility": "Visibilité",
     "uncategorized": "Sans catégorie",
     "units": "{count, plural, one {# unité} other {# unités}}",
     "unitsSold": "Unités vendues",
@@ -174,7 +183,17 @@
       "selectColor": "Sélectionnez d’abord une couleur",
       "colorHint": "Les nouvelles images seront associées à cette couleur. Elles seront envoyées lors de l’enregistrement.",
       "retryError": "Le produit est enregistré, mais certaines images n’ont pas été envoyées. Réessayez pour envoyer les images restantes.",
-      "colorError": "Une couleur associée aux images a été désélectionnée. Sélectionnez-la à nouveau ou retirez ces images."
+      "colorError": "Une couleur associée aux images a été désélectionnée. Sélectionnez-la à nouveau ou retirez ces images.",
+      "currentTitle": "Images actuelles",
+      "emptyCurrent": "Aucune image n’est encore associée à ce produit.",
+      "name": "Nom de l’image",
+      "assignedColor": "Couleur associée",
+      "order": "Ordre",
+      "saveImage": "Enregistrer l’image",
+      "removeImage": "Supprimer",
+      "confirmRemove": "Confirmer la suppression",
+      "updateError": "Impossible de modifier cette image.",
+      "deleteError": "Impossible de supprimer cette image."
     }
   },
   "orders": {

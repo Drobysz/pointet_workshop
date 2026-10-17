@@ -4,16 +4,18 @@ import type {
   ApiEntity,
   Good,
   GoodPayload,
+  ProductImage,
+  ProductImagePayload,
   ProductStatistics,
 } from "@/interface/domain";
 
 export function getGoods(page: number, search: string) {
   const query = queryString({ page, search, per_page: 7 });
-  return requestBackend<ApiCollection<Good>>(`/goods?${query}`);
+  return requestBackend<ApiCollection<Good>>(`/admin/goods?${query}`);
 }
 
 export function getGood(id: string | number) {
-  return requestBackend<ApiEntity<Good>>(`/goods/${id}`);
+  return requestBackend<ApiEntity<Good>>(`/admin/goods/${id}`);
 }
 
 export function createGood(payload: GoodPayload) {
@@ -41,6 +43,22 @@ export function uploadProductImage(id: number, colorId: number, file: File) {
   body.set("color_id", String(colorId));
   body.set("image", file);
   return requestBackend(`/goods/${id}/images`, { method: "POST", body });
+}
+
+export function updateProductImage(
+  imageId: number,
+  payload: ProductImagePayload,
+) {
+  return requestBackend<ApiEntity<ProductImage>>(`/images/${imageId}`, {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function deleteProductImage(imageId: number) {
+  return requestBackend<void>(`/images/${imageId}`, {
+    method: "DELETE",
+  });
 }
 
 export function getProductStatistics(id: string) {

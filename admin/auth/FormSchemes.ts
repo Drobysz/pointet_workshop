@@ -26,6 +26,7 @@ export const userSchema = z.object({
 
 export const goodSchema = z.object({
   name: z.string().trim().min(1).max(255),
+  brand: z.string().trim().min(1).max(255),
   category_id: z.coerce.number().int().positive(),
   subcategory_id: z.coerce.number().int().positive(),
   price: z.coerce.number().min(0),
@@ -40,5 +41,6 @@ export const goodSchema = z.object({
     return new Set(keys).size === keys.length && rows.reduce((total, row) => total + row.quantity, 0) <= 2147483647;
   }),
   description: z.string().trim().min(1).max(65_535),
+  visible: z.boolean().default(true),
   material_ids: z.array(z.coerce.number().int().positive()),
 });

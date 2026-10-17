@@ -1,6 +1,7 @@
 import { requestBackend } from "@/helpers";
 import type {
   ApiCollection,
+  ApiList,
   Category,
   Color,
   Material,
@@ -14,21 +15,20 @@ export function getMarkers<T extends Marker>(
   kind: MarkerKind,
   page: number,
   search: string,
-) {
+): Promise<ApiCollection<T> | ApiList<T>> {
   const encodedSearch = encodeURIComponent(search);
+
+  if (kind === "categories") {
+    return requestBackend<ApiList<T>>(`/categories?search=${encodedSearch}`);
+  }
+
   const endpoint = `/${kind}?page=${page}&per_page=7&search=${encodedSearch}`;
 
   return requestBackend<ApiCollection<T>>(endpoint);
 }
 
-export async function getAllCategories() {
-  const first = await requestBackend<ApiCollection<Category>>("/categories?per_page=100");
-  const data = [...first.data];
-  for (let page = 2; page <= first.meta.last_page; page++) {
-    const next = await requestBackend<ApiCollection<Category>>(`/categories?per_page=100&page=${page}`);
-    data.push(...next.data);
-  }
-  return { ...first, data };
+export function getAllCategories(): Promise<ApiList<Category>> {
+  return requestBackend<ApiList<Category>>("/categories");
 }
 
 export function getMarkerOptions(kind: "colors" | "materials", page: number, search: string) {

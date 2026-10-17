@@ -10,12 +10,17 @@ export interface ApiCollection<T> {
   meta: PaginationMeta;
 }
 
+export interface ApiList<T> {
+  data: T[];
+}
+
 export interface ApiEntity<T> {
   data: T;
 }
 
 export interface ProductImage {
   id: number;
+  color_id: number;
   name: string;
   path: string;
   url: string | null;
@@ -71,11 +76,13 @@ export interface InventoryRow extends InventoryInput {
 export interface Good {
   id: number;
   name: string;
+  brand: string;
   price: string;
   current_quantity: number;
   inventory_version: number;
   inventory: InventoryRow[];
   description: string;
+  visible: boolean;
   category_id: number;
   subcategory_id: number;
   category?: Category;
@@ -87,13 +94,21 @@ export interface Good {
 
 export interface GoodPayload {
   name: string;
+  brand: string;
   category_id: number;
   subcategory_id: number;
   price: number;
   inventory_version?: number;
   inventory: InventoryInput[];
   description: string;
+  visible: boolean;
   material_ids: number[];
+}
+
+export interface ProductImagePayload {
+  color_id: number;
+  name: string;
+  sort_order: number;
 }
 
 export interface User {
@@ -101,6 +116,8 @@ export interface User {
   email: string;
   full_name: string;
   role: "user" | "admin";
+  orders_count: number;
+  basket_goods_count: number;
   email_verified_at: string | null;
   created_at: string;
 }

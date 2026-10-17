@@ -1,0 +1,22 @@
+@reference "tailwindcss";
+
+.shop_grid_container {
+    display: grid;
+    column-gap: 2rem;
+    padding: 0 1rem;
+    grid-template-columns: minmax(200px, 300px) minmax(270px, 1fr);
+    min-height: 97vh;
+    grid-template-areas: "aside main";
+
+    .aside_menu {
+        grid-area: aside;
+    }
+
+    .good_side_container {
+        grid-area: main;
+
+        @apply flex 
+            flex-col
+            gap-5;
+    }
+}

@@ -1,0 +1,14 @@
+@reference "tailwindcss";
+
+.aside_menu_tunnel {
+    @apply py-10
+        relative;
+}
+
+.aside_menu_elevator {
+    @apply sticky 
+        top-20
+        flex
+        flex-col
+        gap-10;
+}

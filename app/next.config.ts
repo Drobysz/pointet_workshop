@@ -7,6 +7,15 @@ const nextConfig: NextConfig = {
   experimental: {
     globalNotFound: true,
   },
+
+  images: {
+    remotePatterns: [
+      {
+          protocol: "https",
+          hostname: "pointet-workshop-s3.s3.eu-west-3.amazonaws.com",
+      },
+    ],
+  },
   
   turbopack: {
     rules: {

@@ -1,0 +1,80 @@
+@reference "tailwindcss";
+
+.category_list {
+    @apply flex 
+        gap-2
+        items-end;
+}
+
+.current_category {
+    @apply flex 
+        flex-col
+        items-center;
+    &__title {
+        @apply bg-clip-text
+            text-transparent
+            bg-linear-to-t
+            from-red-400
+            to-red-900
+            leading-4
+            text-sm;
+    }
+}
+
+.category_card {
+    @apply px-3 py-2
+        rounded-xl
+        flex
+        gap-3
+        justify-center
+        items-center
+        font-semibold
+        max-h-10
+        overflow-hidden
+        cursor-pointer
+        bg-linear-to-tl
+        from-gray-200
+        to-gray-300
+        border
+        border-transparent
+        ring-2
+        ring-transparent;
+    
+    &__title {
+        @apply text-2xl
+            bg-clip-text
+            text-transparent
+            bg-linear-to-t
+            from-zinc-300
+            to-zinc-600;
+    }
+    
+    .category_icon {
+        @apply h-auto w-auto;
+    }
+
+    &:hover {
+        @apply scale-96
+             bg-radial
+            from-red-200
+            from-5%
+            to-red-400
+            to-95%
+            border-red-300
+            ring-red-300/40;
+        .category_card__title {
+            @apply bg-clip-text
+                text-white;
+        }
+    }
+}
+
+.card_transition {
+    transition: 
+        color 0.2s ease,
+        transform 0.2s ease,
+        background-color 0.3s ease,
+        translate 0.2s ease,
+        font-size 0.2s ease,
+        scale 0.2s ease;
+}

@@ -1,0 +1,99 @@
+@reference "tailwindcss";
+
+.price_range {
+    @apply bg-white
+        rounded-3xl
+        px-7 py-3
+        w-full;
+
+    box-shadow:
+	    0px 0px 30px -14px rgba(0, 0, 0, 0.35);
+    
+    &__values {
+        @apply relative
+            pb-2
+            w-full
+            h-8;
+
+        .price {
+            @apply absolute
+                top-1/2
+                -translate-y-1/2
+                text-xl;
+        }
+    }
+
+    &__slider {
+        @apply relative
+            w-full
+            h-4;
+    }
+
+    &__track,
+    &__active {
+        @apply absolute
+            top-1/2
+            h-2
+            rounded-full
+            -translate-y-1/2;
+    }
+
+    &__track {
+        @apply left-0
+            right-0
+            bg-gray-200;
+    }
+
+    &__active {
+        @apply bg-red-500;
+    }
+
+    &__input {
+        @apply absolute
+            top-0
+            left-0
+            bg-transparent
+            appearance-none
+            w-full
+            pointer-events-none;
+
+        // Firefox, Chrome
+
+        &::-webkit-slider-thumb {
+            @apply w-4
+                h-4
+                rounded-full
+                bg-red-500
+                cursor-grab
+                pointer-events-auto
+                appearance-none
+                origin-center
+                hover:scale-115;
+            
+            transition: scale 0.15s ease-out;
+        }
+
+        &::-moz-range-thumb {
+            @apply w-4
+                h-4
+                rounded-full
+                border-0
+                bg-red-500
+                cursor-grab
+                pointer-events-auto
+                origin-center
+                hover:scale-105;
+
+            transition: scale 0.15s ease-out;
+        }
+        // Remove native track
+
+        &::-webkit-slider-runnable-track {
+            @apply bg-transparent;
+        }
+
+        &::-moz-range-track {
+            @apply bg-transparent;
+        }
+    }
+}

@@ -1,0 +1,11 @@
+@reference "tailwindcss";
+
+.good_info_section {
+    @apply flex
+        flex-col
+        gap-7;
+}
+
+.desc {
+    @apply text-zinc-600;
+}

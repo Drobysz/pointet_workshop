@@ -1,4 +1,4 @@
-import { TabListType } from "@/components/NavBar/types";
+import { TabListType } from "@/components/other/NavBar/types";
 
 export class PathService {
     static getPageActivity(path: string, href?: string, list?: TabListType[]) {
@@ -9,12 +9,14 @@ export class PathService {
             const tabHrefPoints = tabHref?.split('/') ?? [];
             const tabPagename = tabHrefPoints[tabHrefPoints.length - 1];
 
+            const isActive = pathPoints[pathPoints.length - 1].includes(tabPagename);
+
             if (tabPagename == '') {
                 if (path === '' || path === '/') {
                     return true;
                 }
-            } else if (pathPoints.filter(p => p !== '').includes(tabPagename)) {
-                return true
+            } else if (isActive) {
+                return true;
             };
         }
 
@@ -29,5 +31,21 @@ export class PathService {
         }
 
         return `${basePath.replace(/\/$/, "")}${path}`;
+    }
+
+    static paramsToString<T extends object>(
+        params: T
+    ) {
+        const searchParams = new URLSearchParams();
+
+        for (const [key, value] of Object.entries(params)) {
+            if (value === undefined || value === null) {
+                continue;
+            }
+
+            searchParams.set(key, String(value));
+        }
+
+        return searchParams.toString();
     }
 }

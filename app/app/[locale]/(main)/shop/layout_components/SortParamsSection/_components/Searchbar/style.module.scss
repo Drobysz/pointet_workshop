@@ -1,0 +1,49 @@
+@reference "tailwindcss";
+
+.searchbar {
+    @apply rounded-xl
+        bg-gray-200
+        w-fit
+        pl-3 pr-10 py-2
+        ring-2
+        outline-0
+        field-sizing-content
+        min-w-50
+        max-w-120
+        ring-transparent
+        border
+        border-transparent
+        hover:pl-10
+        hover:min-w-55
+        focus:pl-10
+        focus:pr-3
+        focus:min-w-70;
+
+    transition: 
+        translate 0.2s ease-out,
+        padding-left 0.2s ease-out,
+        min-width 0.2s ease-out;
+}
+
+.searchbar:focus {
+    @apply ring-red-300/70
+        text-red-700
+        border-red-400;
+}
+
+.magnifier_icon {
+    @apply absolute
+        top-1/2
+        -translate-y-1/2
+        transition-transform
+        duration-200
+        ease-out;
+}
+
+.magnifier_icon_left {
+    @apply right-2;
+}
+
+.magnifier_icon_right {
+    @apply -left-8;
+}

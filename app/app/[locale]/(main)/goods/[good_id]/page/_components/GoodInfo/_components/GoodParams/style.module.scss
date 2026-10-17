@@ -1,0 +1,32 @@
+@reference "tailwindcss";
+
+.params_list {
+    @apply flex 
+        flex-col 
+        gap-2;
+}
+
+.param {
+    @apply flex 
+        items-end 
+        gap-1 
+        text-sm
+        whitespace-nowrap;
+    
+    &__line {
+        @apply h-px 
+            w-full 
+            border 
+            border-zinc-400 
+            border-dashed 
+            mb-0.5;
+    }
+
+    &__key {
+        @apply leading-4 text-zinc-500;
+    }
+
+    &__value {
+        @apply leading-4;
+    }
+}

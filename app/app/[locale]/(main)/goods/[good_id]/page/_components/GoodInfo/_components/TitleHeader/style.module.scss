@@ -1,0 +1,26 @@
+@reference "tailwindcss";
+
+.header {
+    @apply flex
+        flex-col
+        gap-1.5
+        pb-5;
+    
+    &__tag_container {
+        @apply flex 
+            gap-2
+            pl-1;
+    }
+
+    &__tag {
+        @apply px-2 py-1
+            rounded-full
+            bg-gray-300/70
+            leading-4;
+    }
+
+    &__title {
+        @apply text-6xl
+            leading-9;
+    }
+}

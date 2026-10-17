@@ -1,0 +1,48 @@
+@reference "tailwindcss";
+
+.subcat_item_trans {
+    transition: 
+        color 0.2s ease-out,
+        translate 0.2s ease-out,
+        scale 0.2s ease-out;
+}
+
+.subcat_list_container {
+    @apply flex py-3 px-2
+        justify-center
+        bg-white
+        rounded-3xl
+        text-zinc-500;
+    
+    box-shadow:
+		0px 0px 30px -14px rgba(0, 0, 0, 0.35);
+}
+
+.subcat_list {
+    @apply flex 
+        flex-col 
+        gap-2
+        px-3
+        max-w-100
+        w-full;
+}
+
+.subcat_item_container {
+    @apply text-3xl
+        relative
+        flex
+        items-center
+        justify-between
+        gap-2
+        cursor-pointer
+        px-2
+        overflow-hidden
+        active:scale-98;
+
+    .left_arrow {
+        @apply absolute
+            top-1/2
+            translate-y-[-47%]
+            left-0;
+    }
+}

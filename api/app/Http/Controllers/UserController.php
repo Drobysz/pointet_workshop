@@ -39,6 +39,7 @@ class UserController extends Controller
         ]);
 
         $users = User::query()
+            ->withResourceCounts()
             ->when(
                 $filters['role'] ?? null,
                 fn ($query, $role) => $query->where('role', $role),
@@ -81,14 +82,14 @@ class UserController extends Controller
             'email_verified_at' => now(),
         ])->save();
 
-        return new UserResource($user);
+        return $this->resource($user);
     }
 
     public function show(User $user): UserResource
     {
         $this->authorize('view', $user);
 
-        return new UserResource($user);
+        return $this->resource($user);
     }
 
     public function update(UserUpdateRequest $request, User $user): UserResource
@@ -104,7 +105,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return new UserResource($user->fresh());
+        return $this->resource($user->fresh());
     }
 
     public function requestEmailChange(EmailChangeRequest $request, User $user)
@@ -139,7 +140,7 @@ class UserController extends Controller
         }
 
         if ($result['status'] === 'verified') {
-            return new UserResource($result['user']);
+            return $this->resource($result['user']);
         }
 
         if ($result['status'] === 'duplicate_email') {
@@ -169,7 +170,7 @@ class UserController extends Controller
         $user->forceFill(['password' => Hash::make($data['new_password'])])->save();
         $this->sessions->revokeAll($user);
 
-        return new UserResource($user->fresh());
+        return $this->resource($user->fresh());
     }
 
     public function destroy(User $user)
@@ -188,5 +189,12 @@ class UserController extends Controller
         $user->delete();
 
         return response()->noContent();
+    }
+
+    private function resource(User $user): UserResource
+    {
+        $user->loadCount('orders')->loadSum('basketItems as basket_goods_count', 'quantity');
+
+        return new UserResource($user);
     }
 }

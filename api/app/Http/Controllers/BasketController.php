@@ -27,9 +27,28 @@ class BasketController extends Controller
             $variant = GoodRegister::findOrFail($data['good_register_id']);
             Good::query()->lockForUpdate()->findOrFail($variant->good_id);
             $variant = GoodRegister::findOrFail($variant->id);
-            abort_if($data['quantity'] > $variant->quantity, 422, 'Requested quantity is unavailable for this color and size.');
+            $basket = Basket::query()
+                ->where('user_id', $request->user()->id)
+                ->where('good_register_id', $variant->id)
+                ->lockForUpdate()
+                ->first();
+            $quantity = ($basket?->quantity ?? 0) + $data['quantity'];
 
-            return Basket::updateOrCreate(['user_id' => $request->user()->id, 'good_register_id' => $variant->id], ['good_id' => $variant->good_id, 'color_id' => $variant->color_id, 'quantity' => $data['quantity']]);
+            abort_if($quantity > $variant->quantity, 422, 'The requested quantity exceeds available stock for this product option.');
+
+            if ($basket) {
+                $basket->update(['quantity' => $quantity]);
+
+                return $basket;
+            }
+
+            return Basket::create([
+                'user_id' => $request->user()->id,
+                'good_register_id' => $variant->id,
+                'good_id' => $variant->good_id,
+                'color_id' => $variant->color_id,
+                'quantity' => $quantity,
+            ]);
         });
 
         return new BasketResource($basket->load(self::RELATIONS));

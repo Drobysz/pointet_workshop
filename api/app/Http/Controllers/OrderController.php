@@ -9,6 +9,7 @@ use App\Http\Resources\OrderResource;
 use App\Models\Good;
 use App\Models\GoodRegister;
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
@@ -17,27 +18,41 @@ class OrderController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection
     {
-        $data = $request->validate(['search' => ['nullable', 'string', 'max:120'], 'user_id' => ['nullable', 'integer'], 'per_page' => ['nullable', 'integer', 'min:1', 'max:100']]);
+        $data = $request->validate([
+            'search' => ['nullable', 'string', 'max:120'],
+            'user_id' => ['nullable', 'integer'],
+        ]);
         $query = Order::query()->with('items');
+
         if (! $request->user()->isAdmin()) {
             $query->where('user_id', $request->user()->id);
         } elseif ($data['user_id'] ?? null) {
             $query->where('user_id', $data['user_id']);
         }
-        $query->when($data['search'] ?? null, fn ($q, $search) => $q->where(fn ($inner) => $inner->whereRaw('LOWER(customer_name) LIKE ?', ['%'.mb_strtolower($search).'%'])->orWhereRaw('LOWER(customer_email) LIKE ?', ['%'.mb_strtolower($search).'%'])->orWhere('id', ctype_digit($search) ? (int) $search : -1)));
 
-        if (! $request->user()->isAdmin()) {
-            return OrderResource::collection($query->latest('placed_at')->get());
+        $search = $data['search'] ?? null;
+        if ($search) {
+            $phrase = '%'.mb_strtolower($search).'%';
+            $orderId = ctype_digit($search) ? (int) $search : -1;
+
+            $query->where(function (Builder $orders) use ($phrase, $orderId): void {
+                $orders
+                    ->whereRaw('LOWER(customer_name) LIKE ?', [$phrase])
+                    ->orWhereRaw('LOWER(customer_email) LIKE ?', [$phrase])
+                    ->orWhere('id', $orderId);
+            });
         }
 
-        return OrderResource::collection($query->latest('placed_at')->paginate($data['per_page'] ?? 7)->withQueryString());
+        return OrderResource::collection(
+            $query->latest('placed_at')->get(),
+        );
     }
 
     public function show(Order $order): OrderDetailResource
     {
         $this->authorize('view', $order);
 
-        return new OrderDetailResource($order->load(['user', 'items.good']));
+        return new OrderDetailResource($order->load(['user' => fn ($query) => $query->withResourceCounts(), 'items.good']));
     }
 
     public function store(OrderRequest $request): OrderDetailResource
@@ -66,7 +81,7 @@ class OrderController extends Controller
             return $order;
         }, 3);
 
-        return new OrderDetailResource($order->load(['user', 'items.good']));
+        return new OrderDetailResource($order->load(['user' => fn ($query) => $query->withResourceCounts(), 'items.good']));
     }
 
     public function update(OrderRequest $request, Order $order): OrderDetailResource
@@ -75,7 +90,7 @@ class OrderController extends Controller
         $order->update(['status' => $request->validated('status')]);
         $order->items()->update(['status' => $request->validated('status')]);
 
-        return new OrderDetailResource($order->load(['user', 'items.good']));
+        return new OrderDetailResource($order->load(['user' => fn ($query) => $query->withResourceCounts(), 'items.good']));
     }
 
     public function destroy(Order $order)

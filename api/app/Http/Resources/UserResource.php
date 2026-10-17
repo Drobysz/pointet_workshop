@@ -17,6 +17,8 @@ class UserResource extends JsonResource
             'tel' => $this->tel,
             'language' => $this->language,
             'role' => $this->role->value,
+            'orders_count' => (int) $this->orders_count,
+            'basket_goods_count' => (int) ($this->basket_goods_count ?? 0),
             'email_verified_at' => $this->email_verified_at?->toISOString(),
             'created_at' => $this->created_at?->toISOString(),
         ];

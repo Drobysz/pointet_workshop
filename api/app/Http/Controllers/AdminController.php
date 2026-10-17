@@ -17,13 +17,13 @@ class AdminController extends Controller
         $admin = User::create(['email' => Str::lower(trim($data['email'])), 'password' => Hash::make($data['password']), 'full_name' => trim($data['full_name']), 'address' => '', 'language' => 'en']);
         $admin->forceFill(['role' => UserRole::Admin, 'email_verified_at' => now()])->save();
 
-        return new UserResource($admin);
+        return new UserResource($admin->loadCount('orders')->loadSum('basketItems as basket_goods_count', 'quantity'));
     }
 
     public function show(User $admin): UserResource
     {
         abort_unless($admin->isAdmin(), 404);
 
-        return new UserResource($admin);
+        return new UserResource($admin->loadCount('orders')->loadSum('basketItems as basket_goods_count', 'quantity'));
     }
 }

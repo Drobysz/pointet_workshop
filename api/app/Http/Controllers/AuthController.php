@@ -94,7 +94,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $email = Str::lower(trim($request->validated('email')));
-        $user = User::query()->whereRaw('LOWER(email) = ?', [$email])->first();
+        $user = User::query()->withResourceCounts()->whereRaw('LOWER(email) = ?', [$email])->first();
         $hash = $user?->password ?? config('auth_tokens.dummy_password_hash');
         if (! Hash::check($request->validated('password'), $hash) || ! $user) {
             return response()->json(['error' => ['code' => 'invalid_credentials', 'message' => 'Email or password is incorrect.']], 401);
@@ -135,12 +135,16 @@ class AuthController extends Controller
 
     public function me(Request $request): UserResource
     {
-        return new UserResource($request->user());
+        $user = $request->user();
+        $user->loadCount('orders')->loadSum('basketItems as basket_goods_count', 'quantity');
+
+        return new UserResource($user);
     }
 
     private function sessionResponse(User $user, Request $request, int $status = 200): JsonResponse
     {
         $tokens = $this->sessions->create($user, $request);
+        $user->loadCount('orders')->loadSum('basketItems as basket_goods_count', 'quantity');
 
         return $this->sessions->attachCookies(response()->json(['data' => ['user' => new UserResource($user), 'authenticated' => true]], $status), $tokens);
     }

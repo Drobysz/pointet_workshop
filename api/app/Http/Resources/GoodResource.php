@@ -12,7 +12,8 @@ class GoodResource extends JsonResource
         $images = $this->relationLoaded('images') ? $this->images->groupBy('color_id') : collect();
 
         return [
-            'id' => $this->id, 'name' => $this->name, 'price' => (string) $this->price,
+            'id' => $this->id, 'name' => $this->name, 'brand' => $this->brand, 'price' => (string) $this->price,
+            'visible' => $this->visible,
             'current_quantity' => $this->current_quantity, 'inventory_version' => $this->inventory_version,
             'inventory' => GoodRegisterResource::collection($this->whenLoaded('inventory')), 'description' => $this->description,
             'category_id' => $this->category_id, 'subcategory_id' => $this->subcategory_id,

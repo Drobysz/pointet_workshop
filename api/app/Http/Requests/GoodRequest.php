@@ -34,10 +34,12 @@ class GoodRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'brand' => ['required', 'string', 'max:255'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'subcategory_id' => ['required', 'integer', Rule::exists('subcategories', 'id')->where(fn ($q) => $q->where('category_id', $this->integer('category_id')))],
             'price' => ['required', 'numeric', 'min:0', 'decimal:0,2'],
             'description' => ['required', 'string', 'max:65535'],
+            'visible' => ['sometimes', 'boolean'],
             'inventory_version' => [Rule::requiredIf(! $this->isMethod('post')), 'integer', 'min:0'],
             'inventory' => ['required', 'array', 'min:1', 'max:500'],
             'inventory.*' => ['required', 'array:id,color_id,size,quantity'],

@@ -7,6 +7,16 @@ use App\Models\User;
 
 class GoodPolicy
 {
+    public function viewAny(User $user): bool
+    {
+        return $user->isAdmin();
+    }
+
+    public function view(User $user, Good $good): bool
+    {
+        return $user->isAdmin();
+    }
+
     public function create(User $user): bool
     {
         return $user->isAdmin();

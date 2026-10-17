@@ -13,11 +13,25 @@ class Good extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'category_id', 'subcategory_id', 'price', 'current_quantity', 'description'];
+    protected $fillable = [
+        'name',
+        'brand',
+        'category_id',
+        'subcategory_id',
+        'price',
+        'current_quantity',
+        'description',
+        'visible',
+    ];
 
     protected function casts(): array
     {
-        return ['price' => 'decimal:2', 'current_quantity' => 'integer', 'inventory_version' => 'integer'];
+        return [
+            'price' => 'decimal:2',
+            'current_quantity' => 'integer',
+            'inventory_version' => 'integer',
+            'visible' => 'boolean',
+        ];
     }
 
     public function category(): BelongsTo
@@ -66,5 +80,10 @@ class Good extends Model
                 $phrase = mb_strtolower(trim($search));
                 $q->where(fn (Builder $inner) => $inner->whereRaw('LOWER(name) LIKE ?', ["%{$phrase}%"])->orWhereRaw('LOWER(description) LIKE ?', ["%{$phrase}%"]));
             });
+    }
+
+    public function scopeVisible(Builder $query): Builder
+    {
+        return $query->where('visible', true);
     }
 }

@@ -24,7 +24,7 @@ class VariantInventoryTest extends TestCase
         $red = Color::create(['name' => 'Red', 'hexcode' => '#ff0000']);
         $blue = Color::create(['name' => 'Blue', 'hexcode' => '#0000ff']);
 
-        return ['name' => 'Shirt', 'category_id' => $category->id, 'subcategory_id' => $subcategory->id, 'price' => '25.50', 'description' => 'Cotton shirt', 'material_ids' => [], 'inventory' => [
+        return ['name' => 'Shirt', 'brand' => 'Atelier Nord', 'category_id' => $category->id, 'subcategory_id' => $subcategory->id, 'price' => '25.50', 'description' => 'Cotton shirt', 'material_ids' => [], 'inventory' => [
             ['color_id' => $red->id, 'size' => 'XL', 'quantity' => 3],
             ['color_id' => $red->id, 'size' => '43.5', 'quantity' => 2],
             ['color_id' => $blue->id, 'size' => null, 'quantity' => 4],
@@ -34,7 +34,7 @@ class VariantInventoryTest extends TestCase
     public function test_product_inventory_has_custom_sizes_distinct_colors_and_derived_total(): void
     {
         $data = $this->payload();
-        $created = $this->postJson('/api/goods', $data)->assertCreated()->assertJsonPath('data.current_quantity', 9)->assertJsonCount(3, 'data.inventory')->assertJsonCount(2, 'data.colors');
+        $created = $this->postJson('/api/goods', $data)->assertCreated()->assertJsonPath('data.brand', 'Atelier Nord')->assertJsonPath('data.current_quantity', 9)->assertJsonCount(3, 'data.inventory')->assertJsonCount(2, 'data.colors');
         $id = $created->json('data.id');
         $this->getJson('/api/goods')->assertOk()->assertJsonCount(2, 'data.0.colors')->assertJsonPath('data.0.inventory.1.size', '43.5');
         $rows = $created->json('data.inventory');
@@ -58,6 +58,16 @@ class VariantInventoryTest extends TestCase
         $this->postJson('/api/goods', $data)->assertUnprocessable();
         $this->assertDatabaseCount('goods', 0);
         $this->assertDatabaseCount('good_register', 0);
+    }
+
+    public function test_brand_is_required_when_creating_a_product(): void
+    {
+        $data = $this->payload();
+        unset($data['brand']);
+
+        $this->postJson('/api/goods', $data)
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('brand');
     }
 
     public function test_null_size_is_unique_and_database_rejects_negative_stock(): void
@@ -111,6 +121,25 @@ class VariantInventoryTest extends TestCase
         $this->assertDatabaseCount('baskets', 0);
         $this->postJson('/api/orders', ['items' => [['good_register_id' => $small, 'quantity' => 2]]])->assertUnprocessable();
         $this->assertDatabaseCount('orders', 1);
+    }
+
+    public function test_adding_an_existing_basket_variant_cannot_exceed_its_stock(): void
+    {
+        $created = $this->postJson('/api/goods', $this->payload())->assertCreated();
+        $variant = $created->json('data.inventory.0.id');
+        $this->withToken($this->accessToken(User::factory()->create()));
+
+        $this->postJson('/api/basket', ['good_register_id' => $variant, 'quantity' => 2])
+            ->assertCreated()
+            ->assertJsonPath('data.quantity', 2);
+        $this->postJson('/api/basket', ['good_register_id' => $variant, 'quantity' => 1])
+            ->assertOk()
+            ->assertJsonPath('data.quantity', 3);
+        $this->postJson('/api/basket', ['good_register_id' => $variant, 'quantity' => 1])
+            ->assertUnprocessable()
+            ->assertJsonPath('error.message', 'The requested quantity exceeds available stock for this product option.');
+
+        $this->assertDatabaseHas('baskets', ['good_register_id' => $variant, 'quantity' => 3]);
     }
 
     public function test_duplicate_order_lines_cannot_oversell_and_roll_back_the_whole_order(): void

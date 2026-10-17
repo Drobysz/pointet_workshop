@@ -12,6 +12,13 @@ class ImageResource extends JsonResource
     {
         $url = CatalogImageUrl::resolve($this->path, $this->url);
 
-        return ['id' => $this->id, 'name' => $this->name, 'path' => $this->path, 'url' => $url, 'sort_order' => $this->sort_order];
+        return [
+            'id' => $this->id,
+            'color_id' => $this->color_id,
+            'name' => $this->name,
+            'path' => $this->path,
+            'url' => $url,
+            'sort_order' => $this->sort_order,
+        ];
     }
 }

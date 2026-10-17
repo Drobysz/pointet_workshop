@@ -13,14 +13,34 @@ use Throwable;
 
 class ProductImageService
 {
-    public function store(Good $good, Color $color, UploadedFile $file, ?string $name, int $sortOrder): ProductImage
-    {
+    public function store(
+        Good $good,
+        Color $color,
+        UploadedFile $file,
+        ?string $name,
+        int $sortOrder,
+    ): ProductImage {
         $path = null;
         try {
-            return DB::transaction(function () use ($good, $color, $file, $name, $sortOrder, &$path): ProductImage {
+            return DB::transaction(function () use (
+                $good,
+                $color,
+                $file,
+                $name,
+                $sortOrder,
+                &$path,
+            ): ProductImage {
                 // Inventory replacement uses the same lock, so a color cannot vanish mid-upload.
                 $good = Good::query()->lockForUpdate()->findOrFail($good->id);
-                abort_unless($good->inventory()->where('color_id', $color->id)->exists(), 422, 'The selected color is not assigned to this product.');
+                $colorIsAssigned = $good
+                    ->inventory()
+                    ->where('color_id', $color->id)
+                    ->exists();
+                abort_unless(
+                    $colorIsAssigned,
+                    422,
+                    'The selected color is not assigned to this product.',
+                );
                 $colorDirectory = Str::slug($color->name) ?: "color-{$color->id}";
                 $safeName = Str::slug(pathinfo($name ?: $file->getClientOriginalName(), PATHINFO_FILENAME)) ?: 'image';
                 $filename = $safeName.'-'.Str::lower(Str::random(10)).'.'.$file->extension();
@@ -29,7 +49,14 @@ class ProductImageService
                     throw new \RuntimeException('Product image upload failed.');
                 }
 
-                return ProductImage::create(['good_id' => $good->id, 'color_id' => $color->id, 'name' => $name ?: $safeName, 'path' => $path, 'url' => Storage::disk('s3')->url($path), 'sort_order' => $sortOrder]);
+                return ProductImage::create([
+                    'good_id' => $good->id,
+                    'color_id' => $color->id,
+                    'name' => $name ?: $safeName,
+                    'path' => $path,
+                    'url' => Storage::disk('s3')->url($path),
+                    'sort_order' => $sortOrder,
+                ]);
             });
         } catch (Throwable $exception) {
             if ($path) {

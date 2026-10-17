@@ -17,6 +17,22 @@ class CatalogAndAuthorizationTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_categories_are_returned_as_a_complete_collection(): void
+    {
+        foreach (range(1, 55) as $index) {
+            Category::create([
+                'name' => "Category {$index}",
+            ]);
+        }
+
+        $response = $this->getJson('/api/categories')
+            ->assertOk()
+            ->assertJsonCount(55, 'data');
+
+        $this->assertArrayNotHasKey('links', $response->json());
+        $this->assertArrayNotHasKey('meta', $response->json());
+    }
+
     public function test_goods_filters_pagination_and_color_image_structure(): void
     {
         // This fixture uses an externally hosted image rather than a private S3 object.
@@ -106,7 +122,41 @@ class CatalogAndAuthorizationTest extends TestCase
             ->assertOk();
     }
 
-    public function test_customer_orders_are_not_paginated_while_admin_orders_remain_paginated(): void
+    public function test_hidden_products_are_private_but_remain_available_to_admins(): void
+    {
+        [$category, $subcategory] = $this->catalogMarkers();
+        $hidden = $this->createGood(
+            $category,
+            $subcategory,
+            'Hidden chair',
+            85,
+        );
+        $hidden->update(['visible' => false]);
+
+        $this->getJson('/api/goods?search=hidden')
+            ->assertOk()
+            ->assertJsonCount(0, 'data');
+        $this->getJson("/api/goods/{$hidden->id}")
+            ->assertNotFound();
+
+        $customer = User::factory()->create();
+        $this->withToken($this->accessToken($customer))
+            ->getJson('/api/admin/goods')
+            ->assertForbidden();
+
+        $admin = User::factory()->create(['role' => 'admin']);
+        $this->withToken($this->accessToken($admin))
+            ->getJson('/api/admin/goods?search=hidden')
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.visible', false);
+        $this->withToken($this->accessToken($admin))
+            ->getJson("/api/admin/goods/{$hidden->id}")
+            ->assertOk()
+            ->assertJsonPath('data.visible', false);
+    }
+
+    public function test_customer_and_admin_order_lists_are_not_paginated(): void
     {
         $customer = User::factory()->create();
         $admin = User::factory()->create(['role' => 'admin']);
@@ -128,11 +178,12 @@ class CatalogAndAuthorizationTest extends TestCase
         $this->assertArrayNotHasKey('links', $customerResponse->json());
         $this->assertArrayNotHasKey('meta', $customerResponse->json());
 
-        $this->withToken($this->accessToken($admin))
+        $adminResponse = $this->withToken($this->accessToken($admin))
             ->getJson('/api/orders')
             ->assertOk()
-            ->assertJsonCount(7, 'data')
-            ->assertJsonPath('meta.total', 8);
+            ->assertJsonCount(8, 'data');
+        $this->assertArrayNotHasKey('links', $adminResponse->json());
+        $this->assertArrayNotHasKey('meta', $adminResponse->json());
     }
 
     public function test_only_an_admin_can_create_a_verified_customer(): void

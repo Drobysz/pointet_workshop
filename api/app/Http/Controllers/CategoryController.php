@@ -6,16 +6,33 @@ use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\Catalog\CategoryImageService;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CategoryController extends Controller
 {
     public function __construct(private readonly CategoryImageService $images) {}
 
-    public function index()
+    public function index(Request $request): AnonymousResourceCollection
     {
-        $data = request()->validate(['search' => ['nullable', 'string', 'max:120'], 'per_page' => ['nullable', 'integer', 'min:1', 'max:100']]);
+        $filters = $request->validate([
+            'search' => ['nullable', 'string', 'max:120'],
+        ]);
+        $search = $filters['search'] ?? null;
+        $categories = Category::query()
+            ->with(['subcategories', 'image'])
+            ->when($search, function ($query, string $search): void {
+                $normalizedSearch = mb_strtolower($search);
 
-        return CategoryResource::collection(Category::with(['subcategories', 'image'])->when($data['search'] ?? null, fn ($q, $search) => $q->whereRaw('LOWER(name) LIKE ?', ['%'.mb_strtolower($search).'%']))->orderBy('name')->paginate($data['per_page'] ?? 50)->withQueryString());
+                $query->whereRaw(
+                    'LOWER(name) LIKE ?',
+                    ["%{$normalizedSearch}%"],
+                );
+            })
+            ->orderBy('name')
+            ->get();
+
+        return CategoryResource::collection($categories);
     }
 
     public function store(CategoryRequest $request): CategoryResource

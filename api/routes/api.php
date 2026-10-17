@@ -56,6 +56,8 @@ Route::middleware('auth.jwt')->group(function (): void {
     Route::middleware('admin.current')->group(function (): void {
         Route::middleware('throttle:api-read')->group(function (): void {
             Route::get('/admins/{admin}', [AdminController::class, 'show']);
+            Route::get('/admin/goods', [GoodController::class, 'adminIndex']);
+            Route::get('/admin/goods/{good}', [GoodController::class, 'adminShow']);
             Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
             Route::get('/dashboard/analytics', [DashboardController::class, 'analytics']);
             Route::get('/dashboard/top-products', [DashboardController::class, 'topProducts']);

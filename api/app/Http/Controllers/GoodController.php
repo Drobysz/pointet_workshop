@@ -18,15 +18,28 @@ class GoodController extends Controller
 
     public function index(Request $request): AnonymousResourceCollection
     {
-        $filters = $request->validate(['category_id' => ['nullable', 'integer'], 'subcategory_id' => ['nullable', 'integer'], 'min_price' => ['nullable', 'numeric', 'min:0'], 'max_price' => ['nullable', 'numeric', 'gte:min_price'], 'search' => ['nullable', 'string', 'max:120'], 'per_page' => ['nullable', 'integer', 'min:1', 'max:100'], 'page' => ['nullable', 'integer', 'min:1']]);
-        $goods = Good::query()->with([...self::RESOURCE_RELATIONS, 'images' => fn ($query) => $query->orderBy('sort_order')])->catalogFilters($filters)->latest('id')->paginate($filters['per_page'] ?? 7)->withQueryString();
+        return $this->collection($request, visibleOnly: true);
+    }
 
-        return GoodResource::collection($goods);
+    public function adminIndex(Request $request): AnonymousResourceCollection
+    {
+        $this->authorize('viewAny', Good::class);
+
+        return $this->collection($request, visibleOnly: false);
     }
 
     public function show(Good $good): GoodResource
     {
-        return new GoodResource($good->load([...self::RESOURCE_RELATIONS, 'images' => fn ($query) => $query->orderBy('sort_order')]));
+        abort_unless($good->visible, 404);
+
+        return $this->resource($good);
+    }
+
+    public function adminShow(Good $good): GoodResource
+    {
+        $this->authorize('view', $good);
+
+        return $this->resource($good);
     }
 
     public function store(GoodRequest $request): GoodResource
@@ -34,14 +47,14 @@ class GoodController extends Controller
         $this->authorize('create', Good::class);
         $data = $request->validated();
         $good = DB::transaction(function () use ($data): Good {
-            $good = Good::create(collect($data)->only(['name', 'category_id', 'subcategory_id', 'price', 'description'])->all());
+            $good = Good::create($this->attributes($data));
             $this->inventory->replace($good, $data['inventory']);
             $good->materials()->sync($data['material_ids']);
 
             return $good;
         });
 
-        return new GoodResource($good->load([...self::RESOURCE_RELATIONS, 'images' => fn ($query) => $query->orderBy('sort_order')]));
+        return $this->resource($good);
     }
 
     public function update(GoodRequest $request, Good $good): GoodResource
@@ -50,13 +63,19 @@ class GoodController extends Controller
         $data = $request->validated();
         DB::transaction(function () use ($data, $good): void {
             $locked = Good::query()->lockForUpdate()->findOrFail($good->id);
-            abort_if($locked->inventory_version !== (int) $data['inventory_version'], 409, 'Stock changed while this form was open. Reload the product before saving.');
-            $locked->update(collect($data)->only(['name', 'category_id', 'subcategory_id', 'price', 'description'])->all());
+            $inventoryIsStale = $locked->inventory_version
+                !== (int) $data['inventory_version'];
+            abort_if(
+                $inventoryIsStale,
+                409,
+                'Stock changed while this form was open. Reload the product before saving.',
+            );
+            $locked->update($this->attributes($data));
             $this->inventory->replace($locked, $data['inventory']);
             $locked->materials()->sync($data['material_ids']);
         });
 
-        return new GoodResource($good->fresh()->load([...self::RESOURCE_RELATIONS, 'images' => fn ($query) => $query->orderBy('sort_order')]));
+        return $this->resource($good->fresh());
     }
 
     public function destroy(Good $good)
@@ -65,5 +84,56 @@ class GoodController extends Controller
         $good->delete();
 
         return response()->noContent();
+    }
+
+    private function collection(
+        Request $request,
+        bool $visibleOnly,
+    ): AnonymousResourceCollection {
+        $filters = $request->validate([
+            'category_id' => ['nullable', 'integer'],
+            'subcategory_id' => ['nullable', 'integer'],
+            'min_price' => ['nullable', 'numeric', 'min:0'],
+            'max_price' => ['nullable', 'numeric', 'gte:min_price'],
+            'search' => ['nullable', 'string', 'max:120'],
+            'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'page' => ['nullable', 'integer', 'min:1'],
+        ]);
+        $query = Good::query()
+            ->with([
+                ...self::RESOURCE_RELATIONS,
+                'images' => fn ($imageQuery) => $imageQuery->orderBy('sort_order'),
+            ])
+            ->catalogFilters($filters)
+            ->when($visibleOnly, fn ($goodsQuery) => $goodsQuery->visible())
+            ->latest('id');
+        $goods = $query
+            ->paginate($filters['per_page'] ?? 7)
+            ->withQueryString();
+
+        return GoodResource::collection($goods);
+    }
+
+    private function resource(Good $good): GoodResource
+    {
+        $good->load([
+            ...self::RESOURCE_RELATIONS,
+            'images' => fn ($query) => $query->orderBy('sort_order'),
+        ]);
+
+        return new GoodResource($good);
+    }
+
+    private function attributes(array $data): array
+    {
+        return collect($data)->only([
+            'name',
+            'brand',
+            'category_id',
+            'subcategory_id',
+            'price',
+            'description',
+            'visible',
+        ])->all();
     }
 }

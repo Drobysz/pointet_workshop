@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\CategoryImage;
 use App\Models\Color;
 use App\Models\Good;
+use App\Models\ProductImage;
 use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -127,5 +128,48 @@ class CategoryImageUploadTest extends TestCase
         $upload = $this->postJson("/api/goods/{$good->id}/images", ['color_id' => $color->id, 'image' => $this->image()])->assertCreated();
         Storage::disk('s3')->assertExists($upload->json('data.path'));
         $this->getJson("/api/goods/{$good->id}")->assertJsonPath('data.colors.0.images.0.id', $upload->json('data.id'));
+    }
+
+    public function test_product_images_can_be_edited_moved_and_removed(): void
+    {
+        $this->signInAdmin();
+        $category = Category::create(['name' => 'Furniture']);
+        $subcategory = Subcategory::create([
+            'category_id' => $category->id,
+            'name' => 'Chairs',
+        ]);
+        $brown = Color::create(['name' => 'Brown', 'hexcode' => '#654321']);
+        $white = Color::create(['name' => 'White', 'hexcode' => '#ffffff']);
+        $good = Good::create([
+            'name' => 'Chair',
+            'category_id' => $category->id,
+            'subcategory_id' => $subcategory->id,
+            'price' => 20,
+            'current_quantity' => 2,
+            'description' => 'Oak chair',
+        ]);
+        $good->colors()->attach([$brown->id, $white->id]);
+        $upload = $this->postJson("/api/goods/{$good->id}/images", [
+            'color_id' => $brown->id,
+            'image' => $this->image(),
+        ])->assertCreated();
+        $imageId = $upload->json('data.id');
+        $path = $upload->json('data.path');
+
+        $this->patchJson("/api/images/{$imageId}", [
+            'color_id' => $white->id,
+            'name' => 'Side view',
+            'sort_order' => 4,
+        ])->assertOk()
+            ->assertJsonPath('data.color_id', $white->id)
+            ->assertJsonPath('data.name', 'Side view')
+            ->assertJsonPath('data.sort_order', 4);
+
+        $this->deleteJson("/api/images/{$imageId}")
+            ->assertNoContent();
+
+        Storage::disk('s3')->assertMissing($path);
+        $this->assertDatabaseMissing('images', ['id' => $imageId]);
+        $this->assertNull(ProductImage::find($imageId));
     }
 }

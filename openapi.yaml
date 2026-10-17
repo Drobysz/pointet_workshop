@@ -365,7 +365,7 @@ paths:
         - Goods
       summary: List catalog products
       operationId: getGoods
-      description: Public catalog ordered by descending ID. Search matches product
+      description: Public catalog of visible products ordered by descending ID. Search matches product
         name or description; supports category, subcategory, and price filters. Each
         product contains complete category, subcategory, materials, inventory, and
         colors-with-images data.
@@ -459,8 +459,8 @@ paths:
         - Goods
       summary: Get product details
       operationId: getGoodsGood
-      description: Includes category, subcategory, materials, per-color inventory rows,
-        and colors with images grouped by color and ordered by sort_order.
+      description: Returns a visible product with category, subcategory, materials,
+        per-color inventory rows, and images grouped by color and ordered by sort_order.
       security: []
       responses:
         "200":
@@ -544,6 +544,95 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
       x-access: admin
+  /admin/goods:
+    get:
+      tags:
+        - Goods
+      summary: List products for administration
+      operationId: getAdminGoods
+      description: Administrator access required. Returns visible and hidden products
+        with the same filters and pagination as the public catalog.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GoodPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - $ref: "#/components/parameters/Search"
+        - name: category_id
+          in: query
+          schema:
+            type: integer
+        - name: subcategory_id
+          in: query
+          schema:
+            type: integer
+        - name: min_price
+          in: query
+          schema:
+            type: number
+            minimum: 0
+        - name: max_price
+          in: query
+          schema:
+            type: number
+  "/admin/goods/{good}":
+    parameters:
+      - name: good
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags:
+        - Goods
+      summary: Get a product for administration
+      operationId: getAdminGoodsGood
+      description: Administrator access required. Returns a visible or hidden product,
+        including its complete inventory and image data.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Good"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
   "/goods/{good}/inventory/{register}/restock":
     parameters:
       - name: good
@@ -607,8 +696,8 @@ paths:
         - Categories
       summary: List categories
       operationId: getCategories
-      description: Public list ordered by name. Search matches the name. Includes
-        subcategories.
+      description: Complete public collection ordered by name. Search matches the
+        name. Includes subcategories. The response is not paginated.
       security: []
       responses:
         "200":
@@ -616,15 +705,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CategoryPage"
+                $ref: "#/components/schemas/CategoryList"
         "422":
           $ref: "#/components/responses/ValidationFailed"
         "500":
           $ref: "#/components/responses/ServerError"
       x-access: public
       parameters:
-        - $ref: "#/components/parameters/Page"
-        - $ref: "#/components/parameters/TaxonomyPerPage"
         - $ref: "#/components/parameters/Search"
     post:
       tags:
@@ -1780,17 +1867,17 @@ paths:
     post:
       tags:
         - Basket
-      summary: Create or replace a basket entry
+      summary: Add a basket entry quantity
       operationId: postBasket
       description: Matches entries by user and exact inventory row (color plus optional
-        size). Creates a new entry (201), or replaces the quantity of an existing entry
-        (200). Does not reserve stock.
+        size). Creates a new entry (201), or adds to the quantity of an existing entry
+        (200). The resulting quantity cannot exceed available stock. Does not reserve stock.
       security:
         - accessCookie: []
         - bearerAuth: []
       responses:
         "200":
-          description: Existing basket entry quantity replaced.
+          description: Quantity added to an existing basket entry.
           content:
             application/json:
               schema:
@@ -1941,10 +2028,9 @@ paths:
         - Orders
       summary: List orders
       operationId: getOrders
-      description: Customers see their own orders. Administrators see all orders and
-        may filter by user_id. Search matches customer name, email, or an exact
-        numeric order ID. Customer responses include the complete collection; administrator
-        responses are paginated. Ordered by newest placed_at.
+      description: Customers see all their own orders. Administrators see the complete
+        order collection and may filter by user_id. Search matches customer name,
+        email, or an exact numeric order ID. Ordered by newest placed_at.
       security:
         - accessCookie: []
         - bearerAuth: []
@@ -1954,9 +2040,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: "#/components/schemas/OrderList"
-                  - $ref: "#/components/schemas/OrderPage"
+                $ref: "#/components/schemas/OrderList"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "403":
@@ -1967,13 +2051,10 @@ paths:
           $ref: "#/components/responses/ServerError"
       x-access: authenticated
       parameters:
-        - $ref: "#/components/parameters/Page"
-        - $ref: "#/components/parameters/PerPage"
         - $ref: "#/components/parameters/Search"
         - name: user_id
           in: query
-          description: Administrator-only filter; ignored for customers. Pagination parameters
-            are also applied only to administrator responses.
+          description: Administrator-only filter; ignored for customers.
           schema:
             type: integer
     post:
@@ -2640,6 +2721,16 @@ components:
           enum:
             - user
             - admin
+        orders_count:
+          type: integer
+          minimum: 0
+          readOnly: true
+          description: Total orders belonging to the user.
+        basket_goods_count:
+          type: integer
+          minimum: 0
+          readOnly: true
+          description: Total units across all items in the user's basket.
         email_verified_at:
           anyOf:
             - type: string
@@ -2658,6 +2749,8 @@ components:
         - tel
         - language
         - role
+        - orders_count
+        - basket_goods_count
         - email_verified_at
         - created_at
     Category:
@@ -2748,6 +2841,10 @@ components:
           type: integer
           format: int64
           minimum: 1
+        color_id:
+          type: integer
+          format: int64
+          minimum: 1
         name:
           type: string
         path:
@@ -2766,6 +2863,7 @@ components:
           maximum: 65535
       required:
         - id
+        - color_id
         - name
         - path
         - url
@@ -2821,6 +2919,9 @@ components:
           minimum: 1
         name:
           type: string
+        brand:
+          type: string
+          maxLength: 255
         price:
           type: string
           pattern: ^\d+\.\d{2}$
@@ -2844,6 +2945,9 @@ components:
           description: Per-color/size stock rows. A null size is unsized stock.
         description:
           type: string
+        visible:
+          type: boolean
+          description: Hidden products are omitted from public catalog endpoints.
         category_id:
           type: integer
           format: int64
@@ -2874,11 +2978,13 @@ components:
       required:
         - id
         - name
+        - brand
         - price
         - current_quantity
         - inventory_version
         - inventory
         - description
+        - visible
         - category_id
         - subcategory_id
         - category
@@ -3139,21 +3245,15 @@ components:
         - data
         - links
         - meta
-    CategoryPage:
+    CategoryList:
       type: object
       properties:
         data:
           type: array
           items:
             $ref: "#/components/schemas/Category"
-        links:
-          $ref: "#/components/schemas/PaginationLinks"
-        meta:
-          $ref: "#/components/schemas/PaginationMeta"
       required:
         - data
-        - links
-        - meta
     SubcategoryPage:
       type: object
       properties:
@@ -3232,21 +3332,6 @@ components:
             $ref: "#/components/schemas/Order"
       required:
         - data
-    OrderPage:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/Order"
-        links:
-          $ref: "#/components/schemas/PaginationLinks"
-        meta:
-          $ref: "#/components/schemas/PaginationMeta"
-      required:
-        - data
-        - links
-        - meta
     RegisterRequest:
       type: object
       properties:
@@ -3543,6 +3628,10 @@ components:
           type: string
           minLength: 1
           maxLength: 255
+        brand:
+          type: string
+          minLength: 1
+          maxLength: 255
         category_id:
           type: integer
           format: int64
@@ -3564,6 +3653,10 @@ components:
           type: string
           minLength: 1
           maxLength: 65535
+        visible:
+          type: boolean
+          default: true
+          description: Controls whether the product appears in public catalog endpoints.
         inventory:
           type: array
           items:
@@ -3582,10 +3675,12 @@ components:
         Referenced IDs must exist; material_ids may be empty.
       example:
         name: Oak chair
+        brand: Atelier Nord
         category_id: 1
         subcategory_id: 1
         price: "125.00"
         description: Restored oak chair.
+        visible: true
         inventory:
           - color_id: 1
             size: null
@@ -3594,6 +3689,7 @@ components:
           - 1
       required:
         - name
+        - brand
         - category_id
         - subcategory_id
         - price
@@ -3720,8 +3816,8 @@ components:
           type: integer
           minimum: 1
           maximum: 1000
-      description: The exact inventory row must exist and quantity must not exceed its
-        stock. Replaces the quantity of a matching basket entry rather than adding to it.
+      description: The exact inventory row must exist and the resulting quantity after
+        adding to any matching basket entry must not exceed its stock.
       required:
         - good_register_id
         - quantity
@@ -3802,6 +3898,11 @@ components:
     ImageUpdateRequest:
       type: object
       properties:
+        color_id:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Must be assigned to the same product.
         name:
           type: string
           minLength: 1
@@ -3810,8 +3911,8 @@ components:
           type: integer
           minimum: 0
           maximum: 65535
-      description: Rename or reorder an image. Both fields are optional; file
-        replacement is not supported.
+      description: Rename, reorder, or move an image to another color assigned to
+        the same product. All fields are optional; file replacement is not supported.
     DashboardSummary:
       type: object
       properties:

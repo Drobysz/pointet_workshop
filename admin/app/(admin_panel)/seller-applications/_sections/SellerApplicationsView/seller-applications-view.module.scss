@@ -1,0 +1,16 @@
+@reference "tailwindcss";
+.tabs, .actions { @apply flex flex-wrap gap-2; }
+.tabs { margin: 0 0 20px; }
+.tabs button, .actions button { border: 1px solid var(--border); border-radius: 9px; min-height: 38px; padding: 0 13px; }
+.tabs button[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.rowButton { color: var(--blue); font-weight: 600; }
+.details { @apply flex flex-col gap-4; color: var(--ink); }
+.details dl { @apply flex flex-col gap-3; }
+.details dl div { @apply flex flex-col gap-1; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.details dt { color: var(--muted); font-size: 13px; }
+.details dd { white-space: pre-wrap; }
+.details label { @apply flex flex-col gap-2; font-weight: 600; }
+.details select, .details textarea { border: 1px solid var(--border); border-radius: 9px; font: inherit; padding: 10px; width: 100%; }
+.approve { background: #177245; border-color: #177245 !important; color: #fff; }
+.decline { background: #b42318; border-color: #b42318 !important; color: #fff; }
+.error { color: #b42318; }

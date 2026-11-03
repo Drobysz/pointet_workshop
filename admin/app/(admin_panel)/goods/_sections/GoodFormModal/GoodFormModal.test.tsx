@@ -30,6 +30,7 @@ it("retries only remaining images on the same product after a partial upload fai
   fireEvent.change(await screen.findByLabelText(messages.goods.form.name), { target: { value: "Oak chair" } });
   fireEvent.change(screen.getByLabelText(messages.goods.form.brand), { target: { value: "Atelier Nord" } });
   fireEvent.change(screen.getByLabelText(messages.goods.form.price), { target: { value: "25" } });
+  fireEvent.change(screen.getByLabelText(messages.goods.form.weigh), { target: { value: "640" } });
   fireEvent.change(screen.getByLabelText(messages.goods.form.category), { target: { value: "1" } });
   fireEvent.change(screen.getByLabelText(messages.goods.form.subcategory), { target: { value: "1" } });
   fireEvent.change(screen.getByLabelText(messages.goods.form.description), { target: { value: "Restored oak chair" } });
@@ -44,7 +45,7 @@ it("retries only remaining images on the same product after a partial upload fai
   fireEvent.submit(screen.getByRole("button", { name: messages.common.save }).closest("form")!);
   await waitFor(() => expect(saved).toHaveBeenCalledTimes(1));
   expect(createGood).toHaveBeenCalledTimes(1);
-  expect(updateGood).toHaveBeenCalledWith(42, expect.objectContaining({ brand: "Atelier Nord", inventory_version: 1, inventory: [{ id: 5, color_id: 2, size: null, quantity: 0 }], material_ids: [3] }));
+  expect(updateGood).toHaveBeenCalledWith(42, expect.objectContaining({ brand: "Atelier Nord", weigh: 640, inventory_version: 1, inventory: [{ id: 5, color_id: 2, size: null, quantity: 0 }], material_ids: [3] }));
   expect(uploadProductImage).toHaveBeenNthCalledWith(1, 42, 2, first);
   expect(uploadProductImage).toHaveBeenNthCalledWith(2, 42, 2, second);
   expect(uploadProductImage).toHaveBeenNthCalledWith(3, 42, 2, second);

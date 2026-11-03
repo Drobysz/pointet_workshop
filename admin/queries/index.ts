@@ -3,5 +3,7 @@ export * from "./catalog/catalogQueries";
 export * from "./dashboard/dashboardQueries";
 export * from "./markers/markerQueries";
 export * from "./orders/orderQueries";
+export * from "./preorders/preorderQueries";
+export * from "./sellerApplications/sellerApplicationQueries";
 export * from "./users/userQueries";
 

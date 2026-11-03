@@ -55,6 +55,7 @@ function buildGoodPayload(
     category_id: formData.get("category_id"),
     subcategory_id: formData.get("subcategory_id"),
     price: formData.get("price"),
+    weigh: formData.get("weigh"),
     inventory_version: inventoryVersion,
     inventory: inventory.map(({ id, color_id, size, quantity }) => ({ id, color_id, size, quantity })),
     description: formData.get("description"),
@@ -294,6 +295,18 @@ function GoodForm({
             defaultValue={good?.price ?? ""}
             min="0"
             step="0.01"
+            required
+          />
+        </label>
+
+        <label className={styles.field}>
+          {t("form.weigh")}
+          <input
+            name="weigh"
+            type="number"
+            defaultValue={good?.weigh ?? 0}
+            min="0"
+            step="1"
             required
           />
         </label>

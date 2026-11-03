@@ -30,6 +30,7 @@ export const goodSchema = z.object({
   category_id: z.coerce.number().int().positive(),
   subcategory_id: z.coerce.number().int().positive(),
   price: z.coerce.number().min(0),
+  weigh: z.coerce.number().int().min(0).default(0),
   inventory_version: z.number().int().min(0).optional(),
   inventory: z.array(z.object({
     id: z.number().int().positive().optional(),

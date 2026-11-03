@@ -78,6 +78,7 @@ export interface Good {
   name: string;
   brand: string;
   price: string;
+  weigh: number;
   current_quantity: number;
   inventory_version: number;
   inventory: InventoryRow[];
@@ -98,6 +99,7 @@ export interface GoodPayload {
   category_id: number;
   subcategory_id: number;
   price: number;
+  weigh: number;
   inventory_version?: number;
   inventory: InventoryInput[];
   description: string;
@@ -151,6 +153,60 @@ export interface Order {
   total: string;
   customer?: User;
   items?: OrderItem[];
+}
+
+export type PreorderPaymentStatus = "pending" | "paid" | "failed" | "canceled" | "refunded";
+
+export interface PreorderRegister {
+  id: number;
+  good_id: number | null;
+  good_register_id: number | null;
+  product_name: string;
+  color_name: string | null;
+  size: string | null;
+  original_unit_price: string;
+  quantity: number;
+}
+
+export interface Preorder {
+  id: number;
+  user_id: number | null;
+  customer_name: string;
+  customer_email: string;
+  payment_status: PreorderPaymentStatus;
+  payment_amount_cents: number;
+  currency: string;
+  paid_at: string | null;
+  created_at: string;
+  registers?: PreorderRegister[];
+}
+
+export interface PreorderAnalyticsItem {
+  product_id: number;
+  product_name: string;
+  image_url: string | null;
+  original_price: string;
+  preordered_quantity: number;
+}
+
+export type SellerApplicationStatus = "processing" | "approved" | "declined";
+
+export interface SellerApplication {
+  id: number;
+  first_name: string;
+  last_name: string;
+  tel_number: string;
+  country: string;
+  email: string;
+  brand_name: string;
+  company_address: string;
+  description_of_contact: string;
+  description_of_brand: string;
+  isResidentOfEU: boolean;
+  status: SellerApplicationStatus;
+  reviewed_at: string | null;
+  response_message: string | null;
+  created_at: string;
 }
 
 export interface DashboardSummary {

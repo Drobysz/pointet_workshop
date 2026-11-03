@@ -161,6 +161,10 @@ export function ProductDetailView({ goodId }: { goodId: string }) {
               <dd>{t("units", { count: product.current_quantity })}</dd>
             </div>
             <div>
+              <dt>{t("weigh")}</dt>
+              <dd>{product.weigh} g</dd>
+            </div>
+            <div>
               <dt>{t("materials")}</dt>
               <dd>
                 {product.materials?.map((material) => material.name).join(", ")

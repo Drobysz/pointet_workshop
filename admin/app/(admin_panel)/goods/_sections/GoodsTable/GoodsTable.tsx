@@ -86,6 +86,12 @@ export function GoodsTable() {
       render: (good: Good) => good.current_quantity,
     },
     {
+      key: "weigh",
+      label: t("weigh"),
+      align: "right" as const,
+      render: (good: Good) => `${good.weigh} g`,
+    },
+    {
       key: "visibility",
       label: t("visibility"),
       render: (good: Good) => (

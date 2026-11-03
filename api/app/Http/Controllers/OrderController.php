@@ -9,6 +9,7 @@ use App\Http\Resources\OrderResource;
 use App\Models\Good;
 use App\Models\GoodRegister;
 use App\Models\Order;
+use App\Services\Checkout\GuestSessionService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -16,13 +17,31 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    private const ITEM_RELATIONS = ['items.good.images', 'items.inventory'];
+
+    public function guestIndex(Request $request, GuestSessionService $guests): AnonymousResourceCollection
+    {
+        $data = $request->validate(['per_page' => ['nullable', 'integer', 'min:1', 'max:100']]);
+        $session = $guests->resolve($request);
+        $query = Order::query()->with(self::ITEM_RELATIONS)->whereNull('user_id')->where('status', '!=', OrderStatus::Cancelled->value);
+        if (! $session) {
+            $query->whereRaw('1 = 0');
+        } else {
+            $query->where('guest_session_id', $session->id);
+        }
+
+        return OrderResource::collection(
+            $query->latest('placed_at')->paginate($data['per_page'] ?? 20)->withQueryString(),
+        );
+    }
+
     public function index(Request $request): AnonymousResourceCollection
     {
         $data = $request->validate([
             'search' => ['nullable', 'string', 'max:120'],
             'user_id' => ['nullable', 'integer'],
         ]);
-        $query = Order::query()->with('items');
+        $query = Order::query()->with(self::ITEM_RELATIONS);
 
         if (! $request->user()->isAdmin()) {
             $query->where('user_id', $request->user()->id);
@@ -52,7 +71,7 @@ class OrderController extends Controller
     {
         $this->authorize('view', $order);
 
-        return new OrderDetailResource($order->load(['user' => fn ($query) => $query->withResourceCounts(), 'items.good']));
+        return new OrderDetailResource($order->load(['user' => fn ($query) => $query->withResourceCounts(), ...self::ITEM_RELATIONS]));
     }
 
     public function store(OrderRequest $request): OrderDetailResource
@@ -81,7 +100,7 @@ class OrderController extends Controller
             return $order;
         }, 3);
 
-        return new OrderDetailResource($order->load(['user' => fn ($query) => $query->withResourceCounts(), 'items.good']));
+        return new OrderDetailResource($order->load(['user' => fn ($query) => $query->withResourceCounts(), ...self::ITEM_RELATIONS]));
     }
 
     public function update(OrderRequest $request, Order $order): OrderDetailResource
@@ -90,7 +109,7 @@ class OrderController extends Controller
         $order->update(['status' => $request->validated('status')]);
         $order->items()->update(['status' => $request->validated('status')]);
 
-        return new OrderDetailResource($order->load(['user' => fn ($query) => $query->withResourceCounts(), 'items.good']));
+        return new OrderDetailResource($order->load(['user' => fn ($query) => $query->withResourceCounts(), ...self::ITEM_RELATIONS]));
     }
 
     public function destroy(Order $order)

@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AuthenticateAccessToken;
 use App\Http\Middleware\EnsureTrustedOrigin;
+use App\Http\Middleware\OptionallyAuthenticateAccessToken;
 use App\Http\Middleware\RequireCurrentAdmin;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
@@ -23,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->api(prepend: [EnsureTrustedOrigin::class]);
         $middleware->alias([
             'auth.jwt' => AuthenticateAccessToken::class,
+            'auth.optional' => OptionallyAuthenticateAccessToken::class,
             'admin.current' => RequireCurrentAdmin::class,
         ]);
     })

@@ -49,6 +49,8 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('password-change', fn (Request $request) => Limit::perMinute(
             $this->attempts('password_change'),
         )->by('password-change:'.$this->clientKey($request)));
+        RateLimiter::for('seller-application', fn (Request $request) => Limit::perMinutes(15, 3)
+            ->by('seller-application:'.Str::lower((string) $request->input('email')).'|'.$request->ip()));
     }
 
     private function attempts(string $limiter): int

@@ -106,6 +106,12 @@ class VariantInventoryTest extends TestCase
         $created = $this->postJson('/api/goods', $this->payload())->assertCreated();
         $small = $created->json('data.inventory.0.id');
         $large = $created->json('data.inventory.1.id');
+        $selectedImage = ProductImage::create([
+            'good_id' => $created->json('data.id'),
+            'color_id' => $created->json('data.inventory.0.color_id'),
+            'name' => 'Selected color',
+            'path' => 'goods/selected-color.png',
+        ]);
         $this->withToken($this->accessToken(User::factory()->create()));
         $this->postJson('/api/basket', ['good_register_id' => $small, 'quantity' => 4])->assertUnprocessable();
         $basket = $this->postJson('/api/basket', ['good_register_id' => $small, 'quantity' => 2])->assertCreated();
@@ -114,13 +120,54 @@ class VariantInventoryTest extends TestCase
         $this->assertArrayNotHasKey('links', $basketResponse->json());
         $this->assertArrayNotHasKey('meta', $basketResponse->json());
         $this->putJson('/api/basket/'.$basket->json('data.id'), ['quantity' => 4])->assertUnprocessable();
-        $this->postJson('/api/orders', ['items' => [['good_register_id' => $small, 'quantity' => 2]]])->assertCreated()->assertJsonPath('data.items.0.size', 'XL')->assertJsonPath('data.items.0.color_name', 'Red');
+        $this->postJson('/api/orders', ['items' => [['good_register_id' => $small, 'quantity' => 2]]])
+            ->assertCreated()
+            ->assertJsonPath('data.items.0.size', 'XL')
+            ->assertJsonPath('data.items.0.color_name', 'Red')
+            ->assertJsonPath('data.items.0.images.0.id', $selectedImage->id);
         $this->assertDatabaseHas('good_register', ['id' => $small, 'quantity' => 1]);
         $this->assertDatabaseHas('good_register', ['id' => $large, 'quantity' => 2]);
         $this->assertDatabaseHas('goods', ['id' => $created->json('data.id'), 'current_quantity' => 7]);
         $this->assertDatabaseCount('baskets', 0);
         $this->postJson('/api/orders', ['items' => [['good_register_id' => $small, 'quantity' => 2]]])->assertUnprocessable();
         $this->assertDatabaseCount('orders', 1);
+    }
+
+    public function test_customer_can_clear_the_entire_basket(): void
+    {
+        $created = $this->postJson('/api/goods', $this->payload())->assertCreated();
+        $user = User::factory()->create();
+        $this->withToken($this->accessToken($user));
+        $this->postJson('/api/basket', ['good_register_id' => $created->json('data.inventory.0.id'), 'quantity' => 1])->assertCreated();
+        $this->postJson('/api/basket', ['good_register_id' => $created->json('data.inventory.1.id'), 'quantity' => 1])->assertCreated();
+
+        $this->deleteJson('/api/basket')->assertNoContent();
+        $this->assertDatabaseMissing('baskets', ['user_id' => $user->id]);
+    }
+
+    public function test_basket_images_are_scoped_to_product_and_selected_color(): void
+    {
+        $data = $this->payload();
+        $created = $this->postJson('/api/goods', $data)->assertCreated();
+        $other = $this->postJson('/api/goods', $data)->assertCreated();
+        $goodId = $created->json('data.id');
+        $red = $data['inventory'][0]['color_id'];
+        $blue = $data['inventory'][2]['color_id'];
+        $back = ProductImage::create(['good_id' => $goodId, 'color_id' => $red, 'name' => 'Back', 'path' => 'goods/back.png', 'sort_order' => 2]);
+        $front = ProductImage::create(['good_id' => $goodId, 'color_id' => $red, 'name' => 'Front', 'path' => 'goods/front.png', 'sort_order' => 1]);
+        ProductImage::create(['good_id' => $goodId, 'color_id' => $blue, 'name' => 'Blue', 'path' => 'goods/blue.png']);
+        ProductImage::create(['good_id' => $other->json('data.id'), 'color_id' => $red, 'name' => 'Other', 'path' => 'goods/other.png']);
+        $this->withToken($this->accessToken(User::factory()->create()));
+
+        $basket = $this->postJson('/api/basket', ['good_register_id' => $created->json('data.inventory.0.id'), 'quantity' => 1])
+            ->assertCreated()->assertJsonCount(2, 'data.images')
+            ->assertJsonPath('data.images.0.id', $front->id)
+            ->assertJsonPath('data.images.1.id', $back->id);
+        $this->getJson('/api/basket')->assertOk()->assertJsonCount(2, 'data.0.images')->assertJsonPath('data.0.images.0.id', $front->id);
+        $this->putJson('/api/basket/'.$basket->json('data.id'), ['quantity' => 2])
+            ->assertOk()->assertJsonCount(2, 'data.images')->assertJsonPath('data.images.0.id', $front->id);
+        $this->postJson('/api/basket', ['good_register_id' => $other->json('data.inventory.2.id'), 'quantity' => 1])
+            ->assertCreated()->assertJsonPath('data.images', []);
     }
 
     public function test_adding_an_existing_basket_variant_cannot_exceed_its_stock(): void

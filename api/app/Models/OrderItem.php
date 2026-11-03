@@ -27,4 +27,9 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Good::class);
     }
+
+    public function inventory(): BelongsTo
+    {
+        return $this->belongsTo(GoodRegister::class, 'good_register_id');
+    }
 }

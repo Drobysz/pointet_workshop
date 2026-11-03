@@ -9,6 +9,18 @@ class BasketResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return ['id' => $this->id, 'good_register_id' => $this->good_register_id, 'inventory' => new GoodRegisterResource($this->whenLoaded('inventory')), 'quantity' => $this->quantity, 'good' => new GoodResource($this->whenLoaded('good')), 'color' => new ColorResource($this->whenLoaded('color'))];
+        $images = $this->relationLoaded('good') && $this->good?->relationLoaded('images')
+            ? $this->good->images->where('color_id', $this->color_id)->sortBy('sort_order')->values()
+            : collect();
+
+        return [
+            'id' => $this->id,
+            'good_register_id' => $this->good_register_id,
+            'inventory' => new GoodRegisterResource($this->whenLoaded('inventory')),
+            'quantity' => $this->quantity,
+            'good' => new GoodResource($this->whenLoaded('good')),
+            'color' => new ColorResource($this->whenLoaded('color')),
+            'images' => ImageResource::collection($images),
+        ];
     }
 }

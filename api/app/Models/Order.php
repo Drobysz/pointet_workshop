@@ -12,7 +12,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'customer_name', 'customer_email', 'status', 'placed_at'];
+    protected $fillable = ['user_id', 'guest_session_id', 'customer_name', 'customer_email', 'status', 'placed_at'];
 
     protected function casts(): array
     {
@@ -22,6 +22,11 @@ class Order extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function guestSession(): BelongsTo
+    {
+        return $this->belongsTo(GuestSession::class);
     }
 
     public function items(): HasMany

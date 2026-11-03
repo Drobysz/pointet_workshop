@@ -6,6 +6,16 @@ return [
         'verify_url' => env('FRONTEND_VERIFY_URL', 'http://localhost:3000/home'),
     ],
 
+    'sendcloud' => [
+        'webhook_secret' => env('SENDCLOUD_WEBHOOK_SECRET'),
+    ],
+
+    'stripe' => [
+        // STRIPE_SECRET is the existing project convention; keep the more explicit alias for deployments.
+        'secret' => env('STRIPE_SECRET_KEY', env('STRIPE_SECRET')),
+        'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Third Party Services

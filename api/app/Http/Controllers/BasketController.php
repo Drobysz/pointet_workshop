@@ -3,21 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BasketRequest;
+use App\Http\Requests\GuestBasketValidationRequest;
 use App\Http\Resources\BasketResource;
 use App\Models\Basket;
 use App\Models\Good;
 use App\Models\GoodRegister;
+use App\Services\Checkout\GuestBasketService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
 
 class BasketController extends Controller
 {
-    private const RELATIONS = ['good.subcategory', 'good.colors', 'good.inventory', 'color', 'inventory'];
+    private const RELATIONS = ['good.subcategory', 'good.colors', 'good.inventory', 'good.images', 'color', 'inventory'];
 
     public function index(Request $request): AnonymousResourceCollection
     {
         return BasketResource::collection($request->user()->basketItems()->with(self::RELATIONS)->get());
+    }
+
+    public function validateGuest(GuestBasketValidationRequest $request, GuestBasketService $guestBaskets): AnonymousResourceCollection
+    {
+        return $guestBaskets->resources($request->validated('items'));
     }
 
     public function store(BasketRequest $request): BasketResource
@@ -73,6 +80,13 @@ class BasketController extends Controller
     {
         $this->authorize('delete', $basket);
         $basket->delete();
+
+        return response()->noContent();
+    }
+
+    public function clear(Request $request)
+    {
+        $request->user()->basketItems()->delete();
 
         return response()->noContent();
     }

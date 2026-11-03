@@ -2928,6 +2928,11 @@ components:
           example: "125.00"
           description: Decimal monetary amount serialized as a string; the API does not
             expose a currency field.
+        weigh:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Product weight in grams.
         current_quantity:
           type: integer
           minimum: 0
@@ -2980,6 +2985,7 @@ components:
         - name
         - brand
         - price
+        - weigh
         - current_quantity
         - inventory_version
         - inventory
@@ -3649,6 +3655,11 @@ components:
             - type: string
               pattern: ^\d+(\.\d{1,2})?$
           description: Nonnegative price with at most two decimal places.
+        weigh:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Product weight in grams.
         description:
           type: string
           minLength: 1
@@ -3679,6 +3690,7 @@ components:
         category_id: 1
         subcategory_id: 1
         price: "125.00"
+        weigh: 1200
         description: Restored oak chair.
         visible: true
         inventory:

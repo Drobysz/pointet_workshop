@@ -13,12 +13,17 @@ class Good extends Model
 {
     use HasFactory;
 
+    protected $attributes = [
+        'weigh' => 0,
+    ];
+
     protected $fillable = [
         'name',
         'brand',
         'category_id',
         'subcategory_id',
         'price',
+        'weigh',
         'current_quantity',
         'description',
         'visible',
@@ -28,6 +33,7 @@ class Good extends Model
     {
         return [
             'price' => 'decimal:2',
+            'weigh' => 'integer',
             'current_quantity' => 'integer',
             'inventory_version' => 'integer',
             'visible' => 'boolean',

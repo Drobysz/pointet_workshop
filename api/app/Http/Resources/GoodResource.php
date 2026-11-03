@@ -13,6 +13,7 @@ class GoodResource extends JsonResource
 
         return [
             'id' => $this->id, 'name' => $this->name, 'brand' => $this->brand, 'price' => (string) $this->price,
+            'weigh' => $this->weigh,
             'visible' => $this->visible,
             'current_quantity' => $this->current_quantity, 'inventory_version' => $this->inventory_version,
             'inventory' => GoodRegisterResource::collection($this->whenLoaded('inventory')), 'description' => $this->description,

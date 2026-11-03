@@ -132,6 +132,7 @@ class GoodController extends Controller
             'category_id',
             'subcategory_id',
             'price',
+            'weigh',
             'description',
             'visible',
         ])->all();

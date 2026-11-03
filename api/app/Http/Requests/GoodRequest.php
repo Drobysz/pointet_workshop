@@ -38,6 +38,7 @@ class GoodRequest extends FormRequest
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'subcategory_id' => ['required', 'integer', Rule::exists('subcategories', 'id')->where(fn ($q) => $q->where('category_id', $this->integer('category_id')))],
             'price' => ['required', 'numeric', 'min:0', 'decimal:0,2'],
+            'weigh' => ['sometimes', 'integer', 'min:0'],
             'description' => ['required', 'string', 'max:65535'],
             'visible' => ['sometimes', 'boolean'],
             'inventory_version' => [Rule::requiredIf(! $this->isMethod('post')), 'integer', 'min:0'],

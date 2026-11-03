@@ -1,0 +1,24 @@
+@reference "tailwindcss";
+
+.price_tag {
+    @apply flex 
+        items-end 
+        gap-2;
+
+    &__price_with_euro {
+        @apply flex 
+            gap-0.5 
+            items-start
+            text-zinc-700;
+    }
+
+    &__number {
+        @apply text-4xl
+            leading-7;
+    }
+
+    &__euro {
+        @apply text-2xl
+            leading-5;
+    }
+}

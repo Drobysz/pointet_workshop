@@ -1,0 +1,30 @@
+@reference "tailwindcss";
+
+.counter {
+    @apply flex 
+        items-center
+        gap-3;
+
+    &__btn {
+        @apply relative
+            w-7 h-7
+            rounded-md
+            bg-gray-200
+            hover:bg-gray-200/70;
+
+        transition: 
+            opacity 0.2 ease-out,
+            background-color 0.2 ease-out;
+    }
+        
+    &__btn_centralize {
+        @apply absolute
+            -translate-1/2
+            left-1/2 top-1/2
+            w-fit;
+    }
+    &__number {
+        @apply text-xl
+            text-zinc-700;
+    }
+}

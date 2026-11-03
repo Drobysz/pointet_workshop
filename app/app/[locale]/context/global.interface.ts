@@ -18,7 +18,7 @@ export interface Coords {
 }
 
 export type PopUpWindow = "LoginForm" | "RegisterForm" | "DeleteWindow" | "VerifyCodeWindow" | "none";
-export type AuthStatus = "authenficated" | "unauthenficated";
+export type AuthStatus = "authenficated" | "unauthenficated" | "loading";
 
 export interface GlobalContextInterface {
     logFormData: LoginForm,

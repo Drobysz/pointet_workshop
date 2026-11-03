@@ -6,6 +6,7 @@ import { ApiResponse, Id } from "./api";
 import { Color } from "./colors";
 import { Good } from "./goods";
 import { InventoryRow } from "./inventory";
+import { ProductImage } from "./productImages";
 
 export interface BasketItem {
     id: Id;
@@ -14,6 +15,7 @@ export interface BasketItem {
     quantity: number;
     good: Good;
     color: Color | null;
+    images: ProductImage[];
 }
 
 // ============================================================

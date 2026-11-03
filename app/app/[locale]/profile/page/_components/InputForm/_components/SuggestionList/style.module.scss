@@ -1,0 +1,31 @@
+@reference "tailwindcss";
+
+.suggestion_container {
+    @apply absolute 
+        left-1/2 
+        -translate-1/2 
+        -bottom-2
+        max-w-120
+        max-h-80
+        w-full
+        translate-y-full 
+        rounded-2xl 
+        overflow-scroll
+        z-20;
+}
+
+.suggestion_list {
+    @apply flex flex-col;
+
+    &__element {
+        @apply px-3 py-2 
+            bg-gray-200 
+            hover:bg-gray-100;
+    }
+
+    &__divider {
+        @apply w-full h-px 
+            bg-zinc-300 
+            rounded-full;
+    }
+}

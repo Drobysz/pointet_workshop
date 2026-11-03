@@ -23,6 +23,9 @@ export interface Good {
      */
     price: string;
 
+    /** Product weight in grams. */
+    weigh: number;
+
     current_quantity: number;
     inventory_version: number;
     inventory: InventoryRow[];

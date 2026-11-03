@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+
+.flex_split {
+    @apply flex 
+        flex-col
+        gap-8
+        w-full;
+}

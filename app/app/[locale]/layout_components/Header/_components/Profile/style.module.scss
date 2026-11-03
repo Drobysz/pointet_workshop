@@ -5,3 +5,17 @@
         flex gap-6
         items-center;
 }
+
+.non_auth_navigation {
+    @apply flex 
+        gap-3 
+        items-center;
+}
+
+.icon_btn {
+    @apply relative p-1.5
+        rounded-full
+        hover:bg-zinc-200;
+    
+    transition: background-color 0.2s ease-out;
+}

@@ -1,5 +1,5 @@
+import { OrdersView } from "./OrdersView";
+
 export default function OrdersPage () {
-    return (
-        <></>
-    )
+    return <OrdersView />;
 }

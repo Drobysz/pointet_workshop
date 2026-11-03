@@ -2,8 +2,9 @@
 // Orders
 // ============================================================
 
-import { ApiResponse, Id, PaginatedResponse } from "./api";
+import { ApiResponse, Id } from "./api";
 import { User } from "./user";
+import { ProductImage } from "./productImages";
 
 export type OrderStatus =
     | "processing"
@@ -48,6 +49,8 @@ export interface OrderItem {
     line_total: string;
 
     status: OrderStatus;
+
+    images: ProductImage[];
 }
 
 export interface OrderDetail extends Order {

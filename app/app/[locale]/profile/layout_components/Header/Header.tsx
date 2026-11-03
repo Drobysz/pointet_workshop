@@ -25,10 +25,10 @@ export const ProfileHeader = ()=> {
     // Defining page list
     const authTabList = [
         { href: '/profile', label: "Profile" },
-        { href: '/profile/orders', label: "Orders" },
     ];
 
     const defaultTablist = [
+        { href: '/profile/orders', label: "Orders" },
         { href: '/profile/basket', label: "Basket" }
     ];
 

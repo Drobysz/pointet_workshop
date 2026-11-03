@@ -1,25 +1,8 @@
 @reference "tailwindcss";
 
-.profile_section_frame {
-    @apply py-5
-        bg-white
-        rounded-3xl;
-    box-shadow:
-		0px 0px 30px -12px rgba(0, 0, 0, 0.35);
-}
-
 .divider {
     @apply h-0.5 
         bg-zinc-300;
-}
-
-.error_title {
-    @apply text-4xl
-        text-zinc-700
-        h-full
-        flex
-        justify-center
-        items-center;
 }
 
 .forms_container {
@@ -34,4 +17,13 @@
 .form_section_title {
     @apply text-xl
         font-semibold;
+}
+
+.error_title {
+    @apply text-4xl
+        text-zinc-700
+        h-full
+        flex
+        justify-center
+        items-center;
 }

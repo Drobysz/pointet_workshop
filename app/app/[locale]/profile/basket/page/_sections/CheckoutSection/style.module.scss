@@ -1,0 +1,59 @@
+@reference "tailwindcss";
+
+.checkout_sect {
+    @apply w-full 
+        border-2 
+        border-zinc-400 
+        rounded-2xl 
+        h-fit 
+        flex flex-col
+        gap-3
+        py-1 px-2 pb-2;
+
+    &__total_price {
+        @apply flex 
+            gap-3.5 
+            px-2 
+            font-bold 
+            items-center 
+            text-5xl 
+            text-zinc-700
+            whitespace-nowrap;
+    }
+    
+    &__disclosure { 
+        @apply text-[#52525b]
+            text-sm
+            leading-normal;
+    }
+
+    &__preorderButton { 
+        @apply bg-zinc-800
+            rounded-lg
+            text-white
+            font-bold
+            p-2 pt-2.5
+            min-h-11
+            w-full
+            flex 
+            justify-center
+            hover:bg-zinc-800/95
+            hover:scale-x-98
+            hover:scale-y-99;
+        
+        transition: scale 0.2s ease-out;
+    }
+
+    &__preorderButton:disabled {
+        @apply cursor-not-allowed
+            opacity-60;
+    }
+    
+    .error {
+        @apply text-[#b91c1c]
+            text-sm
+            py-2.5 px-2;
+    }
+}
+
+

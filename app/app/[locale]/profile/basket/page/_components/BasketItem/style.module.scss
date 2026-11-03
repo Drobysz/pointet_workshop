@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+
+.basket_item {
+    @apply grid 
+        grid-cols-3 
+        items-start 
+        justify-items-center;
+}

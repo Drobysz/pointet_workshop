@@ -18,6 +18,7 @@ export const GoodParams = ({
 })=> {
     const params = {
         "item number": good.id,
+        "weigh": good.weigh,
         "brand": good.brand,
         "subcategory": good.subcategory.name,
         "materials": good.materials.map(m => m.name)

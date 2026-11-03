@@ -1,10 +1,12 @@
+import { PrivateApiClient } from "../core/PrivateApiClient";
 import { PublicApiClient } from "../core/PublicApiClient";
 import { Id } from "../types/api";
 import { OrderCreateRequest, OrderResponse, OrderListResponse } from "../types/orders";
 
 export class OrdersApi {
     constructor (
-        private readonly api: PublicApiClient,
+        private readonly api: PrivateApiClient,
+        private readonly publicApi: PublicApiClient,
     ) {}
 
     public getOrders(
@@ -13,6 +15,10 @@ export class OrdersApi {
         return this.api.get<OrderListResponse>(
             "/orders"
         );
+    }
+
+    public getGuestOrders(): Promise<OrderListResponse> {
+        return this.publicApi.get<OrderListResponse>("/orders/guest");
     }
 
     public getOrder(

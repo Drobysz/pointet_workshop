@@ -2,6 +2,8 @@ import { AuthenticatedResponse } from "../types/auth";
 import { ApiError, ApiErrorResponse } from "./ApiError";
 
 export class ApiClient {
+    private refreshPromise: Promise<AuthenticatedResponse> | null = null;
+
     constructor (
         protected readonly baseUrl: string,
     ) {}
@@ -15,6 +17,7 @@ export class ApiClient {
             `${this.baseUrl}${endpoint}`,
             {
                 ...options,
+                credentials: "include",
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
@@ -33,7 +36,7 @@ export class ApiClient {
                 throw await this.createApiError(res);
             }
 
-            const authStatus = await this.refresh();
+            const authStatus = await this.getReshreshPromise();
 
             if (!authStatus.data.authenticated) {
                 throw await this.createApiError(res);
@@ -46,6 +49,18 @@ export class ApiClient {
         }
 
         return res.json();
+    }
+
+    private async getReshreshPromise(): Promise<AuthenticatedResponse> {
+        if (!this.refreshPromise) {
+            this.refreshPromise = this.refresh();
+        }
+
+        try {
+            return await this.refreshPromise;
+        } finally {
+            this.refreshPromise = null;
+        }
     }
 
     private async createApiError (
@@ -71,13 +86,15 @@ export class ApiClient {
 
     private async refresh (): Promise<AuthenticatedResponse> {
         return await this.request<AuthenticatedResponse>(
-            "/auth/refresh", {
+            "/auth/refresh", 
+            {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 credentials: "include",
-            }
+            },
+            false
         );
     }
 

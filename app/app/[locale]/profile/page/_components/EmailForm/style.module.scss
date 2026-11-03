@@ -10,25 +10,6 @@
         w-full;
 }
 
-.input {
-    @apply text-sm
-        font-semibold
-        min-w-65
-        bg-gray-100
-        px-3 py-2
-        rounded-xl
-        border
-        border-transparent;
-}
-
-.input:focus {
-    @apply border-red-500
-        ring-2 ring-red-300/50
-        outline-0
-        box-border
-        text-red-900;
-}
-
 .label {
     @apply text-2xl
         text-zinc-500;

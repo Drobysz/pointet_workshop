@@ -1,0 +1,27 @@
+@reference "tailwindcss";
+
+.basket_header {
+    @apply flex 
+        justify-between
+        pb-3 px-1.5
+        border-b
+        border-b-zinc-400;
+    
+    .title_container {
+        @apply flex 
+            gap-3
+            items-end;
+        
+        &__title {
+            @apply text-4xl
+                leading-5
+                text-zinc-800;
+        }
+
+        &__subtitle {
+            @apply text-lg
+                leading-4
+                text-zinc-500;
+        }
+    }
+}

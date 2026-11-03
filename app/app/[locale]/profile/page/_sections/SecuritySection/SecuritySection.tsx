@@ -8,7 +8,7 @@ import s from "./style.module.scss";
 import { useActionState, useContext, useEffect } from "react";
 import { UpdatePasswordFormState } from "@/auth/FormSchemes";
 import { CircularProgress } from "@mui/material";
-import { MainBtn } from "@/components";
+import { DecoInput, MainBtn } from "@/components";
 import { updatePassword } from "@/auth/actions/updatePasswordAction";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 
@@ -68,7 +68,7 @@ export const SecuritySection = ({
                             }
                         </label>
 
-                        <input 
+                        <DecoInput 
                             className={cn(
                                 s.input
                             )}
@@ -91,7 +91,7 @@ export const SecuritySection = ({
                             }
                         </label>
 
-                        <input 
+                        <DecoInput 
                             className={cn(
                                 s.input
                             )}

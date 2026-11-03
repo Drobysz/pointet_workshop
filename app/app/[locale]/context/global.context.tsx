@@ -1,15 +1,13 @@
 "use client"
 
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import { AppNotification, AuthStatus, Coords, GlobalContextInterface, PopUpWindow } from "./global.interface";
-import { useCurrentUser, useWindowWidth } from "@/hooks";
+import { useCurrentUser, useVerifyToken, useWindowWidth } from "@/hooks";
 import { LoginForm, RegisterForm } from "@/types/auth";
 import { useSearchParams } from "next/navigation";
-import { authApi } from "@/api/api";
-import { useRouter } from "@/i18n/navigation";
-import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
-import { refreshErrorMessages } from "@/api/core/errorMessages";
 import { useUserData } from "@/hooks/useUserData";
+import { basketApi, guestBasketApi } from "@/api/api";
+import { LocalBasketService } from "@/helpers/basket";
 
 const noneNotification: AppNotification = { 
     status: "none", 
@@ -63,7 +61,22 @@ export const GlobalContextProvider = ({
 }: {
     children: ReactNode;
 })=> {
-    const router = useRouter();
+    const [notification, setNotification] 
+        = useState<AppNotification>(noneNotification);
+    const [popUpWindow, setPopUpWindow] = useState<PopUpWindow>("none");
+    const [mouseText, setMouseText] = useState("");
+	const [mouseGuide, setMouseGuide] = useState<Coords | null>(null);
+
+    const [logFormData, setLogFormData] = useState<LoginForm>(emptyLogForm);
+    const [regFormData, setRegFormData] = useState<RegisterForm>(emptyRegForm);
+    const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
+    const mergedGuestBasketForUser = useRef<number | null>(null);
+
+    const isMouseVisible = useWindowWidth(768) as boolean;
+	const blur = popUpWindow !== "none";
+
+    const searchParams = useSearchParams();
+    const token = searchParams.get("token");
 
     const {
 		data: user,
@@ -77,77 +90,74 @@ export const GlobalContextProvider = ({
 		error: basketError,
 		isLoading: isBasketLoading,
 		mutate: mutateBasket
-	} = useUserData("basket");
+	} = useUserData(
+        "basket",
+        authStatus
+    );
 
     const {
 		data: ordersList,
 		error: ordersError,
 		isLoading: isOrdersLoading,
 		mutate: mutateOrders
-	} = useUserData("orders");
+	} = useUserData(
+        "orders",
+        authStatus
+    );
 
-    const [notification, setNotification] 
-        = useState<AppNotification>(noneNotification);
-    const [popUpWindow, setPopUpWindow] = useState<PopUpWindow>("none");
-    const [mouseText, setMouseText] = useState("");
-	const [mouseGuide, setMouseGuide] = useState<Coords | null>(null);
-
-    const [logFormData, setLogFormData] = useState<LoginForm>(emptyLogForm);
-    const [regFormData, setRegFormData] = useState<RegisterForm>(emptyRegForm);
-    const [authStatus, setAuthStatus] = useState<AuthStatus>("unauthenficated");
-
-    const isMouseVisible = useWindowWidth(768) as boolean;
-	const blur = popUpWindow !== "none";
-
-    const searchParams = useSearchParams();
-    const token = searchParams.get("token");
+    useVerifyToken(
+        token,
+        setNotification,
+        setAuthStatus,
+    );
 
     useEffect(()=> {
-        const verifyUserAuthStatus = async ()=> {
-            if (!token) return;
-            try {
-                const { data } = (await authApi.verify({
-                    token: token as string
-                }));
-
-                if (!data.authenticated) {
-                    setNotification({
-                        status: "alert",
-                        text: "Token didn't work."
-                    });
-                };
-
-                setAuthStatus("authenficated");
-                setNotification({
-                    status: "success",
-                    text: "Succesfully registered"
-                });
-                router.replace("/home");
-            } catch (error) {
-                const message = getApiErrorMessage(
-                    error,
-                    refreshErrorMessages,
-                );
-                
-                setNotification({
-                    status: "error",
-                    text: message
-                });
-            }
+        const updateStatus = (status: AuthStatus)=> {
+            setAuthStatus(status);
         }
 
-        verifyUserAuthStatus();
-    }, [token, router]);
-
-    useEffect(()=> {
-        const updateStatus = ()=> {
-            setAuthStatus("authenficated");
+        if (isUserLoading) {
+            updateStatus("loading");
+            return;
         }
 
         if (user && !userError) {
-            updateStatus();
+            updateStatus("authenficated");
+            return;
         }
-    }, [user, userError])
+
+        updateStatus("unauthenficated");
+    }, [
+        user, userError, isUserLoading, 
+        mutateOrders, mutateBasket
+    ]);
+
+    useEffect(() => {
+        if (authStatus !== "authenficated" || !user || mergedGuestBasketForUser.current === user.id) {
+            return;
+        }
+        mergedGuestBasketForUser.current = user.id;
+
+        const mergeGuestBasket = async () => {
+            try {
+                const guestBasket = await guestBasketApi.getBasket();
+                for (const item of guestBasket.data) {
+                    if (!item.good_register_id) continue;
+                    try {
+                        await basketApi.addItem({ good_register_id: item.good_register_id, quantity: item.quantity });
+                        LocalBasketService.remove(item.good_register_id);
+                    } catch {
+                        // Keep only the unavailable line in the guest cookie so a
+                        // later retry cannot duplicate already-merged items.
+                    }
+                }
+                await mutateBasket();
+            } catch {
+                // A transient validation failure must not discard the guest basket.
+            }
+        };
+        void mergeGuestBasket();
+    }, [authStatus, user, mutateBasket]);
 
     return (
         <GlobalContext.Provider

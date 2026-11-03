@@ -43,4 +43,8 @@ export class BasketApi {
             `/basket/${id}`,
         );
     }
+
+    public clearBasket(): Promise<void> {
+        return this.api.delete<void>("/basket");
+    }
 }

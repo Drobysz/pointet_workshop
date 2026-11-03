@@ -1,31 +1,35 @@
 import { jersey10 } from "@/fonts/fonts";
 import { cn } from "@/helpers";
+import s from "./style.module.scss";
 
 export const ActiveQuantityTag = ({
-    quantity
+    quantity,
+    className,
+    size="middle"
 }: {
     quantity: number;
+    className?: string;
+    size?: "middle" | "small" 
 })=> {
     return (
-        <span className={cn(
-            "relative text-white",
-            jersey10.className
-        )}>
-            <span>
-                {quantity}
+        <div className={className}>
+            <span className={cn(
+                s.tag,
+                jersey10.className, {
+                    ["text-sm"]: size == "small",
+                    ["text-base"]: size == "middle",
+                },
+            )}>
+                <span className={cn(size == "small" && "pl-px")}>
+                    {quantity}
+                </span>
+                <span 
+                    className={cn(s.tag__background, {
+                        ["w-4 h-4"]: size == "small",
+                        ["w-5 h-5"]: size == "middle",
+                    })}
+                />
             </span>
-            <span 
-                className="
-                    absolute
-                    -z-10
-                    bg-red-500 
-                    rounded-full 
-                    h-5 w-5
-                    top-1/2 
-                    left-1/2 
-                    -translate-1/2
-                "
-            />
-        </span>
+        </div>
     )
 }

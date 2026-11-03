@@ -7,8 +7,8 @@ import { Submit } from "./_components";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { cn } from "@/helpers";
 import { tinyFive } from "@/fonts/fonts";
-import { Input } from "@/components/other/Input/Input";
-import { inputType } from "@/components/other/Input/Input.props";
+import { Input } from "@/components/inputs/Input/Input";
+import { inputType } from "@/components/inputs/Input/Input.props";
 import { FormError, FormState } from "@/auth/FormSchemes";
 import { loginAction } from "@/auth/actions/loginAction";
 

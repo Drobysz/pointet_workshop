@@ -15,9 +15,7 @@ export async function generateStaticParams() {
 export default async function GoodPage({
     params
 }: {
-    params: Promise<{
-        good_id: string
-    }>
+    params: Promise<{ good_id: string }>
 }) {
     const { good_id } = await params;
 

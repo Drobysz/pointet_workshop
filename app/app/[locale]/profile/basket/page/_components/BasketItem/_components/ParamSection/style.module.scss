@@ -1,0 +1,42 @@
+@reference "tailwindcss";
+
+.params_container {
+    @apply flex 
+        gap-3
+        justify-self-start;
+
+    .params_list {
+        @apply flex 
+            flex-col 
+            gap-3;
+        
+        .title {
+            @apply text-lg;
+        }
+
+        .size {
+            @apply text-sm
+                text-zinc-500;
+        }
+        
+        .color {
+            @apply h-5 w-5
+                rounded-full;
+        }
+        .btn_container {
+            @apply flex gap-3;
+
+            .basket_btn {
+                @apply text-zinc-600 
+                    hover:text-red-500
+                    active:scale-95;
+
+                transition: 
+                    color 0.2s ease-out,
+                    scale 0.2s ease-out;
+            }
+        }
+
+    }
+
+}

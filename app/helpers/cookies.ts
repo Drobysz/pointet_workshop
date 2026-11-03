@@ -42,7 +42,7 @@ export class CookiesService {
             .join("; ");
     }
 
-    public setJSONCookie<T extends object>(
+    public setJSONCookie<T>(
         name: string, 
         data: T,
         days: number
@@ -51,7 +51,7 @@ export class CookiesService {
         this.setCookies(name, jsonData, days);
     }
 
-    public getJSONCookie<T extends object>(name: string): T | null {
+    public getJSONCookie<T>(name: string): T | null {
         const cookieValue = this.getCookies(name);
         if (!cookieValue) {
             return null;
@@ -59,8 +59,7 @@ export class CookiesService {
 
         try {
             return JSON.parse(cookieValue);
-        } catch (error) {
-            console.error(`Error parsing JSON cookie "${name}":`, error);
+        } catch {
             return null;
         }
     }

@@ -1,0 +1,9 @@
+@reference "tailwindcss";
+
+.icon_btn {
+    @apply relative p-1.5
+        rounded-full
+        hover:bg-red-100/80;
+    
+    transition: background-color 0.2s ease-out;
+}

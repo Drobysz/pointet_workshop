@@ -1,6 +1,9 @@
+"use client";
+
 import { ReactNode } from "react"
 import { ProfileHeader } from "./layout_components";
 import { GridContainer } from "@/components";
+import s from "./layout.module.scss";
 
 export default function ProfileLayout ({
     children
@@ -11,9 +14,9 @@ export default function ProfileLayout ({
         <main className="min-h-screen py-13">
             <GridContainer innerClassName="px-4">
                 <ProfileHeader />
-                <div>
+                <section className={s.profile_section_frame}>
                     {children}
-                </div>
+                </section>
             </GridContainer>
         </main>
     )

@@ -5,13 +5,13 @@ import s from "./style.module.scss";
 import { ChangeEvent, useContext, useState } from "react";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { cn } from "@/helpers";
-import { jersey10, tinyFive } from "@/fonts/fonts";
+import { jersey10 } from "@/fonts/fonts";
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
 import { userFieldSchemas } from "@/auth/FormSchemes";
-import { MainBtn } from "@/components";
+import { DecoInput } from "@/components";
 import { userApi } from "@/api/api";
 import { emailChangeErrorMessages } from "@/api/core/errorMessages";
-import { CircularProgress } from "@mui/material";
+import { InputBtn } from "../InputBtn/InputBtn";
 
 export const EmailForm = ({
     userId,
@@ -89,7 +89,7 @@ export const EmailForm = ({
             </label>
 
             <div className="flex items-center gap-2">
-                <input
+                <DecoInput
                     className={s.input}
                     value={value}
                     type="email"
@@ -97,24 +97,11 @@ export const EmailForm = ({
                     onChange={handleChange}
                 />
 
-                <MainBtn
-                    disabled={isButtonDisabled}
-                    className={cn(
-                        tinyFive.className,
-                        s.change_btn,
-                        isButtonDisabled
-                            && "opacity-50 cursor-not-allowed"
-                    )}
-                >
-                    {isPending 
-                        ? <CircularProgress 
-                            size={10}
-                            color="inherit"
-                            className="z-30"
-                        />
-                        : "Change"
-                    }
-                </MainBtn>
+
+                <InputBtn
+                    buttonDisabled={isButtonDisabled}
+                    pending={isPending}
+                />
             </div>
         </form>
     )

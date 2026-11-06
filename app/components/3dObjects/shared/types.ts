@@ -1,6 +1,14 @@
 import type { CSSProperties, RefObject } from "react";
 
-export type ObjectKind = "wine" | "plate" | "fork";
+export type ObjectKind = "curated" | "bag" | "dress";
+
+/** Passed to every model so it can run bounded ambient motion only while visible. */
+export interface ModelProps {
+    active: boolean;
+    reducedMotion: boolean;
+    /** Narrow viewports get a stacked arrangement where a model supports one. */
+    portrait: boolean;
+}
 
 export interface Object3DProps {
     id?: string;

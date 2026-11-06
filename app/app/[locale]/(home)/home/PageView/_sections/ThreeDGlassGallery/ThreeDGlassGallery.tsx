@@ -1,9 +1,9 @@
 "use client";
 
-import { 
-    SilverFork3D, 
-    SilverPlate3D, 
-    WineGlass3D 
+import {
+    CuratedObjects3D,
+    SatinDress3D,
+    SilverBag3D,
 } from "@/components/3dObjects";
 import s from "./style.module.scss";
 import { cn } from "@/helpers";
@@ -20,12 +20,14 @@ export const ThreeDGlassGallery = ()=> {
                     from-gray-200 
                     to-rose-400"
             >
-                <WineGlass3D />
+                <CuratedObjects3D />
                 <h2 className={cn(
                     s.title, "text-red-800",
+                    // The longer headline needs a smaller size to fit phone widths.
+                    "max-sm:text-4xl! max-sm:leading-14!",
                     after.className
                 )}>
-                    We sell tableware.
+                    Discover the unexpected.
                 </h2>
             </ScrollShiftDown>
             <ScrollShiftDown 
@@ -35,12 +37,12 @@ export const ThreeDGlassGallery = ()=> {
                     from-gray-200
                     to-blue-400"
             >
-                <SilverPlate3D />
+                <SilverBag3D />
                 <h2 className={cn(
                     s.title, "text-blue-800",
                     after.className
                 )}>
-                    Plates
+                    Bags
                 </h2>
             </ScrollShiftDown>
             <ScrollShiftDown 
@@ -50,12 +52,12 @@ export const ThreeDGlassGallery = ()=> {
                     from-gray-200
                     to-lilac-400"
             >
-                <SilverFork3D />
+                <SatinDress3D />
                 <h2 className={cn(
                     s.title, "text-lilac-800",
                     after.className
                 )}>
-                    Сutlery
+                    Clothing
                 </h2>
             </ScrollShiftDown>
         </section>

@@ -3,7 +3,22 @@ import { BufferAttribute, BufferGeometry } from "three";
 import { preloadGeometry } from "./geometryData";
 import type { ObjectKind } from "./types";
 
-type AttributeLayout = { offset: number; count: number; type: string };
+type AttributeLayout = { offset: number; count: number; type: string; min?: number[]; extent?: number[] };
+
+/** Expand 16-bit quantized attributes to floats once, so materials need no shader changes. */
+function dequantize(data: ArrayBuffer, start: number, key: "position" | "normal", layout: AttributeLayout) {
+    const { type, offset, count, min, extent } = layout;
+    if (type === "Float32Array") return new Float32Array(data, start + offset, count);
+    const output = new Float32Array(count);
+    if (key === "position" && min && extent) {
+        const source = new Uint16Array(data, start + offset, count);
+        for (let i = 0; i < count; i++) output[i] = min[i % 3] + source[i] / 65535 * extent[i % 3];
+    } else {
+        const source = new Int16Array(data, start + offset, count);
+        for (let i = 0; i < count; i++) output[i] = source[i] / 32767;
+    }
+    return output;
+}
 type MeshLayout = Record<"position" | "normal" | "index", AttributeLayout>;
 
 function decodeGeometry(data: ArrayBuffer) {
@@ -12,12 +27,11 @@ function decodeGeometry(data: ArrayBuffer) {
     const start = Math.ceil((length + 4) / 4) * 4;
     return Object.fromEntries(Object.entries(header).map(([name, layout]) => {
         const geometry = new BufferGeometry();
-        for (const key of ["position", "normal", "index"] as const) {
-            const { type, offset, count } = layout[key];
-            const ArrayType = type === "Uint16Array" ? Uint16Array : type === "Uint32Array" ? Uint32Array : Float32Array;
-            const attribute = new BufferAttribute(new ArrayType(data, start + offset, count), key === "index" ? 1 : 3);
-            if (key === "index") geometry.setIndex(attribute);
-            else geometry.setAttribute(key, attribute);
+        const { type, offset, count } = layout.index;
+        const IndexType = type === "Uint16Array" ? Uint16Array : Uint32Array;
+        geometry.setIndex(new BufferAttribute(new IndexType(data, start + offset, count), 1));
+        for (const key of ["position", "normal"] as const) {
+            geometry.setAttribute(key, new BufferAttribute(dequantize(data, start, key, layout[key]), 3));
         }
         geometry.computeBoundingBox();
         geometry.computeBoundingSphere();

@@ -38,14 +38,6 @@ const getGood = cache(async (goodId: string): Promise<Good> => {
     }
 });
 
-export async function generateStaticParams() {
-    const goods = await categoryApi.getAllGoods();
-
-    return goods.map((good) => ({
-        good_id: String(good.id)
-    }));
-}
-
 export async function generateMetadata({
     params
 }: GoodPageProps): Promise<Metadata> {

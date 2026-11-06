@@ -1,29 +1,10 @@
 import type { Metadata } from "next";
-import { preorderApi } from "@/api/api";
 import { Id } from "@/api/types/api";
 import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SeoService } from "@/helpers";
 import { PreorderView } from "./page/PreorderView";
 import { CircularProgress } from "@mui/material";
-
-export async function generateStaticParams() {
-    try {
-        const { data: preorders } = 
-            await preorderApi.getPreorders();
-
-        return preorders.map(preorder => ({
-            preorder_id: preorder.id
-        }));
-    } catch {
-        const { data: preorders } = 
-            await preorderApi.getGuestPreorders()
-
-        return preorders.map(preorder => ({
-            preorder_id: preorder.id
-        }));
-    }
-}
 
 export async function generateMetadata({
     params

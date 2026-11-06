@@ -1,18 +1,18 @@
 # Workshop Commerce
 
-A production-oriented e-commerce foundation with a Laravel API, a Next.js administration panel, PostgreSQL, Redis, AWS S3 media support, Nginx, and Docker Compose. The root `app/` directory is intentionally empty for a future customer storefront.
+An e-commerce project with a Next.js storefront and administration panel, a Laravel API, PostgreSQL, Redis, AWS S3 media, and an Nginx gateway managed by Docker Compose.
 
 ## Project map
 
 ```text
 .
-├── api/                  Laravel 12 JSON API
-├── admin/                Next.js 16 administration panel
-├── app/                  Reserved for the future customer app
-├── nginx/                Single-entry reverse proxy
-├── docker-compose.yaml   Local service topology
-├── PRODUCT.md            Durable product constraints
-└── DESIGN.md             Implemented admin design system
+├── api/                        Laravel 12 JSON API
+├── admin/                      Next.js 16 administration panel
+├── app/                        Next.js 16 customer storefront
+├── nginx/                      Single-entry reverse proxy
+├── docker-compose.yaml         Application services
+├── PRODUCT.md                  Durable product constraints
+└── DESIGN.md                   Implemented admin design system
 ```
 
 ## What is included
@@ -42,9 +42,12 @@ docker compose up --build
 
 The stack runs at:
 
-- Admin panel: `http://localhost:8080/login`
-- API: `http://localhost:8080/api`
+- Storefront: `http://localhost:8080/`
+- Admin panel: `http://admin.localhost:8080/login`
+- API: `/api` on both hosts
 - Health check: `http://localhost:8080/health`
+
+Docker builds both Next.js apps as standalone production images. Rebuild the relevant image with `docker compose up -d --build app` or `docker compose up -d --build admin` after changing frontend code. For hot reload, use the host development commands below.
 
 On first startup, the API waits for PostgreSQL and Redis, applies migrations, and then serves requests. Seed the optional synthetic administrators with:
 
@@ -72,7 +75,7 @@ When the admin panel runs directly on port 3000 in development, its `/api` reque
 
 ### Email verification
 
-For local work, `MAIL_MAILER=log` writes the confirmation URL to `api/storage/logs/laravel.log`. For a real mail provider, fill the standard Laravel `MAIL_*` values and point `FRONTEND_VERIFY_URL` at the customer-facing app's `/home` route (the default local URL is `http://localhost:3000/home`). The storefront's global context submits the token to `POST /api/account/verify`, which consumes it once and starts the session. Pending records expire after `AUTH_PENDING_TTL_HOURS` and are consumed atomically on successful verification.
+For local work, `MAIL_MAILER=log` writes the confirmation URL to `api/storage/logs/laravel.log`. Compose builds the verification URL from `STOREFRONT_URL` and `/home`. For a host-run API, set `FRONTEND_VERIFY_URL` in `api/.env`. For a real mail provider, fill the standard Laravel `MAIL_*` values. The storefront's global context submits the token to `POST /api/account/verify`, which consumes it once and starts the session. Pending records expire after `AUTH_PENDING_TTL_HOURS` and are consumed atomically on successful verification.
 
 ### JWT keys and cookies
 
@@ -90,7 +93,7 @@ The database stores both the object path and public URL. Deleting an image remov
 
 ## Local development without Docker
 
-API requirements: PHP 8.2+, Composer, PostgreSQL, Redis, and OpenSSL. Admin requirements: Node.js 22+ and npm.
+API requirements: PHP 8.2+, Composer, PostgreSQL, Redis, and OpenSSL. Frontend requirements: Node.js 22+ and npm. For a host-run API, add `session.upload_progress.enabled=0` to the active `php.ini` reported by `php --ini`. Docker loads `api/docker/php.ini` as its main PHP configuration.
 
 ```bash
 cd api
@@ -109,6 +112,8 @@ cp .env.example .env.local
 npm install
 npm run dev
 ```
+
+For the storefront, run `npm ci` and `npm run dev` from `app/` after copying `app/.env.example` to `app/.env`. Use a different dev port if both frontends run on the host at the same time, and add its origin to the API allowlist.
 
 ## API shape
 
@@ -151,9 +156,60 @@ The backend suite covers the verification lifecycle, normalized credentials, ref
 - Replace all example credentials and the synthetic seeded administrator.
 - Keep the private JWT key outside the image and source tree; use the deployment platform’s secret mount.
 - Run migrations as a controlled release step if your platform should not migrate on application boot.
-- Put TLS in front of Nginx, enable secure cookies, set exact origins, and keep Nginx upload limits aligned with Laravel validation.
 - Use a private PostgreSQL/Redis network, managed backups, S3 lifecycle/versioning as appropriate, centralized logs, and external health monitoring.
-- Build the admin production image using the Dockerfile’s `production` stage when deploying without the development Compose profile.
+
+### HTTPS on the VPS
+
+Run these steps over SSH on a Debian or Ubuntu VPS. Point both DNS names to the server and allow inbound TCP ports 80 and 443. The host Nginx serves the public domains. The Compose gateway listens on the server's loopback interface.
+
+Set the public URLs in the project's root `.env` and replace the example domains:
+
+```dotenv
+HTTP_PORT=8080
+STOREFRONT_URL=https://example.com
+ADMIN_HOST=admin.example.com
+ADMIN_URL=https://admin.example.com
+CORS_ALLOWED_ORIGINS=https://example.com,https://admin.example.com
+SESSION_SECURE_COOKIE=true
+```
+
+If `api/.env` explicitly sets `STRIPE_CHECKOUT_SUCCESS_URL` or `STRIPE_CHECKOUT_CANCEL_URL`, update their origins to match the storefront or remove the overrides to use `STOREFRONT_URL`. Set the Stripe webhook endpoint to `https://example.com/api/webhooks/stripe` in the target environment.
+
+```bash
+docker compose up -d --build --wait
+sudo apt update
+sudo apt install nginx certbot python3-certbot-nginx
+```
+
+Add the following to `/etc/nginx/sites-available/workshop` on the server. If the domains already have active virtual hosts, put the proxy settings in those blocks instead.
+
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name example.com admin.example.com;
+    client_max_body_size 12m;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+    }
+}
+```
+
+Enable the new site if you created it, then issue the certificate and check renewal:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/workshop /etc/nginx/sites-enabled/workshop
+sudo nginx -t && sudo systemctl reload nginx
+sudo certbot --nginx --redirect -d example.com -d admin.example.com
+sudo certbot renew --dry-run
+systemctl list-timers certbot.timer
+```
 
 ### Category and product images
 

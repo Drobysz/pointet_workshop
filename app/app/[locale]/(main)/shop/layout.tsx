@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { categoryApi } from "@/api/api";
 import { CentralizedProgressLoading, JsonLd } from "@/components";
@@ -45,6 +46,7 @@ export default async function ShopLayout({
 
     const t = await getTranslations("catalog");
     const tBreadcrumbs = await getTranslations("seo.breadcrumbs");
+    await connection();
     const { data: categories } = await categoryApi.getCategories();
 
     return (
@@ -62,7 +64,7 @@ export default async function ShopLayout({
                 ])}
             />
             {/* The catalog is rendered on the client, so the page heading
-                is emitted here to be part of the prerendered HTML. */}
+                is emitted here in the server-rendered HTML. */}
             <h1 className="sr-only">
                 {t("heading")}
             </h1>

@@ -1,4 +1,6 @@
 import type { MetadataRoute } from "next";
+import { unstable_cache } from "next/cache";
+import { connection } from "next/server";
 import { categoryApi } from "@/api/api";
 import { SeoService } from "@/helpers";
 import { routing } from "@/i18n/routing";
@@ -9,11 +11,8 @@ interface SitemapRoute {
     pathname: string;
     changeFrequency: SitemapEntry["changeFrequency"];
     priority: number;
-    lastModified?: Date;
+    lastModified?: SitemapEntry["lastModified"];
 }
-
-// Products are added through the admin panel: refresh the sitemap hourly.
-export const revalidate = 3600;
 
 const STATIC_ROUTES: SitemapRoute[] = [
     { pathname: "/home", changeFrequency: "weekly", priority: 1 },
@@ -23,29 +22,22 @@ const STATIC_ROUTES: SitemapRoute[] = [
     { pathname: "/docs/cookies_policy", changeFrequency: "yearly", priority: 0.2 },
 ];
 
-async function getGoodRoutes(): Promise<SitemapRoute[]> {
-    try {
-        const goods = await categoryApi.getAllGoods();
+const getGoodRoutes = unstable_cache(async (): Promise<SitemapRoute[]> => {
+    const goods = await categoryApi.getAllGoods();
 
-        return goods.map((good) => ({
-            pathname: `/goods/${good.id}`,
-            changeFrequency: "weekly",
-            priority: 0.8,
-            ...(good.created_at && {
-                lastModified: new Date(good.created_at),
-            }),
-        }));
-    } catch {
-        // An unreachable API must not break the sitemap of static pages.
-        return [];
-    }
-}
+    return goods.map((good) => ({
+        pathname: `/goods/${good.id}`,
+        changeFrequency: "weekly",
+        priority: 0.8,
+        lastModified: good.created_at || undefined,
+    }));
+}, ["sitemap-goods"], { revalidate: 3600 });
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const routes = [
-        ...STATIC_ROUTES,
-        ...await getGoodRoutes(),
-    ];
+    await connection();
+    // An unreachable API must not break the sitemap of static pages.
+    const goods = await getGoodRoutes().catch(() => []);
+    const routes = [...STATIC_ROUTES, ...goods];
 
     // One entry per locale, each cross-linked with its hreflang alternates.
     return routes.flatMap(({ pathname, ...route }) => {

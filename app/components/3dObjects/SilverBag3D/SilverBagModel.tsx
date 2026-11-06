@@ -5,7 +5,7 @@ import { useGeometry } from "../shared/useGeometry";
 import { MAX_AMBIENT_STEP } from "../shared/ambient";
 import type { ModelProps } from "../shared/types";
 
-const BASE_YAW = -0.32;
+const BASE_YAW = -0.16;
 
 export default function SilverBagModel({ active, reducedMotion }: ModelProps) {
     const geometry = useGeometry("bag");
@@ -22,7 +22,7 @@ export default function SilverBagModel({ active, reducedMotion }: ModelProps) {
     });
 
     return (
-        <group ref={turntable} rotation={[0.1, BASE_YAW, 0]}>
+        <group ref={turntable} rotation={[0.04, BASE_YAW, 0]}>
             <mesh geometry={geometry.body}>
                 {/* Mirror-polished chrome: low roughness and a clear coat for crisp, layered highlights. */}
                 <meshPhysicalMaterial

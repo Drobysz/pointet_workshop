@@ -6,11 +6,16 @@ import {
 } from "three";
 import type { ColorRepresentation, WebGLRenderer } from "three";
 
-// [x, y, z, width, height, intensity]: key, fill, top, ground bounce, back rim, front, overhead strip.
+// [x, y, z, width, height, intensity]: key, fill, top, floor bounce, back rim,
+// two front softboxes, overhead strip.
 const panels = [
     [-4, 3, 3, 2, 7, 5], [4, 1, 2, 1, 6, 3], [0, 5, -2, 5, 3, 4],
-    [-2, -3, 2, 4, 1, 1.5], [0, 1, -5, 3, 5, 2],
-    [-2, 0, 6, 4, 7, 1.5], [0, 6, 1, 6, 2, 2],
+    // A broad white sweep below, as on a product table: lower curves read bright, not black.
+    [0, -4, 1, 10, 6, 2.6], [0, 1, -5, 3, 5, 2],
+    // Split front light: the dark gap between the boxes draws the vertical streaks that
+    // make polished metal read as a mirror.
+    [-2.4, 0.5, 6, 2.8, 9, 3], [2.4, 0.5, 6, 1.6, 9, 2.4],
+    [0, 6, 1, 6, 2, 2],
 ] as const;
 
 const panelVertex = /* glsl */ `
@@ -25,7 +30,7 @@ const panelFragment = /* glsl */ `
     varying vec2 vUv;
     void main() {
         vec2 d = abs(vUv - 0.5) * 2.0;
-        float falloff = 1.0 - smoothstep(0.35, 1.0, max(d.x, d.y));
+        float falloff = 1.0 - smoothstep(0.6, 1.0, max(d.x, d.y));
         gl_FragColor = vec4(uColor * falloff, 1.0);
     }`;
 const domeVertex = /* glsl */ `
@@ -59,7 +64,7 @@ function mountStudio(gl: WebGLRenderer, scene: Scene, tint: ColorRepresentation)
         side: BackSide,
         depthWrite: false,
         uniforms: {
-            uGround: { value: new Color("#25272c") },
+            uGround: { value: new Color("#2c2e34") },
             uHorizon: { value: new Color("#6d727b").lerp(accent, 0.45) },
             uSky: { value: new Color("#c9cdd4").lerp(accent, 0.25) },
         },

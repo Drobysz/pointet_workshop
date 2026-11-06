@@ -29,21 +29,22 @@ manual interaction.
 
 All models are original and authored procedurally in this repository (no third-party
 meshes, scans, textures or HDRIs), then prebuilt into compressed, indexed geometry in
-`public/3d`. No reference image was supplied for the handbag; its silhouette follows
-the written brief and is not a replica of any branded product.
+`public/3d`. The handbag follows the general shape language of a supplied product
+photo (inverted-egg body rising into the handle, egg-shaped opening, pebble dome) but
+is modelled from scratch with its own proportions and carries no logo or brand mark.
 
 | Model | Construction | Triangles | Download |
 | --- | --- | ---: | ---: |
 | Curated objects | Half-moon bag (signed-distance field, surface nets) with gold tube handle and turn-lock; fluted, slightly asymmetric lathed vase with an open mouth; three-strand twisted bangle (parametric torus) | 29,240 | 255 KiB |
-| Silver handbag | One signed-distance surface: tapered super-ellipse body pinching to a top ridge, fused to a tall oval handle by a 0.32-unit smooth-union fillet; flat base | 22,288 | 201 KiB |
+| Silver handbag | One signed-distance surface: inverted-egg silhouette (hull of two circles, flattened base) pierced by an egg-shaped opening; elliptical rounding from the outer edge gives the pebble dome, a tighter rounding from the opening gives the mouth lip and the narrow, deep handle band | 28,640 | 294 KiB |
 | Satin dress | Parametric ghost-mannequin surface: sweetheart neckline, cinched waist, flared bias skirt with two-frequency drifting folds, high-low hem and short train; piping at neckline, waist and hem; spaghetti straps | 25,872 | 243 KiB |
 
 - The **composition** uses three materials: glossy glazed stoneware (clear coat, light
   sheen), cherry lacquer (clear coat) and polished gold. Each piece floats and turns on
   its own slow, bounded cycle; the bangle turns about its own axis. Viewports narrower
   than 0.85:1 use a stacked arrangement so the group stays legible on phones.
-- The **handbag** is mirror chrome: metalness 1, roughness 0.1, full clear coat. A slow
-  ±0.16-radian turn lets reflections travel over the surface.
+- The **handbag** is mirror chrome: metalness 1, roughness 0.1, full clear coat, shown
+  almost front-on. A slow ±0.16-radian turn lets reflections travel over the surface.
 - The **dress** is wine satin: physical material with sheen, light clear coat, double
   sided so the interior reads at the hem. A vertex-shader sway (no cloth solver) moves
   the skirt slightly, growing toward the hem; the bodice is untouched.
@@ -59,7 +60,9 @@ adds to the scroll and drag rotation below rather than replacing it.
   model bounds and fits their eight rotated corners inside the perspective view,
   with 24% framing space. Models shrink immediately to stay in view and expand smoothly.
 - `StudioEnvironment` bakes a local studio reflection environment once at 256 pixels
-  per cube face: a ground/horizon/sky gradient dome plus seven soft-edged softboxes.
+  per cube face: a ground/horizon/sky gradient dome plus eight feathered softboxes,
+  including a broad floor sweep and a split front pair whose gap draws the dark
+  vertical streaks that make polished metal read as a mirror.
   The horizon borrows a little of each section's backdrop colour (`studioTint`) so chrome
   and gold sit in their scene. It never becomes the visible background.
 - `useObjectDragRotation` uses pointer capture, relative drag sensitivity, bounded X
@@ -92,7 +95,7 @@ React state.
   preparing their GPU buffers and studio reflections before entering view.
 - Browser startup runs no field sampling, surface extraction or lathe construction.
   Positions are quantized to 16 bits over each mesh's bounds (sub-0.1 mm error at
-  model scale) and normals to 16 bits. The three gzip assets total about 700 KiB
+  model scale) and normals to 16 bits. The three gzip assets total about 790 KiB
   and decode with the browser's native `DecompressionStream` API.
 - Canvas dimensions use untransformed layout measurements, so an ancestor's CSS
   scale does not enlarge the drawing buffer twice or shift the object's center.

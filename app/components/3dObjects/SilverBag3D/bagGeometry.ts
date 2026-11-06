@@ -1,27 +1,53 @@
-import { clamp, ellipse2d, length2, polygonize, smax, smin } from "../shared/sdf";
+import { clamp, length2, polygonize, smax, smoothstep } from "../shared/sdf";
 
 /**
- * One continuous liquid-metal surface: a soft pillow body that tapers and pinches toward a
- * closed top ridge, fused with a tall oval handle through a wide smooth fillet.
+ * 2D distance to the convex hull of two vertically stacked circles (an "egg"):
+ * radius `r1` centred at (0, y1) below, radius `r2` centred `h` above it.
+ */
+function egg(x: number, y: number, y1: number, r1: number, r2: number, h: number) {
+    const px = Math.abs(x);
+    const py = y - y1;
+    const b = (r1 - r2) / h;
+    const a = Math.sqrt(1 - b * b);
+    const k = -b * px + a * py;
+    if (k < 0) return length2(px, py) - r1;
+    if (k > a * h) return length2(px, py - h) - r2;
+    return a * px + b * py - r1;
+}
+
+/**
+ * Elliptical rounding of a 2D region: zero thickness at its edge, rising over `reach`
+ * to a half-depth of `depth`. Smooth everywhere, so mirror reflections stay unbroken.
+ */
+function dome(distance: number, z: number, reach: number, depth: number) {
+    const inward = 1 - Math.min(-distance / reach, 1);
+    return (length2(z / depth, inward) - 1) * depth;
+}
+
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+/**
+ * Liquid-metal hobo bag, seen front-on: one inverted-egg silhouette whose sides rise
+ * continuously into the handle, pierced by an egg-shaped opening. The outer edge gives
+ * a full pebble dome; the opening gets its own tight rounding, so the mouth is a
+ * compact rounded lip and the arms become a narrow, deep band.
  */
 function bagField(x: number, y: number, z: number) {
-    // Body: rounded super-ellipse silhouette, narrower and thinner toward the top.
-    const t = clamp((y + 0.95) / 1.9, 0, 1);
-    const xs = x / (1 - 0.2 * t);
-    const zs = z / (1 - 0.58 * t * t);
-    const p = 2.6;
-    const silhouette = Math.pow(Math.pow(Math.abs(xs) / 1.35, p) + Math.pow(Math.abs(y) / 0.95, p), 1 / p);
-    let body = (length2(silhouette, zs / 0.62) - 1) * 0.62;
-    // A soft flat base so the bag reads as standing, not floating as a pebble.
-    body = smax(body, -(y + 0.84), 0.2);
-
-    // Handle: tall oval loop with a slightly flattened, strap-like cross-section.
-    const centre = ellipse2d(x, y - 0.86, 0.66, 0.92);
-    const handle = (length2(centre / 0.115, z / 0.15) - 1) * 0.115;
-
-    return smin(body, handle, 0.32);
+    // A faint organic lean, so it reads as cast rather than turned.
+    const sx = x + 0.025 * Math.sin(y * 1.7 + 0.4);
+    // A broader, flatter base: the lower curve is an ellipse rather than a half circle.
+    const sy = y < -0.5 ? -0.5 + (y + 0.5) / 0.82 : y;
+    const outer = egg(sx, sy, -0.5, 1.0, 0.66, 1.34);
+    const opening = egg(sx, y, 0.58, 0.55, 0.26, 0.54);
+    // 0 in the body, 1 in the handle; the arms broaden into the body around the mouth.
+    const handle = smoothstep(-0.15, 0.6, y);
+    const shell = dome(outer, z, lerp(1.0, 0.1, handle), lerp(0.5, 0.16, handle));
+    const lip = dome(-opening, z, lerp(0.24, 0.1, handle), lerp(0.62, 0.16, handle));
+    return smax(shell, lip, 0.04);
 }
 
 export function createBagGeometry() {
-    return { body: polygonize(bagField, [-1.5, -1.0, -0.75], [1.5, 2.05, 0.75], 0.04) };
+    // The field is non-Euclidean in z; clamp guards the projection against huge steps.
+    const field = (x: number, y: number, z: number) => clamp(bagField(x, y, z), -2, 2);
+    return { body: polygonize(field, [-1.15, -1.6, -0.6], [1.15, 1.6, 0.6], 0.032) };
 }

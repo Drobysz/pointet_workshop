@@ -35,16 +35,17 @@ is modelled from scratch with its own proportions and carries no logo or brand m
 
 | Model | Construction | Triangles | Download |
 | --- | --- | ---: | ---: |
-| Curated objects | Half-moon bag (signed-distance field, surface nets) with gold tube handle and turn-lock; fluted, slightly asymmetric lathed vase with an open mouth; three-strand twisted bangle (parametric torus) | 29,240 | 255 KiB |
-| Silver handbag | One signed-distance surface: inverted-egg silhouette (hull of two circles, flattened base) pierced by an egg-shaped opening; elliptical rounding from the outer edge gives the pebble dome, a tighter rounding from the opening gives the mouth lip and the narrow, deep handle band | 28,640 | 294 KiB |
+| Curated objects | Half-moon bag (signed-distance field, surface nets) with gold tube handle and turn-lock; white satin corset (parametric: sweetheart neckline, cinched waist, basque point, fourteen puffed panels with boning cords, edge piping, laced back with eyelets); three-strand twisted bangle (parametric torus) | 36,784 | 335 KiB |
+| Silver handbag | One signed-distance surface: inverted-egg silhouette (hull of two circles, flattened base) pierced by an egg-shaped opening; elliptical rounding from the outer edge gives the pebble dome, a tighter rounding from the opening gives the mouth lip and the narrow, deep handle band; a faint low-frequency undulation, as on hand-polished metal | 28,540 | 294 KiB |
 | Satin dress | Parametric ghost-mannequin surface: sweetheart neckline, cinched waist, flared bias skirt with two-frequency drifting folds, high-low hem and short train; piping at neckline, waist and hem; spaghetti straps | 25,872 | 243 KiB |
 
-- The **composition** uses three materials: glossy glazed stoneware (clear coat, light
-  sheen), cherry lacquer (clear coat) and polished gold. Each piece floats and turns on
+- The **composition** uses three materials: white duchess satin (sheen, light clear coat,
+  double sided), cherry lacquer (clear coat) and polished gold. Each piece floats and turns on
   its own slow, bounded cycle; the bangle turns about its own axis. Viewports narrower
   than 0.85:1 use a stacked arrangement so the group stays legible on phones.
-- The **handbag** is mirror chrome: metalness 1, roughness 0.1, full clear coat, shown
-  almost front-on. A slow ±0.16-radian turn lets reflections travel over the surface.
+- The **handbag** is polished silver: metalness 1, roughness 0.045, no clear coat (a
+  coat over metal reads as plastic), shown almost front-on. It is lit by the `product`
+  studio preset and rendered with neutral tone mapping, which keeps mirror whites white. A slow ±0.16-radian turn lets reflections travel over the surface.
 - The **dress** is wine satin: physical material with sheen, light clear coat, double
   sided so the interior reads at the hem. A vertex-shader sway (no cloth solver) moves
   the skirt slightly, growing toward the hem; the bodice is untouched.
@@ -59,10 +60,13 @@ adds to the scroll and drag rotation below rather than replacing it.
 - `InteractiveObjectScene` configures the canvas and camera. It centers the actual
   model bounds and fits their eight rotated corners inside the perspective view,
   with 24% framing space. Models shrink immediately to stay in view and expand smoothly.
-- `StudioEnvironment` bakes a local studio reflection environment once at 256 pixels
-  per cube face: a ground/horizon/sky gradient dome plus eight feathered softboxes,
-  including a broad floor sweep and a split front pair whose gap draws the dark
-  vertical streaks that make polished metal read as a mirror.
+- `StudioEnvironment` bakes a local studio reflection environment once, from a preset:
+  - `studio` (composition, dress; 256 px per face): dark ground, tinted horizon, pale
+    sky and eight feathered softboxes, including a floor sweep and a split front pair.
+  - `product` (handbag; 512 px per face): a product-photography set for mirror metal,
+    with a pale seamless sweep, a dark far-wall band at eye level, large soft sources
+    and two broad hard-edged black flags beside the lens. Flags write depth first and
+    mask softboxes behind them.
   The horizon borrows a little of each section's backdrop colour (`studioTint`) so chrome
   and gold sit in their scene. It never becomes the visible background.
 - `useObjectDragRotation` uses pointer capture, relative drag sensitivity, bounded X
@@ -95,7 +99,7 @@ React state.
   preparing their GPU buffers and studio reflections before entering view.
 - Browser startup runs no field sampling, surface extraction or lathe construction.
   Positions are quantized to 16 bits over each mesh's bounds (sub-0.1 mm error at
-  model scale) and normals to 16 bits. The three gzip assets total about 790 KiB
+  model scale) and normals to 16 bits. The three gzip assets total about 870 KiB
   and decode with the browser's native `DecompressionStream` API.
 - Canvas dimensions use untransformed layout measurements, so an ancestor's CSS
   scale does not enlarge the drawing buffer twice or shift the object's center.

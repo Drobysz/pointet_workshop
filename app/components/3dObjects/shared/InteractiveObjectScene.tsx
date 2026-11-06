@@ -2,8 +2,10 @@
 
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Box3, Group, MathUtils, Vector3 } from "three";
+import { ACESFilmicToneMapping, Box3, Group, MathUtils, NeutralToneMapping, Vector3 } from "three";
+import type { ToneMapping } from "three";
 import { StudioEnvironment } from "./StudioEnvironment";
+import type { StudioPresetName } from "./StudioEnvironment";
 import { useObjectDragRotation } from "./useObjectDragRotation";
 import { useSectionScrollRotation } from "./useSectionScrollRotation";
 import { clamp, inertiaStep, MAX_TILT } from "./rotationMath";
@@ -17,7 +19,13 @@ const models = {
     dress: lazy(modelLoaders.dress),
 };
 // Reflections borrow a little of each section's backdrop so objects sit in their scene.
-const studioTint = { curated: "#f2a7b8", bag: "#8fb2f4", dress: "#c4aef0" } as const;
+// Chrome gets a product-photography studio and neutral tone mapping, which keeps
+// mirror whites white instead of ACES's greyed highlights.
+const looks: Record<ObjectSceneProps["kind"], { tint: string; preset: StudioPresetName; toneMapping: ToneMapping }> = {
+    curated: { tint: "#f2a7b8", preset: "studio", toneMapping: ACESFilmicToneMapping },
+    bag: { tint: "#8fb2f4", preset: "product", toneMapping: NeutralToneMapping },
+    dress: { tint: "#c4aef0", preset: "studio", toneMapping: ACESFilmicToneMapping },
+};
 const CAMERA_DISTANCE = 9;
 const FIELD_OF_VIEW = 32;
 const verticalTangent = Math.tan(MathUtils.degToRad(FIELD_OF_VIEW / 2));
@@ -119,6 +127,7 @@ function RotatingObject({
 }
 
 export default function InteractiveObjectScene(props: ObjectSceneProps) {
+    const look = looks[props.kind];
     return (
         <Canvas
             className={s.canvas}
@@ -133,12 +142,13 @@ export default function InteractiveObjectScene(props: ObjectSceneProps) {
             onCreated={({ gl }) => {
                 gl.domElement.setAttribute("aria-hidden", "true");
                 gl.setClearColor(0x000000, 0);
+                gl.toneMapping = look.toneMapping;
                 gl.toneMappingExposure = 1.05;
             }}
             fallback={<p className={s.fallback} role="status">{props.fallbackText}</p>}
         >
             <Suspense fallback={null}>
-                <StudioEnvironment tint={studioTint[props.kind]} />
+                <StudioEnvironment tint={look.tint} preset={look.preset} />
                 <RotatingObject {...props} />
             </Suspense>
         </Canvas>

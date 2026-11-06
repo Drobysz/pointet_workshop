@@ -24,14 +24,13 @@ export default function SilverBagModel({ active, reducedMotion }: ModelProps) {
     return (
         <group ref={turntable} rotation={[0.04, BASE_YAW, 0]}>
             <mesh geometry={geometry.body}>
-                {/* Mirror-polished chrome: low roughness and a clear coat for crisp, layered highlights. */}
-                <meshPhysicalMaterial
-                    color="#eef0f3"
+                {/* Polished silver: near-mirror roughness, neutral reflectance, no clear coat
+                    (a coat over metal adds a second, plastic-looking reflection). */}
+                <meshStandardMaterial
+                    color="#f3f3f1"
                     metalness={1}
-                    roughness={0.1}
-                    clearcoat={1}
-                    clearcoatRoughness={0.03}
-                    envMapIntensity={1.25}
+                    roughness={0.045}
+                    envMapIntensity={1}
                 />
             </mesh>
         </group>

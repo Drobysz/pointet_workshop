@@ -43,7 +43,11 @@ function bagField(x: number, y: number, z: number) {
     const handle = smoothstep(-0.15, 0.6, y);
     const shell = dome(outer, z, lerp(1.0, 0.1, handle), lerp(0.5, 0.16, handle));
     const lip = dome(-opening, z, lerp(0.24, 0.1, handle), lerp(0.62, 0.16, handle));
-    return smax(shell, lip, 0.04);
+    // Hand-polished metal is never perfectly true: a faint, low-frequency undulation
+    // makes reflections ripple organically instead of sliding like a CG primitive.
+    const ripple = 0.007 * (Math.sin(2.3 * x + 1.1 * y + 0.7) * Math.sin(1.9 * y - 1.4 * z)
+        + 0.6 * Math.sin(3.7 * y + 0.8 * x - 1.2) * Math.cos(2.9 * z + 0.5 * x));
+    return smax(shell, lip, 0.04) + ripple;
 }
 
 export function createBagGeometry() {

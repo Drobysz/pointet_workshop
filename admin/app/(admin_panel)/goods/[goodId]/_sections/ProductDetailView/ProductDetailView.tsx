@@ -99,7 +99,7 @@ function ProductGallery({ product }: ProductGalleryProps) {
 
 export function ProductDetailView({ goodId }: { goodId: string }) {
   const t = useTranslations("goods");
-  const { formatCurrency } = useAppFormatters();
+  const { formatCurrency, formatNumber, formatWeight } = useAppFormatters();
   const productState = useSWR(
     ["good", goodId],
     () => getGood(goodId),
@@ -162,7 +162,7 @@ export function ProductDetailView({ goodId }: { goodId: string }) {
             </div>
             <div>
               <dt>{t("weigh")}</dt>
-              <dd>{product.weigh} g</dd>
+              <dd>{formatWeight(product.weigh)}</dd>
             </div>
             <div>
               <dt>{t("materials")}</dt>
@@ -190,7 +190,7 @@ export function ProductDetailView({ goodId }: { goodId: string }) {
         <div>
           <article>
             <span>{t("unitsSold")}</span>
-            <strong>{statistics.units}</strong>
+            <strong>{formatNumber(statistics.units)}</strong>
           </article>
           <article>
             <span>{t("revenue")}</span>
@@ -198,7 +198,7 @@ export function ProductDetailView({ goodId }: { goodId: string }) {
           </article>
           <article>
             <span>{t("orders")}</span>
-            <strong>{statistics.orders}</strong>
+            <strong>{formatNumber(statistics.orders)}</strong>
           </article>
         </div>
       </section>

@@ -7,8 +7,11 @@ import { useLogout } from "@/hooks";
 import { useContext } from "react";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { CircularProgress } from "@mui/material";
+import { useTranslations } from "next-intl";
 
 export const LogOutSection = ()=> {
+    const t = useTranslations("profile.accountActions");
+    const tActions = useTranslations("common.actions");
     const {
         logOut,
         isPending: isLogOutPending,
@@ -33,7 +36,7 @@ export const LogOutSection = ()=> {
                     s.alert_actions_title,
                     jersey10.className
                 )}>
-                    Logout of your account
+                    {t("logOutTitle")}
                 </span>
 
 
@@ -50,7 +53,7 @@ export const LogOutSection = ()=> {
                             color="inherit"
                             size={10}
                         />
-                        : "Log out"
+                        : t("logOut")
                     }
                 </button>
             </div>
@@ -62,7 +65,7 @@ export const LogOutSection = ()=> {
                     s.alert_actions_title,
                     jersey10.className
                 )}>
-                    Delete your account
+                    {t("deleteTitle")}
                 </span>
 
 
@@ -74,7 +77,7 @@ export const LogOutSection = ()=> {
                     )}
                     onClick={handleClickDeleteBtn}
                 >
-                    Delete
+                    {tActions("delete")}
                 </button>
             </div>
         </div>

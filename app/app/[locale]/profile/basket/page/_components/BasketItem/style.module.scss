@@ -4,5 +4,21 @@
     @apply grid 
         grid-cols-3 
         items-start 
-        justify-items-center;
+        justify-items-center
+        max-md:grid-cols-2
+        max-md:items-center
+        max-md:gap-y-4;
+
+    // Product details take the first row; counter and price share the second.
+    > :first-child {
+        @apply max-md:col-span-2;
+    }
+
+    > :nth-child(2) {
+        @apply max-md:justify-self-start;
+    }
+
+    > :last-child {
+        @apply max-md:justify-self-end;
+    }
 }

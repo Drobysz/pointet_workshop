@@ -4,7 +4,12 @@
     @apply flex 
         justify-between
         items-center
-        px-5;
+        px-5
+        max-md:flex-col
+        max-md:items-start
+        max-md:gap-2
+        max-md:px-2
+        max-md:pb-2;
 
     .title {
         @apply text-7xl

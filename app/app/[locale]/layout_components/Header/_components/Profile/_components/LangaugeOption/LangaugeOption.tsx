@@ -2,69 +2,33 @@
 
 import { Globe } from "lucide-react"
 import s from "./style.module.scss";
-import { useLocale } from "next-intl";
-import { language } from "@/types/auth";
-import { MouseEvent, ReactNode, useContext, useRef, useState, useTransition } from "react";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { ReactNode, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { ViewReveal } from "@/components/animations/ViewReveal/ViewReveal";
 import { cn } from "@/helpers";
 import { tinyFive } from "@/fonts/fonts";
 import { CoverFeed } from "@/components";
 import { useDismiss } from "@/hooks/useDismiss";
-import { CookiesService } from "@/helpers/cookies";
-import { userApi } from "@/api/api";
-import { GlobalContext } from "@/app/[locale]/context/global.context";
+import { useSwitchLocale } from "@/hooks/useSwitchLocale";
+import { AppLocale, localeNames, routing } from "@/i18n/routing";
 
 const HeaderLangOpt = ({
     value,
+    onSelect,
     children
 }: {
-    value: language;
+    value: AppLocale;
+    onSelect: (locale: AppLocale) => void;
     children: ReactNode;
 })=> {
-    const router = useRouter();
-    const pathname = usePathname();
-    const [_, startTransition] = useTransition();
     const [hover, setHover] = useState(false);
-    const { user, mutateUser } = useContext(GlobalContext);
-
-    const switchLocale = async (e: MouseEvent<HTMLLIElement>)=> {
-        const newLocale
-            = e.currentTarget.getAttribute('value') as language;
-
-        if (newLocale) {
-            startTransition(async ()=> {
-                const cookies = new CookiesService();
-
-                if (user) {
-                    await userApi.updateUser(
-                        user.id,
-                        { language: newLocale }
-                    )
-                    mutateUser();
-                }
-            
-                cookies.setCookies(
-                    "NEXT_LOCALE",
-                    newLocale,
-                    60 * 60 * 24 * 365,
-                );
-
-                router.replace(
-                    pathname,
-                    { locale: newLocale }
-                );
-            })
-        }
-    };
 
     return(
         <li
-            key={`header-lang-opt-${value}`}
             className={s.lang_opt}
-            onClick={switchLocale}
-            value={value}
+            lang={value}
+            onClick={()=> onSelect(value)}
             onMouseEnter={()=> setHover(true)}
             onMouseLeave={()=> setHover(false)}
         >
@@ -78,8 +42,13 @@ const HeaderLangOpt = ({
     )
 }
 
-export const LangaugeOption = ()=> {
-    const locale = useLocale();;
+export const LangaugeOption = ({
+    className
+}: {
+    className?: string;
+})=> {
+    const t = useTranslations("languageSwitcher");
+    const { locale, switchLocale } = useSwitchLocale();
     const [isOpen, setIsOpen] = useState(false);
 
     const btnRef = useRef<HTMLButtonElement | null>(null);
@@ -90,21 +59,18 @@ export const LangaugeOption = ()=> {
         onDismiss: ()=> setIsOpen(false),
     });
 
-    const locales = [
-        { label: "English", value: "en" },
-        { label: "Francais", value: "fr" },
-        { label: "Русский", value: "ru" },
-        { label: "Italiano", value: "it" },
-        { label: "Deutsch", value: "de" },
-    ].filter(lcl=> lcl.value !== locale);
+    const locales = routing.locales.filter(lcl => lcl !== locale);
 
     return (
-        <div className="relative">
+        <div className={cn("relative", className)}>
             <button
+                type="button"
                 className={cn(
                     s.lang_btn,
                     isOpen && "bg-gray-300"
                 )}
+                aria-label={t("change")}
+                aria-expanded={isOpen}
                 ref={btnRef}
                 onClick={()=> setIsOpen(p => !p)}
             >
@@ -124,12 +90,13 @@ export const LangaugeOption = ()=> {
                             className={tinyFive.className}
                             ref={listRef}
                         >
-                            {locales.map(({label, value})=>
+                            {locales.map(value =>
                                 <HeaderLangOpt
                                     key={`header-lang-opt-${value}`}
-                                    value={value as language}
+                                    value={value}
+                                    onSelect={switchLocale}
                                 >
-                                    {label}
+                                    {localeNames[value]}
                                 </HeaderLangOpt>
                             )}
                         </ul>

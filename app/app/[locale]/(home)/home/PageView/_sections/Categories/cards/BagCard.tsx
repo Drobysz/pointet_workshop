@@ -7,14 +7,16 @@ import { monserrat_semibold } from "@/fonts/fonts";
 import { cn } from "@/helpers";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export const BagCard = ()=> {
+    const t = useTranslations("home.categories.shop");
     const [hover, setHover] = useState(false);
 
     return (
         <InteractionCard
             className={s.card}
-            link="/goods"
+            link="/shop"
             onMouseEnter={()=> setHover(true)}
             onMouseLeave={()=> setHover(false)}
         >
@@ -24,11 +26,11 @@ export const BagCard = ()=> {
                     monserrat_semibold.className
                 )}
             >
-                Handbags
+                {t("title")}
             </h3>
 
             <p className={s.card_subtitle}>
-                Get familiarize with the handmade handbags I make.
+                {t("description")}
             </p>
             
             <motion.div
@@ -56,7 +58,7 @@ export const BagCard = ()=> {
                     src="/category/hero.png"
                     width={250}
                     height={100}
-                    alt="category bag"
+                    alt={t("toteAlt")}
                 />
             </motion.div>
             <motion.div
@@ -84,7 +86,7 @@ export const BagCard = ()=> {
                     src="/category/bag.png"
                     width={170}
                     height={100}
-                    alt="category bag"
+                    alt={t("handbagAlt")}
                 />
             </motion.div>
         </InteractionCard>

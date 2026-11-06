@@ -1,0 +1,38 @@
+@reference "tailwindcss";
+
+.preorder_header {
+    @apply flex
+        justify-between
+        relative
+        px-5 pt-3
+        max-lg:flex-wrap
+        max-lg:gap-x-6
+        max-lg:gap-y-1
+        border-t-2
+        border-t-zinc-400
+        bg-gray-300/80;
+
+    .additional_back {
+        @apply absolute 
+            w-full
+            inset-0
+            bg-gray-300/80
+            translate-y-full;
+    }
+}
+
+.pair {
+    @apply flex 
+        gap-2
+        items-center;
+}
+
+.key {
+    @apply text-zinc-500
+        text-3xl;
+}
+
+.value {
+    @apply text-zinc-700
+        text-4xl;
+}

@@ -4,11 +4,15 @@ import { MouseEvent, useEffect, useRef, useState } from "react";
 import s from "./style.module.scss";
 import { useAnimate, motion, Transition, useInView } from "framer-motion";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { cn } from "@/helpers";
 import { climate_crisis, sixCaps } from "@/fonts/fonts";
 import { SplitByRowsText } from "@/components/animations/Texts/SplitByRowsText/SplitByRowsText";
 
 export const Hero = ()=> {
+    const t = useTranslations("home.hero");
+    // The tagline is one message; its line breaks define the animated rows.
+    const taglineRows = t("tagline").split("\n");
     const [scope, animate] = useAnimate();
     const ref = useRef<HTMLDivElement | null>(null);
     const isInView = useInView(ref, { once: true });
@@ -90,59 +94,54 @@ export const Hero = ()=> {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
-                <motion.h1 
-                    className={cn(
-                        s.title,
-                        sixCaps.className
-                    )}
-                    style={getCoordinatesStyle(false, 1.5)}
-                >
-                    pointet
-                </motion.h1>
-                <motion.div 
-                    className="absolute inset-0"
-                    style={getCoordinatesStyle(true, 1)}
-                >
-                    <Image
-                        className={s.chest}
-                        src="/hero/chest.png"
-                        width={800}
-                        height={400}
-                        alt="Hero bag"
-                        loading="eager"
-                    />
-                    <Image
-                        className={s.bag}
-                        src="/hero/bag.png"
-                        width={600}
-                        height={400}
-                        alt="Hero bag"
-                        loading="eager"
-                    />
-                </motion.div>
-                <motion.ul
-                    className={cn(
-                        s.signs_list,
-                        climate_crisis.className
-                    )}
-                    style={getCoordinatesStyle(true, 3.5)}
-                >
-                    <SplitByRowsText
-                        tag="span"
+                <div className={s.content_container}>
+                    <motion.h1 
+                        className={cn(
+                            s.title,
+                            sixCaps.className
+                        )}
+                        style={getCoordinatesStyle(false, 1.5)}
                     >
-                        Handmade bags
-                    </SplitByRowsText>
-                    <SplitByRowsText
-                        tag="span"
+                        pointet
+                    </motion.h1>
+                    <div 
+                        className={s.images_container}
+                        style={getCoordinatesStyle(true, 1)}
                     >
-                        Restored furniture
-                    </SplitByRowsText>
-                    <SplitByRowsText
-                        tag="span"
+                        <Image
+                            className={s.bag}
+                            src="/hero/bag.png"
+                            width={720}
+                            height={550}
+                            alt={t("bagAlt")}
+                            loading="eager"
+                        />
+                        <Image
+                            className={s.chest}
+                            src="/hero/chest.png"
+                            width={800}
+                            height={400}
+                            alt={t("shelfAlt")}
+                            loading="eager"
+                        />
+                    </div>
+                    <motion.ul
+                        className={cn(
+                            s.signs_list,
+                            climate_crisis.className
+                        )}
+                        style={getCoordinatesStyle(true, 3.5)}
                     >
-                        Custom items
-                    </SplitByRowsText>
-                </motion.ul>
+                        {taglineRows.map((row, index) =>
+                            <SplitByRowsText
+                                key={`tagline-row-${index}`}
+                                tag="span"
+                            >
+                                {row}
+                            </SplitByRowsText>
+                        )}
+                    </motion.ul>
+                </div>
             </motion.div>
         </motion.section>
     )

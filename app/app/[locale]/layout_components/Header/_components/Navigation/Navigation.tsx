@@ -3,9 +3,11 @@
 import { cn } from "@/helpers";
 import s from "./style.module.scss";
 import { ReactNode, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { CoverFeed } from "@/components";
 import { tinyFive } from "@/fonts/fonts";
+import { headerPages } from "../../helpers";
+import { useTranslations } from "next-intl";
 
 const NavElement = ({
     href,
@@ -48,23 +50,21 @@ const NavElement = ({
 }
 
 
-export const Navigation = ({
-})=> {
-    const pages = [
-        { label: "Home", href: "/" },
-        { label: "Shop", href: "/shop" },
-        { label: "Contacts", href: "/contacts" },
-    ];
+export const Navigation = ()=> {
+    const t = useTranslations("navigation");
 
     return (
-        <nav className={s.nav_container}>
+        <nav 
+            className={s.nav_container}
+            aria-label={t("header.mainLabel")}
+        >
             <ul className={s.nav_list}>
-                {pages.map((p, i)=>
+                {headerPages.map((p, i)=>
                     <NavElement
                         key={`nav-item-${i}`}
                         href={p.href}
                     >
-                        {p.label}
+                        {t(`pages.${p.labelKey}`)}
                     </NavElement>
                 )}
             </ul>

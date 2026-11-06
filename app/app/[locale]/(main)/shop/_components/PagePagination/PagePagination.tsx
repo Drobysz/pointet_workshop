@@ -6,11 +6,13 @@ import cn from "classnames";
 import { getPageItems } from "@/helpers";
 import { useWindowWidth } from "@/hooks";
 import { useContext } from "react";
+import { useTranslations } from "next-intl";
 import { ShopContext } from "../../context/shop.context";
 
 type PageItem = number | "start-ellipsis" | "end-ellipsis";
 
 export const PagesPagination = ()=> {
+    const t = useTranslations("catalog.pagination");
     const {
         goodsPagination,
         goodFilterParams,
@@ -78,6 +80,7 @@ export const PagesPagination = ()=> {
                                     ? s.switcher_active 
                                     : s.switcher_inactive
                             )}
+                            aria-label={t("previousLabel")}
                             onClick={()=> handleSwitcherClick("left")}
                         >
                             <ChevronLeft
@@ -118,6 +121,7 @@ export const PagesPagination = ()=> {
                                     ? s.switcher_active 
                                     : s.switcher_inactive
                             )}
+                            aria-label={t("nextLabel")}
                             onClick={()=> handleSwitcherClick("right")}
                         >
                             <ChevronRight

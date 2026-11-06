@@ -1,3 +1,4 @@
+import { SeoService } from "@/helpers";
 import { redirect } from "@/i18n/navigation";
 
 export default async function Home({
@@ -7,5 +8,5 @@ export default async function Home({
 }) {
   const { locale } = await params;
 
-  redirect({ href: "/home", locale });
+  redirect({ href: "/home", locale: SeoService.resolveLocale(locale) });
 }

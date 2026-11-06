@@ -9,6 +9,8 @@ export function lathe(profile: Profile, segments = 80) {
 
 /** Merge once on mount; source buffers are no longer needed after the copy. */
 export function mergeParts(parts: BufferGeometry[]) {
+    // No material samples UVs; dropping them lets UV-less procedural surfaces merge with primitives.
+    parts.forEach((part) => part.deleteAttribute("uv"));
     const plain = parts.map((part) => part.index ? part.toNonIndexed() : part);
     const merged = mergeGeometries(plain);
     new Set([...parts, ...plain]).forEach((part) => part.dispose());

@@ -10,9 +10,9 @@ class AuthRefreshToken extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['id', 'user_id', 'family_id', 'token_hash', 'expires_at', 'revoked_at', 'last_used_at', 'user_agent', 'ip_address'];
+    protected $fillable = ['id', 'user_id', 'family_id', 'token_hash', 'expires_at', 'revoked_at', 'last_used_at', 'user_agent', 'ip_address', 'device_hash'];
 
-    protected $hidden = ['token_hash'];
+    protected $hidden = ['token_hash', 'device_hash'];
 
     protected function casts(): array
     {

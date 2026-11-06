@@ -1,0 +1,32 @@
+@reference "tailwindcss";
+
+section.section {
+    @apply pt-12 sm:pt-30;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "main";
+}
+
+.tunnel {
+    @apply relative;
+    height: 700svh;
+}
+
+.elevator {
+    @apply sticky flex flex-col justify-center gap-3 py-3 sm:gap-5 sm:py-6;
+    top: var(--header-height);
+    height: calc(100dvh - var(--header-height));
+}
+
+.title {
+    @apply mx-auto w-full max-w-[1270px] shrink-0 px-4
+        text-2xl leading-tight font-semibold sm:text-4xl
+        bg-clip-text text-transparent bg-linear-to-t
+        from-red-100 from-5% to-red-700 to-95%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tunnel,
+    .elevator {
+        @apply static h-auto;
+    }
+}

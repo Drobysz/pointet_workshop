@@ -3,15 +3,14 @@
 import { after, cutiveMono, tinyFive } from "@/fonts/fonts";
 import { cn } from "@/helpers";
 import s from "./style.module.scss";
-import footer_links from "@/json/footer_links.json";
+import { footerDocLinks } from "../../footerLinks";
 import { UnderlinedInnerLink } from "@/components/animations/UnderlinedLink/UnderlinedInnerLink";
 import { Link } from "@/i18n/navigation";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export const DocLinks = ()=> {
     const locale = useLocale();
-    console.log(locale)
-    const docLinks = footer_links.doc_links;
+    const t = useTranslations("navigation.footer");
 
     return (
         <div
@@ -33,7 +32,7 @@ export const DocLinks = ()=> {
                     s.doc_list,
                     cutiveMono.className
                 )}>
-                    {docLinks.map(({ label, link }, idx)=>
+                    {footerDocLinks.map(({ labelKey, link }, idx)=>
                         <li
                             key={`footer-doc-${idx}`}
                             className="hover:underline"
@@ -41,24 +40,27 @@ export const DocLinks = ()=> {
                         <Link 
                             href={link}
                         >
-                                {label}
+                                {t(`legal.${labelKey}`)}
                             </Link>
                         </li>
                     )}
                     <li
                         className="flex gap-3 items-center"
                     >
-                        Developed by 
-                        <UnderlinedInnerLink
-                            href={`https://drobysz.agency/${locale}/services`}
-                            blank
-                            className={cn(
-                                tinyFive.className,
-                                s.developer_title
-                            )}
-                        >
-                            Drobysz
-                        </UnderlinedInnerLink>
+                        {t.rich("developedBy", {
+                            link: (chunks)=> (
+                                <UnderlinedInnerLink
+                                    href={`https://drobysz.agency/${locale}/services`}
+                                    blank
+                                    className={cn(
+                                        tinyFive.className,
+                                        s.developer_title
+                                    )}
+                                >
+                                    {chunks}
+                                </UnderlinedInnerLink>
+                            ),
+                        })}
                     </li>
                 </ul>
             </div>

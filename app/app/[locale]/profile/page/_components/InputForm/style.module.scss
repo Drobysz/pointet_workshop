@@ -6,7 +6,16 @@
         justify-between
         max-w-200
         self-stretch
-        w-full;
+        w-full
+        max-md:flex-col
+        max-md:items-stretch
+        max-md:gap-1.5;
+}
+
+// The field fills the row next to its button on small screens.
+.input {
+    @apply max-md:flex-1
+        max-md:w-full;
 }
 
 .label {

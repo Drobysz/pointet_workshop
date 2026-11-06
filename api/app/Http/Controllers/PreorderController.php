@@ -72,6 +72,7 @@ class PreorderController extends Controller
             $guest['session'] ?? null,
             $request->validated('idempotency_key'),
             $request->validated('items', []),
+            $request->validated('email'),
         );
         $response = (new PreorderCheckoutSessionResource($checkout))->response($request);
         if (isset($guest['cookie']) && $guest['cookie']) {
@@ -99,6 +100,20 @@ class PreorderController extends Controller
                 ->paginate($filters['per_page'] ?? 20)
                 ->withQueryString(),
         );
+    }
+
+    public function guestShow(int $preorderId, Request $request, GuestSessionService $guests): PreorderResource
+    {
+        $session = $guests->resolve($request);
+        $preorder = Preorder::query()
+            ->with(self::REGISTER_RELATIONS)
+            ->whereKey($preorderId)
+            ->whereNull('user_id')
+            ->where('guest_session_id', $session?->id ?? -1)
+            ->where('payment_status', PreorderPaymentStatus::Paid->value)
+            ->firstOrFail();
+
+        return new PreorderResource($preorder);
     }
 
     public function destroy(Preorder $preorder)

@@ -1,5 +1,14 @@
 import { PrivateApiClient } from "@/api/core/PrivateApiClient";
-import { EmailChangePendingResponse, EmailChangeRequest, EmailChangeVerificationRequest, EmailChangeVerificationResponse, PasswordChangeRequest, PasswordChangeResponse, UserResponse, UserUpdateRequest } from "../types/user";
+import { 
+    EmailChangePendingResponse, 
+    EmailChangeRequest, 
+    EmailChangeVerificationRequest, 
+    EmailChangeVerificationResponse, 
+    PasswordChangeRequest, 
+    PasswordChangeResponse, 
+    UserResponse, 
+    UserUpdateRequest 
+} from "../types/user";
 import { Id } from "../types/api";
 
 export class UserApi {

@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, ReactNode, useEffect, useRef, useState } from "react";
+import { createContext, Dispatch, ReactNode, SetStateAction, Suspense, useEffect, useRef, useState } from "react";
 import { AppNotification, AuthStatus, Coords, GlobalContextInterface, PopUpWindow } from "./global.interface";
 import { useCurrentUser, useVerifyToken, useWindowWidth } from "@/hooks";
 import { LoginForm, RegisterForm } from "@/types/auth";
@@ -34,6 +34,7 @@ export const GlobalContext = createContext<GlobalContextInterface>({
 
     isBasketLoading: false,
     isOrdersLoading: false,
+    isPreOrdersLoading: false,
 
     notification: noneNotification,
     popUpWindow: "none",
@@ -49,12 +50,37 @@ export const GlobalContext = createContext<GlobalContextInterface>({
     mutateUser: async () => undefined,
     mutateBasket: async () => undefined,
     mutateOrders: async () => undefined,
+    mutatePreOrders: async () => undefined,
 
     setPopUpWindow: () => {},
 	setMouseText: ()=> {},
 	setMouseGuide: ()=> {},
 	setNotification: () => {},
 });
+
+/**
+ * Completes e-mail verification links (`?token=`).
+ * `useSearchParams` opts its nearest Suspense boundary out of static
+ * rendering, so it is isolated here instead of living in the provider,
+ * which would turn every page into a client-rendered shell.
+ */
+const TokenVerifier = ({
+    setNotification,
+    setAuthStatus,
+}: {
+    setNotification: Dispatch<SetStateAction<AppNotification>>;
+    setAuthStatus: Dispatch<SetStateAction<AuthStatus>>;
+})=> {
+    const searchParams = useSearchParams();
+
+    useVerifyToken(
+        searchParams.get("token"),
+        setNotification,
+        setAuthStatus,
+    );
+
+    return null;
+};
 
 export const GlobalContextProvider = ({
     children
@@ -74,9 +100,6 @@ export const GlobalContextProvider = ({
 
     const isMouseVisible = useWindowWidth(768) as boolean;
 	const blur = popUpWindow !== "none";
-
-    const searchParams = useSearchParams();
-    const token = searchParams.get("token");
 
     const {
 		data: user,
@@ -105,10 +128,14 @@ export const GlobalContextProvider = ({
         authStatus
     );
 
-    useVerifyToken(
-        token,
-        setNotification,
-        setAuthStatus,
+    const {
+		data: preOrdersList,
+		error: preOrdersError,
+		isLoading: isPreOrdersLoading,
+		mutate: mutatePreOrders
+	} = useUserData(
+        "preOrders",
+        authStatus
     );
 
     useEffect(()=> {
@@ -133,7 +160,10 @@ export const GlobalContextProvider = ({
     ]);
 
     useEffect(() => {
-        if (authStatus !== "authenficated" || !user || mergedGuestBasketForUser.current === user.id) {
+        if (authStatus !== "authenficated" || 
+            !user || 
+            mergedGuestBasketForUser.current === user.id
+        ) {
             return;
         }
         mergedGuestBasketForUser.current = user.id;
@@ -185,6 +215,10 @@ export const GlobalContextProvider = ({
                 isOrdersLoading: isOrdersLoading,
                 ordersError: ordersError,
 
+                preOrdersList: preOrdersList,
+                isPreOrdersLoading: isPreOrdersLoading,
+                preOrdersError: preOrdersError,
+
                 setNotification,
                 setPopUpWindow,
                 setMouseText,
@@ -195,9 +229,16 @@ export const GlobalContextProvider = ({
 
                 mutateUser,
                 mutateBasket,
-                mutateOrders
+                mutateOrders,
+                mutatePreOrders
             }}
         >
+            <Suspense fallback={null}>
+                <TokenVerifier
+                    setNotification={setNotification}
+                    setAuthStatus={setAuthStatus}
+                />
+            </Suspense>
             {children}
         </GlobalContext.Provider>
     )

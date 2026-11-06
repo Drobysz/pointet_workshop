@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { Component, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/helpers/cn";
 import type { Object3DProps, ObjectKind } from "./types";
 import { modelLoaders } from "./modelLoaders";
@@ -39,10 +40,14 @@ export function ObjectSection({
     className,
     style,
     label,
-    instructions = "Drag to rotate. On touch screens, swipe sideways to rotate or vertically to scroll. Use arrow keys to rotate and Home to reset.",
-    fallbackText = "The interactive 3D view is unavailable on this device.",
+    instructions,
+    fallbackText,
     idleMotion = false,
 }: Object3DProps & { kind: ObjectKind }) {
+    const t = useTranslations("home.objects");
+    const objectLabel = label ?? t(`labels.${kind}`);
+    const instructionsText = instructions ?? t("instructions");
+    const unavailableText = fallbackText ?? t("unavailable");
     const sectionRef = useRef<HTMLElement>(null);
     const instructionsId = useId();
     const [nearby, setNearby] = useState(false);
@@ -96,7 +101,7 @@ export function ObjectSection({
         };
     }, [kind]);
 
-    const fallback = <p className={s.fallback} role="status">{fallbackText}</p>;
+    const fallback = <p className={s.fallback} role="status">{unavailableText}</p>;
 
     return (
         <section
@@ -106,10 +111,10 @@ export function ObjectSection({
             style={style}
             tabIndex={0}
             role="group"
-            aria-label={label}
+            aria-label={objectLabel}
             aria-describedby={instructionsId}
         >
-            <span id={instructionsId} className={s.instructions}>{instructions}</span>
+            <span id={instructionsId} className={s.instructions}>{instructionsText}</span>
             <SceneBoundary fallback={fallback}>
                 {nearby && (
                     <ObjectScene
@@ -118,7 +123,7 @@ export function ObjectSection({
                         active={visible && pageVisible}
                         reducedMotion={reducedMotion}
                         idleMotion={idleMotion}
-                        fallbackText={fallbackText}
+                        fallbackText={unavailableText}
                     />
                 )}
             </SceneBoundary>

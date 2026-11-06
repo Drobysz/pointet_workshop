@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, useContext, useState } from "react";
+import { useFormatter, useTranslations } from "next-intl";
 import s from "./style.module.scss";
 import { ShopContext } from "../../../../context/shop.context";
 import { MainBtn } from "@/components";
@@ -16,13 +17,24 @@ const MIN_PRICE = 0;
 const MAX_PRICE = 500;
 const STEP = 5;
 
-export const PriceRange = ()=> {
-    const { setGoodFilterParams } = useContext(ShopContext);
+export const PriceRange = ({
+    onApply
+}: {
+    /** Called after the range is applied, e.g. to close a sheet. */
+    onApply?: ()=> void;
+})=> {
+    const t = useTranslations();
+    const format = useFormatter();
+
+    const { 
+        goodFilterParams,
+        setGoodFilterParams 
+    } = useContext(ShopContext);
 
     const [priceRange, setPriceRange] 
         = useState<PriceRangeType>({
-            minPrice: 0, 
-            maxPrice: 500
+            minPrice: goodFilterParams.min_price ?? MIN_PRICE, 
+            maxPrice: goodFilterParams.max_price ?? MAX_PRICE
         });
 
     const {minPrice, maxPrice} = priceRange;
@@ -32,12 +44,20 @@ export const PriceRange = ()=> {
     const maxPercent =
         ((maxPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100;
 
+    // The slider moves in whole euros, so no fraction digits are shown.
+    const formatPrice = (value: number)=> format.number(value, {
+        style: "currency",
+        currency: "EUR",
+        maximumFractionDigits: 0,
+    });
+
     const handleFormSubmit = ()=> {
         setGoodFilterParams(p => ({
             ...p,
             min_price: minPrice,
             max_price: maxPrice,
         }));
+        onApply?.();
     };
 
     const handleMinInputChange = (
@@ -76,7 +96,7 @@ export const PriceRange = ()=> {
                         left: `${minPercent}%`,
                     }}
                 >
-                    {minPrice} €
+                    {formatPrice(minPrice)}
                 </span>
                 <span
                     className={s.price}
@@ -84,7 +104,7 @@ export const PriceRange = ()=> {
                         right: `${100 - maxPercent}%`,
                     }}
                 >
-                    {maxPrice} €
+                    {formatPrice(maxPrice)}
                 </span>
             </div>
 
@@ -110,6 +130,7 @@ export const PriceRange = ()=> {
                     min={MIN_PRICE}
                     max={MAX_PRICE}
                     value={minPrice}
+                    aria-label={t("catalog.priceRange.minLabel")}
                     onChange={handleMinInputChange}
                     className={s.price_range__input}
                 />
@@ -120,6 +141,7 @@ export const PriceRange = ()=> {
                     min={MIN_PRICE}
                     max={MAX_PRICE}
                     value={maxPrice}
+                    aria-label={t("catalog.priceRange.maxLabel")}
                     onChange={handleMaxInputChange}
                     className={s.price_range__input}
                 />
@@ -130,7 +152,7 @@ export const PriceRange = ()=> {
                     className="w-full"
                     onClick={handleFormSubmit}
                 >
-                    Apply
+                    {t("common.actions.apply")}
                 </MainBtn>
             </div>
         </article>

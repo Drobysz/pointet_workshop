@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
+import { SeoService } from "@/helpers";
 import { LegalPageLayout } from "../../_components/LegalPageLayout";
 import { LegalSection } from "../../_components/LegalSection";
 import { LegalContent } from "../../_components/LegalContent";
 import content from "./content.json";
 
-export const metadata: Metadata = content.metadata;
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+    const { locale } = await params;
+
+    return SeoService.getPageMetadata({
+        locale,
+        pathname: "/docs/privacy_policy",
+        title: content.title,
+        description: content.metadata.description,
+    });
+}
 
 export default async function PrivacyPolicyPage({
     params,
@@ -12,6 +27,8 @@ export default async function PrivacyPolicyPage({
     params: Promise<{ locale: string }>;
 }) {
     const { locale } = await params;
+    const currentLocale = SeoService.resolveLocale(locale);
+    setRequestLocale(currentLocale);
 
     return (
         <LegalPageLayout title={content.title} lastUpdated={content.lastUpdated}>
@@ -22,7 +39,7 @@ export default async function PrivacyPolicyPage({
                     number={index + 1}
                     title={section.title}
                 >
-                    <LegalContent blocks={section.blocks} locale={locale} />
+                    <LegalContent blocks={section.blocks} locale={currentLocale} />
                 </LegalSection>
             ))}
         </LegalPageLayout>

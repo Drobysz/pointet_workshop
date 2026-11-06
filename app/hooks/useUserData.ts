@@ -1,15 +1,18 @@
-import { basketApi, guestBasketApi, ordersApi } from '@/api/api';
+import { basketApi, guestBasketApi, ordersApi, preorderApi } from '@/api/api';
 import useSWR from 'swr';
 import { BasketItem, BasketListResponse } from '@/api/types/basket';
 import { Order, OrderListResponse } from '@/api/types/orders';
 import { AuthStatus } from '@/app/[locale]/context/global.interface';
+import { Preorder, PreorderListResponse } from '@/api/types/preorder';
 
 export type UserDataType = keyof UserDataMap;
 export type UserDataMap = {
+    preOrders: PreorderListResponse;
     orders: OrderListResponse;
     basket: BasketListResponse;
 };
 export type UserDataReturnMap = {
+    preOrders: Preorder[];
     orders: Order[];
     basket: BasketItem[];
 };
@@ -21,6 +24,7 @@ export const useUserData = <T extends UserDataType>(
     const authRequestLibrary: {
         [K in UserDataType]: ()=> Promise<UserDataMap[K]>
     } = {
+        preOrders: () => preorderApi.getPreorders(),
         orders: () => ordersApi.getOrders(),
         basket: () => basketApi.getBasket(),
     };
@@ -28,6 +32,7 @@ export const useUserData = <T extends UserDataType>(
     const nonAuthRequestLibrary: {
         [K in UserDataType]: ()=> Promise<UserDataMap[K]>
     } = {
+        preOrders: () => preorderApi.getGuestPreorders(),
         orders: () => ordersApi.getGuestOrders(),
         basket: () => guestBasketApi.getBasket(),
     };
@@ -36,7 +41,9 @@ export const useUserData = <T extends UserDataType>(
         const requestObject = authStatus === "authenficated"
             ? authRequestLibrary[type]
             : nonAuthRequestLibrary[type];
+
         const response = await requestObject();
+
         return response.data as UserDataReturnMap[T];
     }
 

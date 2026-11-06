@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import s from "./style.module.scss";
 import { NotificationPopUp } from "./_components";
 import { NotificationStatus } from "@/app/[locale]/context/global.interface";
+import { AnimatePresence } from "framer-motion";
 
 type Popup = {
     id: string;
@@ -39,14 +40,18 @@ export const NotificationBar = ()=> {
 
     return (
         <div className={s.notification}>
-            {popUps && popUps.map((popUp)=> (
-                <NotificationPopUp
-                    key={popUp.id}
-                    status={popUp.status}
-                >
-                    {popUp.text}
-                </NotificationPopUp>
-            ))}
+            <AnimatePresence
+                initial={false}
+            >
+                {popUps && popUps.map((popUp)=> (
+                    <NotificationPopUp
+                        key={popUp.id}
+                        status={popUp.status}
+                    >
+                        {popUp.text}
+                    </NotificationPopUp>
+                ))}
+            </AnimatePresence>
         </div>
     )
 }

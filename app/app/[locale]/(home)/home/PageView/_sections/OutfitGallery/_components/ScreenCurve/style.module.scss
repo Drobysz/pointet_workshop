@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+.definitions {
+    @apply pointer-events-none absolute size-0 overflow-hidden;
+}

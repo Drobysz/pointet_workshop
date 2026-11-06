@@ -10,10 +10,12 @@ import { ChevronRight } from "lucide-react";
 
 const SubcategoryItem = ({
     subcategory,
-    isListHovered
+    isListHovered,
+    onSelect
 }: {
     subcategory: Subcategory;
     isListHovered: boolean;
+    onSelect?: ()=> void;
 })=> {
     const { 
         currentSubcategory,
@@ -30,6 +32,7 @@ const SubcategoryItem = ({
 
     const handleClick = ()=> {
         setCurrentSubcategory(subcategory.id);
+        onSelect?.();
     }
 
     return (
@@ -77,7 +80,12 @@ const SubcategoryItem = ({
     )
 }
 
-export const SubcategoryList = ()=> {
+export const SubcategoryList = ({
+    onSelect
+}: {
+    /** Called after a subcategory is chosen, e.g. to close a sheet. */
+    onSelect?: ()=> void;
+})=> {
     const { currentCategory } = useContext(ShopContext);
     const [hover, setHover] = useState(false);
 
@@ -98,6 +106,7 @@ export const SubcategoryList = ()=> {
                                 key={`subcategory-${subcategory.name}-${idx}`}
                                 subcategory={subcategory}
                                 isListHovered={hover}
+                                onSelect={onSelect}
                             />
                         ))
                 }

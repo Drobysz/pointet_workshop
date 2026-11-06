@@ -1,3 +1,561 @@
 {
-    "": ""
+    "common": {
+        "actions": {
+            "close": "Fermer",
+            "cancel": "Annuler",
+            "confirm": "Confirmer",
+            "save": "Enregistrer",
+            "edit": "Modifier",
+            "delete": "Supprimer",
+            "remove": "Retirer",
+            "retry": "Réessayer",
+            "back": "Retour",
+            "continue": "Continuer",
+            "submit": "Valider",
+            "send": "Envoyer",
+            "search": "Rechercher",
+            "apply": "Appliquer",
+            "reset": "Réinitialiser"
+        },
+        "states": {
+            "loading": "Chargement…",
+            "sending": "Envoi…",
+            "loadFailed": "Échec du chargement"
+        },
+        "password": {
+            "show": "Afficher le mot de passe",
+            "hide": "Masquer le mot de passe"
+        }
+    },
+    "navigation": {
+        "pages": {
+            "about": "À propos",
+            "shop": "Boutique",
+            "sellers": "Pour les vendeurs"
+        },
+        "header": {
+            "mainLabel": "Menu principal",
+            "logoLabel": "Pointet — page d’accueil",
+            "preordersLabel": "Précommandes ({count})",
+            "basketLabel": "Panier ({count})"
+        },
+        "mobileMenu": {
+            "open": "Ouvrir le menu",
+            "close": "Fermer le menu",
+            "label": "Menu du site"
+        },
+        "account": {
+            "menuLabel": "Menu du profil",
+            "sectionLabel": "Compte",
+            "profile": "Mon profil",
+            "preorders": "Mes précommandes",
+            "basket": "Mon panier",
+            "signUp": "S’inscrire",
+            "logOut": "Se déconnecter"
+        },
+        "footer": {
+            "columns": {
+                "support": "Assistance",
+                "navigation": "Navigation",
+                "social": "Réseaux sociaux"
+            },
+            "links": {
+                "privacyPolicy": "Politique de confidentialité"
+            },
+            "legal": {
+                "privacyPolicy": "Politique de confidentialité",
+                "cookiesPolicy": "Politique de cookies"
+            },
+            "developedBy": "Développé par <link>Drobysz</link>"
+        }
+    },
+    "home": {
+        "hero": {
+            "tagline": "Une marketplace\ndédiée aux\npetites marques",
+            "bagAlt": "Sac à main en vedette",
+            "shelfAlt": "Étagère de présentation"
+        },
+        "scrollGallery": {
+            "title": "petites marques\nde toute l’UE\nréunies\nen un seul lieu",
+            "imageAlt": "Image en mouvement"
+        },
+        "objectGallery": {
+            "curatedTitle": "Découvrez l’inattendu.",
+            "bagsTitle": "Sacs",
+            "clothingTitle": "Vêtements"
+        },
+        "objects": {
+            "labels": {
+                "curated": "Sélection d’objets : un sac à main demi-lune laqué rouge, un corset en satin blanc et un jonc doré torsadé",
+                "bag": "Sac à main sculptural argenté, poli miroir, à anse ovale intégrée",
+                "dress": "Longue robe nuisette en satin, décolleté cœur et jupe fluide aux plis profonds"
+            },
+            "instructions": "Faites glisser pour faire pivoter l’objet. Sur écran tactile, balayez latéralement pour le faire pivoter ou verticalement pour faire défiler la page. Utilisez les flèches du clavier pour le faire pivoter et la touche Origine pour réinitialiser.",
+            "unavailable": "La vue 3D interactive n’est pas disponible sur cet appareil."
+        },
+        "outfitGallery": {
+            "title": "Composez votre look avec des marques européennes",
+            "imageAlt": "Idée de tenue {number}"
+        },
+        "categories": {
+            "title": "Que découvrir ensuite ?",
+            "shop": {
+                "title": "Boutique",
+                "description": "Découvrez des marques européennes locales et composez votre nouvelle tenue",
+                "toteAlt": "Sac cabas blanc",
+                "handbagAlt": "Sac à main matelassé"
+            },
+            "telegram": {
+                "title": "Rejoignez notre canal Telegram",
+                "description": "Pour suivre l’actualité de notre service et découvrir de nouvelles marques locales, abonnez-vous à notre canal Telegram.",
+                "logoAlt": "Logo Telegram",
+                "megaphoneAlt": "Mégaphone",
+                "newspaperAlt": "Journal"
+            },
+            "sellers": {
+                "title": "Commencez à vendre sur Pointet",
+                "description": "Vous êtes une jeune marque de vêtements locale ? Nous serons ravis de vous accueillir. Construisez votre avenir avec nous !",
+                "pencilsAlt": "Crayons",
+                "rulersAlt": "Règles"
+            }
+        }
+    },
+    "catalog": {
+        "heading": "Boutique de marques européennes indépendantes",
+        "states": {
+            "empty": "Aucun article disponible"
+        },
+        "search": {
+            "placeholder": "Trouvez votre article",
+            "inputLabel": "Rechercher des articles"
+        },
+        "categories": {
+            "currentBadge": "Catégorie actuelle",
+            "iconAlt": "icône de catégorie"
+        },
+        "filters": {
+            "title": "Filtres",
+            "sheetLabel": "Filtres du catalogue",
+            "closeLabel": "Fermer les filtres"
+        },
+        "priceRange": {
+            "minLabel": "Prix minimum",
+            "maxLabel": "Prix maximum"
+        },
+        "pagination": {
+            "previousLabel": "Page précédente",
+            "nextLabel": "Page suivante"
+        }
+    },
+    "product": {
+        "actions": {
+            "addToBasket": "Ajouter au panier",
+            "goBack": "retour"
+        },
+        "notifications": {
+            "chooseSizeAndQuantity": "Choisissez une taille et une quantité !",
+            "addedToBasket": "L’article « {name}… » a été ajouté au panier"
+        },
+        "params": {
+            "itemNumber": "référence",
+            "weight": "poids",
+            "brand": "marque",
+            "subcategory": "sous-catégorie",
+            "materials": "matières"
+        },
+        "quantity": {
+            "decreaseLabel": "Diminuer la quantité",
+            "increaseLabel": "Augmenter la quantité"
+        }
+    },
+    "basket": {
+        "header": {
+            "title": "Articles",
+            "count": "{count, plural, one {# article} other {# articles}}"
+        },
+        "item": {
+            "imageAlt": "Image de l’article {name}",
+            "openProduct": "Ouvrir la page de l’article",
+            "remove": "Retirer du panier",
+            "decreaseQuantity": "Diminuer la quantité",
+            "increaseQuantity": "Augmenter la quantité"
+        },
+        "summary": {
+            "total": "Total :"
+        },
+        "states": {
+            "empty": "Votre panier est vide"
+        }
+    },
+    "checkout": {
+        "button": {
+            "preorder": "Précommander pour 1 €",
+            "emailRequired": "Saisissez votre e-mail pour précommander à 1 €"
+        },
+        "disclosure": "Il s’agit uniquement d’une précommande à 1 €. Nous recueillons actuellement les précommandes. Nous avons fixé un prix symbolique de 1 euro afin de réunir les personnes réellement prêtes à passer commande. Dès que les articles arriveront à l’entrepôt, nous vous préviendrons.",
+        "email": {
+            "label": "E-mail"
+        },
+        "notifications": {
+            "paymentFailed": "Échec du paiement",
+            "checkoutCreationFailed": "Impossible de créer la page de paiement",
+            "basketNotCleared": "Votre paiement a été confirmé, mais le panier n’a pas pu être vidé. Veuillez actualiser la page et réessayer."
+        },
+        "status": {
+            "pending": {
+                "title": "Paiement reçu — confirmation en cours",
+                "body": "Stripe traite la confirmation. Gardez cette page ouverte : elle se mettra à jour automatiquement."
+            },
+            "paid": {
+                "title": "Votre précommande à 1 € est confirmée",
+                "body": "Merci. Nous vous contacterons dès que cet article sera disponible."
+            },
+            "failed": {
+                "title": "Le paiement n’a pas abouti",
+                "body": "Aucune précommande n’a été confirmée. Vous pouvez retourner à votre panier et réessayer."
+            },
+            "canceled": {
+                "title": "Le paiement a été annulé",
+                "body": "Aucune précommande n’a été confirmée. Vous pouvez retourner à votre panier et réessayer."
+            },
+            "refunded": {
+                "title": "Cette précommande a été remboursée",
+                "body": "Le paiement n’est plus actif."
+            }
+        },
+        "result": {
+            "unverified": {
+                "title": "Nous n’avons pas pu vérifier ce paiement",
+                "body": "Veuillez vous connecter avec le compte utilisé pour le paiement, puis réessayer."
+            },
+            "missingSession": {
+                "title": "Session de paiement introuvable",
+                "body": "Retournez à votre panier et recommencez la précommande."
+            },
+            "viewPreorders": "Voir vos précommandes"
+        }
+    },
+    "preorders": {
+        "list": {
+            "empty": "Vous n’avez aucune précommande",
+            "loadFailed": "Échec du chargement des précommandes",
+            "purchasedAt": "<muted>Achat :</muted> <value>{date}</value> <muted>à</muted> <value>{time}</value>",
+            "quantity": "Quantité : {count}",
+            "total": "Total : {price}"
+        },
+        "fields": {
+            "number": "Précommande n° :",
+            "quantity": "Quantité :",
+            "price": "Prix :",
+            "preorderPrice": "Prix de précommande :"
+        },
+        "item": {
+            "imageAlt": "Icône de l’article {name}"
+        },
+        "status": {
+            "pending": "En attente",
+            "paid": "Payée",
+            "failed": "Échec",
+            "canceled": "Annulée",
+            "refunded": "Remboursée"
+        }
+    },
+    "profile": {
+        "navigation": {
+            "profile": "Profil",
+            "preorders": "Précommandes",
+            "basket": "Panier"
+        },
+        "page": {
+            "loadFailed": "Échec du chargement de la page",
+            "notLoggedIn": "Vous n’êtes pas connecté",
+            "redirectedNotice": "Vous avez été redirigé, car vous n’êtes pas connecté."
+        },
+        "fullName": {
+            "inputLabel": "Nom complet",
+            "updated": "Nom complet mis à jour"
+        },
+        "personalInfo": {
+            "title": "Informations personnelles",
+            "change": "Modifier",
+            "email": {
+                "label": "E-mail",
+                "verificationSent": "Code de vérification envoyé à votre nouvelle adresse e-mail"
+            },
+            "tel": {
+                "label": "numéro de téléphone",
+                "updated": "Numéro de téléphone mis à jour"
+            },
+            "address": {
+                "label": "adresse",
+                "placeholder": "Rue, ville, code postal, pays",
+                "updated": "Adresse mise à jour"
+            }
+        },
+        "security": {
+            "title": "Sécurité",
+            "currentPassword": "Mot de passe actuel",
+            "newPassword": "Nouveau mot de passe",
+            "submit": "Modifier le mot de passe"
+        },
+        "accountActions": {
+            "logOutTitle": "Se déconnecter de votre compte",
+            "logOut": "Se déconnecter",
+            "deleteTitle": "Supprimer votre compte"
+        }
+    },
+    "auth": {
+        "login": {
+            "success": "Connexion réussie",
+            "failed": "Échec de la connexion",
+            "title": "Connexion",
+            "submit": "Se connecter",
+            "noAccount": "Vous n’avez pas de compte ? <link>Inscrivez-vous</link>"
+        },
+        "register": {
+            "success": "Un lien de vérification vous a été envoyé par e-mail.",
+            "failed": "Le compte n’a pas pu être créé.",
+            "title": "Inscription",
+            "submit": "S’inscrire",
+            "haveAccount": "Vous avez déjà un compte ? <link>Connectez-vous.</link>",
+            "terms": "J’accepte les <terms>conditions d’utilisation</terms> et la <privacy>politique de confidentialité</privacy>"
+        },
+        "passwordChange": {
+            "success": "Mot de passe modifié avec succès"
+        },
+        "dialogLabel": "Fenêtre d’authentification",
+        "fields": {
+            "email": "E-mail",
+            "password": "Mot de passe",
+            "fullName": "Nom complet",
+            "address": "Adresse (facultatif)",
+            "addressPlaceholder": "15 rue de la République, ville, code postal, pays"
+        },
+        "verifyEmail": {
+            "title": "Saisissez le code de vérification",
+            "success": "E-mail mis à jour"
+        },
+        "deleteAccount": {
+            "title": "Êtes-vous sûr ?",
+            "description": "Si vous supprimez votre compte, toutes vos commandes en cours et passées disparaîtront.",
+            "success": "Votre compte a été supprimé. Au revoir !"
+        }
+    },
+    "seller": {
+        "form": {
+            "title": "Candidature vendeur",
+            "submit": "Nous contacter",
+            "labels": {
+                "firstName": "Prénom",
+                "lastName": "Nom",
+                "phone": "Numéro de téléphone",
+                "country": "Pays",
+                "email": "E-mail",
+                "brandName": "Nom de la marque",
+                "companyAddress": "Adresse de l’entreprise",
+                "contactDetails": "Coordonnées",
+                "aboutBrand": "À propos de votre marque",
+                "euResident": "Je réside dans l’Union européenne"
+            },
+            "placeholders": {
+                "firstName": "Votre prénom",
+                "lastName": "Votre nom",
+                "country": "Pays de résidence",
+                "brandName": "Le nom de votre marque",
+                "companyAddress": "Rue, ville, code postal et pays",
+                "contactDetails": "Comment vous joindre au sujet de votre candidature ?",
+                "aboutBrand": "Décrivez votre marque et les articles que vous souhaitez vendre"
+            }
+        },
+        "validation": {
+            "required": "Le champ « {field} » est obligatoire",
+            "tooLong": "Le champ « {field} » ne doit pas dépasser {max, plural, one {# caractère} other {# caractères}}",
+            "phoneInvalid": "Saisissez un numéro de 7 à 15 chiffres, avec un + initial facultatif",
+            "brandDescriptionField": "Description de la marque"
+        },
+        "submission": {
+            "success": "Votre candidature vendeur a bien été envoyée.",
+            "checkFields": "Veuillez vérifier les champs du formulaire.",
+            "failed": "Impossible d’envoyer votre candidature. Veuillez réessayer.",
+            "sentFallback": "Votre demande a bien été envoyée",
+            "failedFallback": "L’envoi de la demande a échoué"
+        }
+    },
+    "docs": {
+        "navigation": {
+            "title": "Rubriques",
+            "privacyPolicy": "Politique de confidentialité",
+            "cookiesPolicy": "Politique de cookies"
+        }
+    },
+    "notifications": {
+        "logout": {
+            "success": "Déconnexion réussie"
+        },
+        "emailVerification": {
+            "tokenRejected": "Le lien de vérification n’a pas fonctionné.",
+            "success": "Inscription réussie"
+        }
+    },
+    "ui": {
+        "scrollToTop": {
+            "label": "Retour en haut de page"
+        },
+        "imageSlider": {
+            "previous": "Photo précédente",
+            "next": "Photo suivante",
+            "photoAlt": "{name}, photo {number}",
+            "photoAltFallback": "Photo de l’article {number}"
+        }
+    },
+    "languageSwitcher": {
+        "label": "Langue",
+        "change": "Changer de langue"
+    },
+    "notFound": {
+        "title": "Page introuvable",
+        "description": "La page que vous cherchez a déménagé, est en rupture de stock ou n’a jamais existé.",
+        "globalDescription": "La page que vous cherchez n’existe pas.",
+        "linksLabel": "Liens utiles",
+        "backHome": "Retour à l’accueil",
+        "openShop": "Aller à la boutique"
+    },
+    "validation": {
+        "emailRequired": "L’e-mail est obligatoire",
+        "emailInvalid": "Saisissez une adresse e-mail valide",
+        "passwordRequired": "Le mot de passe est obligatoire",
+        "minLength": "Doit contenir au moins {count, plural, one {# caractère} other {# caractères}}",
+        "passwordLetter": "Au moins une lettre est requise",
+        "passwordNumber": "Au moins un chiffre est requis",
+        "passwordTooLong": "Le mot de passe est trop long",
+        "phoneInvalid": "Saisissez un numéro de téléphone valide",
+        "addressFormat": "Utilisez le format : rue, ville, code postal, pays"
+    },
+    "errors": {
+        "unexpected": "Une erreur inattendue s’est produite.",
+        "default": {
+            "badRequest": "La demande n’a pas pu être traitée.",
+            "sessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
+            "forbidden": "Vous n’avez pas l’autorisation d’effectuer cette action.",
+            "notFound": "La ressource demandée est introuvable.",
+            "conflict": "La demande est en conflit avec l’état actuel.",
+            "tooManyRequests": "Trop de requêtes. Veuillez réessayer plus tard.",
+            "server": "Une erreur serveur s’est produite. Veuillez réessayer plus tard."
+        },
+        "register": {
+            "badRequest": "La demande d’inscription n’est pas valide.",
+            "conflict": "Un compte existe déjà avec ces informations.",
+            "invalidDetails": "Veuillez vérifier les informations d’inscription.",
+            "tooManyAttempts": "Trop de tentatives d’inscription. Veuillez réessayer plus tard."
+        },
+        "verify": {
+            "badRequest": "La demande de vérification n’est pas valide.",
+            "invalidToken": "Le jeton de vérification n’est pas valide.",
+            "notFound": "La demande de vérification est introuvable.",
+            "alreadyUsed": "Ce lien de vérification a déjà été utilisé.",
+            "expired": "Le lien de vérification n’est pas valide ou a expiré.",
+            "tooManyAttempts": "Trop de tentatives de vérification. Veuillez réessayer plus tard."
+        },
+        "login": {
+            "badRequest": "La demande de connexion n’est pas valide.",
+            "invalidCredentials": "E-mail ou mot de passe incorrect.",
+            "forbidden": "Vous n’êtes pas autorisé à vous connecter à ce compte.",
+            "invalidDetails": "Veuillez vérifier votre e-mail et votre mot de passe.",
+            "tooManyAttempts": "Trop de tentatives de connexion. Veuillez réessayer plus tard."
+        },
+        "refresh": {
+            "forbidden": "Votre session ne peut pas être renouvelée."
+        },
+        "logout": {
+            "notSignedIn": "Vous n’êtes plus connecté.",
+            "forbidden": "Vous n’êtes pas autorisé à effectuer cette action."
+        },
+        "emailChange": {
+            "forbidden": "Vous n’avez pas l’autorisation de modifier cette adresse e-mail.",
+            "unavailable": "Cette adresse e-mail ne peut pas être utilisée.",
+            "taken": "Cette adresse e-mail est déjà utilisée.",
+            "tooManyAttempts": "Trop de demandes de changement d’e-mail. Veuillez réessayer plus tard.",
+            "notSent": "L’e-mail de vérification n’a pas pu être envoyé. Veuillez réessayer plus tard."
+        },
+        "emailVerification": {
+            "forbidden": "Vous n’avez pas l’autorisation de vérifier cette adresse e-mail.",
+            "notFound": "Aucun changement d’e-mail en attente n’a été trouvé.",
+            "invalidCode": "Le code de vérification n’est pas valide ou a expiré.",
+            "server": "L’adresse e-mail n’a pas pu être mise à jour. Veuillez réessayer plus tard."
+        },
+        "passwordChange": {
+            "forbidden": "Vous n’avez pas l’autorisation de modifier ce mot de passe.",
+            "userNotFound": "Utilisateur introuvable.",
+            "invalid": "Le mot de passe actuel est incorrect ou le nouveau mot de passe n’est pas valide.",
+            "tooManyAttempts": "Trop de tentatives de changement de mot de passe. Veuillez réessayer plus tard.",
+            "server": "Le mot de passe n’a pas pu être modifié. Veuillez réessayer plus tard."
+        },
+        "basket": {
+            "invalidItem": "Données de l’article du panier non valides.",
+            "itemNotFound": "L’article du panier est introuvable.",
+            "get": {
+                "unauthorized": "Connectez-vous pour voir votre panier.",
+                "server": "Impossible de charger le panier. Veuillez réessayer plus tard."
+            },
+            "add": {
+                "unauthorized": "Connectez-vous pour ajouter des articles à votre panier.",
+                "notFound": "L’article ou l’option sélectionnée est introuvable.",
+                "conflict": "Cet article est déjà dans votre panier.",
+                "invalidOptions": "Les options ou la quantité sélectionnées ne sont pas valides.",
+                "server": "Impossible d’ajouter l’article à votre panier. Veuillez réessayer plus tard."
+            },
+            "update": {
+                "unauthorized": "Connectez-vous pour modifier votre panier.",
+                "forbidden": "Vous n’êtes pas autorisé à modifier cet article du panier.",
+                "invalidOptions": "La quantité ou les options sélectionnées ne sont pas valides.",
+                "server": "Impossible de mettre à jour l’article du panier. Veuillez réessayer plus tard."
+            },
+            "remove": {
+                "unauthorized": "Connectez-vous pour retirer des articles de votre panier.",
+                "forbidden": "Vous n’êtes pas autorisé à retirer cet article du panier.",
+                "server": "Impossible de retirer l’article de votre panier. Veuillez réessayer plus tard."
+            }
+        }
+    },
+    "seo": {
+        "site": {
+            "tagline": "Une marketplace dédiée aux petites marques",
+            "description": "Pointet Workshop est une marketplace en ligne qui réunit en un seul lieu des marques indépendantes de mode, accessoires, lifestyle et design de toute l’Europe."
+        },
+        "breadcrumbs": {
+            "home": "Accueil",
+            "shop": "Boutique"
+        },
+        "notFound": {
+            "title": "Page introuvable",
+            "description": "La page que vous cherchez n’existe pas."
+        },
+        "profile": {
+            "defaultTitle": "Compte",
+            "title": "Profil"
+        },
+        "basket": {
+            "title": "Panier"
+        },
+        "preorders": {
+            "title": "Précommandes"
+        },
+        "preorder": {
+            "title": "Précommande n° {id}"
+        },
+        "orderStatus": {
+            "title": "Statut de la commande"
+        },
+        "shop": {
+            "title": "Boutique de marques européennes indépendantes",
+            "description": "Vêtements, sacs, accessoires et mobilier de marques européennes indépendantes. Filtrez par catégorie et prix, puis commandez ou précommandez sur Pointet Workshop."
+        },
+        "product": {
+            "fallbackDescription": "{name} par {brand}"
+        },
+        "sellers": {
+            "title": "Vendre sur Pointet",
+            "description": "Postulez pour vendre sur Pointet Workshop, marketplace de marques européennes indépendantes de mode, accessoires et design. Présentez votre marque, nous vous répondrons."
+        }
+    }
 }

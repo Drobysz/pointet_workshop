@@ -7,14 +7,16 @@ import { monserrat_semibold } from "@/fonts/fonts";
 import { cn } from "@/helpers";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export const CustomOrderCard = ()=> {
+    const t = useTranslations("home.categories.sellers");
     const [hover, setHover] = useState(false);
 
     return (
         <InteractionCard
             className={s.card}
-            link="/custom_order"
+            link="/sellers"
             onMouseEnter={()=> setHover(true)}
             onMouseLeave={()=> setHover(false)}
         >
@@ -24,11 +26,11 @@ export const CustomOrderCard = ()=> {
                     monserrat_semibold.className
                 )}
             >
-                Make custom order
+                {t("title")}
             </h3>
             
             <p className={s.card_subtitle}>
-                You have a furniture to restore or want a custom bag? On this matter you can directly contact me.
+                {t("description")}
             </p>
 
             <motion.div
@@ -57,7 +59,7 @@ export const CustomOrderCard = ()=> {
                     src="/category/pencils.png"
                     width={200}
                     height={100}
-                    alt="category bag"
+                    alt={t("pencilsAlt")}
                 />
             </motion.div>
             <motion.div
@@ -86,7 +88,7 @@ export const CustomOrderCard = ()=> {
                     src="/category/rulers.png"
                     width={200}
                     height={100}
-                    alt="category bag"
+                    alt={t("rulersAlt")}
                 />
             </motion.div>
         </InteractionCard>

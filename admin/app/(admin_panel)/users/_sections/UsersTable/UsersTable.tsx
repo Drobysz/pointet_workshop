@@ -89,7 +89,7 @@ export function UsersTable() {
         <button
           className={actionStyles.iconButton}
           type="button"
-          aria-label={`${t("edit")} ${user.full_name}`}
+          aria-label={t("editLabel", { name: user.full_name })}
           onClick={() => setEditingUser(user)}
         >
           <Pencil size={16} />

@@ -2,31 +2,35 @@
 
 import { cn } from "@/helpers";
 import s from "./style.module.scss";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/i18n/navigation";
 import {
     DocCategory,
     Cursor
 } from "./_components";
 import { useState } from "react";
 import { CursorCoordProps } from "./types";
-import { after, tinyFive } from "@/fonts/fonts";
+import { tinyFive } from "@/fonts/fonts";
+import { useTranslations } from "next-intl";
+
+const DOC_LINKS = [
+    { href: "/docs/privacy_policy", labelKey: "privacyPolicy" },
+    { href: "/docs/cookies_policy", labelKey: "cookiesPolicy" },
+] as const;
 
 export const SideMenu = ({
     className
 }: {
     className: string;
 })=> {
+    const t = useTranslations("docs.navigation");
     const pathname = usePathname();
     const [hover, setHover] = useState(false);
     const defaultCoord = {left: 0, top: 0};
     const [cursorVertCoord, setCursorVertCoord] = useState<CursorCoordProps>(defaultCoord);
     const [cursorVertClickedCoord, setCursorVertClickedCoord] = useState<CursorCoordProps>(defaultCoord);
 
-    const docs = [
-        { href: "/docs/privacy_policy", label: "Privacy policy" },
-        { href: "/docs/cookies_policy", label: "Cookies policy" },
-    ];
-    const isHidden = pathname.split('/').length < 4;
+    // The pathname carries no locale prefix: "/docs" has no active document.
+    const isHidden = pathname.split('/').length < 3;
 
     return (
         <aside
@@ -45,11 +49,11 @@ export const SideMenu = ({
                     hover && s.title_gradient,
                     tinyFive.className
                 )}>
-                    Categories
+                    {t("title")}
                 </h2>
                 <nav className={s.list_wrap}>
                     <ul className={s.list}>
-                        {docs.map((p, i)=>
+                        {DOC_LINKS.map((p, i)=>
                             <DocCategory
                                 key={`doc-${i}`}
                                 href={p.href}
@@ -58,7 +62,7 @@ export const SideMenu = ({
                                 setCursorVertCoord={setCursorVertCoord}
                                 setCursorVertClickedCoord={setCursorVertClickedCoord}
                             >
-                                {p.label}
+                                {t(p.labelKey)}
                             </DocCategory>
                         )}
                         <Cursor 

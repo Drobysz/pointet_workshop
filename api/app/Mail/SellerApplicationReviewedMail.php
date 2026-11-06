@@ -16,7 +16,7 @@ class SellerApplicationReviewedMail extends Mailable implements ShouldQueue
 
     public function build(): self
     {
-        return $this->subject('Workshop — application update')
+        return $this->subject('Pointet — application update')
             ->view('mail.seller-application-reviewed');
     }
 }

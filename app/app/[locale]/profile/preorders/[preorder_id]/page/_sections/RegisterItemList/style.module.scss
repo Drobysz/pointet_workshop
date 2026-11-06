@@ -1,0 +1,41 @@
+@reference "tailwindcss";
+
+.register_list {
+    @apply flex 
+        flex-col 
+        gap-4
+        pb-4 px-3;
+}
+
+.reg_el {
+    @apply grid 
+        grid-cols-2
+        p-3
+        bg-gray-100
+        rounded-2xl
+        max-lg:grid-cols-1
+        max-lg:gap-y-4;
+
+    &__first_half {
+        @apply flex gap-4;
+    }
+
+    &__second_half {
+        @apply flex
+            justify-between
+            items-center
+            max-md:flex-wrap
+            max-md:gap-x-6
+            max-md:gap-y-1;
+    }
+
+    &__key {
+        @apply text-3xl text-zinc-500
+            max-md:text-xl;
+    }
+
+    &__value {
+        @apply text-4xl text-zinc-700
+            max-md:text-3xl;
+    }
+}

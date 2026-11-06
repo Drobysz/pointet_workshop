@@ -1,3 +1,561 @@
 {
-    "": ""
+    "common": {
+        "actions": {
+            "close": "Close",
+            "cancel": "Cancel",
+            "confirm": "Confirm",
+            "save": "Save",
+            "edit": "Edit",
+            "delete": "Delete",
+            "remove": "Remove",
+            "retry": "Try again",
+            "back": "Back",
+            "continue": "Continue",
+            "submit": "Submit",
+            "send": "Send",
+            "search": "Search",
+            "apply": "Apply",
+            "reset": "Reset"
+        },
+        "states": {
+            "loading": "Loading…",
+            "sending": "Sending…",
+            "loadFailed": "Failed to load"
+        },
+        "password": {
+            "show": "Show password",
+            "hide": "Hide password"
+        }
+    },
+    "navigation": {
+        "pages": {
+            "about": "About us",
+            "shop": "Shop",
+            "sellers": "For sellers"
+        },
+        "header": {
+            "mainLabel": "Main",
+            "logoLabel": "Pointet — home page",
+            "preordersLabel": "Pre-orders ({count})",
+            "basketLabel": "Basket ({count})"
+        },
+        "mobileMenu": {
+            "open": "Open menu",
+            "close": "Close menu",
+            "label": "Site menu"
+        },
+        "account": {
+            "menuLabel": "Profile menu",
+            "sectionLabel": "Account",
+            "profile": "My profile",
+            "preorders": "My pre-orders",
+            "basket": "My basket",
+            "signUp": "Sign Up",
+            "logOut": "Exit"
+        },
+        "footer": {
+            "columns": {
+                "support": "Support",
+                "navigation": "Navigation",
+                "social": "Social media"
+            },
+            "links": {
+                "privacyPolicy": "Privacy policy"
+            },
+            "legal": {
+                "privacyPolicy": "Privacy Policy",
+                "cookiesPolicy": "Cookies Policy"
+            },
+            "developedBy": "Developed by <link>Drobysz</link>"
+        }
+    },
+    "home": {
+        "hero": {
+            "tagline": "A marketplace\ndedicated to\nlittle brands",
+            "bagAlt": "Hero bag",
+            "shelfAlt": "Display shelf"
+        },
+        "scrollGallery": {
+            "title": "united\nlittle brands\nacross EU\nin one place",
+            "imageAlt": "Moving image"
+        },
+        "objectGallery": {
+            "curatedTitle": "Discover the unexpected.",
+            "bagsTitle": "Bags",
+            "clothingTitle": "Clothing"
+        },
+        "objects": {
+            "labels": {
+                "curated": "Curated objects: a red lacquered half-moon handbag, a white satin corset and a twisted gold bangle",
+                "bag": "Sculptural mirror-polished silver handbag with an integrated oval handle",
+                "dress": "Satin slip gown with a sweetheart bodice and a flowing, deeply folded skirt"
+            },
+            "instructions": "Drag to rotate. On touch screens, swipe sideways to rotate or vertically to scroll. Use arrow keys to rotate and Home to reset.",
+            "unavailable": "The interactive 3D view is unavailable on this device."
+        },
+        "outfitGallery": {
+            "title": "Create Your Look with European Brands",
+            "imageAlt": "Outfit inspiration {number}"
+        },
+        "categories": {
+            "title": "What to see next?",
+            "shop": {
+                "title": "Shop",
+                "description": "Get familiar with local European brands and form your new outfit",
+                "toteAlt": "White tote bag",
+                "handbagAlt": "Quilted handbag"
+            },
+            "telegram": {
+                "title": "Join our Telegram channel",
+                "description": "To receive the latest news on our service updates and explore new local brands, follow our Telegram channel.",
+                "logoAlt": "Telegram logo",
+                "megaphoneAlt": "Megaphone",
+                "newspaperAlt": "Newspaper"
+            },
+            "sellers": {
+                "title": "Start selling on Pointet",
+                "description": "If you’re a local and beginning clothing brand, we’ll be happy to welcome you. Create your future with us!",
+                "pencilsAlt": "Pencils",
+                "rulersAlt": "Rulers"
+            }
+        }
+    },
+    "catalog": {
+        "heading": "Shop independent European brands",
+        "states": {
+            "empty": "No products available"
+        },
+        "search": {
+            "placeholder": "Find your good",
+            "inputLabel": "Search goods"
+        },
+        "categories": {
+            "currentBadge": "Current category",
+            "iconAlt": "category icon"
+        },
+        "filters": {
+            "title": "Filters",
+            "sheetLabel": "Catalog filters",
+            "closeLabel": "Close filters"
+        },
+        "priceRange": {
+            "minLabel": "Minimum price",
+            "maxLabel": "Maximum price"
+        },
+        "pagination": {
+            "previousLabel": "Previous page",
+            "nextLabel": "Next page"
+        }
+    },
+    "product": {
+        "actions": {
+            "addToBasket": "Add to basket",
+            "goBack": "back"
+        },
+        "notifications": {
+            "chooseSizeAndQuantity": "You should choose size and quantity!",
+            "addedToBasket": "Your item \"{name}...\" was added to basket"
+        },
+        "params": {
+            "itemNumber": "item number",
+            "weight": "weight",
+            "brand": "brand",
+            "subcategory": "subcategory",
+            "materials": "materials"
+        },
+        "quantity": {
+            "decreaseLabel": "Decrease quantity",
+            "increaseLabel": "Increase quantity"
+        }
+    },
+    "basket": {
+        "header": {
+            "title": "Goods",
+            "count": "{count, plural, one {# good} other {# goods}}"
+        },
+        "item": {
+            "imageAlt": "{name} image",
+            "openProduct": "Open product page",
+            "remove": "Remove from basket",
+            "decreaseQuantity": "Decrease quantity",
+            "increaseQuantity": "Increase quantity"
+        },
+        "summary": {
+            "total": "Total :"
+        },
+        "states": {
+            "empty": "Your basket is empty"
+        }
+    },
+    "checkout": {
+        "button": {
+            "preorder": "Pre-order for €1",
+            "emailRequired": "Enter email to continue €1 pre-order"
+        },
+        "disclosure": "This is a €1 pre-order only. We are currently collecting pre-orders. We set a conditional price of 1 euro in order to gather people who will definitely be ready to place an order. As soon as the goods arrive at the warehouse, we will notify you.",
+        "email": {
+            "label": "Email"
+        },
+        "notifications": {
+            "paymentFailed": "Payment failed",
+            "checkoutCreationFailed": "Checkout page creation failed",
+            "basketNotCleared": "Your payment was confirmed, but the basket could not be cleared. Please refresh and try again."
+        },
+        "status": {
+            "pending": {
+                "title": "Payment received — confirming it now",
+                "body": "Stripe is processing the confirmation. Keep this page open; it will update automatically."
+            },
+            "paid": {
+                "title": "Your €1 pre-order is confirmed",
+                "body": "Thank you. We will contact you when this product becomes available."
+            },
+            "failed": {
+                "title": "Payment was not completed",
+                "body": "No pre-order was confirmed. You can return to your basket and try again."
+            },
+            "canceled": {
+                "title": "Checkout was cancelled",
+                "body": "No pre-order was confirmed. You can return to your basket and try again."
+            },
+            "refunded": {
+                "title": "This pre-order was refunded",
+                "body": "The payment is no longer active."
+            }
+        },
+        "result": {
+            "unverified": {
+                "title": "We could not verify this payment",
+                "body": "Please sign in with the account used for checkout and try again."
+            },
+            "missingSession": {
+                "title": "Payment session is missing",
+                "body": "Return to your basket and start the pre-order again."
+            },
+            "viewPreorders": "See your pre-orders"
+        }
+    },
+    "preorders": {
+        "list": {
+            "empty": "You have no pre-orders",
+            "loadFailed": "Failed to load pre-orders",
+            "purchasedAt": "<muted>Purchased :</muted> <value>{date}</value> <muted>at</muted> <value>{time}</value>",
+            "quantity": "Quantity : {count}",
+            "total": "Total : {price}"
+        },
+        "fields": {
+            "number": "Pre-order No:",
+            "quantity": "Quantity:",
+            "price": "Price:",
+            "preorderPrice": "Pre-order price:"
+        },
+        "item": {
+            "imageAlt": "{name} icon"
+        },
+        "status": {
+            "pending": "Pending",
+            "paid": "Paid",
+            "failed": "Failed",
+            "canceled": "Cancelled",
+            "refunded": "Refunded"
+        }
+    },
+    "profile": {
+        "navigation": {
+            "profile": "Profile",
+            "preorders": "Pre-orders",
+            "basket": "Basket"
+        },
+        "page": {
+            "loadFailed": "Page failed to load",
+            "notLoggedIn": "You're not logged in",
+            "redirectedNotice": "You were redirected, since you're not logged in."
+        },
+        "fullName": {
+            "inputLabel": "Full name",
+            "updated": "User full name was updated"
+        },
+        "personalInfo": {
+            "title": "Personal information",
+            "change": "Change",
+            "email": {
+                "label": "Email",
+                "verificationSent": "A verification code was sent to your new email"
+            },
+            "tel": {
+                "label": "phone number",
+                "updated": "Phone number was updated"
+            },
+            "address": {
+                "label": "address",
+                "placeholder": "Street, City, Postal code, Country",
+                "updated": "Address was updated"
+            }
+        },
+        "security": {
+            "title": "Security",
+            "currentPassword": "Current password",
+            "newPassword": "New password",
+            "submit": "Update password"
+        },
+        "accountActions": {
+            "logOutTitle": "Log out of your account",
+            "logOut": "Log out",
+            "deleteTitle": "Delete your account"
+        }
+    },
+    "auth": {
+        "login": {
+            "success": "Signed in successfully",
+            "failed": "Failed to sign in",
+            "title": "Sign In",
+            "submit": "Login",
+            "noAccount": "You don’t have an account? <link>Sign Up</link>"
+        },
+        "register": {
+            "success": "A verification link was sent to your email.",
+            "failed": "The account could not be created.",
+            "title": "Registration",
+            "submit": "Register",
+            "haveAccount": "You have an account? <link>Sign in.</link>",
+            "terms": "I agree to the <terms>terms of use</terms> and <privacy>privacy policy</privacy>"
+        },
+        "passwordChange": {
+            "success": "Password changed successfully"
+        },
+        "dialogLabel": "Authentication dialog",
+        "fields": {
+            "email": "Email",
+            "password": "Password",
+            "fullName": "Full name",
+            "address": "Address (optional)",
+            "addressPlaceholder": "15 rue de Republic, City, Postal code, Country"
+        },
+        "verifyEmail": {
+            "title": "Enter verification code",
+            "success": "Email was updated"
+        },
+        "deleteAccount": {
+            "title": "Are you sure?",
+            "description": "If you delete your account, all your current and previous orders will be gone.",
+            "success": "Account was deleted. Bye Bye!"
+        }
+    },
+    "seller": {
+        "form": {
+            "title": "Seller request form",
+            "submit": "Contact",
+            "labels": {
+                "firstName": "First name",
+                "lastName": "Last name",
+                "phone": "Phone number",
+                "country": "Country",
+                "email": "Email",
+                "brandName": "Brand name",
+                "companyAddress": "Company address",
+                "contactDetails": "Contact details",
+                "aboutBrand": "About your brand",
+                "euResident": "I am a resident of the European Union"
+            },
+            "placeholders": {
+                "firstName": "Your first name",
+                "lastName": "Your last name",
+                "country": "Country of residence",
+                "brandName": "Your brand name",
+                "companyAddress": "Street, city, postal code and country",
+                "contactDetails": "How should we contact you about your application?",
+                "aboutBrand": "Describe your brand and the products you would like to sell"
+            }
+        },
+        "validation": {
+            "required": "{field} is required",
+            "tooLong": "{field} must contain at most {max, plural, one {# character} other {# characters}}",
+            "phoneInvalid": "Enter a phone number with 7–15 digits and an optional leading +",
+            "brandDescriptionField": "Brand description"
+        },
+        "submission": {
+            "success": "Your seller application has been submitted.",
+            "checkFields": "Please check the application fields.",
+            "failed": "Unable to submit your application. Please try again.",
+            "sentFallback": "Request was successfully sent",
+            "failedFallback": "Request sending was unsuccessful"
+        }
+    },
+    "docs": {
+        "navigation": {
+            "title": "Categories",
+            "privacyPolicy": "Privacy policy",
+            "cookiesPolicy": "Cookies policy"
+        }
+    },
+    "notifications": {
+        "logout": {
+            "success": "Successfully logged out"
+        },
+        "emailVerification": {
+            "tokenRejected": "The verification link didn’t work.",
+            "success": "Successfully registered"
+        }
+    },
+    "ui": {
+        "scrollToTop": {
+            "label": "Scroll to top"
+        },
+        "imageSlider": {
+            "previous": "Previous photo",
+            "next": "Next photo",
+            "photoAlt": "{name}, photo {number}",
+            "photoAltFallback": "Product photo {number}"
+        }
+    },
+    "languageSwitcher": {
+        "label": "Language",
+        "change": "Change language"
+    },
+    "notFound": {
+        "title": "Page not found",
+        "description": "The page you are looking for has moved, sold out or never existed.",
+        "globalDescription": "The page you are looking for does not exist.",
+        "linksLabel": "Helpful links",
+        "backHome": "Back to home",
+        "openShop": "Open the shop"
+    },
+    "validation": {
+        "emailRequired": "Email is required",
+        "emailInvalid": "Enter a valid email address",
+        "passwordRequired": "Password is required",
+        "minLength": "Must be at least {count, plural, one {# character} other {# characters}}",
+        "passwordLetter": "At least one letter is required",
+        "passwordNumber": "At least one number is required",
+        "passwordTooLong": "Password is too long",
+        "phoneInvalid": "Enter a valid phone number",
+        "addressFormat": "Use the format: Street, City, Postal code, Country"
+    },
+    "errors": {
+        "unexpected": "An unexpected error occurred.",
+        "default": {
+            "badRequest": "The request could not be processed.",
+            "sessionExpired": "Your session has expired. Please sign in again.",
+            "forbidden": "You do not have permission to perform this action.",
+            "notFound": "The requested resource was not found.",
+            "conflict": "The request conflicts with the current state.",
+            "tooManyRequests": "Too many requests. Please try again later.",
+            "server": "A server error occurred. Please try again later."
+        },
+        "register": {
+            "badRequest": "The registration request is invalid.",
+            "conflict": "An account with these details already exists.",
+            "invalidDetails": "Please check the registration details.",
+            "tooManyAttempts": "Too many registration attempts. Please try again later."
+        },
+        "verify": {
+            "badRequest": "The verification request is invalid.",
+            "invalidToken": "The verification token is invalid.",
+            "notFound": "The verification request could not be found.",
+            "alreadyUsed": "This verification link has already been used.",
+            "expired": "The verification link is invalid or has expired.",
+            "tooManyAttempts": "Too many verification attempts. Please try again later."
+        },
+        "login": {
+            "badRequest": "The login request is invalid.",
+            "invalidCredentials": "Incorrect email or password.",
+            "forbidden": "You are not allowed to sign in to this account.",
+            "invalidDetails": "Please check your email and password.",
+            "tooManyAttempts": "Too many login attempts. Please try again later."
+        },
+        "refresh": {
+            "forbidden": "Your session cannot be renewed."
+        },
+        "logout": {
+            "notSignedIn": "You are no longer signed in.",
+            "forbidden": "You are not allowed to perform this action."
+        },
+        "emailChange": {
+            "forbidden": "You do not have permission to change this email address.",
+            "unavailable": "This email address cannot be used.",
+            "taken": "This email address is already taken.",
+            "tooManyAttempts": "Too many email change requests. Please try again later.",
+            "notSent": "The verification email could not be sent. Please try again later."
+        },
+        "emailVerification": {
+            "forbidden": "You do not have permission to verify this email address.",
+            "notFound": "No pending email change was found.",
+            "invalidCode": "The verification code is invalid or has expired.",
+            "server": "The email address could not be updated. Please try again later."
+        },
+        "passwordChange": {
+            "forbidden": "You do not have permission to change this password.",
+            "userNotFound": "The user could not be found.",
+            "invalid": "The current password is incorrect or the new password is invalid.",
+            "tooManyAttempts": "Too many password change attempts. Please try again later.",
+            "server": "The password could not be changed. Please try again later."
+        },
+        "basket": {
+            "invalidItem": "Invalid basket item data.",
+            "itemNotFound": "The basket item was not found.",
+            "get": {
+                "unauthorized": "You must be signed in to view your basket.",
+                "server": "Failed to load the basket. Please try again later."
+            },
+            "add": {
+                "unauthorized": "You must be signed in to add items to your basket.",
+                "notFound": "The selected product or option was not found.",
+                "conflict": "This item is already in your basket.",
+                "invalidOptions": "The selected product options or quantity are invalid.",
+                "server": "Failed to add the item to your basket. Please try again later."
+            },
+            "update": {
+                "unauthorized": "You must be signed in to update your basket.",
+                "forbidden": "You are not allowed to modify this basket item.",
+                "invalidOptions": "The selected quantity or product options are invalid.",
+                "server": "Failed to update the basket item. Please try again later."
+            },
+            "remove": {
+                "unauthorized": "You must be signed in to remove items from your basket.",
+                "forbidden": "You are not allowed to remove this basket item.",
+                "server": "Failed to remove the item from your basket. Please try again later."
+            }
+        }
+    },
+    "seo": {
+        "site": {
+            "tagline": "A marketplace dedicated to little brands",
+            "description": "Pointet Workshop is an online marketplace uniting independent fashion, accessories, lifestyle and design brands from across Europe in one place."
+        },
+        "breadcrumbs": {
+            "home": "Home",
+            "shop": "Shop"
+        },
+        "notFound": {
+            "title": "Page not found",
+            "description": "The page you are looking for does not exist."
+        },
+        "profile": {
+            "defaultTitle": "Account",
+            "title": "Profile"
+        },
+        "basket": {
+            "title": "Basket"
+        },
+        "preorders": {
+            "title": "Pre-orders"
+        },
+        "preorder": {
+            "title": "Pre-order #{id}"
+        },
+        "orderStatus": {
+            "title": "Order status"
+        },
+        "shop": {
+            "title": "Shop independent European brands",
+            "description": "Browse clothing, bags, accessories and furniture from independent European brands. Filter by category and price, then order or pre-order directly on Pointet Workshop."
+        },
+        "product": {
+            "fallbackDescription": "{name} by {brand}"
+        },
+        "sellers": {
+            "title": "Sell on Pointet",
+            "description": "Apply to sell on Pointet Workshop, a marketplace for independent European fashion, accessories and design brands. Tell us about your brand and we will get back to you."
+        }
+    }
 }

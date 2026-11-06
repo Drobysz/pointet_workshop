@@ -5,3 +5,5 @@ export * from "./cookies";
 export * from "./path";
 export * from "./pages";
 export * from "./photon";
+export * from "./seo";
+export * from "./structuredData";

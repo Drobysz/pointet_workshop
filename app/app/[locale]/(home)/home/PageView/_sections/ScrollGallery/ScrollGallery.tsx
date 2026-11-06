@@ -12,12 +12,22 @@ import {
 } from "framer-motion";
 import images from "@/json/images.json";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { cn } from "@/helpers";
 
 type MovingImageType = {
     img_src: string;
     left: string;
     top: string;
 }
+
+// Layout of the headline rows, in the order of the message's line breaks.
+const TITLE_ROW_CLASS_NAMES = [
+    cn(s.title__row_indented, "self-center"),
+    s.title__row_indented,
+    undefined,
+    cn(s.title__row_shifted, "self-center"),
+];
 
 export const MovingImage = ({
     image,
@@ -34,6 +44,7 @@ export const MovingImage = ({
     index: number;
     total: number;
 })=> {
+    const t = useTranslations("home.scrollGallery");
     const [start, end] = range;
     const xCoordPercent = Number(image.left.slice(
         0, image.left.length - 1
@@ -82,17 +93,20 @@ export const MovingImage = ({
             <Image
                 className={s.gallery_image}
                 src={image.img_src}
-                width={500}
-                height={250}
+                width={250}
+                height={500}
                 sizes="100%"
                 loading="eager"
-                alt="moving image"
+                alt={t("imageAlt")}
             />
         </motion.div>
     )
 }
 
 export const ScrollGallery = ()=> {
+    const t = useTranslations("home.scrollGallery");
+    // The headline is one message; its line breaks define the staggered rows.
+    const titleRows = t("title").split("\n");
     const refTunnel = useRef<HTMLDivElement | null>(null);
     const len = images.length;
     const imagePiece = 1/len;
@@ -189,18 +203,14 @@ export const ScrollGallery = ()=> {
                     className={s.title}
                     style={{ color }}
                 >
-                    <span className="pl-20 whitespace-nowrap self-center">
-                        My 
-                    </span>
-                     <span className="pl-20 whitespace-nowrap">
-                        numerous
-                    </span>
-                    <span>
-                        handmade
-                    </span>
-                    <span className="pr-30 self-center">
-                        bags
-                    </span>
+                    {titleRows.map((row, index) =>
+                        <span
+                            key={`title-row-${index}`}
+                            className={TITLE_ROW_CLASS_NAMES[index]}
+                        >
+                            {row}
+                        </span>
+                    )}
                 </motion.h2>
                 <motion.div 
                     className={s.elevator_center_content}

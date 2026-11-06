@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { StatePanel } from "@/components";
 import { UsersTable } from "./_sections/UsersTable/UsersTable";
 
-export const metadata: Metadata = { title: "Utilisateurs" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("users");
+
+  return { title: t("title") };
+}
 
 export default function UsersPage() {
   return (

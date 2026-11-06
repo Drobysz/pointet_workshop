@@ -1,6 +1,7 @@
 "use client";
 
 import { KeyboardEvent, useContext, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import s from "./style.module.scss";
 import { ShopContext } from "../../../../context/shop.context";
 import { Search } from "lucide-react";
@@ -8,6 +9,7 @@ import { cn } from "@/helpers";
 import { useDismiss } from "@/hooks";
 
 export const Searchbar = ()=> {
+    const t = useTranslations("catalog.search");
     const { setGoodFilterParams } = useContext(ShopContext);
 
     const ref = useRef<HTMLInputElement | null>(null);
@@ -42,7 +44,7 @@ export const Searchbar = ()=> {
 
     return (
         <div 
-            className="relative w-fit h-fit overflow-hidden p-0.5 translate-y-0.5"
+            className={s.searchbar_container}
             onMouseEnter={()=> setIsHovered(true)}
             onMouseLeave={()=> setIsHovered(false)}
         >
@@ -62,8 +64,9 @@ export const Searchbar = ()=> {
                     s.searchbar,
                 )}
                 ref={ref}
-                type="text"
-                placeholder="Find your good"
+                type="search"
+                placeholder={t("placeholder")}
+                aria-label={t("inputLabel")}
                 onKeyDown={handleSearchRequest}
                 onChange={(e)=> setValue(e.target.value)}
                 onFocus={()=> setIsFocused(true)}

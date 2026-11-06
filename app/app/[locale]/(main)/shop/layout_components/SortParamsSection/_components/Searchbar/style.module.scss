@@ -1,5 +1,15 @@
 @reference "tailwindcss";
 
+.searchbar_container {
+    @apply relative
+        w-fit h-fit
+        overflow-hidden
+        p-0.5
+        translate-y-0.5
+        max-lg:flex-1
+        max-lg:min-w-0;
+}
+
 .searchbar {
     @apply rounded-xl
         bg-gray-200
@@ -17,7 +27,10 @@
         hover:min-w-55
         focus:pl-10
         focus:pr-3
-        focus:min-w-70;
+        focus:min-w-70
+        max-lg:w-full
+        max-lg:min-w-0!
+        max-lg:max-w-none;
 
     transition: 
         translate 0.2s ease-out,

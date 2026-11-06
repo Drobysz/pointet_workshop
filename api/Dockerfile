@@ -1,7 +1,7 @@
 FROM php:8.4-cli-alpine
 
 RUN apk add --no-cache git icu-dev libzip-dev postgresql-dev unzip \
-    && docker-php-ext-install intl opcache pdo_pgsql zip
+    && docker-php-ext-install intl opcache pcntl pdo_pgsql zip
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY docker/uploads.ini /usr/local/etc/php/conf.d/uploads.ini

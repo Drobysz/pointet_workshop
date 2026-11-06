@@ -12,10 +12,13 @@
         items-center;
 }
 
-.icon_btn {
-    @apply relative p-1.5
-        rounded-full
-        hover:bg-zinc-200;
-    
-    transition: background-color 0.2s ease-out;
+.account {
+    @apply flex
+        items-center
+        max-md:hidden;
+}
+
+// Moved into the burger menu on small screens.
+.desktop_only {
+    @apply max-md:hidden;
 }

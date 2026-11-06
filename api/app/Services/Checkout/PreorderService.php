@@ -3,37 +3,48 @@
 namespace App\Services\Checkout;
 
 use App\Enums\PreorderPaymentStatus;
-use App\Models\Good;
 use App\Models\Basket;
+use App\Models\Good;
+use App\Models\GoodRegister;
 use App\Models\GuestSession;
 use App\Models\Preorder;
 use App\Models\PreorderCheckoutSession;
 use App\Models\ProductImage;
 use App\Models\StripeWebhookEvent;
 use App\Models\User;
+use App\Services\TransactionalEmails;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class PreorderService
 {
-    public function __construct(private readonly GuestBasketService $guestBaskets) {}
+    public function __construct(
+        private readonly GuestBasketService $guestBaskets,
+        private readonly TransactionalEmails $emails,
+    ) {}
 
     /** @param array<int, array{inventory_id: int, quantity: int}> $guestItems */
-    public function startCheckoutFromBasket(?User $user, ?GuestSession $guestSession, string $idempotencyKey, array $guestItems = []): PreorderCheckoutSession
+    public function startCheckoutFromBasket(?User $user, ?GuestSession $guestSession, string $idempotencyKey, array $guestItems = [], ?string $guestEmail = null): PreorderCheckoutSession
     {
         abort_unless(config('checkout.mode') === 'preorder', 409, 'Pre-order checkout mode is not enabled.');
         $this->assertStripeConfigured();
 
         abort_unless($user || $guestSession, 422, 'A customer session is required.');
+        $customerEmail = $user?->email ?? $guestEmail;
+        abort_unless($customerEmail, 422, 'An email address is required for guest checkout.');
 
-        $checkout = DB::transaction(function () use ($user, $guestSession, $idempotencyKey, $guestItems): PreorderCheckoutSession {
+        $checkout = DB::transaction(function () use ($user, $guestSession, $idempotencyKey, $guestItems, $customerEmail): PreorderCheckoutSession {
             $existing = PreorderCheckoutSession::query()
                 ->when($user, fn ($query) => $query->where('user_id', $user->id), fn ($query) => $query->where('guest_session_id', $guestSession->id))
                 ->where('idempotency_key', $idempotencyKey)
                 ->lockForUpdate()
                 ->first();
             if ($existing) {
+                // A retry must not silently redirect a guest to a payment with
+                // a different contact email already attached to it.
+                abort_if(! $user && $existing->customer_email !== $customerEmail, 409, 'Start a new checkout to change the contact email.');
+
                 return $existing;
             }
 
@@ -47,6 +58,7 @@ class PreorderService
                 $good = $item->good;
                 $register = $item->inventory;
                 abort_unless($good?->visible && $register && $register->good_id === $good->id, 422, 'One of the selected products is no longer available.');
+                abort_if($item->quantity > $register->quantity, 422, 'The requested quantity exceeds available stock for this product option.');
                 $snapshot[] = [
                     'good_id' => $good->id,
                     'good_register_id' => $register->id,
@@ -62,8 +74,7 @@ class PreorderService
                 'user_id' => $user?->id,
                 'guest_session_id' => $guestSession?->id,
                 'customer_name' => $user?->full_name ?? 'Guest checkout',
-                // Stripe supplies the guest email in its signed webhook payload.
-                'customer_email' => $user?->email ?? 'guest-checkout-'.$guestSession->id.'@invalid.local',
+                'customer_email' => $customerEmail,
                 'basket_snapshot' => $snapshot,
                 'payment_status' => PreorderPaymentStatus::Pending,
                 'payment_amount_cents' => config('checkout.preorder_amount_cents'),
@@ -117,10 +128,13 @@ class PreorderService
         abort_unless(is_string($eventId) && is_string($type), 422, 'Invalid Stripe event.');
 
         DB::transaction(function () use ($event, $eventId, $type): void {
-            if (StripeWebhookEvent::query()->where('stripe_event_id', $eventId)->exists()) {
+            $receipt = StripeWebhookEvent::query()->createOrFirst(
+                ['stripe_event_id' => $eventId],
+                ['type' => $type, 'processed_at' => now()],
+            );
+            if (! $receipt->wasRecentlyCreated) {
                 return;
             }
-            StripeWebhookEvent::create(['stripe_event_id' => $eventId, 'type' => $type, 'processed_at' => now()]);
 
             $session = $event['data']['object'] ?? [];
             $checkoutId = $session['metadata']['preorder_checkout_session_id'] ?? null;
@@ -144,12 +158,17 @@ class PreorderService
                     && strtolower((string) ($session['currency'] ?? '')) === $checkout->currency;
                 abort_unless($validPayment, 422, 'Invalid pre-order payment amount.');
 
-                if ($checkout->preorder_id) {
+                if ($checkout->payment_status === PreorderPaymentStatus::Paid || $checkout->preorder_id) {
                     return;
                 }
 
+                $this->deductInventory($checkout->basket_snapshot);
+
                 $customerDetails = is_array($session['customer_details'] ?? null) ? $session['customer_details'] : [];
-                $customerEmail = is_string($customerDetails['email'] ?? null) ? $customerDetails['email'] : $checkout->customer_email;
+                $customerEmail = $checkout->customer_email;
+                if ($checkout->user_id && is_string($customerDetails['email'] ?? null)) {
+                    $customerEmail = $customerDetails['email'];
+                }
                 $customerName = is_string($customerDetails['name'] ?? null) ? $customerDetails['name'] : $checkout->customer_name;
 
                 $preorder = Preorder::create([
@@ -178,6 +197,7 @@ class PreorderService
                     'preorder_id' => $preorder->id,
                     'paid_at' => $preorder->paid_at,
                 ]);
+                $this->emails->paidPreorder($preorder);
             } elseif ($checkout->payment_status !== PreorderPaymentStatus::Paid && $type === 'checkout.session.expired') {
                 $checkout->update(['payment_status' => PreorderPaymentStatus::Canceled]);
             } elseif ($checkout->payment_status !== PreorderPaymentStatus::Paid && $type === 'checkout.session.async_payment_failed') {
@@ -186,10 +206,39 @@ class PreorderService
         }, 3);
     }
 
+    /** @param array<int, array{good_id: int, good_register_id: int, quantity: int}> $items */
+    private function deductInventory(array $items): void
+    {
+        // Match all other stock writers: lock products first, then inventory rows.
+        $goods = Good::query()
+            ->whereIn('id', array_column($items, 'good_id'))
+            ->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+        $variants = GoodRegister::query()
+            ->whereIn('id', array_column($items, 'good_register_id'))
+            ->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+
+        foreach ($items as $item) {
+            $good = $goods->get($item['good_id']);
+            $variant = $variants->get($item['good_register_id']);
+            $quantity = (int) $item['quantity'];
+            abort_unless($good && $variant && $variant->good_id === $good->id && $quantity > 0, 422, 'This inventory selection is no longer available.');
+            abort_if($quantity > $variant->quantity, 422, "Insufficient inventory for {$good->name} in the selected color and size.");
+            $variant->decrement('quantity', $quantity);
+        }
+
+        foreach ($goods as $good) {
+            $good->forceFill([
+                'current_quantity' => $good->inventory()->sum('quantity'),
+                'inventory_version' => $good->inventory_version + 1,
+            ])->save();
+        }
+    }
+
     private function createStripeSession(PreorderCheckoutSession $checkout): array
     {
         $payload = [
             'mode' => 'payment',
+            'customer_email' => $checkout->customer_email,
             'client_reference_id' => (string) $checkout->id,
             'success_url' => config('checkout.success_url'),
             'cancel_url' => config('checkout.cancel_url'),
@@ -199,9 +248,6 @@ class PreorderService
             'line_items[0][price_data][unit_amount]' => config('checkout.preorder_amount_cents'),
             'line_items[0][price_data][product_data][name]' => 'Workshop pre-order',
         ];
-        if ($checkout->user_id) {
-            $payload['customer_email'] = $checkout->customer_email;
-        }
         $response = $this->stripeRequest($checkout)->post('checkout/sessions', $payload)->throw()->json();
 
         abort_unless(is_array($response) && isset($response['id'], $response['url']), 502, 'Stripe did not return a checkout session.');

@@ -7,5 +7,7 @@
         text-center 
         text-6xl
         leading-23
-        opacity-80;
+        opacity-80
+        max-md:w-full
+        max-md:px-4;
 }

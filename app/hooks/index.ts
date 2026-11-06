@@ -6,3 +6,5 @@ export * from "./useSwitchLocale";
 export * from "./useDismiss";
 export * from "./useVerifyToken";
 export * from "./usePhotonSuggestions";
+export * from "./useScrollLock";
+export * from "./useMediaQuery";

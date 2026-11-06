@@ -7,7 +7,8 @@
         items-center
         px-2
         overflow-hidden
-        pointer-events-auto;
+        pointer-events-auto
+        max-md:h-[78svh];
 }
 
 .window {
@@ -23,16 +24,32 @@
         h-full w-full
         shrink-0;
 }
+
+.content_container {
+    @apply relative
+        h-full
+        flex flex-col
+        items-center
+        justify-end;
+}
+
+.images_container {
+    @apply flex
+        flex-col
+        items-center;
+}
+
 .title {
-    @apply text-[200px] absolute
-        left-1/2 bottom-1/2
-        -translate-x-1/2
-        translate-y-[5%]
+    @apply text-[200px]
+        leading-40
+        max-md:text-[130px]
+        max-md:leading-26
+        translate-y-[30%]
         bg-clip-text
         text-transparent
         bg-linear-to-t
         from-transparent from-5%
-        to-chalky-800 to-95%
+        to-chalky-700 to-95%
         uppercase;
         background-position: bottom; 
 }
@@ -40,20 +57,21 @@
 .signs_list {
     @apply flex justify-around
         absolute bottom-4 w-full
-        text-2xl text-yellow-400/85;
+        text-2xl text-yellow-400/85
+        max-lg:text-lg
+        max-md:flex-col
+        max-md:items-center
+        max-md:bottom-3
+        max-md:text-base
+        max-md:leading-5;
 }
 
 .chest {
-    @apply absolute left-1/2
-        bottom-0 -translate-x-1/2
-        translate-y-1/4
-        origin-center
-        z-10;
+    @apply z-10;
 }
 
 .bag {
-    @apply absolute left-1/2 
-    -translate-x-1/2
-    translate-y-[55%]
-    ;
+    @apply text-sm 
+        z-10
+        translate-y-[7%];
 }

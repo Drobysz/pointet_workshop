@@ -17,9 +17,12 @@ export const SizeFeed = ({
     currentInventoryId: number | null;
     setCurrentInventoryId: Dispatch<SetStateAction<number | null>>;
 })=> {
+    const nonEmptyInventoryItems = 
+        inventory.filter(item => item.quantity > 0);
+
     return (
         <ul className={s.size_feed}>
-            {inventory.map(invItem=> 
+            {nonEmptyInventoryItems.map(invItem=> 
                 <li
                     key={`good-${goodName}-color-${invItem.color_id}-size-${invItem.id}`}
                 >

@@ -1,10 +1,11 @@
 "use client";
 
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef } from "react";
-import type { ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Box3, Group, MathUtils, Vector3 } from "three";
+import { ACESFilmicToneMapping, Box3, Group, MathUtils, NeutralToneMapping, Vector3 } from "three";
+import type { ToneMapping } from "three";
 import { StudioEnvironment } from "./StudioEnvironment";
+import type { StudioPresetName } from "./StudioEnvironment";
 import { useObjectDragRotation } from "./useObjectDragRotation";
 import { useSectionScrollRotation } from "./useSectionScrollRotation";
 import { clamp, inertiaStep, MAX_TILT } from "./rotationMath";
@@ -13,21 +14,30 @@ import type { ObjectSceneProps } from "./types";
 import s from "./ObjectSection.module.scss";
 
 const models = {
-    wine: lazy(modelLoaders.wine),
-    plate: lazy(modelLoaders.plate),
-    fork: lazy(modelLoaders.fork),
+    curated: lazy(modelLoaders.curated),
+    bag: lazy(modelLoaders.bag),
+    dress: lazy(modelLoaders.dress),
+};
+// Reflections borrow a little of each section's backdrop so objects sit in their scene.
+// Chrome gets a product-photography studio and neutral tone mapping, which keeps
+// mirror whites white instead of ACES's greyed highlights.
+const looks: Record<ObjectSceneProps["kind"], { tint: string; preset: StudioPresetName; toneMapping: ToneMapping }> = {
+    curated: { tint: "#f2a7b8", preset: "studio", toneMapping: ACESFilmicToneMapping },
+    bag: { tint: "#8fb2f4", preset: "product", toneMapping: NeutralToneMapping },
+    dress: { tint: "#c4aef0", preset: "studio", toneMapping: ACESFilmicToneMapping },
 };
 const CAMERA_DISTANCE = 9;
 const FIELD_OF_VIEW = 32;
 const verticalTangent = Math.tan(MathUtils.degToRad(FIELD_OF_VIEW / 2));
 
 function RotatingObject({
+    kind,
     sectionRef,
     active,
     reducedMotion,
     idleMotion,
-    children,
-}: Omit<ObjectSceneProps, "kind" | "fallbackText"> & { children: ReactNode }) {
+}: Omit<ObjectSceneProps, "fallbackText">) {
+    const Model = models[kind];
     const rotationGroup = useRef<Group>(null);
     const modelGroup = useRef<Group>(null);
     const fit = useRef({ corners: [] as Vector3[], point: new Vector3(), ready: false });
@@ -36,6 +46,7 @@ function RotatingObject({
     const size = useThree((state) => state.size);
     const motionRef = useObjectDragRotation(sectionRef, invalidate);
     const scrollRotation = useSectionScrollRotation(sectionRef, active, reducedMotion, invalidate);
+    const portrait = size.width < size.height * 0.85;
 
     useLayoutEffect(() => {
         const model = modelGroup.current;
@@ -57,7 +68,7 @@ function RotatingObject({
         fit.current.corners = corners;
         fit.current.ready = false;
         invalidate();
-    }, [invalidate]);
+    }, [invalidate, portrait]);
 
     useEffect(() => { invalidate(); }, [active, reducedMotion, idleMotion, size, invalidate]);
 
@@ -106,11 +117,17 @@ function RotatingObject({
         if (active && (idle || settling)) invalidate();
     });
 
-    return <group ref={rotationGroup}><group ref={modelGroup}>{children}</group></group>;
+    return (
+        <group ref={rotationGroup}>
+            <group ref={modelGroup}>
+                <Model active={active} reducedMotion={reducedMotion} portrait={portrait} />
+            </group>
+        </group>
+    );
 }
 
 export default function InteractiveObjectScene(props: ObjectSceneProps) {
-    const Model = models[props.kind];
+    const look = looks[props.kind];
     return (
         <Canvas
             className={s.canvas}
@@ -125,14 +142,14 @@ export default function InteractiveObjectScene(props: ObjectSceneProps) {
             onCreated={({ gl }) => {
                 gl.domElement.setAttribute("aria-hidden", "true");
                 gl.setClearColor(0x000000, 0);
+                gl.toneMapping = look.toneMapping;
                 gl.toneMappingExposure = 1.05;
-                gl.transmissionResolutionScale = 0.5;
             }}
             fallback={<p className={s.fallback} role="status">{props.fallbackText}</p>}
         >
             <Suspense fallback={null}>
-                <StudioEnvironment />
-                <RotatingObject {...props}><Model /></RotatingObject>
+                <StudioEnvironment tint={look.tint} preset={look.preset} />
+                <RotatingObject {...props} />
             </Suspense>
         </Canvas>
     );

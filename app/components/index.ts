@@ -22,3 +22,6 @@ export * from "./good_components/QuantitySelector/QuantitySelector";
 export * from "./good_components/SizeFeed/SizeFeed";
 export * from "./tags/ActiveQuantityTag/ActiveQuantityTag";
 export * from "./buttons/BtnPending/BtnPending";
+export * from "./navigation/NavBar/NavBar";
+export * from "./seo/JsonLd/JsonLd";
+export * from "./windows/SlideSheet/SlideSheet";

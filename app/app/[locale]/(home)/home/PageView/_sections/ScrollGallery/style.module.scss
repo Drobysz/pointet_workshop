@@ -8,8 +8,21 @@
     @apply absolute left-1/2 top-1/2 
         -translate-1/2 z-50
         text-7xl font-semibold
+        max-lg:text-5xl
+        max-md:text-4xl
         flex flex-col
         items-start;
+
+    // Staggered indents of the headline rows.
+    &__row_indented {
+        @apply pl-20 whitespace-nowrap
+            max-md:pl-8;
+    }
+
+    &__row_shifted {
+        @apply pl-10
+            max-md:pl-4;
+    }
 }
 
 .elevator {
@@ -31,8 +44,8 @@
 
 .gallery_image_container {
     @apply w-60 h-45
-        overflow-hidden
-        ;
+        max-md:w-36 max-md:h-27
+        overflow-hidden;
 }
 
 .gallery_image {

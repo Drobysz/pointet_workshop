@@ -10,8 +10,10 @@ import { emailChangeVerificationErrorMessages } from "@/api/core/errorMessages";
 import { ShadowBorderWindow } from "@/components/windows/ShadowBorderWindow/ShadowBorderWindow";
 import { cn } from "@/helpers";
 import { jersey10 } from "@/fonts/fonts";
+import { useTranslations } from "next-intl";
 
 export const VerifyEmailCodeWindow = ()=> {
+    const t = useTranslations();
     const [value, setValue] = useState("");
     const { 
         user, 
@@ -32,13 +34,14 @@ export const VerifyEmailCodeWindow = ()=> {
 
             setNotification({
                 status: "success",
-                text: "Email was updated"
+                text: t("auth.verifyEmail.success")
             });
             setPopUpWindow("none");
             mutateUser();
         } catch (error) {
             const message = getApiErrorMessage(
                 error,
+                t,
                 emailChangeVerificationErrorMessages
             );
 
@@ -61,7 +64,7 @@ export const VerifyEmailCodeWindow = ()=> {
                     jersey10.className
                 )}
             >
-                Enter verification code
+                {t("auth.verifyEmail.title")}
             </p>
             <form 
                 className="flex flex-col gap-5"
@@ -70,12 +73,13 @@ export const VerifyEmailCodeWindow = ()=> {
                 <input
                     className={s.input}
                     type="text"
+                    aria-label={t("auth.verifyEmail.title")}
                     onChange={handleChange}
                 />
                 <MainBtn
                     disabled={isButtonDisabled}
                 >
-                    Confirm
+                    {t("common.actions.confirm")}
                 </MainBtn>
             </form>
         </ShadowBorderWindow>

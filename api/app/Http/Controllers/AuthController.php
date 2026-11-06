@@ -11,6 +11,7 @@ use App\Mail\VerifyEmailMail;
 use App\Models\User;
 use App\Services\Auth\PendingRegistrationStore;
 use App\Services\Auth\SessionService;
+use App\Services\TransactionalEmails;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,7 +23,11 @@ use Throwable;
 
 class AuthController extends Controller
 {
-    public function __construct(private readonly PendingRegistrationStore $pending, private readonly SessionService $sessions) {}
+    public function __construct(
+        private readonly PendingRegistrationStore $pending,
+        private readonly SessionService $sessions,
+        private readonly TransactionalEmails $emails,
+    ) {}
 
     public function register(RegisterRequest $request): JsonResponse
     {
@@ -80,6 +85,7 @@ class AuthController extends Controller
                     'refer_id' => $pending['refer_id'],
                 ]);
                 $user->forceFill(['email_verified_at' => now(), 'role' => UserRole::User])->save();
+                $this->emails->welcome($user);
 
                 return $user;
             });

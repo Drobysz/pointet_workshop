@@ -1,0 +1,34 @@
+@reference "tailwindcss";
+
+.preorder_list_item {
+    @apply grid 
+        grid-cols-2 
+        px-5 py-2 
+        hover:bg-red-100/50 
+        cursor-pointer
+        max-lg:grid-cols-1
+        max-lg:gap-y-1
+        max-md:px-3
+        max-md:py-3
+        max-md:rounded-2xl
+        max-md:bg-gray-100;
+
+    .first_half {
+        @apply flex 
+            gap-8 
+            items-center
+            max-md:flex-wrap
+            max-md:justify-between
+            max-md:gap-x-4
+            max-md:gap-y-1;
+    }
+
+    .second_half {
+        @apply flex 
+            justify-between 
+            items-center
+            max-md:flex-wrap
+            max-md:gap-x-4
+            max-md:gap-y-1;
+    }
+}

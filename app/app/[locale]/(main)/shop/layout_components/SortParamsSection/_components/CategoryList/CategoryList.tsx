@@ -2,6 +2,7 @@
 
 import { Category } from "@/api/types/category"
 import { useContext, useState } from "react";
+import { useTranslations } from "next-intl";
 import { ShopContext } from "../../../../context/shop.context";
 import s from "./style.module.scss";
 import Image from "next/image";
@@ -13,6 +14,7 @@ const CategoryCard = ({
 }: {
     category: Category
 })=> {
+    const t = useTranslations("catalog.categories");
     const { 
         currentCategory, 
         setGoodFilterParams 
@@ -46,7 +48,7 @@ const CategoryCard = ({
                     tinyFive.className
                 )}
             >
-                Current category
+                {t("currentBadge")}
             </span>
             <div className={cn(
                 isActive && s.current_category__wrapper,
@@ -71,7 +73,7 @@ const CategoryCard = ({
                         width={30}
                         height={30}
                         loading="eager"
-                        alt="category icon"
+                        alt={t("iconAlt")}
                     />
                 }
             </div>

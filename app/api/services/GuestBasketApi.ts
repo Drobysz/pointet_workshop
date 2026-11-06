@@ -18,6 +18,12 @@ export class GuestBasketApi {
             "/basket/validate", 
             { items }
         );
+
+        // A late response must not restore a basket cleared after payment.
+        if (JSON.stringify(LocalBasketService.get()) !== JSON.stringify(items)) {
+            return this.getBasket();
+        }
+
         LocalBasketService.reconcile(response.data);
         return response;
     }

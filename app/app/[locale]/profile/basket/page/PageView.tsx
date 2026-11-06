@@ -8,12 +8,15 @@ import {
     CheckoutSection,
     Header,
     BasketList,
+    ErrorTitle,
 } from "./_sections";
 
 import { Loading } from "./_components";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export const PageView = ()=> {
+    const t = useTranslations("checkout.notifications");
     const { 
         basketList,
         basketError,
@@ -35,22 +38,23 @@ export const PageView = ()=> {
 
         setNotification({
             status: "error",
-            text: "Payment failed"
+            text: t("paymentFailed")
         });
 
         const params = new URLSearchParams(searchParams);
         params.delete("preorder");
 
+        // cleaning of url search params
         const query = params.toString();
         window.history.replaceState(
             null,
             "",
             window.location.pathname + (query ? `?${query}` : "")
         );
-    }, [isPaymentFailed, searchParams, setNotification]);
+    }, [isPaymentFailed, searchParams, setNotification, t]);
 
     return (
-        <div className="px-5 flex flex-col gap-5">
+        <div className="px-5 max-md:px-3 flex flex-col gap-5">
             <Header 
                 basketLength={basketLength}
             />
@@ -62,9 +66,18 @@ export const PageView = ()=> {
                         <BasketList 
                             basketList={basketList}
                         />
-                        <CheckoutSection 
-                            basketList={basketList}
-                        />
+                        {basketLength > 0 &&
+                            <CheckoutSection 
+                                basketList={basketList}
+                            />
+                        }
+                        
+                        {(!isDataLoaded || basketLength < 1) &&
+                            <ErrorTitle 
+                                basketError={basketError}
+                                basketLength={basketLength}
+                            />
+                        }
                     </>
                 )}
             </div>

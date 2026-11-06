@@ -1,4 +1,4 @@
-export { WineGlass3D } from "./WineGlass3D/WineGlass3D";
-export { SilverPlate3D } from "./SilverPlate3D/SilverPlate3D";
-export { SilverFork3D } from "./SilverFork3D/SilverFork3D";
+export { CuratedObjects3D } from "./CuratedObjects3D/CuratedObjects3D";
+export { SilverBag3D } from "./SilverBag3D/SilverBag3D";
+export { SatinDress3D } from "./SatinDress3D/SatinDress3D";
 export type { Object3DProps } from "./shared/types";

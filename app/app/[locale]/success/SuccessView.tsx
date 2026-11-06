@@ -1,86 +1,134 @@
 "use client";
 
-import { stripeApi } from "@/api/api";
-import { PreorderPaymentStatus } from "@/api/types/preorder";
+import { basketApi, stripeApi } from "@/api/api";
 import { Skeleton } from "@mui/material";
 import { useSearchParams } from "next/navigation";
-import { useContext, useEffect } from "react";
-import useSWR from "swr";
+import { useContext, useEffect, useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
 import { GlobalContext } from "../context/global.context";
 import { LocalBasketService } from "@/helpers/basket";
-
-const statusMessages: Record<PreorderPaymentStatus, { title: string; body: string }> = {
-    pending: {
-        title: "Payment received — confirming it now",
-        body: "Stripe is processing the confirmation. Keep this page open; it will update automatically.",
-    },
-    paid: {
-        title: "Your €1 pre-order is confirmed",
-        body: "Thank you. We will contact you when this product becomes available.",
-    },
-    failed: {
-        title: "Payment was not completed",
-        body: "No pre-order was confirmed. You can return to your basket and try again.",
-    },
-    canceled: {
-        title: "Checkout was cancelled",
-        body: "No pre-order was confirmed. You can return to your basket and try again.",
-    },
-    refunded: {
-        title: "This pre-order was refunded",
-        body: "The payment is no longer active.",
-    },
-};
+import { statusMessages } from "./helpers";
+import s from "./style.module.scss";
+import { cn } from "@/helpers";
+import { jersey10 } from "@/fonts/fonts";
+import { Link, useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export function SuccessView() {
+    const t = useTranslations("checkout");
+    const router = useRouter();
+    const { mutate: mutateCache } = useSWRConfig();
+    const [clearedSessionId, setClearedSessionId] = useState<string | null>(null);
+
     const searchParams = useSearchParams();
     const sessionId = searchParams.get("session_id");
 
-    const { data, error, isLoading, mutate } = useSWR(
+    const { 
+        data, 
+        error, 
+        isLoading,
+    } = useSWR(
         sessionId ? ["stripe-checkout-session", sessionId] : null,
         ([, id]) => stripeApi.getCheckoutSession(id),
+        {
+            refreshInterval: (response) => {
+                return response?.data.payment_status === "pending" ? 2000 : 0
+            }
+        },
     );
     const paymentStatus = data?.data.payment_status;
-    const { mutateBasket } = useContext(GlobalContext);
+    const {
+        authStatus,
+
+        setNotification,
+        mutateBasket 
+    } = useContext(GlobalContext);
 
     useEffect(() => {
-        if (paymentStatus !== "pending") {
-            return;
-        }
-        const interval = window.setInterval(() => {
-            void mutate();
-        }, 2000);
+        if (!sessionId ||
+            paymentStatus !== "paid" ||
+            authStatus === "loading" ||
+            clearedSessionId === sessionId
+        ) return;
 
-        return () => window.clearInterval(interval);
-    }, [mutate, paymentStatus]);
+        let active = true;
+
+        const clearBasket = async () => {
+            try {
+                if (authStatus === "unauthenficated") {
+                    LocalBasketService.clear();
+                } else {
+                    await basketApi.clearBasket();
+                }
+
+                await mutateBasket([], { revalidate: false });
+                // Invalidate catalog stock even while the shop is unmounted.
+                await mutateCache("goods", undefined);
+
+                if (active) {
+                    setClearedSessionId(sessionId);
+                }
+            } catch {
+                if (active) {
+                    setNotification({
+                        status: "error",
+                        text: t("notifications.basketNotCleared"),
+                    });
+                }
+            }
+        };
+
+        clearBasket();
+
+        return () => {
+            active = false;
+        };
+    }, [
+        sessionId, paymentStatus, authStatus, clearedSessionId,
+        mutateBasket, mutateCache, setNotification, t,
+    ]);
 
     useEffect(() => {
-        if (paymentStatus === "paid") {
-            LocalBasketService.clear();
-            void mutateBasket();
-        }
-    }, [mutateBasket, paymentStatus]);
+        if (!sessionId || 
+            paymentStatus !== "paid" || 
+            clearedSessionId !== sessionId
+        ) return;
 
-    if (error || !paymentStatus) {
+        const timeout = setTimeout(() => {
+            router.push("/profile/preorders");
+        }, 3000);
+
+        return () => clearTimeout(timeout);
+    }, [sessionId, paymentStatus, clearedSessionId, router]);
+
+    if (sessionId && !isLoading && (error || !paymentStatus)) {
         return (
-            <main className="px-5 py-16">
-                <h1>We could not verify this payment</h1>
-                <p>Please sign in with the account used for checkout and try again.</p>
+            <main className={s.payment_confirmation}>
+                <h1 className={cn(
+                    "text-2xl font-bold",
+                    jersey10.className
+                )}>
+                    {t("result.unverified.title")}
+                </h1>
+                <p>{t("result.unverified.body")}</p>
             </main>
         )
     }
 
-    const message = statusMessages[paymentStatus];
+    const message = paymentStatus ? statusMessages[paymentStatus] : undefined;
 
     return (
-        <main className="px-5 py-16 flex justify-center items-center flex-col gap-3 text-orange-400">
+        <main className={s.payment_confirmation}>
             {!sessionId && (
                 <>
-                    <h1 className="text-2xl font-bold">
-                        Payment session is missing
+                    <h1 className={cn(
+                        "text-2xl font-bold text-orange-400",
+                        jersey10.className
+                    )}>
+                        {t("result.missingSession.title")}
                     </h1>
-                    <p>
-                        Return to your basket and start the pre-order again.
+                    <p className="text-orange-400">
+                        {t("result.missingSession.body")}
                     </p>
                 </>
             )}
@@ -95,8 +143,18 @@ export function SuccessView() {
 
             {message && (
                 <>
-                    <h1>{message.title}</h1>
-                    <p>{message.body}</p>
+                    <h1 className={cn(
+                        "text-5xl font-bold text-green-600",
+                        jersey10.className
+                    )}>
+                        {t(message.title)}
+                    </h1>
+                    <Link
+                        href="/profile/preorders"
+                        className="hover:underline text-green-600"
+                    >
+                        {t("result.viewPreorders")}
+                    </Link>
                 </>
             )}
         </main>

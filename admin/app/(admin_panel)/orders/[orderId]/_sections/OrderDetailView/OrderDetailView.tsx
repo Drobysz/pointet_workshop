@@ -39,7 +39,7 @@ export function OrderDetailView({ orderId }: { orderId: string }) {
         {t("all")}
       </Link>
       <PageHeader
-        title={`${t("order")} #${order.id}`}
+        title={t("orderTitle", { id: String(order.id) })}
         description={t("placed", { date: formatDate(order.placed_at) })}
         actions={<StatusBadge value={order.status} />}
       />
@@ -61,7 +61,7 @@ export function OrderDetailView({ orderId }: { orderId: string }) {
                 <span>
                   {item.color_name ?? t("colorDefault")} ·{` `}
                   {item.size ? `${item.size} · ` : ""}
-                  {formatCurrency(item.unit_price)} {t("each")}
+                  {t("unitPrice", { price: formatCurrency(item.unit_price) })}
                 </span>
               </div>
               <span>× {item.quantity}</span>

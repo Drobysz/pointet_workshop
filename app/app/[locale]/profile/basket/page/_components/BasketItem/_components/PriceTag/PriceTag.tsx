@@ -2,6 +2,7 @@ import Purse from "@/assets/purse.svg";
 import s from "./style.module.scss";
 import { cn } from "@/helpers";
 import { jersey10, tinyFive } from "@/fonts/fonts";
+import { useFormatter } from "next-intl";
 
 export const PriceTag = ({
     price,
@@ -10,6 +11,8 @@ export const PriceTag = ({
     price: number;
     multiplicator: number;
 })=> {
+    const format = useFormatter();
+
     return (
         <div className={s.price_tag}>
             <Purse />
@@ -18,7 +21,7 @@ export const PriceTag = ({
                 jersey10.className
             )}>
                 <span className={s.price_tag__number}>
-                    {multiplicator * price}
+                    {format.number(multiplicator * price, { maximumFractionDigits: 2 })}
                 </span>
 
                 <span className={cn(

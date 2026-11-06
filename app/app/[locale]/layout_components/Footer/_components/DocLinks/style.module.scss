@@ -1,26 +1,37 @@
 @reference "tailwindcss";
 
 .logo_tunnel {
-    @apply grow;
+    @apply grow
+        max-lg:flex
+        max-lg:items-end;
 }
 
 .logo_elevator {
     @apply sticky
         top-[83vh]
         flex justify-between
-        items-end;
+        items-end
+        max-lg:static
+        max-lg:flex-col
+        max-lg:items-start
+        max-lg:gap-3;
 }
 
 .logo_title {
     @apply text-9xl
-        leading-28;
+        leading-28
+        max-lg:text-7xl
+        max-lg:leading-18;
 }
 
 .doc_list {
     @apply flex
         gap-8
         items-center
-        text-sm;
+        text-sm
+        max-lg:flex-wrap
+        max-lg:gap-x-6
+        max-lg:gap-y-2;
 }
 
 .developer_title {

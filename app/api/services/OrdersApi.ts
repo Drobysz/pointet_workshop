@@ -1,7 +1,7 @@
 import { PrivateApiClient } from "../core/PrivateApiClient";
 import { PublicApiClient } from "../core/PublicApiClient";
 import { Id } from "../types/api";
-import { OrderCreateRequest, OrderResponse, OrderListResponse } from "../types/orders";
+import { OrderCreateRequest, OrderDetailResponse, OrderResponse, OrderListResponse } from "../types/orders";
 
 export class OrdersApi {
     constructor (
@@ -21,10 +21,14 @@ export class OrdersApi {
         return this.publicApi.get<OrderListResponse>("/orders/guest");
     }
 
+    public getGuestOrder(orderId: Id): Promise<OrderDetailResponse> {
+        return this.publicApi.get<OrderDetailResponse>(`/orders/guest/${orderId}`);
+    }
+
     public getOrder(
         orderId: Id
-    ): Promise<OrderResponse> {
-        return this.api.get<OrderResponse>(
+    ): Promise<OrderDetailResponse> {
+        return this.api.get<OrderDetailResponse>(
             `/orders/${orderId}`
         );
     }

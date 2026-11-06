@@ -5,18 +5,28 @@ import s from "./style.module.scss";
 import { Link } from "@/i18n/navigation";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { ActiveQuantityTag } from "@/components";
+import { useTranslations } from "next-intl";
 
 export const ProfileNavigation = ({
     setIsOpen
 }: {
     setIsOpen: Dispatch<SetStateAction<boolean>>;
 })=> {
-    const { user } = useContext(GlobalContext);
+    const {
+        basketList,
+        preOrdersList,
+    } = useContext(GlobalContext);
+    const t = useTranslations("navigation.account");
+
+    const basketQuantity = (basketList ?? [])
+        .reduce((acc, val) => acc + val.quantity, 0);
+
+    const preOrderQuantity = preOrdersList?.length ?? 0;
 
     const profilePages = [
-        { label: "My profile", href: "/profile" },
-        { label: "My orders", href: "/profile/orders", qntty: user?.orders_count ?? 0 },
-        { label: "My Basket", href: "/profile/basket", qntty: user?.basket_goods_count ?? 0 },
+        { label: t("profile"), href: "/profile" },
+        { label: t("preorders"), href: "/profile/preorders", qntty: preOrderQuantity },
+        { label: t("basket"), href: "/profile/basket", qntty: basketQuantity },
     ];
 
     return (

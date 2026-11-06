@@ -1,12 +1,17 @@
 import z from "zod";
-import { FormState, LoginFormScheme } from "../FormSchemes";
+import { FormState, createLoginFormScheme } from "../FormSchemes";
 import { authApi } from "@/api/api";
 import { LoginForm } from "@/types/auth";
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
 import { loginErrorMessages } from "@/api/core/errorMessages";
+import type { AppTranslator } from "@/i18n/types";
 
-export async function loginAction (_: FormState, formData: FormData) {
-    const parsed = LoginFormScheme.safeParse({
+export async function loginAction (
+    t: AppTranslator,
+    _: FormState,
+    formData: FormData
+) {
+    const parsed = createLoginFormScheme(t).safeParse({
         email:        formData.get('email'),
         password:   formData.get('password')
     });
@@ -32,7 +37,7 @@ export async function loginAction (_: FormState, formData: FormData) {
     try {
         response = await authApi.login(loginRequestData)
     } catch (error) {
-        const message = getApiErrorMessage(error, loginErrorMessages)
+        const message = getApiErrorMessage(error, t, loginErrorMessages)
 
         return {
             message: message,
@@ -43,15 +48,15 @@ export async function loginAction (_: FormState, formData: FormData) {
     if (!response.data.authenticated) {
         return {
             errors: {
-                email: "Failed to log in",
+                email: t("auth.login.failed"),
             },
-            message: "Failed to log in",
+            message: t("auth.login.failed"),
             success: false,
         }
     }
 
     return { 
         success: true,
-        message: "Successfully logged in" 
+        message: t("auth.login.success")
     };
 };

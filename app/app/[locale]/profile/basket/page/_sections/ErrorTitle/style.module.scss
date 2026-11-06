@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+
+.error_title_filler {
+    @apply h-[70vh] 
+        flex 
+        justify-center 
+        items-center;
+}

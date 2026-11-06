@@ -7,14 +7,16 @@ import { monserrat_semibold } from "@/fonts/fonts";
 import { cn } from "@/helpers";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export const FurnitureCard = ()=> {
+    const t = useTranslations("home.categories.telegram");
     const [hover, setHover] = useState(false);
 
     return (
         <InteractionCard
             className={s.card}
-            link="/goods"
+            link="#"
             onMouseEnter={()=> setHover(true)}
             onMouseLeave={()=> setHover(false)}
         >
@@ -24,17 +26,17 @@ export const FurnitureCard = ()=> {
                     monserrat_semibold.className
                 )}
             >
-                Furniture
+                {t("title")}
             </h3>
             
             <p className={s.card_subtitle}>
-                See accessible restored furniture : chest of drawers, bedside and liveroom tables
+                {t("description")}
             </p>
             <motion.div
                 className="
                     absolute
                     drop-shadow-2xl
-                    z-20
+                    z-30
                 "
                 animate={
                     hover 
@@ -53,23 +55,24 @@ export const FurnitureCard = ()=> {
                 }
             >
                 <Image
-                    src="/category/lamp.png"
+                    src="/category/telegram.png"
                     width={150}
                     height={100}
-                    alt="category bag"
+                    alt={t("logoAlt")}
                 />
             </motion.div>
             <motion.div
                 className="
                     absolute 
                     drop-shadow-2xl
+                    z-20
                 "
                 animate={
                     hover 
                     ? {
                         rotate: -15,
-                        right: 15,
-                        bottom: -18,
+                        right: 40,
+                        bottom: -8,
                         scale: 1.2
                     }
                     : {
@@ -81,10 +84,10 @@ export const FurnitureCard = ()=> {
                 }
              >
                 <Image
-                    src="/category/table.png"
+                    src="/category/megaphone.png"
                     width={200}
                     height={100}
-                    alt="category bag"
+                    alt={t("megaphoneAlt")}
                 />
             </motion.div>
             <motion.div
@@ -92,7 +95,7 @@ export const FurnitureCard = ()=> {
                     absolute 
                     drop-shadow-2xl
                     origin-top-left
-                    z-30
+                    z-10
                 "
                 animate={
                     hover 
@@ -113,10 +116,10 @@ export const FurnitureCard = ()=> {
                 }
              >
                 <Image
-                    src="/category/chest.png"
+                    src="/category/news.png"
                     width={200}
                     height={100}
-                    alt="category bag"
+                    alt={t("newspaperAlt")}
                 />
             </motion.div>
         </InteractionCard>

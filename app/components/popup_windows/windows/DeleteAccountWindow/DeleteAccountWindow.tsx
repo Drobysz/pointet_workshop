@@ -10,6 +10,7 @@ import { userApi } from "@/api/api";
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export const DeleteAccountWindow = ()=> {
     const {
@@ -21,6 +22,7 @@ export const DeleteAccountWindow = ()=> {
     } = useContext(GlobalContext);
 
     const router = useRouter();
+    const t = useTranslations();
     const [isPending, setIsPending] = useState(false);
 
     const handleCancelBtn = 
@@ -37,11 +39,11 @@ export const DeleteAccountWindow = ()=> {
             mutateUser();
             setNotification({
                 status: "success",
-                text: "Account was deleted. Bye Bye!"
+                text: t("auth.deleteAccount.success")
             })
             router.push("/home");
         } catch (error) {
-            const message = getApiErrorMessage(error);
+            const message = getApiErrorMessage(error, t);
 
             setNotification({
                 status: "error",
@@ -59,14 +61,14 @@ export const DeleteAccountWindow = ()=> {
                     s.title,
                     after.className
                 )}>
-                    Are you sure?
+                    {t("auth.deleteAccount.title")}
                 </h3>
 
                 <div className="flex flex-col gap-3">
                     <p className={cn(
                         s.desc
                     )}>
-                        If you delete your account all your current and previous orders will be gone.
+                        {t("auth.deleteAccount.description")}
                     </p>
 
                     <div className="flex flex-col gap-2">
@@ -78,7 +80,7 @@ export const DeleteAccountWindow = ()=> {
                             )}
                             onClick={handleCancelBtn}
                         >
-                            Cancel
+                            {t("common.actions.cancel")}
                         </button>
 
                         <button
@@ -94,7 +96,7 @@ export const DeleteAccountWindow = ()=> {
                                     color="inherit"
                                     size={10}
                                 />
-                                : "Continue"
+                                : t("common.actions.continue")
                             }
                         </button>
                     </div>

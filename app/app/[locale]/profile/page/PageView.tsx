@@ -14,8 +14,10 @@ import { Divider } from "@/components";
 import { useRouter } from "@/i18n/navigation";
 import { cn } from "@/helpers";
 import { jersey10 } from "@/fonts/fonts";
+import { useTranslations } from "next-intl";
 
 const ProfilePageView = ()=> {
+    const t = useTranslations("profile.page");
     const router = useRouter();
 
     const {
@@ -34,7 +36,7 @@ const ProfilePageView = ()=> {
             const redirectNonAuthUser = setTimeout(() => {
                 setNotification({
                     status: "alert",
-                    text: "You was redirected, since you're not logged in."
+                    text: t("redirectedNotice")
                 });
 
                 router.push("/home");
@@ -42,7 +44,7 @@ const ProfilePageView = ()=> {
 
             return ()=> clearTimeout(redirectNonAuthUser);
         }
-    }, [userError, router, setNotification]);
+    }, [userError, router, setNotification, t]);
 
     return (
         <div>
@@ -54,8 +56,8 @@ const ProfilePageView = ()=> {
                     )}
                 >
                     {authStatus == "authenficated" 
-                        ? "Page failed to load"
-                        : "You're not logged in"
+                        ? t("loadFailed")
+                        : t("notLoggedIn")
                     }
                 </h1>
             }

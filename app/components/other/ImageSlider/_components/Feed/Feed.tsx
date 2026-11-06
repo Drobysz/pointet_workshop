@@ -5,16 +5,24 @@ import Image from "next/image";
 import s from "./style.module.scss";
 import { PanInfo, motion } from "framer-motion";
 import { Dispatch, SetStateAction, useEffect, useRef, WheelEvent } from "react";
+import { useTranslations } from "next-intl";
 
 export const Feed = ({
     images,
     imgIdx,
     setImgIdx,
+    sizes,
+    goodName,
 }: {
     images: ProductImage[];
     imgIdx: number;
-    setImgIdx: Dispatch<SetStateAction<number>>
+    setImgIdx: Dispatch<SetStateAction<number>>;
+    /** Rendered width hint, so the optimizer serves a fitting image. */
+    sizes: string;
+    /** Used to build descriptive alternative texts. */
+    goodName?: string;
 })=> {
+    const t = useTranslations("ui.imageSlider");
     const containerRef = useRef<HTMLUListElement | null>(null);
     const itemsRef = useRef<Array<HTMLLIElement | null>>([]);
 
@@ -146,7 +154,11 @@ export const Feed = ({
                             className="object-cover" 
                             src={img.url}
                             fill
-                            alt="good card image"
+                            sizes={sizes}
+                            alt={goodName
+                                ? t("photoAlt", { name: goodName, number: idx + 1 })
+                                : t("photoAltFallback", { number: idx + 1 })
+                            }
                         />
                     }
                 </li>

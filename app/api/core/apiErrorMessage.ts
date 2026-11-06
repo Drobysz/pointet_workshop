@@ -1,46 +1,35 @@
+import type { AppTranslator, ErrorMessageKey } from "@/i18n/types";
 import { ApiError } from "./ApiError";
 
-export type ApiErrorMessages = Record<number, string>;
+/** HTTP status → translation key of the message shown to the user. */
+export type ApiErrorMessages = Partial<Record<number, ErrorMessageKey>>;
+
+const defaultErrorMessages: ApiErrorMessages = {
+    400: "errors.default.badRequest",
+    401: "errors.default.sessionExpired",
+    403: "errors.default.forbidden",
+    404: "errors.default.notFound",
+    409: "errors.default.conflict",
+    429: "errors.default.tooManyRequests",
+    500: "errors.default.server",
+};
 
 export const getApiErrorMessage = (
     error: unknown,
+    t: AppTranslator,
     messages: ApiErrorMessages = {}
 ): string => {
     if (!(error instanceof ApiError)) {
-        return "An unexpected error occurred.";
+        return t("errors.unexpected");
     }
 
-    const customMessage = messages[error.status];
+    const key = messages[error.status] ?? defaultErrorMessages[error.status];
 
-    if (customMessage) 
-        return customMessage;
-
-    switch (error.status) {
-        case 400:
-            return "The request could not be processed.";
-
-        case 401:
-            return "Your session has expired. Please sign in again.";
-
-        case 403:
-            return "You do not have permission to perform this action.";
-
-        case 404:
-            return "The requested resource was not found.";
-
-        case 409:
-            return "The request conflicts with the current state.";
-
-        case 422:
-            return error.message;
-
-        case 429:
-            return "Too many requests. Please try again later.";
-
-        case 500:
-            return "A server error occurred. Please try again later.";
-
-        default:
-            return error.message;
+    if (key) {
+        return t(key);
     }
+
+    // Validation (422) and unmapped statuses carry a backend-provided
+    // explanation, which is shown as is.
+    return error.message || t("errors.unexpected");
 };

@@ -3,12 +3,12 @@ import type { Id } from "@/api/types/api";
 import { CookiesService } from "./cookies";
 
 export interface GuestBasketCookieItem {
-    inventoryId: Id;
+    inventory_id: Id;
     quantity: number;
 }
 
 export interface UnknownGuestBasketCookieItem {
-    inventoryId: unknown;
+    inventory_id: unknown;
     quantity: unknown;
 }
 
@@ -20,11 +20,11 @@ export class LocalBasketService {
     static isBasketItemSave(
         basketItem: UnknownGuestBasketCookieItem
     ): boolean {
-        const { inventoryId, quantity } = basketItem;
+        const { inventory_id: inventoryId, quantity } = basketItem;
 
         if (typeof inventoryId !== "number" || 
             !Number.isSafeInteger(inventoryId) || 
-            inventoryId < 0
+            inventoryId < 1
         ) return false;
         
         if (typeof quantity !== "number" || 
@@ -57,11 +57,13 @@ export class LocalBasketService {
             ) continue;
 
             const candidate = item as Record<string, unknown>;
-            const { inventoryId, quantity } = candidate;
+            // Keep baskets saved with the previous cookie format readable.
+            const inventoryId = candidate.inventory_id ?? candidate.inventoryId;
+            const { quantity } = candidate;
             
             if (typeof inventoryId !== "number" || 
                 !Number.isSafeInteger(inventoryId) || 
-                inventoryId < 0
+                inventoryId < 1
             ) continue;
 
             if (typeof quantity !== "number" || 
@@ -80,7 +82,7 @@ export class LocalBasketService {
 
         const basketArray = Array.from(
             quantities, 
-            ([inventoryId, quantity]) => ({ inventoryId, quantity })
+            ([inventoryId, quantity]) => ({ inventory_id: inventoryId, quantity })
         );
 
         return basketArray;
@@ -89,12 +91,12 @@ export class LocalBasketService {
     static set(items: GuestBasketCookieItem[]) {
         const cookies = new CookiesService();
         const normalized = items
-            .filter(({ inventoryId, quantity }) => {
-                return this.isBasketItemSave({ inventoryId, quantity })
+            .filter(({ inventory_id, quantity }) => {
+                return this.isBasketItemSave({ inventory_id, quantity })
             })
             .slice(0, this.maxItems)
-            .map(({ inventoryId, quantity }) => ({ 
-                inventoryId, 
+            .map(({ inventory_id, quantity }) => ({ 
+                inventory_id, 
                 quantity: Math.min(quantity, this.maxQuantity) 
             }));
 
@@ -112,7 +114,7 @@ export class LocalBasketService {
 
     static update(params: BasketCreateRequest) {
         const basketItems = this.get();
-        const current = basketItems.find(item => item.inventoryId === params.good_register_id);
+        const current = basketItems.find(item => item.inventory_id === params.good_register_id);
 
         if (current) {
             current.quantity = Math.min(
@@ -121,7 +123,7 @@ export class LocalBasketService {
             );
         } else if (basketItems.length < this.maxItems) {
             const newItem = { 
-                inventoryId: params.good_register_id, 
+                inventory_id: params.good_register_id, 
                 quantity: Math.min(params.quantity, this.maxQuantity) 
             }
 
@@ -131,11 +133,11 @@ export class LocalBasketService {
     }
 
     static updateQuantity(inventoryId: Id, quantity: number) {
-        const updatedItem = { inventoryId, quantity };
+        const updatedItem = { inventory_id: inventoryId, quantity };
         const basketItems = this.get();
 
         const updatedBasketItems = basketItems.map(
-            item => item.inventoryId === inventoryId 
+            item => item.inventory_id === inventoryId 
                 ? updatedItem
                 : item
         );
@@ -147,7 +149,7 @@ export class LocalBasketService {
         const updatedBasketItems = this
             .get()
             .filter(
-                item => item.inventoryId !== inventoryId
+                item => item.inventory_id !== inventoryId
             );
 
         this.set(updatedBasketItems);
@@ -159,7 +161,7 @@ export class LocalBasketService {
             const quantity = item.quantity
 
             if (inventoryId && quantity > 0) {
-                return [{ inventoryId, quantity }]
+                return [{ inventory_id: inventoryId , quantity }]
             }
 
             return [];

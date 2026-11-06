@@ -9,6 +9,11 @@ import {
     Check,
     LucideIcon
 } from "lucide-react";
+import {
+    animations,
+    transition
+} from "./helpers";
+import { motion } from "framer-motion";
 
 export const NotificationPopUp = ({
     children,
@@ -29,7 +34,7 @@ export const NotificationPopUp = ({
     const iconSize = children.length > 50 ? "w-10" : "w-5";
 
     return (
-        <div
+        <motion.div
             className={cn(
                 s.notif_popup, {
                     ["bg-red-200 border-red-500 text-red-500"]: status == "error",
@@ -37,6 +42,13 @@ export const NotificationPopUp = ({
                     ["bg-green-200 border-teal-500 text-teal-500"]: status == "success",
                 }
             )}
+
+            initial="initial"
+            animate="end"
+            exit="initial"
+
+            variants={animations}
+            transition={transition}
         >
             {Icon !== null && 
                 <div className={cn(
@@ -51,6 +63,6 @@ export const NotificationPopUp = ({
                 </div>
             }
             {children}
-        </div>
+        </motion.div>
     )
 }

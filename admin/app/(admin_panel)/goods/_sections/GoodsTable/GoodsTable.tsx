@@ -15,7 +15,11 @@ import { GoodFormModal } from "../GoodFormModal/GoodFormModal";
 export function GoodsTable() {
   const t = useTranslations("goods");
   const common = useTranslations("common");
-  const { formatCurrency } = useAppFormatters();
+  const {
+    formatCurrency,
+    formatNumber,
+    formatWeight,
+  } = useAppFormatters();
   const tableState = useTableQueryState();
   const [editingGood, setEditingGood] = useState<Good | "new">();
   const goods = useSWR(
@@ -83,13 +87,13 @@ export function GoodsTable() {
       key: "stock",
       label: t("stock"),
       align: "right" as const,
-      render: (good: Good) => good.current_quantity,
+      render: (good: Good) => formatNumber(good.current_quantity),
     },
     {
       key: "weigh",
       label: t("weigh"),
       align: "right" as const,
-      render: (good: Good) => `${good.weigh} g`,
+      render: (good: Good) => formatWeight(good.weigh),
     },
     {
       key: "visibility",
@@ -112,7 +116,7 @@ export function GoodsTable() {
         <button
           className={actionStyles.iconButton}
           type="button"
-          aria-label={`${t("edit")} ${good.name}`}
+          aria-label={t("editLabel", { name: good.name })}
           onClick={() => setEditingGood(good)}
         >
           <Pencil size={16} />

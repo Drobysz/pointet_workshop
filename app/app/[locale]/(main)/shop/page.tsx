@@ -1,6 +1,7 @@
 "use client";
 
 import { useContext } from "react";
+import { useTranslations } from "next-intl";
 import { ShopContext } from "./context/shop.context";
 import {
     Loading,
@@ -17,7 +18,7 @@ export default function ShopPage () {
         goodsPagination
     } = useContext(ShopContext);
 
-    console.log(goodsPagination)
+    const t = useTranslations();
 
     const isEmpty = goodsPagination && goodsPagination.data.length < 1;
 
@@ -26,14 +27,14 @@ export default function ShopPage () {
             {areGoodsLoading && <Loading />}
             {goodsError && 
                 <ErrorTitle>
-                    Faield to load
+                    {t("common.states.loadFailed")}
                 </ErrorTitle>
             }
             {goodsPagination && (
                 <>
                     {isEmpty && 
                         <ErrorTitle>
-                            No goods in disposition
+                            {t("catalog.states.empty")}
                         </ErrorTitle>
                     }
                     <Cards goods={goodsPagination.data} />

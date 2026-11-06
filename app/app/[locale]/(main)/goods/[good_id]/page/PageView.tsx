@@ -15,8 +15,6 @@ export const PageView = ({
 }: {
     good: Good;
 }) => {
-    console.log(good);
-
     const { 
         currentColor,
         currentInventoryId,
@@ -30,6 +28,7 @@ export const PageView = ({
             <ImageSlider
                 isLarge
                 goodId={good.id}
+                goodName={good.name}
                 images={currentColor.images}
             />
             <GoodInfo 

@@ -7,12 +7,14 @@ import { motion } from "framer-motion";
 import { CircularProgress } from "@mui/material";
 import s from "./style.module.scss";
 import { useLogout } from "@/hooks/useLogout";
+import { useTranslations } from "next-intl";
 
 export const LogOutBtn = ({
     setIsOpen
 }: {
     setIsOpen: Dispatch<SetStateAction<boolean>>
 })=> {
+    const t = useTranslations("navigation.account");
     const [hover, setHover] = useState(false);
     const {
         logOut,
@@ -49,7 +51,7 @@ export const LogOutBtn = ({
                 animate={hover ? {x: 20} : {x: 0}}
             >
                 {!isPending
-                    ? "Exit"
+                    ? t("logOut")
                     : <CircularProgress
                         size={16}
                         color="error"

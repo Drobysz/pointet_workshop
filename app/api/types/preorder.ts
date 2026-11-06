@@ -42,6 +42,8 @@ export interface PreorderCheckoutSession {
 
 export interface PreorderCreateRequest { 
     idempotency_key: string; 
+    /** Required for guests; authenticated checkouts use the account email. */
+    email?: string;
     items?: GuestBasketCookieItem[]; 
 }
 

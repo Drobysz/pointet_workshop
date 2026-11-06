@@ -2,108 +2,117 @@
 
 import { BasketItem } from "@/api/types/basket";
 import { preorderApi } from "@/api/api";
-import { jersey10 } from "@/fonts/fonts";
-import { cn } from "@/helpers";
 import { useContext, useState } from "react";
+import type { SubmitEventHandler } from "react";
 import s from "./style.module.scss";
-import { Skeleton } from "@mui/material";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { LocalBasketService } from "@/helpers/basket";
+import { useRouter } from "@/i18n/navigation";
+import {
+    CheckoutInfo,
+    CheckoutBtn,
+} from "./_components";
+import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
+import { createEmailFormScheme } from "./formScheme/EmailFormScheme";
+import z from "zod";
+import { useTranslations } from "next-intl";
 
 export const CheckoutSection = ({
     basketList
 }: {
     basketList: BasketItem[];
 })=> {
+    const t = useTranslations();
     const { setNotification, authStatus } = useContext(GlobalContext);
 
-    const [isPending, setIsPending] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const router = useRouter();
+
     const [idempotencyKey, setIdempotencyKey] = useState<string | null>(null);
+    const [email, setEmail] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [pending, setPending] = useState(false);
 
-    const startPreorder = async () => {
-        if (!basketList.length || isPending) return;
+    const createOrder: SubmitEventHandler<HTMLFormElement>  = async (e)=> {
+        e.preventDefault();
 
-        setIsPending(true);
         setError(null);
+        setPending(true);
 
         try {
             const key = idempotencyKey ?? crypto.randomUUID();
             setIdempotencyKey(key);
 
-            const response = await preorderApi.createPreorder({
-                idempotency_key: key,
-                ...(authStatus === "unauthenficated" ? { items: LocalBasketService.get() } : {}),
-            });
+            if (authStatus === "unauthenficated") {
+                const parsed = createEmailFormScheme(t).safeParse({
+                    email: email
+                });
 
-            if (!response.data.checkout_url) {
-                const message = "Payment session is unavailable."
+                if (!parsed.success) {
+                    const errors = z.flattenError(parsed.error).fieldErrors;
 
-                setNotification({ status: "error", text: message });
-                throw new Error(message);
+                    setPending(false);
+                    setError(errors.email?.[0] ?? "");
+                    return;
+                }
             }
-            window.location.assign(response.data.checkout_url);
-        } catch {
-            const message = "Unable to start the pre-order payment. Please try again."
 
-            setNotification({ status: "error", text: message })
-            setError(message);
-            setIsPending(false);
+            const res = await preorderApi.createPreorder({
+                idempotency_key: key,
+                ...(authStatus === "unauthenficated" 
+                        ? { 
+                            items: LocalBasketService.get(),
+                            email: email
+                        } 
+                        : {}
+                ),
+            });
+            
+            if (!res.data.checkout_url) {
+                setNotification({
+                    status: "error",
+                    text: t("checkout.notifications.checkoutCreationFailed")
+                })
+
+                setPending(false);
+                setEmail("");
+                return;
+            }
+
+            setPending(false);
+            setEmail("");
+            router.push(res.data.checkout_url);
+        } catch (error) {
+            getApiErrorMessage(error, t);
         }
-    };
+    }
+
+    const isGuest = authStatus === "unauthenficated";
+    const isEmailEntered = 
+        email.length < 3 && isGuest;
+    const isBtnDisabled = pending ||
+        isEmailEntered ||
+        !basketList.length || 
+        authStatus === "loading";
 
     return (
         <section className={s.checkout_sect}>
-            <div className="flex gap-8 items-center">
-                <div className={cn(
-                    s.checkout_sect__total_price,
-                    jersey10.className
-                )}>
-                    <span>
-                        Total :
-                    </span>
-
-                    <span>
-                        1.00€
-                    </span>
+            <form 
+                className="flex flex-col gap-3" 
+                onSubmit={createOrder}
+            >
+                <div className={s.checkout_sect__contact}>
+                    <CheckoutInfo 
+                        setEmail={setEmail}
+                        error={error}
+                        isGuest={isGuest}
+                    />
                 </div>
 
-                <p className={s.checkout_sect__disclosure}>
-                    This is a €1 pre-order only. 
-                    We are currently collecting pre-orders. 
-                    We set a conditional price of 1 euro in 
-                    order to gather people who will definitely 
-                    be ready to place an order. 
-                    As soon as the goods arrive at the warehouse, 
-                    we will notify you.
-                </p>
-            </div>
-
-            {error && 
-                <p 
-                    className={s.error} 
-                    role="alert"
-                >
-                    {error}
-                </p>
-            }
-            <button 
-                className={s.checkout_sect__preorderButton} 
-                type="button" 
-                disabled={isPending || !basketList.length || authStatus === "loading"} 
-                onClick={() => void startPreorder()}
-            >
-                {isPending 
-                    ? (
-                        <Skeleton 
-                            width={20} 
-                            height={20} 
-                            color="inherit"
-                        /> 
-                    )
-                    : "Pre-order for €1"
-                }
-            </button>
+                <CheckoutBtn 
+                    disabled={isBtnDisabled}
+                    isPending={pending}
+                />
+            </form>
         </section>
     )
 }

@@ -10,7 +10,7 @@ export const BasketList = ({
     const basketLength = basketList.length;
 
     return (
-        <section className="w-full">
+        <section className="w-full max-h-[90vh] overflow-y-auto">
             <ul className="flex flex-col gap-3">
                 {basketList.map((item, idx)=>
                     <Fragment

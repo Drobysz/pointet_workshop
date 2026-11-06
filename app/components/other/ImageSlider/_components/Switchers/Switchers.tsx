@@ -6,6 +6,7 @@ import { motion, Transition } from "framer-motion";
 import cn from "classnames";
 import { useWindowWidth } from "@/hooks";
 import { MouseEvent } from "react";
+import { useTranslations } from "next-intl";
 
 export const Switchers = ({
     imgIdx,
@@ -18,6 +19,7 @@ export const Switchers = ({
     lastIdx: number;
     hover: boolean;
 }) => {
+    const t = useTranslations("ui.imageSlider");
     const isDesktop = useWindowWidth(768) as boolean;
     const isVisible = isDesktop && hover;
     const transition: Transition = { duration: 0.2, ease: "easeInOut" };
@@ -48,6 +50,7 @@ export const Switchers = ({
                     s.switcher_left,
                     imgIdx === 0 && s.switcher_blocked
                 )}
+                aria-label={t("previous")}
                 onClick={handleLeftClick}
                 animate={{
                     opacity: isVisible ? 1 : 0,
@@ -66,6 +69,7 @@ export const Switchers = ({
                     s.switcher_right,
                     imgIdx === lastIdx && s.switcher_blocked
                 )}
+                aria-label={t("next")}
                 onClick={handleRightClick}
                 animate={{
                     opacity: isVisible ? 1 : 0,

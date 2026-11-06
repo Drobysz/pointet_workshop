@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Administration Workshop",
-    template: "%s · Administration Workshop",
-  },
-  description: "Espace de gestion de la boutique",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const login = await getTranslations("login");
+  const t = await getTranslations("metadata");
+  const appName = login("heading");
+
+  return {
+    title: {
+      default: appName,
+      template: `%s · ${appName}`,
+    },
+    description: t("description"),
+  };
+}
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();

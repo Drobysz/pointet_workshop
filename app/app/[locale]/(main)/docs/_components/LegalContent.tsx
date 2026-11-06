@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import type { Locale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import content from "./content.json";
 
@@ -19,12 +20,12 @@ type ContentBlock = {
 
 type LegalContentProps = {
     blocks: ContentBlock[];
-    locale: string;
+    locale: Locale;
 };
 
 const sharedBlocks: Record<string, ContentBlock[]> = content.blocks;
 
-function InlineText({ parts, locale }: { parts: InlineContent[]; locale: string }) {
+function InlineText({ parts, locale }: { parts: InlineContent[]; locale: Locale }) {
     return parts.map((part, index) => {
         if (typeof part === "string") {
             return <Fragment key={index}>{part}</Fragment>;

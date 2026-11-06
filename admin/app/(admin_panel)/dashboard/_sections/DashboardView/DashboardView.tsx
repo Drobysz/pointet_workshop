@@ -1,27 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 import useSWR from "swr";
 import { PageHeader, StatePanel, StatusBadge } from "@/components";
 import { useAppFormatters } from "@/hooks";
-import type {
-  ApiEntity,
-  DashboardSummary,
-  Order,
-  TopProduct,
-} from "@/interface/domain";
+import type { DashboardSummary } from "@/interface/domain";
 import {
   getAnalytics,
   getLatestOrders,
@@ -29,6 +16,17 @@ import {
   getTopProducts,
 } from "@/queries";
 import styles from "./dashboard-view.module.scss";
+
+const SalesChart = dynamic(() => import("./SalesChart"), {
+  loading: () => <StatePanel state="loading" />,
+});
+
+function DashboardState({ error, onRetry }: {
+  error: unknown;
+  onRetry: () => void;
+}) {
+  return <StatePanel state={error ? "error" : "loading"} onRetry={onRetry} />;
+}
 
 const ranges = ["week", "month", "6months", "year"] as const;
 type AnalyticsRange = (typeof ranges)[number];
@@ -63,39 +61,48 @@ function MetricCards({
   );
 }
 
-function TopProducts({ products }: { products: TopProduct[] }) {
+function TopProducts() {
   const t = useTranslations("dashboard");
   const { formatCurrency } = useAppFormatters();
+
+  const products = useSWR("dashboard-top", getTopProducts);
+
+  const items = products.data?.data;
 
   return (
     <aside className={styles.top}>
       <h2>{t("topProducts")}</h2>
       <div>
-        {products.length ? products.map((product, index) => (
-          <Link
-            href={product.good_id ? `/goods/${product.good_id}` : "/goods"}
-            key={`${product.good_id}-${product.product_name}`}
-          >
-            <span>{index + 1}</span>
-            <div>
-              <strong>{product.product_name}</strong>
-              <small>
-                {t("units", { count: product.units })} ·{` `}
-                {formatCurrency(product.revenue)}
-              </small>
-            </div>
-            <ArrowUpRight size={16} />
-          </Link>
-        )) : <StatePanel state="empty" />}
+        {items?.length ? (
+          items.map((product, index) => (
+            <Link
+              href={product.good_id ? `/goods/${product.good_id}` : "/goods"}
+              key={`${product.good_id}-${product.product_name}`}
+            >
+              <span>{index + 1}</span>
+              <div>
+                <strong>{product.product_name}</strong>
+                <small>
+                  {t("units", { count: product.units })} ·{` `}
+                  {formatCurrency(product.revenue)}
+                </small>
+              </div>
+              <ArrowUpRight size={16} />
+            </Link>
+          ))
+        ) : items ? <StatePanel state="empty" /> : (
+          <DashboardState error={products.error} onRetry={() => void products.mutate()} />
+        )}
       </div>
     </aside>
   );
 }
 
-function LatestOrders({ orders }: { orders: Order[] }) {
+function LatestOrders() {
   const t = useTranslations("dashboard");
   const ordersCopy = useTranslations("orders");
   const { formatCurrency, formatDate } = useAppFormatters();
+  const orders = useSWR("dashboard-latest", getLatestOrders);
 
   return (
     <section className={styles.latest}>
@@ -103,97 +110,60 @@ function LatestOrders({ orders }: { orders: Order[] }) {
         <h2>{t("latestOrders")}</h2>
         <Link href="/orders">{t("viewAll")}</Link>
       </header>
-      <div className={styles.tableWrap}>
-        <table>
-          <thead>
-            <tr>
-              <th>{ordersCopy("order")}</th>
-              <th>{ordersCopy("customer")}</th>
-              <th>{ordersCopy("status")}</th>
-              <th>{ordersCopy("placedColumn")}</th>
-              <th>{ordersCopy("total")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order.id}>
-                <td><Link href={`/orders/${order.id}`}>#{order.id}</Link></td>
-                <td>{order.customer_name}</td>
-                <td><StatusBadge value={order.status} /></td>
-                <td>{formatDate(order.placed_at)}</td>
-                <td>{formatCurrency(order.total)}</td>
+      {orders.data ? (
+        <div className={styles.tableWrap}>
+          <table>
+            <thead>
+              <tr>
+                <th>{ordersCopy("order")}</th>
+                <th>{ordersCopy("customer")}</th>
+                <th>{ordersCopy("status")}</th>
+                <th>{ordersCopy("placedColumn")}</th>
+                <th>{ordersCopy("total")}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {orders.data.data.map((order) => (
+                <tr key={order.id}>
+                  <td><Link href={`/orders/${order.id}`}>#{order.id}</Link></td>
+                  <td>{order.customer_name}</td>
+                  <td><StatusBadge value={order.status} /></td>
+                  <td>{formatDate(order.placed_at)}</td>
+                  <td>{formatCurrency(order.total)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <DashboardState error={orders.error} onRetry={() => void orders.mutate()} />
+      )}
     </section>
   );
 }
 
 export function DashboardView() {
   const t = useTranslations("dashboard");
-  const {
-    formatAnalyticsBucket,
-    formatCurrency,
-    formatNumber,
-  } = useAppFormatters();
+  const { formatCurrency, formatNumber } = useAppFormatters();
   const [range, setRange] = useState<AnalyticsRange>("month");
   const summary = useSWR("dashboard-summary", getSummary);
   const analytics = useSWR(
     ["dashboard-analytics", range],
     () => getAnalytics(range),
   );
-  const topProducts = useSWR("dashboard-top", getTopProducts);
-  const latestOrders = useSWR("dashboard-latest", getLatestOrders);
-
-  const isLoading = summary.isLoading
-    || analytics.isLoading
-    || topProducts.isLoading
-    || latestOrders.isLoading;
-  const hasError = summary.error
-    || analytics.error
-    || topProducts.error
-    || latestOrders.error;
-  const hasAllData = summary.data
-    && analytics.data
-    && topProducts.data
-    && latestOrders.data;
-
-  if (isLoading) {
-    return <><PageHeader title={t("title")} /><StatePanel state="loading" /></>;
-  }
-
-  if (hasError || !hasAllData) {
-    return (
-      <>
-        <PageHeader title={t("title")} />
-        <StatePanel
-          state="error"
-          onRetry={() => {
-            void summary.mutate();
-            void analytics.mutate();
-            void topProducts.mutate();
-            void latestOrders.mutate();
-          }}
-        />
-      </>
-    );
-  }
-
-  const summaryData = summary.data as ApiEntity<DashboardSummary>;
-  const analyticsData = analytics.data!;
-  const topProductData = topProducts.data!;
-  const latestOrderData = latestOrders.data!;
 
   return (
     <div>
       <PageHeader title={t("title")} description={t("description")} />
-      <MetricCards
-        summary={summaryData.data}
-        formatCurrency={formatCurrency}
-        formatNumber={formatNumber}
-      />
+      {summary.data ? (
+        <MetricCards
+          summary={summary.data.data}
+          formatCurrency={formatCurrency}
+          formatNumber={formatNumber}
+        />
+      ) : (
+        <DashboardState error={summary.error} onRetry={() => void summary.mutate()} />
+      )}
 
       <section className={styles.analytics}>
         <article className={styles.chart}>
@@ -216,48 +186,18 @@ export function DashboardView() {
             </div>
           </header>
 
-          {analyticsData.data.length ? (
+          {analytics.data?.data.length ? (
             <div className={styles.chartCanvas}>
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={analyticsData.data}>
-                  <CartesianGrid stroke="#e8e8ed" vertical={false} />
-                  <XAxis
-                    dataKey="bucket"
-                    axisLine={false}
-                    tickLine={false}
-                    tickFormatter={(value) => {
-                      return formatAnalyticsBucket(String(value));
-                    }}
-                  />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tickFormatter={(value) => formatNumber(Number(value))}
-                  />
-                  <Tooltip
-                    formatter={(value) => formatCurrency(Number(value))}
-                    labelFormatter={(label) => {
-                      return formatAnalyticsBucket(String(label));
-                    }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="revenue"
-                    name={t("revenue")}
-                    stroke="#0071e3"
-                    strokeWidth={2}
-                    fill="#0071e3"
-                    fillOpacity={0.12}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              <SalesChart data={analytics.data.data} />
             </div>
-          ) : <StatePanel state="empty" />}
+          ) : analytics.data ? <StatePanel state="empty" /> : (
+            <DashboardState error={analytics.error} onRetry={() => void analytics.mutate()} />
+          )}
         </article>
-        <TopProducts products={topProductData.data} />
+        <TopProducts />
       </section>
 
-      <LatestOrders orders={latestOrderData.data} />
+      <LatestOrders />
     </div>
   );
 }

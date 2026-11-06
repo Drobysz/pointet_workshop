@@ -1,5 +1,40 @@
 name: workshop-commerce
 
+x-api-runtime: &api-runtime
+  image: workshop-commerce-api
+  env_file:
+    - ./api/.env
+  environment:
+    APP_ENV: production
+    APP_DEBUG: "false"
+    APP_URL: http://localhost:${HTTP_PORT:-8080}
+    ADMIN_URL: http://localhost:${HTTP_PORT:-8080}
+    DB_CONNECTION: pgsql
+    DB_HOST: postgres
+    DB_PORT: 5432
+    DB_DATABASE: ${POSTGRES_DB:-workshop}
+    DB_USERNAME: ${POSTGRES_USER:-workshop}
+    DB_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    REDIS_CLIENT: predis
+    REDIS_HOST: redis
+    CACHE_STORE: redis
+    QUEUE_CONNECTION: redis
+    AUTH_PENDING_STORE: redis
+    # The storefront's global context consumes the token on its home page.
+    FRONTEND_VERIFY_URL: http://localhost:${APP_PORT:-3000}/home
+    CORS_ALLOWED_ORIGINS: http://localhost:${HTTP_PORT:-8080},http://localhost:${APP_PORT:-3000},http://127.0.0.1:${APP_PORT:-3000},http://localhost:${ADMIN_PORT:-3000},http://127.0.0.1:${ADMIN_PORT:-3000}
+    AUTH_JWT_ISSUER: http://localhost:${HTTP_PORT:-8080}
+    AUTH_JWT_AUDIENCE: http://localhost:${HTTP_PORT:-8080}
+    AUTH_JWT_PRIVATE_KEY_PATH: /run/secrets/jwt-private.pem
+    AUTH_JWT_PUBLIC_KEY_PATH: /run/secrets/jwt-public.pem
+    SESSION_SECURE_COOKIE: "false"
+  volumes:
+    - ./api:/var/www/html
+    - api-vendor:/var/www/html/vendor
+    - ./api/storage/keys:/run/secrets:ro
+    - ./api/docker/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+  networks: [commerce]
+
 services:
   postgres:
     image: postgres:17-alpine
@@ -33,51 +68,41 @@ services:
     networks: [commerce]
 
   api:
+    <<: *api-runtime
     build:
       context: ./api
     command: sh -c "php artisan migrate --force && php artisan serve --no-reload --host=0.0.0.0 --port=8000"
-    env_file:
-      - ./api/.env
-    environment:
-      APP_ENV: production
-      APP_DEBUG: "false"
-      APP_URL: http://localhost:${HTTP_PORT:-8080}
-      ADMIN_URL: http://localhost:${HTTP_PORT:-8080}
-      DB_CONNECTION: pgsql
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_DATABASE: ${POSTGRES_DB:-workshop}
-      DB_USERNAME: ${POSTGRES_USER:-workshop}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
-      REDIS_CLIENT: predis
-      REDIS_HOST: redis
-      CACHE_STORE: redis
-      QUEUE_CONNECTION: redis
-      AUTH_PENDING_STORE: redis
-      # The storefront's global context consumes the token on its home page.
-      FRONTEND_VERIFY_URL: http://localhost:${APP_PORT:-3000}/home
-      CORS_ALLOWED_ORIGINS: http://localhost:${HTTP_PORT:-8080},http://localhost:${APP_PORT:-3000},http://127.0.0.1:${APP_PORT:-3000},http://localhost:${ADMIN_PORT:-3000},http://127.0.0.1:${ADMIN_PORT:-3000}
-      AUTH_JWT_ISSUER: http://localhost:${HTTP_PORT:-8080}
-      AUTH_JWT_AUDIENCE: http://localhost:${HTTP_PORT:-8080}
-      AUTH_JWT_PRIVATE_KEY_PATH: /run/secrets/jwt-private.pem
-      AUTH_JWT_PUBLIC_KEY_PATH: /run/secrets/jwt-public.pem
-      SESSION_SECURE_COOKIE: "false"
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
-    volumes:
-      - ./api:/var/www/html
-      - api-vendor:/var/www/html/vendor
-      - ./api/storage/keys:/run/secrets:ro
-      - ./api/docker/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
     healthcheck:
-      test: ["CMD-SHELL", "php artisan about --only=environment >/dev/null || exit 1"]
+      test: ["CMD", "php", "-r", "exit(@fsockopen('127.0.0.1', 8000) ? 0 : 1);"]
       interval: 10s
       timeout: 5s
       retries: 12
-    networks: [commerce]
+
+  queue-worker:
+    <<: *api-runtime
+    pull_policy: never
+    command: ["php", "artisan", "queue:work", "redis", "--queue=transactional-mail,default", "--timeout=60"]
+    restart: unless-stopped
+    stop_grace_period: 65s
+    depends_on:
+      api:
+        condition: service_healthy
+        restart: true
+
+  scheduler:
+    <<: *api-runtime
+    pull_policy: never
+    command: ["php", "artisan", "schedule:work"]
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+        restart: true
 
   admin:
     build:

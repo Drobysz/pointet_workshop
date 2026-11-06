@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Mail\TransactionalMail;
 use App\Models\SellerApplication;
+use App\Models\TransactionalEmail;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -37,6 +39,42 @@ class SellerApplicationTest extends TestCase
             ->postJson("/api/seller/requests/{$applicationId}/response", ['approved' => false, 'response' => 'Changed mind'])
             ->assertStatus(409);
         $this->assertDatabaseHas('seller_applications', ['id' => $applicationId, 'reviewed_by' => $admin->id]);
+        $this->flushHeaders()->postJson('/api/seller/requests', $payload)->assertCreated()
+            ->assertJsonPath('data.id', $applicationId)
+            ->assertJsonPath('data.status', 'processing')
+            ->assertJsonPath('data.reviewed_at', null)
+            ->assertJsonPath('data.response_message', null);
+        $this->assertDatabaseCount('seller_applications', 1);
+        $this->assertDatabaseCount('transactional_emails', 1);
+    }
+
+    public function test_seller_confirmation_uses_english_and_is_sent_once_per_submission(): void
+    {
+        Mail::fake();
+        app()->setLocale('fr');
+        $payload = $this->payload();
+        $this->postJson('/api/seller/requests', [...$payload, 'email' => 'invalid'])->assertUnprocessable();
+        $this->assertDatabaseCount('transactional_emails', 0);
+
+        $applicationId = $this->postJson('/api/seller/requests', $payload)->assertCreated()->json('data.id');
+        $this->postJson('/api/seller/requests', [...$payload, 'email' => strtoupper($payload['email'])])
+            ->assertCreated()->assertJsonPath('data.id', $applicationId);
+
+        $this->assertDatabaseCount('seller_applications', 1);
+        $this->assertDatabaseCount('transactional_emails', 1);
+        Mail::assertNothingOutgoing();
+        $this->artisan('transactional-mail:dispatch')->assertSuccessful();
+        $this->artisan('transactional-mail:dispatch')->assertSuccessful();
+
+        Mail::assertSent(TransactionalMail::class, function (TransactionalMail $mail) use ($payload): bool {
+            $mail->assertHasSubject('We Received Your Seller Application — Pointet');
+            $mail->assertSeeInText('contact you shortly');
+
+            return $mail->locale === 'en' && $mail->hasTo($payload['email']);
+        });
+        Mail::assertSentCount(1);
+        $this->assertNotNull(TransactionalEmail::firstOrFail()->sent_at);
+        $this->assertNull(TransactionalEmail::firstOrFail()->payload);
     }
 
     public function test_only_admins_can_list_seller_applications(): void

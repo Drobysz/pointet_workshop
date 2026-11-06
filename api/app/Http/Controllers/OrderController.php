@@ -35,6 +35,20 @@ class OrderController extends Controller
         );
     }
 
+    public function guestShow(int $orderId, Request $request, GuestSessionService $guests): OrderDetailResource
+    {
+        $session = $guests->resolve($request);
+        $order = Order::query()
+            ->with(['user', ...self::ITEM_RELATIONS])
+            ->whereKey($orderId)
+            ->whereNull('user_id')
+            ->where('guest_session_id', $session?->id ?? -1)
+            ->where('status', '!=', OrderStatus::Cancelled->value)
+            ->firstOrFail();
+
+        return new OrderDetailResource($order);
+    }
+
     public function index(Request $request): AnonymousResourceCollection
     {
         $data = $request->validate([

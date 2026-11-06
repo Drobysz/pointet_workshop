@@ -17,6 +17,7 @@ return [
     'cookies' => [
         'access' => env('AUTH_ACCESS_COOKIE', 'access_token'),
         'refresh' => env('AUTH_REFRESH_COOKIE', 'refresh_token'),
+        'device' => 'workshop_device',
         'secure' => filter_var(env('SESSION_SECURE_COOKIE', true), FILTER_VALIDATE_BOOL),
         'same_site' => env('AUTH_COOKIE_SAME_SITE', 'lax'),
         'domain' => env('SESSION_DOMAIN'),

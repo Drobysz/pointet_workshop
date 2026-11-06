@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SellerApplicationStatus;
 use App\Http\Requests\ReviewSellerApplicationRequest;
 use App\Http\Requests\SellerApplicationRequest;
 use App\Http\Resources\SellerApplicationResource;
@@ -17,7 +18,15 @@ class SellerApplicationController extends Controller
 
     public function store(SellerApplicationRequest $request): JsonResponse
     {
-        return (new SellerApplicationResource(SellerApplication::create($request->validated())->fresh()))
+        $application = $this->applications->submit($request->validated());
+        // Public retries return the submission acknowledgment without exposing review data.
+        $application->forceFill([
+            'status' => SellerApplicationStatus::Processing,
+            'reviewed_at' => null,
+            'response_message' => null,
+        ]);
+
+        return (new SellerApplicationResource($application))
             ->response()
             ->setStatusCode(201);
     }

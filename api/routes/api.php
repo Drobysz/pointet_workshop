@@ -41,7 +41,9 @@ Route::middleware('throttle:api-read')->group(function (): void {
     Route::get('/colors', [ColorController::class, 'index']);
     Route::get('/materials', [MaterialController::class, 'index']);
     Route::get('/orders/guest', [OrderController::class, 'guestIndex']);
+    Route::get('/orders/guest/{orderId}', [OrderController::class, 'guestShow'])->whereNumber('orderId');
     Route::get('/preorders/guest', [PreorderController::class, 'guestIndex']);
+    Route::get('/preorders/guest/{preorderId}', [PreorderController::class, 'guestShow'])->whereNumber('preorderId');
 });
 
 Route::middleware('auth.jwt')->group(function (): void {

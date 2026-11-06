@@ -122,7 +122,7 @@ The supplied schema was treated as domain input rather than copied mechanically:
 
 - Table and column names are normalized to Laravel/PostgreSQL conventions; quantities replace the misspelled `qntty` fields.
 - Money is `decimal(12,2)`, not integer, and constrained non-negative.
-- Product inventory is explicit and decremented transactionally during order creation.
+- Product inventory is explicit and decremented transactionally during order creation or paid pre-order confirmation. Pending pre-orders do not reserve stock.
 - Images belong directly to a valid product/color pair instead of using a separate image registry join.
 - Many-to-many joins have composite uniqueness and foreign keys; lookup and filtering fields are indexed.
 - Orders keep customer snapshots, while order items keep product name, color, unit price, quantity, and item status snapshots. This preserves auditability when live users or goods later change.
@@ -178,3 +178,54 @@ colors, its total becomes an `Unassigned stock` color row so an administrator ca
 allocate it to concrete colors and sizes. Legacy basket entries that identify exactly
 one replacement row are linked automatically; ambiguous entries remain available for
 the customer to select again.
+
+### Local Stripe webhooks
+
+When running Stripe CLI on the host with Docker Compose, forward events to the Nginx port published by `HTTP_PORT` in the root `.env` (default `8080`). Port `8000` is internal to the API container.
+
+```bash
+stripe listen \
+  --events checkout.session.completed,checkout.session.async_payment_succeeded,checkout.session.async_payment_failed \
+  --forward-to http://127.0.0.1:8080/api/webhooks/stripe
+```
+
+Set `STRIPE_WEBHOOK_SECRET` in `api/.env` to the local listener's signing secret and apply it with `docker compose up -d api`. Keep the listener running while you complete a test preorder. A successful delivery shows HTTP `200` in the listener output.
+
+### Transactional email
+
+The API records email intents in PostgreSQL alongside successful seller submissions, paid Stripe preorders, eligible sign-ins, and first-time account verification. Laravel's scheduler places due intents on the Redis `transactional-mail` queue once per minute. A queue worker delivers them.
+
+Set these values in the API environment.
+
+| Variable | Setting |
+| --- | --- |
+| `MAIL_MAILER` | Use `log` locally or `smtp` for delivery through your provider. Tests use `array`. |
+| `MAIL_SCHEME`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` | Use the provider's SMTP connection settings and credentials. `MAIL_URL` can supply the connection URL instead. |
+| `MAIL_FROM_ADDRESS`, `MAIL_FROM_NAME` | Use the verified sender address and the display name, such as Pointet. |
+| `MAIL_TIMEOUT` | SMTP timeout in seconds, with a default of 15. Keep it below the worker timeout. |
+| `FRONTEND_URL` | Public storefront base URL for authenticated preorder links. Use HTTPS in production. |
+| `QUEUE_CONNECTION`, `REDIS_QUEUE_RETRY_AFTER` | Use `redis` and keep the reservation timeout above the 60-second worker timeout. The default is 90 seconds. |
+| `APP_KEY` | Use the same Laravel application key on the API and worker. Keep previous keys configured during rotation until pending messages are processed. |
+
+For local development, run these commands from `api` and keep the worker and scheduler running in separate terminals.
+
+```bash
+php artisan migrate
+php artisan queue:work redis --queue=transactional-mail,default --timeout=60
+php artisan schedule:work
+```
+
+Docker Compose starts `scheduler` and `queue-worker` automatically when starting the full stack. Both share the API image and environment and wait for the API to finish its startup migrations. To update an existing stack or apply changes to `api/.env`, run:
+
+```bash
+docker compose up -d --build api queue-worker scheduler
+docker compose ps api queue-worker scheduler
+```
+
+Use `docker compose logs --tail=100 queue-worker scheduler` to check process output. The Laravel log records unsuccessful delivery attempts by outbox ID. For a seller application, look up `seller:<application-id>` in `transactional_emails`. An unsent row with `available_at` set is eligible for dispatch at that time. A row with no `sent_at` or `available_at` has exhausted its retries. Applications submitted before email recording was enabled may have no outbox row.
+
+In production, run `php artisan migrate --force` during release, supervise `php artisan queue:work redis --queue=transactional-mail,default --timeout=60`, and invoke `php artisan schedule:run` once per minute from cron or the deployment scheduler. Run `php artisan queue:restart` on release so workers reload the code and configuration.
+
+Use `php artisan transactional-mail:dispatch` for an immediate outbox scan. Delivery failures retry after 1, 5, 15, and 60 minutes. After the fifth failed attempt, correct the issue and run `php artisan transactional-mail:retry <outbox-id>`. The outbox stores an encrypted recipient and payload until acceptance by the configured transport, then removes the payload and retains the unique event key. `sent_at` records transport acceptance. SMTP can deliver a duplicate if the connection or worker fails after the server accepts the message and before the application records that acceptance.
+
+Identical validated seller submissions return the original application. Sign-in alerts use a random browser cookie and only trigger when a different browser signs in while an active session exists. Legacy sessions use a conservative user-agent match until they gain a device identifier. Standard orders currently have no Stripe-backed paid transition. Payment confirmation emails therefore apply to paid preorders.

@@ -1,65 +1,30 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { hasLocale, useTranslations } from "next-intl";
 import s from "./style.module.scss";
-import { ChangeEvent, useContext, useTransition } from "react";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { ChangeEvent } from "react";
 import { Globe } from "lucide-react";
-import { language } from "@/types/auth";
-import { CookiesService } from "@/helpers";
-import { userApi } from "@/api/api";
-import { GlobalContext } from "@/app/[locale]/context/global.context";
+import { useSwitchLocale } from "@/hooks/useSwitchLocale";
+import { localeNames, routing } from "@/i18n/routing";
 
 export const LanguageOption = ()=> {
-    const { user, mutateUser } = useContext(GlobalContext);
-    const locale = useLocale();
-    const pathname = usePathname();
-    const router = useRouter();
-    const [isPending, startTransition] = useTransition();
+    const t = useTranslations("languageSwitcher");
+    const { locale, isPending, switchLocale } = useSwitchLocale();
 
-    const switchLocale = async (e: ChangeEvent<HTMLSelectElement>)=> {
-        const newLocale = e.target.value as language;
+    const handleChange = (e: ChangeEvent<HTMLSelectElement>)=> {
+        const newLocale = e.target.value;
 
-        if (locale === newLocale) return;
-
-        startTransition(async ()=> {
-            const cookies = new CookiesService();
-            
-            if (user) {
-                await userApi.updateUser(
-                    user.id,
-                    { language: newLocale }
-                )
-                mutateUser();
-            }
-        
-            cookies.setCookies(
-                "NEXT_LOCALE",
-                newLocale,
-                60 * 60 * 24 * 365,
-            );
-
-            router.replace(
-                pathname,
-                { locale: newLocale }
-            );
-        })
+        if (hasLocale(routing.locales, newLocale)) {
+            switchLocale(newLocale);
+        }
     };
-
-    const locales = [
-        { label: "English", value: "en" },
-        { label: "Francais", value: "fr" },
-        { label: "Русский", value: "ru" },
-        { label: "Italiano", value: "it" },
-        { label: "Deutsch", value: "de" },
-    ];
 
     return (
         <div
             className={s.lang_opt_sect}
         >
             <span className={s.lang_sign}>
-                Language
+                {t("label")}
             </span>
 
             <span
@@ -67,16 +32,18 @@ export const LanguageOption = ()=> {
             >
                 <select
                     className="appearance-none translate-x-1"
-                    onChange={switchLocale}
+                    aria-label={t("change")}
+                    onChange={handleChange}
                     value={locale}
                     disabled={isPending}
                 >
-                    {locales.map(({label, value})=>
+                    {routing.locales.map(value =>
                         <option
                             key={`prof-nav-el-locale-${value}`}
                             value={value}
+                            lang={value}
                         >
-                            {label}
+                            {localeNames[value]}
                         </option>
                     )}
                 </select>

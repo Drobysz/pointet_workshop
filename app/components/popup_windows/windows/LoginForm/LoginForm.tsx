@@ -11,11 +11,14 @@ import { Input } from "@/components/inputs/Input/Input";
 import { inputType } from "@/components/inputs/Input/Input.props";
 import { FormError, FormState } from "@/auth/FormSchemes";
 import { loginAction } from "@/auth/actions/loginAction";
+import { useTranslations } from "next-intl";
 
 export const LoginForm = ()=> {
+    const t = useTranslations();
+
     const loginForms = [
-        { label: "Email", name: "email", type: "email", placeholder: "your_email@example.com" },
-        { label: "Password", name: "password", type: "password", placeholder: "Test123!" },
+        { label: t("auth.fields.email"), name: "email", type: "email", placeholder: "your_email@example.com" },
+        { label: t("auth.fields.password"), name: "password", type: "password", placeholder: "Test123!" },
     ];
     
     const { 
@@ -43,7 +46,7 @@ export const LoginForm = ()=> {
 
     const [state, action, pending] = 
         useActionState<FormState, FormData>(
-            loginAction, 
+            loginAction.bind(null, t), 
             { errors: {} }
         );
     
@@ -79,12 +82,12 @@ export const LoginForm = ()=> {
                     s.title,
                     tinyFive.className
                 )}>
-                    Sign In
+                    {t("auth.login.title")}
                 </h2>
                 <div className={s.input_list}>
                     {loginForms.map((form, idx)=>
                         <Input
-                            key={`input-${form.label}-${idx}`}
+                            key={`input-${form.name}-${idx}`}
                             type={form.type as inputType}
                             placeholder={form.placeholder}
                             label={form.label}

@@ -1,20 +1,23 @@
 import { doppelganger } from "@/fonts/fonts";
 import { cn } from "@/helpers";
 import s from "./style.module.scss";
-import footer from "@/json/footer_links.json";
+import { footerColumnLinks } from "../../footerLinks";
 import { UnderlinedLink } from "@/components/animations/UnderlinedLink/UnderlinedLink";
 import { Fragment } from "react/jsx-runtime";
-import { LinkColumn } from "./types";
+import { RowLink } from "./types";
+import { useTranslations } from "next-intl";
 
 export const ColumnLinks = ()=> {
-    const linkColumns: LinkColumn[] 
-        = footer.column_links;
+    const t = useTranslations("navigation");
+
+    const getRowLabel = (row: RowLink)=>
+        "labelKey" in row ? t(row.labelKey) : row.text;
 
     return (
         <div
             className={s.nav_container}
         >
-            {linkColumns.map((col, colId)=>
+            {footerColumnLinks.map((col, colId)=>
                 <div
                     key={`footer-col-${colId}`}
                     className={s.title_column_distance}
@@ -25,7 +28,7 @@ export const ColumnLinks = ()=> {
                             "text-4xl"
                         )}
                     >
-                        {col.label}
+                        {t(`footer.columns.${col.titleKey}`)}
                     </h3>
                     <ul className={s.column_element_gap}>
                         {col.rows.map((row, rowId)=>
@@ -37,12 +40,12 @@ export const ColumnLinks = ()=> {
                                         key={`footer-col-${colId}-row-${rowId}`}
                                         href={row.link}
                                     >
-                                        {row.label}
+                                        {getRowLabel(row)}
                                     </UnderlinedLink>
                                 }
                                 {!row.link &&
                                     <li>
-                                        {row.label}
+                                        {getRowLabel(row)}
                                     </li>
                                 }
                             </Fragment>

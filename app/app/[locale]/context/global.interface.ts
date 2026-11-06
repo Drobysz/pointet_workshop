@@ -1,5 +1,6 @@
 import { BasketItem } from "@/api/types/basket";
 import { Order } from "@/api/types/orders";
+import { Preorder } from "@/api/types/preorder";
 import { User } from "@/api/types/user";
 import { LoginForm, RegisterForm } from "@/types/auth";
 import { Dispatch, SetStateAction } from "react";
@@ -44,6 +45,10 @@ export interface GlobalContextInterface {
     isOrdersLoading: boolean;
     ordersError?: Error;
 
+    preOrdersList?: Preorder[];
+    isPreOrdersLoading: boolean;
+    preOrdersError?: Error;
+
     setLogFormData: Dispatch<SetStateAction<LoginForm>>,
     setRegFormData: Dispatch<SetStateAction<RegisterForm>>,
 
@@ -51,6 +56,7 @@ export interface GlobalContextInterface {
     mutateUser: KeyedMutator<User>;
     mutateBasket: KeyedMutator<BasketItem[]>;
     mutateOrders: KeyedMutator<Order[]>;
+    mutatePreOrders: KeyedMutator<Preorder[]>;
 
     setNotification: Dispatch<SetStateAction<AppNotification>>;
     setPopUpWindow: Dispatch<SetStateAction<PopUpWindow>>;

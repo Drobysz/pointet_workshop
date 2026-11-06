@@ -4,7 +4,7 @@ import { ImagesSliderBackgroundProps } from "./ImagesSliderBackground.props"
 import { AnimatePresence, motion } from "framer-motion";
 import { TRANSITION } from "./framer-values";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { cn } from "@/helpers";
 
 export const ImagesSliderBackground = ({
     images,
@@ -75,7 +75,7 @@ export const ImagesSliderBackground = ({
                             fill
                             sizes="100%"
                             className="object-cover"
-                            alt="swiping image"
+                            alt=""
                         />
                     </motion.div>
                 </motion.div>

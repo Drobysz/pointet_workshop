@@ -4,6 +4,8 @@ import { Id } from "../types/api";
 import { CategoryList } from "../types/category";
 import { GoodListParams, GoodPage, GoodResponse } from "../types/goods";
 
+const ALL_GOODS_PAGE_SIZE = 100;
+
 export class CategoryApi {
     constructor (
         private readonly api: PublicApiClient,
@@ -32,10 +34,14 @@ export class CategoryApi {
         );
     }
 
+    /**
+     * Every page must be requested with the same size: `last_page` of
+     * the first response is only valid for that page size.
+     */
     public async getAllGoods() {
         const firstPage = await this.getGoods({
             page: 1,
-            per_page: 30,
+            per_page: ALL_GOODS_PAGE_SIZE,
         });
     
         const remainingPageNumbers = Array.from(
@@ -49,7 +55,7 @@ export class CategoryApi {
             remainingPageNumbers.map((page) => {
                 return this.getGoods({
                     page,
-                    per_page: 100,
+                    per_page: ALL_GOODS_PAGE_SIZE,
                 });
             }),
         );

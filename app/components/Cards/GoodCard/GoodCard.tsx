@@ -2,6 +2,7 @@
 
 import { Good } from "@/api/types/goods"
 import { useContext, useEffect, useState } from "react"
+import { useTranslations } from "next-intl";
 import s from "./style.module.scss";
 import {
     ImageSlider,
@@ -29,6 +30,8 @@ export const GoodCard = ({
         mutateBasket,
         setNotification
     } = useContext(GlobalContext);
+
+    const t = useTranslations();
 
     const [colorId, setColorId] = useState(good.colors[0].id);
     const [currentInventoryId, setCurrentInventoryId] = useState<number | null>(null);
@@ -72,7 +75,7 @@ export const GoodCard = ({
         ) {
             setNotification({
                 status: "alert",
-                text: "You should choose size and quantity!"
+                text: t("product.notifications.chooseSizeAndQuantity")
             });
             setIsPending(false);
             return ;
@@ -92,53 +95,65 @@ export const GoodCard = ({
             try {
                 await guestBasketApi.addItem(basketRequestData);
                 await mutateBasket();
+
+                setCurrentQuantity(0);
+                setCurrentInventoryId(null);
+
                 setNotification({ 
                     status: "success", 
-                    text: `Your item "${good.name.slice(0, 15)}..." was added to basket` 
+                    text: t("product.notifications.addedToBasket", {
+                        name: good.name.slice(0, 15)
+                    })
                 });
+
             } catch (error) {
                 setNotification({ 
                     status: "error", 
-                    text: getApiErrorMessage(error, basketErrorMessages.addItem) 
+                    text: getApiErrorMessage(error, t, basketErrorMessages.addItem) 
                 });
             } finally {
                 setIsPending(false);
             }
             return ;
+        } else if (authStatus === "authenficated") {
+
+            const timeOutId = setTimeout(async () => {
+                try {
+                    await basketApi.addItem(basketRequestData);
+                    await mutateBasket();
+        
+                    const goodNarrowedName = good.name.length > 15 
+                        ? good.name.slice(0, 15) 
+                        : good.name;
+                    const message = t("product.notifications.addedToBasket", {
+                        name: goodNarrowedName
+                    });
+
+                    setCurrentQuantity(0);
+                    setCurrentInventoryId(null);
+        
+                    setNotification({
+                        status: "success",
+                        text: message
+                    });
+                } catch (error) {
+                    setNotification({
+                        status: "error",
+                        text: getApiErrorMessage(
+                            error,
+                            t,
+                            basketErrorMessages.addItem
+                        )
+                    });
+                } finally {
+                    setIsPending(false);
+                }
+            }, 400);
+
+
+
+            return ()=> clearTimeout(timeOutId);
         }
-
-        setCurrentInventoryId(null);
-
-        const timeOutId = setTimeout(async () => {
-            try {
-                await basketApi.addItem(basketRequestData);
-
-                mutateBasket();
-    
-                const goodNarrowedName = good.name.length > 15 
-                    ? good.name.slice(0, 15) 
-                    : good.name;
-                const message 
-                    = `Your item "${goodNarrowedName}..." was added to basket`;
-    
-                setNotification({
-                    status: "success",
-                    text: message
-                });
-            } catch (error) {
-                setNotification({
-                    status: "error",
-                    text: getApiErrorMessage(
-                        error,
-                        basketErrorMessages.addItem
-                    )
-                });
-            } finally {
-                setIsPending(false);
-            }
-        }, 400);
-
-        return ()=> clearTimeout(timeOutId);
     }
 
     return (
@@ -150,6 +165,7 @@ export const GoodCard = ({
             <ImageSlider 
                 images={images}
                 goodId={good.id}
+                goodName={good.name}
             />
 
             <Title
@@ -198,7 +214,7 @@ export const GoodCard = ({
                 onClick={handleBasketBtnClick}
             >
                 {!isPending 
-                    ? "🛒 Add to basket"
+                    ? `🛒 ${t("product.actions.addToBasket")}`
                     : <CircularProgress
                         size={15}
                         color="inherit"

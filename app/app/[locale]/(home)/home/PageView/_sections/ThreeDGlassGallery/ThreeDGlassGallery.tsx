@@ -9,8 +9,11 @@ import s from "./style.module.scss";
 import { cn } from "@/helpers";
 import { after } from "@/fonts/fonts";
 import { ScrollShiftDown } from "./_components/ScrollShiftDown/ScrollShiftDown";
+import { useTranslations } from "next-intl";
 
 export const ThreeDGlassGallery = ()=> {
+    const t = useTranslations("home.objectGallery");
+
     return (
         <section className="relative">
             <ScrollShiftDown 
@@ -27,7 +30,7 @@ export const ThreeDGlassGallery = ()=> {
                     "max-sm:text-4xl! max-sm:leading-14!",
                     after.className
                 )}>
-                    Discover the unexpected.
+                    {t("curatedTitle")}
                 </h2>
             </ScrollShiftDown>
             <ScrollShiftDown 
@@ -42,7 +45,7 @@ export const ThreeDGlassGallery = ()=> {
                     s.title, "text-blue-800",
                     after.className
                 )}>
-                    Bags
+                    {t("bagsTitle")}
                 </h2>
             </ScrollShiftDown>
             <ScrollShiftDown 
@@ -57,7 +60,7 @@ export const ThreeDGlassGallery = ()=> {
                     s.title, "text-lilac-800",
                     after.className
                 )}>
-                    Clothing
+                    {t("clothingTitle")}
                 </h2>
             </ScrollShiftDown>
         </section>

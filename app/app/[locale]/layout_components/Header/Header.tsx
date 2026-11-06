@@ -7,6 +7,7 @@ import {
     Logo,
     Navigation,
     Profile,
+    MobileMenu,
 } from "./_components";
 
 export const Header = ()=> {
@@ -19,6 +20,7 @@ export const Header = ()=> {
                 <Logo />
                 <Navigation />
                 <Profile />
+                <MobileMenu />
             </GridContainer>
         </HeaderWrapper>
     )

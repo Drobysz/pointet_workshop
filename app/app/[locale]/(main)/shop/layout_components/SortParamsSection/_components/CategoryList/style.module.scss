@@ -6,6 +6,24 @@
         items-end;
 }
 
+// Categories become a horizontally scrollable strip on small screens.
+@media (max-width: 1023px) {
+    .category_list {
+        @apply w-full
+            overflow-x-auto
+            p-1;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        li {
+            @apply shrink-0;
+        }
+    }
+}
+
 .current_category {
     @apply flex 
         flex-col

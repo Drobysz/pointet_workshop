@@ -9,6 +9,7 @@ import {
     OrdersApi,
     PreorderApi,
     StripeApi,
+    SellerApi,
 } from "./services";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -31,3 +32,4 @@ export const categoryApi = new CategoryApi(publicApiClient);
 export const ordersApi = new OrdersApi(privateApiClient, publicApiClient);
 export const preorderApi = new PreorderApi(privateApiClient, publicApiClient);
 export const stripeApi = new StripeApi(publicApiClient);
+export const sellerApi = new SellerApi(publicApiClient);

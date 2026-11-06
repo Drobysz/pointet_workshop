@@ -3,22 +3,37 @@
 .container {
     @apply flex flex-col 
         gap-6
-        h-[70vh]
-        justify-center;
+        h-screen
+        pb-30
+        justify-center
+        max-lg:px-4
+        max-lg:h-auto
+        max-lg:py-20;
 }
 
 .title {
     @apply text-7xl
         text-center
         font-semibold
-        text-zinc-400;
+        text-zinc-400
+        max-md:text-6xl;
 }
 
 .card_list {
     @apply flex 
         justify-center
         gap-4
-        h-75;
+        h-75
+        max-lg:flex-col
+        max-lg:items-center
+        max-lg:h-auto;
+
+    // Cards stack on small screens and need an explicit height there.
+    > * {
+        @apply max-lg:w-full
+            max-lg:h-64
+            max-lg:shrink-0;
+    }
 }
 
 .card {
@@ -36,5 +51,7 @@
 }
 
 .card_subtitle {
-    @apply text-sm text-zinc-500;
+    // Keeps the copy clear of the decorative images on stacked cards.
+    @apply text-sm text-zinc-500
+        max-lg:max-w-[65%];
 }

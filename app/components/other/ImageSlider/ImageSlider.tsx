@@ -11,17 +11,25 @@ import {
 import { Lens } from "@/components/animations/Lens/Lens";
 import { useRouter } from "@/i18n/navigation";
 import { cn } from "@/helpers";
-// import { useWindowWidth } from "@/hooks";
+
+// Without a `sizes` hint a `fill` image is treated as full-viewport wide
+// and the largest source gets downloaded for every card.
+const CARD_IMAGE_SIZES =
+    "(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 320px";
+const LARGE_IMAGE_SIZES =
+    "(max-width: 767px) 100vw, (max-width: 1023px) 40vw, 400px";
 
 export const ImageSlider = ({
     images,
     goodId,
     isHrefActive = true,
     isLarge = false,
+    goodName,
     className,
 }: {
     images: ProductImage[];
     goodId: number;
+    goodName?: string;
     isHrefActive?: boolean;
     isLarge?: boolean;
     className?: string;
@@ -37,14 +45,12 @@ export const ImageSlider = ({
         }
     };
 
-    // const isDesktop = useWindowWidth(560) as boolean;
-
     return (
         <div
             className={cn(
                 className,
                 s.slider,
-                isLarge ? "h-150" : "h-87.5 cursor-pointer"
+                isLarge ? "h-150 max-lg:h-120 max-md:h-112" : "h-87.5 cursor-pointer"
         )}
 
             onClick={handleClick}
@@ -69,6 +75,8 @@ export const ImageSlider = ({
                         images={images}
                         imgIdx={imgIdx}
                         setImgIdx={setImgIdx}
+                        sizes={LARGE_IMAGE_SIZES}
+                        goodName={goodName}
                     />
                 </Lens>
             )}
@@ -77,6 +85,8 @@ export const ImageSlider = ({
                     images={images}
                     imgIdx={imgIdx}
                     setImgIdx={setImgIdx}
+                    sizes={CARD_IMAGE_SIZES}
+                    goodName={goodName}
                 />
             }
         </div>

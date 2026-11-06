@@ -2,7 +2,7 @@
 import cn from "classnames";
 import styles from "./ul.module.scss";
 import { UnderlinedLinkProps } from "./UnderlinedLink.props";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export const UnderlinedLink = ({
 	className,

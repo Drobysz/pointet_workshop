@@ -16,11 +16,18 @@ export class PreorderApi {
         private readonly publicApi: PublicApiClient
     ) {}
 
-    public createPreorder(data: PreorderCreateRequest): Promise<PreorderCheckoutSessionResponse> {
-        return this.publicApi.post<PreorderCheckoutSessionResponse>("/preorders", data);
+    public createPreorder(
+        data: PreorderCreateRequest
+    ): Promise<PreorderCheckoutSessionResponse> {
+        return this.publicApi.post<PreorderCheckoutSessionResponse>(
+            "/preorders", 
+            data
+        );
     }
 
-    public getPreorders(params: PreorderListParams = {}): Promise<PreorderListResponse> {
+    public getPreorders(
+        params: PreorderListParams = {}
+    ): Promise<PreorderListResponse> {
         const query = new URLSearchParams();
 
         Object.entries(params).forEach(([key, value]) => {
@@ -32,19 +39,31 @@ export class PreorderApi {
         return this.api.get<PreorderListResponse>(`/preorders?${query}`);
     }
 
-    public getGuestPreorders(params: Pick<PreorderListParams, "per_page"> = {}): Promise<PreorderListResponse> {
+    public getGuestPreorders(
+        params: Pick<PreorderListParams, "per_page"> = {}
+    ): Promise<PreorderListResponse> {
         const query = params.per_page 
             ? `?per_page=${params.per_page}` 
             : "";
         return this.publicApi.get<PreorderListResponse>(`/preorders/guest${query}`);
     }
 
+    public getGuestPreorder(id: Id): Promise<PreorderResponse> {
+        return this.publicApi.get<PreorderResponse>(`/preorders/guest/${id}`);
+    }
+
     public getPreorder(id: Id): Promise<PreorderResponse> {
         return this.api.get<PreorderResponse>(`/preorders/${id}`);
     }
 
-    public updatePreorder(id: Id, data: PreorderUpdateRequest): Promise<PreorderResponse> {
-        return this.api.patch<PreorderResponse>(`/preorders/${id}`, data);
+    public updatePreorder(
+        id: Id, 
+        data: PreorderUpdateRequest
+    ): Promise<PreorderResponse> {
+        return this.api.patch<PreorderResponse>(
+            `/preorders/${id}`, 
+            data
+        );
     }
 
     public deletePreorder(id: Id): Promise<void> {

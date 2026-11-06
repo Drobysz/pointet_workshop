@@ -1,0 +1,74 @@
+@reference "tailwindcss";
+
+.stage {
+    @apply relative min-h-0 w-full max-h-[42rem] flex-1;
+    --slide-width: 78%;
+    --slide-gap: 0.6%;
+    --slide-inset: calc((100% - var(--slide-width)) / 2);
+    --slide-step: calc(var(--slide-width) + var(--slide-gap));
+    overflow: clip;
+    container-type: inline-size;
+}
+
+.track {
+    @apply relative grid h-full w-full grid-flow-col;
+    inset-inline-start: var(--slide-inset);
+    grid-auto-columns: var(--slide-width);
+    gap: var(--slide-gap);
+    transform-style: preserve-3d;
+}
+
+.slide {
+    @apply relative min-h-0 min-w-0;
+    transform-style: preserve-3d;
+}
+
+.stage::before,
+.stage::after {
+    @apply pointer-events-none absolute inset-y-0 z-10 w-[8%] content-[''];
+}
+
+.stage::before {
+    @apply left-0 bg-linear-to-r from-gray-100 to-gray-100/0;
+}
+
+.stage::after {
+    @apply right-0 bg-linear-to-l from-gray-100 to-gray-100/0;
+}
+
+@media (min-width: 48rem) {
+    .stage {
+        --slide-width: 53%;
+        --slide-gap: 1.6%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stage {
+        @apply flex-none overflow-x-auto;
+        scroll-snap-type: x mandatory;
+        direction: ltr;
+    }
+
+    .track {
+        @apply flex transform-none!;
+        inset-inline-start: 0;
+        height: min(55svh, 32rem);
+    }
+
+    .slide {
+        flex: 0 0 var(--slide-width);
+        scroll-snap-align: center;
+    }
+
+    .track::before,
+    .track::after {
+        @apply block content-[''];
+        flex: 0 0 calc(var(--slide-inset) - var(--slide-gap));
+    }
+
+    .stage::before,
+    .stage::after {
+        @apply hidden;
+    }
+}

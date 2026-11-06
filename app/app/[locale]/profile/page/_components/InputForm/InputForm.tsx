@@ -8,17 +8,19 @@ import { cn } from "@/helpers";
 import { jersey10 } from "@/fonts/fonts";
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
 import { User, UserResponse } from "@/api/types/user";
-import { UserField, userFieldSchemas } from "@/auth/FormSchemes";
+import { UserField, createUserFieldSchemas } from "@/auth/FormSchemes";
 import { DecoInput } from "@/components";
 import { usePhotonSuggestions } from "@/hooks";
 import { 
     SuggestionList,
     InputBtn
 } from "./_components";
+import { useTranslations } from "next-intl";
 
 export const InputForm = ({
     userId,
     label,
+    successMessage,
     initialValue,
     param,
     inputType="text",
@@ -26,7 +28,10 @@ export const InputForm = ({
     request
 }: {
     userId: Id;
+    /** Translated field name shown above the input. */
     label: string;
+    /** Translated notification shown once the field is saved. */
+    successMessage: string;
     initialValue: string;
     param: UserField;
     inputType?: "email" | "text";
@@ -36,20 +41,21 @@ export const InputForm = ({
         params: Partial<User>
     )=> Promise<UserResponse>;
 })=> {
+    const t = useTranslations();
     const { setNotification, mutateUser } = useContext(GlobalContext);
     const [value, setValue] = useState(initialValue);
     const [suggestionSelected, setSuggestionSelected] = useState(false);
     const [isPending, setIsPending] = useState(false);
 
     const { suggestions } = usePhotonSuggestions({
-        isActive: label == "address",
+        isActive: param == "address",
         value: value,
     });
 
     const isButtonDisabled = value.trim() === initialValue;
-    const schema = userFieldSchemas[param];
+    const schema = createUserFieldSchemas(t)[param];
     const showSusggestions 
-        = label == "address" 
+        = param == "address" 
             && suggestions.length > 0
             && suggestionSelected;
 
@@ -74,13 +80,13 @@ export const InputForm = ({
             mutateUser();
             setNotification({
                 status: "success",
-                text: `${label} was updated`
+                text: successMessage
             });
         } catch (error) {
 
             setNotification({
                 status: "error",
-                text: getApiErrorMessage(error)
+                text: getApiErrorMessage(error, t)
             });
         } finally {
             setIsPending(false);
@@ -112,7 +118,7 @@ export const InputForm = ({
             </label>
 
             <div className="flex items-center gap-2">
-                <div className="relative">
+                <div className="relative max-md:flex-1 max-md:min-w-0">
                     <DecoInput
                         className={s.input}
                         value={value}

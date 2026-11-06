@@ -1,80 +1,80 @@
 import { z } from "zod";
+import type { AppTranslator } from "@/i18n/types";
 
-const email = z.string()
+const PASSWORD_MIN_LENGTH = 8;
+const FULL_NAME_MIN_LENGTH = 4;
+
+const createEmailScheme = (t: AppTranslator) => z.string()
         .trim()
-        .min(1, { message: "Email is required" })
+        .min(1, { message: t("validation.emailRequired") })
         .regex(
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            "Email format is invalid"
+            t("validation.emailInvalid")
         );
 
-export const RegisterFormScheme = z.object({
+const createNewPasswordScheme = (t: AppTranslator) => z
+        .string()
+        .min(PASSWORD_MIN_LENGTH, {
+            message: t("validation.minLength", { count: PASSWORD_MIN_LENGTH }),
+        })
+        .regex(/\p{L}/u, { message: t("validation.passwordLetter") })
+        .regex(/\p{N}/u, { message: t("validation.passwordNumber") })
+        .refine((value) => new TextEncoder().encode(value).length <= 72, {
+            message: t("validation.passwordTooLong"),
+        })
+        .trim();
+
+const createCurrentPasswordScheme = (t: AppTranslator) => z
+        .string()
+        .min(1, { message: t("validation.passwordRequired") })
+        .trim();
+
+export const createRegisterFormScheme = (t: AppTranslator) => z.object({
     full_name: z
         .string()
-        .min(4, { message: "Min length is 4 symbols" })
+        .min(FULL_NAME_MIN_LENGTH, {
+            message: t("validation.minLength", { count: FULL_NAME_MIN_LENGTH }),
+        })
         .trim(),
-    email: email,
+    email: createEmailScheme(t),
     address: z.preprocess((v)=>
         v == "" ? undefined : v,
         z.coerce
             .string()
             .optional()
         ),
-    password: z
-        .string()
-        .min(8, { message: "Min length is 8 symbols" })
-        .regex(/\p{L}/u, { message: "At least one letter's required" })
-        .regex(/\p{N}/u, { message: "At least one number's required" })
-        .refine((value) => new TextEncoder().encode(value).length <= 72, {
-            message: "password_max_length",
-        })
-        .trim(),
+    password: createNewPasswordScheme(t),
 });
 
-export const LoginFormScheme = z.object({
-    email: email,
-    password: z
-        .string()
-        .min(1, { message: "password is required" })
-        .trim(),
+export const createLoginFormScheme = (t: AppTranslator) => z.object({
+    email: createEmailScheme(t),
+    password: createCurrentPasswordScheme(t),
 });
 
-export const  UpdatePasswordSchemes =  z.object({
-    current_password: z
-        .string()
-        .min(1, { message: "password is required" })
-        .trim(),
-
-    new_password: z
-        .string()
-        .min(8, { message: "Min length is 8 symbols" })
-        .regex(/\p{L}/u, { message: "At least one letter's required" })
-        .regex(/\p{N}/u, { message: "At least one number's required" })
-        .refine((value) => new TextEncoder().encode(value).length <= 72, {
-            message: "password_max_length",
-        })
-        .trim(),
+export const createUpdatePasswordScheme = (t: AppTranslator) => z.object({
+    current_password: createCurrentPasswordScheme(t),
+    new_password: createNewPasswordScheme(t),
 });
 
-export const userFieldSchemas = {
+export const createUserFieldSchemas = (t: AppTranslator) => ({
     email: z
-        .email("Invalid email address."),
+        .email(t("validation.emailInvalid")),
 
     tel: z
         .string()
         .regex(
             /^\+?[0-9\s()-]{7,20}$/,
-            "Invalid phone number."
+            t("validation.phoneInvalid")
         ),
     address: z
         .string()
         .regex(
             /^[^,]+,\s*[^,]+,\s*[A-Za-z0-9 -]+,\s*[^,]+$/,
-            "Address must be: Street, City, Postal code, Country"
+            t("validation.addressFormat")
         )
-};
+});
 
-export type UserField = keyof typeof userFieldSchemas;
+export type UserField = keyof ReturnType<typeof createUserFieldSchemas>;
 
 export type FormError = {
     full_name?: string;

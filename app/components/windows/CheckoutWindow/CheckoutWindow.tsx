@@ -9,6 +9,7 @@ import { jersey10 } from "@/fonts/fonts";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { useContext, useState } from "react";
+import { useFormatter, useTranslations } from "next-intl";
 import { CircularProgress } from "@mui/material";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
@@ -33,6 +34,9 @@ export const CheckoutWindow = ({
         mutateBasket,
     } = useContext(GlobalContext);
 
+    const t = useTranslations();
+    const format = useFormatter();
+
     const router = useRouter();
     const [isBasketPending, setIsBasketPending] = useState(false);
 
@@ -49,7 +53,7 @@ export const CheckoutWindow = ({
         ) {
             setNotification({
                 status: "alert",
-                text: "You should choose size and quantity!"
+                text: t("product.notifications.chooseSizeAndQuantity")
             });
             setIsBasketPending(false);
             return ;
@@ -63,8 +67,9 @@ export const CheckoutWindow = ({
         const goodNarrowedName = goodName.length > 15 
             ? goodName.slice(0, 15) 
             : goodName;
-        const message 
-            = `Your item "${goodNarrowedName}..." was added to basket`;
+        const message = t("product.notifications.addedToBasket", {
+            name: goodNarrowedName
+        });
 
         if (authStatus === "unauthenficated") {
             try {
@@ -72,7 +77,7 @@ export const CheckoutWindow = ({
                 await mutateBasket();
                 setNotification({ status: "success", text: message });
             } catch (error) {
-                setNotification({ status: "error", text: getApiErrorMessage(error, basketErrorMessages.addItem) });
+                setNotification({ status: "error", text: getApiErrorMessage(error, t, basketErrorMessages.addItem) });
             } finally {
                 setIsBasketPending(false);
             }
@@ -91,6 +96,7 @@ export const CheckoutWindow = ({
                 status: "error",
                 text: getApiErrorMessage(
                     error,
+                    t,
                     basketErrorMessages.addItem
                 )
             });
@@ -104,7 +110,7 @@ export const CheckoutWindow = ({
             <ShadowBorderWindow
                 withoutCross
                 withoutGradient
-                className="h-fit"
+                className="h-fit max-lg:w-full"
             >
                 {/* Total price */}
                 <div
@@ -121,7 +127,10 @@ export const CheckoutWindow = ({
                                 jersey10.className
                             )}
                         >
-                            {`${outputPrice} €`}
+                            {format.number(Number(outputPrice), {
+                                style: "currency",
+                                currency: "EUR",
+                            })}
                         </span>
                     </div>
 
@@ -132,7 +141,7 @@ export const CheckoutWindow = ({
                             onClick={handleBasketBtnClick}
                         >
                             {!isBasketPending 
-                                ? "🛒 Add to basket"
+                                ? `🛒 ${t("product.actions.addToBasket")}`
                                 : <CircularProgress 
                                     color="inherit"
                                     size={10}
@@ -164,7 +173,7 @@ export const CheckoutWindow = ({
                     className="w-4.5 h-4.5"
                 />
                 <span>
-                    {"back"}
+                    {t("product.actions.goBack")}
                 </span>
             </button>
         </div>

@@ -7,11 +7,12 @@ import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { cn } from "@/helpers";
 import { jersey10 } from "@/fonts/fonts";
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
-import { userFieldSchemas } from "@/auth/FormSchemes";
+import { createUserFieldSchemas } from "@/auth/FormSchemes";
 import { DecoInput } from "@/components";
 import { userApi } from "@/api/api";
 import { emailChangeErrorMessages } from "@/api/core/errorMessages";
 import { InputBtn } from "../InputBtn/InputBtn";
+import { useTranslations } from "next-intl";
 
 export const EmailForm = ({
     userId,
@@ -22,6 +23,7 @@ export const EmailForm = ({
     initialValue: string;
     placeholder?: string;
 })=> {
+    const t = useTranslations();
     const { 
         setNotification,
         setPopUpWindow
@@ -30,7 +32,7 @@ export const EmailForm = ({
     const [isPending, setIsPending] = useState(false);
 
     const isButtonDisabled = value.trim() === initialValue;
-    const schema = userFieldSchemas.email;
+    const schema = createUserFieldSchemas(t).email;
 
     const updateUserParam = async ()=> {
         setIsPending(true);
@@ -52,7 +54,7 @@ export const EmailForm = ({
 
             setNotification({
                 status: "success",
-                text: "A verification code was sent to your new email"
+                text: t("profile.personalInfo.email.verificationSent")
             });
 
             setPopUpWindow("VerifyCodeWindow");
@@ -62,6 +64,7 @@ export const EmailForm = ({
                 status: "error",
                 text: getApiErrorMessage(
                     error,
+                    t,
                     emailChangeErrorMessages
                 )
             });
@@ -85,7 +88,7 @@ export const EmailForm = ({
                     jersey10.className
                 )}
             >
-                Email
+                {t("profile.personalInfo.email.label")}
             </label>
 
             <div className="flex items-center gap-2">

@@ -5,6 +5,7 @@ import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
 import { logoutErrorMessages } from "@/api/core/errorMessages";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 
 export const useLogout = (
@@ -12,6 +13,7 @@ export const useLogout = (
 )=> {
     const [pending, setPending] = useState(false);
     const router = useRouter();
+    const t = useTranslations();
 
     const { 
         setAuthStatus, 
@@ -30,7 +32,7 @@ export const useLogout = (
                 mutateUser();
                 setNotification({ 
                     status: "success", 
-                    text: "Succefully logged out" 
+                    text: t("notifications.logout.success") 
                 });
     
                 setPending(false);
@@ -43,6 +45,7 @@ export const useLogout = (
             } catch (error) {
                 const message = getApiErrorMessage(
                     error,
+                    t,
                     logoutErrorMessages
                 ); 
     

@@ -1,9 +1,11 @@
 @reference "tailwindcss";
 
+// Below `md` the burger menu takes over.
 .nav_container {
     @apply flex 
         place-content-center 
-        h-fit;
+        h-fit
+        max-md:hidden;
 }
 
 .nav_list {

@@ -14,13 +14,16 @@ import { Input } from "@/components/inputs/Input/Input";
 import { inputType } from "@/components/inputs/Input/Input.props";
 import { FormError, FormState } from "@/auth/FormSchemes";
 import { registerAction } from "@/auth/actions/registerAction";
+import { useTranslations } from "next-intl";
 
 export const RegisterForm = ()=> {
+    const t = useTranslations();
+
     const registerForms = [
-        { label: "Full name", name: "full_name", type: "text", placeholder: "Alex Drobysz" },
-        { label: "Email", name: "email", type: "email", placeholder: "your_email@example.com" },
-        { label: "Address (optional)", name: "address", type: "text", placeholder: "15 rue de Republic, City, Postal code, Country" },
-        { label: "Password", name: "password", type: "password", placeholder: "Test123!" },
+        { label: t("auth.fields.fullName"), name: "full_name", type: "text", placeholder: "Alex Drobysz" },
+        { label: t("auth.fields.email"), name: "email", type: "email", placeholder: "your_email@example.com" },
+        { label: t("auth.fields.address"), name: "address", type: "text", placeholder: t("auth.fields.addressPlaceholder") },
+        { label: t("auth.fields.password"), name: "password", type: "password", placeholder: "Test123!" },
     ];
     
     const { 
@@ -48,7 +51,7 @@ export const RegisterForm = ()=> {
 
     const [state, action, pending] = 
         useActionState<FormState, FormData>(
-            registerAction, 
+            registerAction.bind(null, t), 
             { errors: {} }
         );
     
@@ -73,12 +76,12 @@ export const RegisterForm = ()=> {
                     s.title,
                     tinyFive.className
                 )}>
-                    Registration
+                    {t("auth.register.title")}
                 </h2>
                 <div className={s.input_list}>
                     {registerForms.map((form, idx)=>
                         <Input
-                            key={`input-${form.label}-${idx}`}
+                            key={`input-${form.name}-${idx}`}
                             type={form.type as inputType}
                             placeholder={form.placeholder}
                             label={form.label}

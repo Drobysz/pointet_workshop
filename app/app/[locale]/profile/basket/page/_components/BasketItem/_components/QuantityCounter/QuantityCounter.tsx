@@ -1,10 +1,12 @@
 "use client";
 
+import { SlidingNumber } from "@/components/animations/SlidingNumber/SlidingNumber";
 import s from "./style.module.scss";
 import {
     Minus,
     Plus
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export const QuantityCounter = ({
     maxQuantity,
@@ -15,6 +17,8 @@ export const QuantityCounter = ({
     quantity: number;
     setQuantity: (quantity: number) => void;
 })=> {
+    const t = useTranslations("basket.item");
+
     const addQuantity = ()=> {
         setQuantity(Math.min(maxQuantity, quantity + 1));
     };
@@ -27,6 +31,7 @@ export const QuantityCounter = ({
         <div className={s.counter}>
             <button 
                 className={s.counter__btn}
+                aria-label={t("decreaseQuantity")}
                 onClick={removeQuantity}
             >
                 <span className={s.counter__btn_centralize}>
@@ -37,11 +42,14 @@ export const QuantityCounter = ({
             </button>
 
             <span className={s.counter__number}>
-                {quantity}
+                <SlidingNumber
+                    value={quantity}
+                />
             </span>
 
             <button 
                 className={s.counter__btn}
+                aria-label={t("increaseQuantity")}
                 onClick={addQuantity}
             >
                 <span className={s.counter__btn_centralize}>

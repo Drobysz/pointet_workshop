@@ -1,9 +1,9 @@
-import { TabListType } from "@/components/other/NavBar/types";
+import { TabListType } from "@/components/navigation/NavBar/types";
 
 export class PathService {
     static getPageActivity(path: string, href?: string, list?: TabListType[]) {
-        const pathPoints = path.split('/');
-        const tabList = list ? list?.map(tab=> tab.href) : [href];
+        const pathPoints = (path.split("?")[0]).split('/');
+        const tabList = list && list.length > 0 ? list?.map(tab=> tab.href) : [href];
 
         for (const tabHref of tabList) {
             const tabHrefPoints = tabHref?.split('/') ?? [];

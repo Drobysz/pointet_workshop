@@ -2,9 +2,8 @@ import {
     Hero,
     ScrollGallery,
     ThreeDGlassGallery,
-    FurnitureGallery,
+    OutfitGallery,
     Categories,
-    ProfileSection,
 } from "./_sections"
 
 export const PageView = ()=> {
@@ -13,9 +12,8 @@ export const PageView = ()=> {
             <Hero />
             <ScrollGallery />
             <ThreeDGlassGallery />
-            <FurnitureGallery />
+            <OutfitGallery />
             <Categories />
-            <ProfileSection />
             {/* <div className="h-[50vh]"/> */}
         </div>
     )

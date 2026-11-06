@@ -1,0 +1,71 @@
+@reference "tailwindcss";
+
+// Mirrors the category cards it sits next to.
+.trigger {
+    @apply lg:hidden
+        flex
+        items-center
+        gap-2
+        shrink-0
+        h-10
+        px-3
+        rounded-xl
+        border border-transparent
+        bg-linear-to-tl
+        from-gray-200
+        to-gray-300
+        text-zinc-500
+        active:scale-96;
+
+    transition: scale 0.2s ease;
+
+    &__icon {
+        @apply w-5 h-5;
+    }
+
+    &__title {
+        @apply text-2xl
+            bg-clip-text
+            text-transparent
+            bg-linear-to-t
+            from-zinc-300
+            to-zinc-600;
+    }
+}
+
+.sheet {
+    @apply lg:hidden
+        gap-5
+        px-4 pt-3 pb-8;
+
+    // Drag-handle affordance of a bottom sheet.
+    &::before {
+        @apply content-['']
+            shrink-0
+            self-center
+            w-10 h-1
+            rounded-full
+            bg-gray-300;
+    }
+
+    &__header {
+        @apply flex
+            items-center
+            justify-between;
+    }
+
+    &__title {
+        @apply text-4xl
+            text-zinc-500;
+    }
+
+    &__close {
+        @apply p-2
+            rounded-full
+            bg-gray-200/70
+            text-red-800
+            active:scale-95;
+
+        transition: scale 0.2s ease-in;
+    }
+}

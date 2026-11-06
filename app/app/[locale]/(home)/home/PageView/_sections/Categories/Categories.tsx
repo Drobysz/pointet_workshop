@@ -2,6 +2,7 @@ import { GridContainer } from "@/components"
 import s from "./style.module.scss";
 import { cn } from "@/helpers";
 import { sixCaps } from "@/fonts/fonts";
+import { useTranslations } from "next-intl";
 import {
     BagCard,
     FurnitureCard,
@@ -9,7 +10,7 @@ import {
 } from "./cards";
 
 export const Categories = ()=> {
-
+    const t = useTranslations("home.categories");
 
     return (
         <GridContainer
@@ -21,7 +22,7 @@ export const Categories = ()=> {
                     sixCaps.className
                 )}
             >
-                What to see next?
+                {t("title")}
             </h2>
             <nav
                 className={s.card_list}

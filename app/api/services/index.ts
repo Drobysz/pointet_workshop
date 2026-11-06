@@ -6,3 +6,4 @@ export * from "./OrdersApi";
 export * from "./PreorderApi";
 export * from "./StripeApi";
 export * from "./UserApi";
+export * from "./SellerApi";

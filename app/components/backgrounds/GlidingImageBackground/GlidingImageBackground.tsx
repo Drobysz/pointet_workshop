@@ -53,7 +53,7 @@ export const GlidingImageBackground = ({
                         // height={1200}
                         sizes="100vw"
                         fill
-                        alt="sliding background image"
+                        alt=""
                     />
                 }
             </motion.div>

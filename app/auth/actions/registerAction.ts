@@ -1,12 +1,17 @@
 import z from "zod";
-import { FormState, RegisterFormScheme } from "../FormSchemes";
+import { FormState, createRegisterFormScheme } from "../FormSchemes";
 import { authApi } from "@/api/api";
 import { RegisterRequest } from "@/api/types/auth";
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
 import { registerErrorMessages } from "@/api/core/errorMessages";
+import type { AppTranslator } from "@/i18n/types";
 
-export async function registerAction (_: FormState, formData: FormData) {
-    const parsed = RegisterFormScheme.safeParse({
+export async function registerAction (
+    t: AppTranslator,
+    _: FormState,
+    formData: FormData
+) {
+    const parsed = createRegisterFormScheme(t).safeParse({
         full_name: formData.get("full_name"),
         email: formData.get("email"),
         address: formData.get("address"),
@@ -40,6 +45,7 @@ export async function registerAction (_: FormState, formData: FormData) {
     } catch (error) {
         const message = getApiErrorMessage(
             error,
+            t,
             registerErrorMessages,
         );
 
@@ -52,12 +58,12 @@ export async function registerAction (_: FormState, formData: FormData) {
     if (!response.status) {
         return {
             success: false,
-            message: "Password already exists"
+            message: t("auth.register.failed")
         }
     }
 
     return { 
         success : true,
-        message : "Verification link was sent to your email."
+        message : t("auth.register.success")
     };
 };

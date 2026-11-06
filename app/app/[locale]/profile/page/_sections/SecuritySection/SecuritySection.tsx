@@ -11,16 +11,20 @@ import { CircularProgress } from "@mui/material";
 import { DecoInput, MainBtn } from "@/components";
 import { updatePassword } from "@/auth/actions/updatePasswordAction";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
+import { useTranslations } from "next-intl";
 
 export const SecuritySection = ({
     userId
 }: {
     userId: Id;
 })=> {
+    const rootT = useTranslations();
+    const t = useTranslations("profile.security");
     const { setNotification } = useContext(GlobalContext);
 
     const updatePasswordWithUserId = updatePassword.bind(
         null,
+        rootT,
         userId,
     );
 
@@ -45,21 +49,21 @@ export const SecuritySection = ({
     return (
         <div className="flex flex-col gap-4 max-w-200 w-full">
             <FormSectionTitle>
-                Security
+                {t("title")}
             </FormSectionTitle>
 
             <form 
-                className="flex items-end gap-6"
+                className="flex items-end gap-6 max-md:flex-col max-md:items-stretch max-md:gap-4"
                 action={action}
             >
-                <div className="flex gap-4">
+                <div className="flex gap-4 max-md:flex-col">
                     <div className="flex flex-col gap-1">
                         <label className={cn(
                             jersey10.className,
                             "text-xl pl-1.5 flex gap-3 text-zinc-500"
                         )}>
                             <span>
-                                Current password
+                                {t("currentPassword")}
                             </span>
                             {state.errors?.current_password &&
                                 <span className="text-red-500">
@@ -82,7 +86,7 @@ export const SecuritySection = ({
                             "text-xl pl-1.5 flex gap-3 text-zinc-500"
                         )}>
                             <span>
-                                New password
+                                {t("newPassword")}
                             </span>
                             {state.errors?.new_password &&
                                 <span className="text-red-500">
@@ -109,7 +113,7 @@ export const SecuritySection = ({
                             size={10} 
                             color="inherit" 
                         />
-                        : "Update password"}
+                        : t("submit")}
                 </MainBtn>
             </form>
         </div>

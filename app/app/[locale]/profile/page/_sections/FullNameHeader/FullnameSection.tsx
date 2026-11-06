@@ -15,6 +15,7 @@ import { userApi } from "@/api/api";
 import { Id } from "@/api/types/api";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
+import { useTranslations } from "next-intl";
 
 export const FullnameSection = ({
     full_name,
@@ -23,6 +24,7 @@ export const FullnameSection = ({
     full_name: string;
     userId: Id;
 })=> {
+    const t = useTranslations();
     const { setNotification, mutateUser } = useContext(GlobalContext);
     const inputRef = useRef< HTMLInputElement | null>(null);
     const [value, setValue] = useState(full_name);
@@ -55,12 +57,12 @@ export const FullnameSection = ({
 
             setNotification({
                 status: "success",
-                text: "User fullname was updated"
+                text: t("profile.fullName.updated")
             });
         } catch (error) {
             setNotification({
                 status: "error",
-                text: getApiErrorMessage(error)
+                text: getApiErrorMessage(error, t)
             });
         }
     };
@@ -95,6 +97,7 @@ export const FullnameSection = ({
                         ref={inputRef}
                         type="text"
                         value={value}
+                        aria-label={t("profile.fullName.inputLabel")}
 
                         onChange={handleInputChange}
                         onMouseDown={handleInputMouseDown}
@@ -119,7 +122,7 @@ export const FullnameSection = ({
                         type="submit"
                         disabled={isButtonDisabled}
                     >
-                        Save
+                        {t("common.actions.save")}
                     </button>
                 }
             </form>

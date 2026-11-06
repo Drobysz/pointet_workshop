@@ -14,7 +14,7 @@ export interface Object3DProps {
     id?: string;
     className?: string;
     style?: CSSProperties;
-    /** Localize the accessible object description when needed. */
+    /** Text overrides; by default all three come from the `home.objects` messages. */
     label?: string;
     instructions?: string;
     fallbackText?: string;

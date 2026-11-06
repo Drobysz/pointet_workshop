@@ -1,6 +1,6 @@
 "use client";
 
-import { ActiveQuantityTag, MainBtn } from "@/components";
+import { MainBtn } from "@/components";
 import s from "./style.module.scss";
 import {
     ProfileIcon,
@@ -14,61 +14,74 @@ import {
     Package,
     Handbag,
 } from "lucide-react";
-import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export const Profile = ()=> {
     const {
         user,
         userError,
         isUserLoading,
-        authStatus,
+        basketList,
+        preOrdersList,
         setPopUpWindow
     } = useContext(GlobalContext);
+    const t = useTranslations("navigation");
 
     const handleSignUpClick = ()=> {
         setPopUpWindow("LoginForm");
     }
 
+    const basketQuantity = (basketList ?? [])
+        .reduce((acc, val) => acc + val.quantity, 0);
+
+    const preOrderQuantity = preOrdersList?.length ?? 0;
+
     return (
         <div
             className={s.profile_section}
         >
-            {authStatus === "unauthenficated" && (
-                <div className={s.non_auth_navigation}>
-                    <LangaugeOption />
-                    <ProfileNavOption 
-                        href="/profile/orders"
-                        quantity={3}
-                    >
-                        <Package />
-                    </ProfileNavOption>
-
-                    <ProfileNavOption 
-                        href="/profile/basket"
-                        quantity={3}
-                    >
-                         <Handbag />
-                    </ProfileNavOption>
-                </div>
-            )}
-            {(user && !userError) &&
-                <ProfileIcon />
-            }
-            {isUserLoading && 
-                <Skeleton 
-                    variant="circular"
-                    height={40}
-                    width={40}
-                    animation="wave"
+            <div className={s.non_auth_navigation}>
+                <LangaugeOption 
+                    className={s.desktop_only}
                 />
-            }
-            {(!user || userError || isUserLoading) &&
-                <MainBtn
-                    onClick={handleSignUpClick}
+                <ProfileNavOption 
+                    className={s.desktop_only}
+                    href="/profile/preorders"
+                    label={t("header.preordersLabel", { count: preOrderQuantity })}
+                    quantity={preOrderQuantity}
                 >
-                    Sign Up
-                </MainBtn>
-            }
+                    <Package />
+                </ProfileNavOption>
+
+                <ProfileNavOption 
+                    href="/profile/basket"
+                    label={t("header.basketLabel", { count: basketQuantity })}
+                    key={`profile-basket-qntty-${basketQuantity}`}
+                    quantity={basketQuantity}
+                >
+                        <Handbag />
+                </ProfileNavOption>
+            </div>
+            <div className={s.account}>
+                {(user && !userError) &&
+                    <ProfileIcon />
+                }
+                {isUserLoading && 
+                    <Skeleton 
+                        variant="circular"
+                        height={40}
+                        width={40}
+                        animation="wave"
+                    />
+                }
+                {(!user || userError || isUserLoading) &&
+                    <MainBtn
+                        onClick={handleSignUpClick}
+                    >
+                        {t("account.signUp")}
+                    </MainBtn>
+                }
+            </div>
         </div>
     )
 }

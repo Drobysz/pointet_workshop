@@ -6,11 +6,13 @@ export type DecoInputType
     = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
 export const DecoInput = ({className, ...props}: DecoInputType)=> {
+    const isCheckbox = props.type === "checkbox" || props.type === "radio";
+
     return (
         <input
             className={cn(
                 className, 
-                s.input
+                !isCheckbox && s.input
             )}
             {...props}
         />

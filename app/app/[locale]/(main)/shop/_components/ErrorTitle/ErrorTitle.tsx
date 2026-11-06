@@ -9,14 +9,14 @@ export const ErrorTitle = ({
 })=> {
     return (
         <div className="h-[20vh] flex items-center justify-center">
-            <h1
+            <h2
                 className={cn(
                     jersey10.className,
                     "text-5xl text-zinc-600"
                 )}
             >
                 {children}
-            </h1>
+            </h2>
         </div>
     )
 }

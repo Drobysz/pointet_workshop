@@ -8,8 +8,10 @@ import { cn } from "@/helpers";
 import ProfileMenu from "./ProfileMenu/ProfileMenu";
 import { AnimatePresence } from "framer-motion";
 import { useDismiss } from "@/hooks/useDismiss";
+import { useTranslations } from "next-intl";
 
 export const ProfileIcon = ()=> {
+    const t = useTranslations("navigation.account");
     const [hover, setHover] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const popupId = useId();
@@ -34,7 +36,7 @@ export const ProfileIcon = ()=> {
                 aria-haspopup="menu"
                 aria-expanded={isOpen}
                 aria-controls={popupId}
-                aria-label="Profile menu"
+                aria-label={t("menuLabel")}
 
             >
                 <UserRound

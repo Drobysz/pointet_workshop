@@ -1,3 +1,12 @@
 @reference "tailwindcss";
 
-
+.payment_confirmation {
+    @apply px-5 py-16 
+        h-screen
+        flex 
+        justify-center 
+        items-center 
+        flex-col 
+        gap-2
+        text-center;
+}

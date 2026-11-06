@@ -1,0 +1,24 @@
+@reference "tailwindcss";
+
+.frame {
+    @apply absolute inset-x-0;
+    // Reserve room for the near edge to grow under perspective.
+    inset-block: clamp(0.5rem, 4cqw, 2.5rem);
+    backface-visibility: hidden;
+}
+
+.image {
+    @apply object-cover;
+    object-position: center 35%;
+    filter: var(--curve);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .frame {
+        @apply inset-0 transform-none!;
+    }
+
+    .image {
+        @apply filter-none;
+    }
+}

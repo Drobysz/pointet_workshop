@@ -3,6 +3,7 @@ import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
 import { refreshErrorMessages } from "@/api/core/errorMessages";
 import { AppNotification, AuthStatus } from "@/app/[locale]/context/global.interface";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { Dispatch, SetStateAction, useEffect } from "react";
 
 export const useVerifyToken = (
@@ -11,6 +12,7 @@ export const useVerifyToken = (
     setAuthStatus: Dispatch<SetStateAction<AuthStatus>>,
 )=> {
     const router = useRouter();
+    const t = useTranslations();
 
     return (
        useEffect(()=> {
@@ -25,19 +27,20 @@ export const useVerifyToken = (
                     if (!data.authenticated) {
                         setNotification({
                             status: "alert",
-                            text: "Token didn't work."
+                            text: t("notifications.emailVerification.tokenRejected")
                         });
                     };
     
                     setAuthStatus("authenficated");
                     setNotification({
                         status: "success",
-                        text: "Succesfully registered"
+                        text: t("notifications.emailVerification.success")
                     });
                     router.replace("/home");
                 } catch (error) {
                     const message = getApiErrorMessage(
                         error,
+                        t,
                         refreshErrorMessages,
                     );
                     
@@ -49,6 +52,6 @@ export const useVerifyToken = (
             }
     
             verifyUserAuthStatus();
-        }, [token, router, setAuthStatus, setNotification])
+        }, [token, router, t, setAuthStatus, setNotification])
     )
 }

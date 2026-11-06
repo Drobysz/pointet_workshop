@@ -4,6 +4,7 @@ import { BtnPending, MainBtn } from "@/components";
 import { tinyFive } from "@/fonts/fonts";
 import { cn } from "@/helpers";
 import s from "./style.module.scss";
+import { useTranslations } from "next-intl";
 
 export const InputBtn = ({
     buttonDisabled,
@@ -12,6 +13,8 @@ export const InputBtn = ({
     buttonDisabled: boolean;
     pending: boolean;
 })=> {
+    const t = useTranslations("profile.personalInfo");
+
     return (
         <MainBtn
             disabled={buttonDisabled}
@@ -25,7 +28,7 @@ export const InputBtn = ({
             <BtnPending
                 pending={pending}
             >
-                Change
+                {t("change")}
             </BtnPending>
         </MainBtn>
     )

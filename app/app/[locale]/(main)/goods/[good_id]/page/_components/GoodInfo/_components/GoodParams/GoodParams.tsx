@@ -1,4 +1,5 @@
 import { Good } from "@/api/types/goods"
+import { useTranslations } from "next-intl";
 import s from "./style.module.scss";
 
 function stringifyParams(
@@ -16,29 +17,31 @@ export const GoodParams = ({
 }: {
     good: Good;
 })=> {
-    const params = {
-        "item number": good.id,
-        "weigh": good.weigh,
-        "brand": good.brand,
-        "subcategory": good.subcategory.name,
-        "materials": good.materials.map(m => m.name)
-    };
+    const t = useTranslations("product.params");
+
+    const params = [
+        { labelKey: "itemNumber", value: good.id },
+        { labelKey: "weight", value: good.weigh },
+        { labelKey: "brand", value: good.brand },
+        { labelKey: "subcategory", value: good.subcategory.name },
+        { labelKey: "materials", value: good.materials.map(m => m.name) },
+    ] as const;
 
     return (
         <ul className={s.params_list}>
-            {Object.entries(params).map(([k, v])=>
+            {params.map(({ labelKey, value })=>
                 <li
-                    key={`${good.name}-${k}`}
+                    key={`${good.name}-${labelKey}`}
                     className={s.param}
                 >
                     <span className={s.param__key}>
-                        {k}
+                        {t(labelKey)}
                     </span>
                     <div 
                         className={s.param__line}
                     />
                     <span className={s.param__value}>
-                        {stringifyParams(v)}
+                        {stringifyParams(value)}
                     </span>
                 </li>
             )}

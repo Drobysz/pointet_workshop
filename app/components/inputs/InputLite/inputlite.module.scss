@@ -4,7 +4,9 @@
     @apply flex 
         flex-col 
         gap-2 
-        shrink-0;
+        shrink-0
+        focus:outline-none
+        focus:ring-0;
 }
 
 .label {
@@ -16,16 +18,48 @@
 }
 
 .input_container {
-    @apply rounded-md
+    @apply rounded-xl
         text-sm
-        border 
+        border
+        font-bold
+        focus:text-red-800
+        placeholder:text-zinc-500
         border-gray-300
         px-4 py-3 w-full 
         bg-white/70
         focus:bg-white
         focus:ring-2
-        focus:ring-zinc-500
+        focus:ring-red-300/50
+        focus:border-red-500
         focus:outline-0 
         focus:ring-offset-2 
         focus:ring-offset-white;
+}
+
+.textarea {
+    @apply resize-y;
+}
+
+.checkbox_container {
+    @apply flex
+        flex-row
+        items-center
+        gap-2;
+
+    .label {
+        @apply pl-0;
+    }
+}
+
+.checkbox {
+    @apply order-first 
+        size-5 shrink-0
+        accent-red-300
+        cursor-pointer
+        bg-white/90;
+}
+
+.error {
+    @apply text-sm 
+        text-red-600;
 }

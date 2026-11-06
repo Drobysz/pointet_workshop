@@ -1,3 +1,561 @@
 {
-    "": ""
+    "common": {
+        "actions": {
+            "close": "Schließen",
+            "cancel": "Abbrechen",
+            "confirm": "Bestätigen",
+            "save": "Speichern",
+            "edit": "Bearbeiten",
+            "delete": "Löschen",
+            "remove": "Entfernen",
+            "retry": "Erneut versuchen",
+            "back": "Zurück",
+            "continue": "Weiter",
+            "submit": "Absenden",
+            "send": "Senden",
+            "search": "Suchen",
+            "apply": "Anwenden",
+            "reset": "Zurücksetzen"
+        },
+        "states": {
+            "loading": "Wird geladen…",
+            "sending": "Wird gesendet…",
+            "loadFailed": "Laden fehlgeschlagen"
+        },
+        "password": {
+            "show": "Passwort anzeigen",
+            "hide": "Passwort verbergen"
+        }
+    },
+    "navigation": {
+        "pages": {
+            "about": "Über uns",
+            "shop": "Shop",
+            "sellers": "Für Verkäufer"
+        },
+        "header": {
+            "mainLabel": "Hauptnavigation",
+            "logoLabel": "Pointet – Startseite",
+            "preordersLabel": "Vorbestellungen ({count})",
+            "basketLabel": "Warenkorb ({count})"
+        },
+        "mobileMenu": {
+            "open": "Menü öffnen",
+            "close": "Menü schließen",
+            "label": "Website-Menü"
+        },
+        "account": {
+            "menuLabel": "Profilmenü",
+            "sectionLabel": "Konto",
+            "profile": "Mein Profil",
+            "preorders": "Meine Vorbestellungen",
+            "basket": "Mein Warenkorb",
+            "signUp": "Registrieren",
+            "logOut": "Abmelden"
+        },
+        "footer": {
+            "columns": {
+                "support": "Support",
+                "navigation": "Navigation",
+                "social": "Social Media"
+            },
+            "links": {
+                "privacyPolicy": "Datenschutzerklärung"
+            },
+            "legal": {
+                "privacyPolicy": "Datenschutzerklärung",
+                "cookiesPolicy": "Cookie-Richtlinie"
+            },
+            "developedBy": "Entwickelt von <link>Drobysz</link>"
+        }
+    },
+    "home": {
+        "hero": {
+            "tagline": "Ein Marktplatz\neigens für\nkleine Marken",
+            "bagAlt": "Handtasche im Titelbereich",
+            "shelfAlt": "Präsentationsregal"
+        },
+        "scrollGallery": {
+            "title": "kleine Marken\naus der EU\nvereint\nan einem Ort",
+            "imageAlt": "Bewegtes Bild"
+        },
+        "objectGallery": {
+            "curatedTitle": "Entdecke das Unerwartete.",
+            "bagsTitle": "Taschen",
+            "clothingTitle": "Kleidung"
+        },
+        "objects": {
+            "labels": {
+                "curated": "Kuratierte Objekte: eine rot lackierte Halbmond-Handtasche, ein weißes Satinkorsett und ein gedrehter goldener Armreif",
+                "bag": "Skulpturale, spiegelpolierte silberne Handtasche mit integriertem ovalem Griff",
+                "dress": "Satin-Slipkleid mit Herzausschnitt und fließendem, in tiefe Falten gelegtem Rock"
+            },
+            "instructions": "Zum Drehen ziehen. Auf Touchscreens seitlich wischen, um zu drehen, oder vertikal, um zu scrollen. Mit den Pfeiltasten drehen, mit Pos1 zurücksetzen.",
+            "unavailable": "Die interaktive 3D-Ansicht ist auf diesem Gerät nicht verfügbar."
+        },
+        "outfitGallery": {
+            "title": "Kreiere deinen Look mit europäischen Marken",
+            "imageAlt": "Outfit-Inspiration {number}"
+        },
+        "categories": {
+            "title": "Wohin als Nächstes?",
+            "shop": {
+                "title": "Shop",
+                "description": "Lerne lokale europäische Marken kennen und stelle dein neues Outfit zusammen",
+                "toteAlt": "Weiße Tragetasche",
+                "handbagAlt": "Gesteppte Handtasche"
+            },
+            "telegram": {
+                "title": "Abonniere unseren Telegram-Kanal",
+                "description": "Folge unserem Telegram-Kanal, um Neuigkeiten zu unserem Service zu erhalten und neue lokale Marken zu entdecken.",
+                "logoAlt": "Telegram-Logo",
+                "megaphoneAlt": "Megafon",
+                "newspaperAlt": "Zeitung"
+            },
+            "sellers": {
+                "title": "Jetzt auf Pointet verkaufen",
+                "description": "Du bist eine junge, lokale Modemarke? Dann heißen wir dich herzlich willkommen. Gestalte deine Zukunft mit uns!",
+                "pencilsAlt": "Bleistifte",
+                "rulersAlt": "Lineale"
+            }
+        }
+    },
+    "catalog": {
+        "heading": "Unabhängige europäische Marken shoppen",
+        "states": {
+            "empty": "Keine Artikel verfügbar"
+        },
+        "search": {
+            "placeholder": "Finde deinen Artikel",
+            "inputLabel": "Artikel suchen"
+        },
+        "categories": {
+            "currentBadge": "Aktuelle Kategorie",
+            "iconAlt": "Kategoriesymbol"
+        },
+        "filters": {
+            "title": "Filter",
+            "sheetLabel": "Katalogfilter",
+            "closeLabel": "Filter schließen"
+        },
+        "priceRange": {
+            "minLabel": "Mindestpreis",
+            "maxLabel": "Höchstpreis"
+        },
+        "pagination": {
+            "previousLabel": "Vorherige Seite",
+            "nextLabel": "Nächste Seite"
+        }
+    },
+    "product": {
+        "actions": {
+            "addToBasket": "In den Warenkorb",
+            "goBack": "zurück"
+        },
+        "notifications": {
+            "chooseSizeAndQuantity": "Bitte wähle Größe und Menge!",
+            "addedToBasket": "Dein Artikel „{name}…“ wurde in den Warenkorb gelegt"
+        },
+        "params": {
+            "itemNumber": "Artikelnummer",
+            "weight": "Gewicht",
+            "brand": "Marke",
+            "subcategory": "Unterkategorie",
+            "materials": "Materialien"
+        },
+        "quantity": {
+            "decreaseLabel": "Menge verringern",
+            "increaseLabel": "Menge erhöhen"
+        }
+    },
+    "basket": {
+        "header": {
+            "title": "Artikel",
+            "count": "{count, plural, one {# Artikel} other {# Artikel}}"
+        },
+        "item": {
+            "imageAlt": "Bild von {name}",
+            "openProduct": "Artikelseite öffnen",
+            "remove": "Aus dem Warenkorb entfernen",
+            "decreaseQuantity": "Menge verringern",
+            "increaseQuantity": "Menge erhöhen"
+        },
+        "summary": {
+            "total": "Gesamt:"
+        },
+        "states": {
+            "empty": "Dein Warenkorb ist leer"
+        }
+    },
+    "checkout": {
+        "button": {
+            "preorder": "Für 1 € vorbestellen",
+            "emailRequired": "E-Mail eingeben, um für 1 € vorzubestellen"
+        },
+        "disclosure": "Dies ist lediglich eine Vorbestellung für 1 €. Aktuell sammeln wir Vorbestellungen. Den symbolischen Preis von 1 Euro haben wir festgelegt, um Interessierte zu finden, die später auch wirklich bestellen möchten. Sobald die Artikel im Lager eintreffen, benachrichtigen wir dich.",
+        "email": {
+            "label": "E-Mail"
+        },
+        "notifications": {
+            "paymentFailed": "Zahlung fehlgeschlagen",
+            "checkoutCreationFailed": "Zahlungsseite konnte nicht erstellt werden",
+            "basketNotCleared": "Deine Zahlung wurde bestätigt, aber der Warenkorb konnte nicht geleert werden. Bitte lade die Seite neu und versuche es erneut."
+        },
+        "status": {
+            "pending": {
+                "title": "Zahlung eingegangen – wird jetzt bestätigt",
+                "body": "Stripe verarbeitet die Bestätigung. Lass diese Seite geöffnet; sie aktualisiert sich automatisch."
+            },
+            "paid": {
+                "title": "Deine Vorbestellung für 1 € ist bestätigt",
+                "body": "Vielen Dank. Wir melden uns bei dir, sobald dieser Artikel verfügbar ist."
+            },
+            "failed": {
+                "title": "Zahlung wurde nicht abgeschlossen",
+                "body": "Es wurde keine Vorbestellung bestätigt. Du kannst zum Warenkorb zurückkehren und es erneut versuchen."
+            },
+            "canceled": {
+                "title": "Zahlung wurde abgebrochen",
+                "body": "Es wurde keine Vorbestellung bestätigt. Du kannst zum Warenkorb zurückkehren und es erneut versuchen."
+            },
+            "refunded": {
+                "title": "Diese Vorbestellung wurde erstattet",
+                "body": "Die Zahlung ist nicht mehr aktiv."
+            }
+        },
+        "result": {
+            "unverified": {
+                "title": "Wir konnten diese Zahlung nicht überprüfen",
+                "body": "Bitte melde dich mit dem bei der Zahlung verwendeten Konto an und versuche es erneut."
+            },
+            "missingSession": {
+                "title": "Zahlungssitzung fehlt",
+                "body": "Kehre zum Warenkorb zurück und starte die Vorbestellung erneut."
+            },
+            "viewPreorders": "Zu deinen Vorbestellungen"
+        }
+    },
+    "preorders": {
+        "list": {
+            "empty": "Du hast keine Vorbestellungen",
+            "loadFailed": "Vorbestellungen konnten nicht geladen werden",
+            "purchasedAt": "<muted>Gekauft:</muted> <value>{date}</value> <muted>um</muted> <value>{time}</value>",
+            "quantity": "Menge: {count}",
+            "total": "Gesamt: {price}"
+        },
+        "fields": {
+            "number": "Vorbestellung Nr.:",
+            "quantity": "Menge:",
+            "price": "Preis:",
+            "preorderPrice": "Vorbestellpreis:"
+        },
+        "item": {
+            "imageAlt": "Bild von {name}"
+        },
+        "status": {
+            "pending": "Ausstehend",
+            "paid": "Bezahlt",
+            "failed": "Fehlgeschlagen",
+            "canceled": "Storniert",
+            "refunded": "Erstattet"
+        }
+    },
+    "profile": {
+        "navigation": {
+            "profile": "Profil",
+            "preorders": "Vorbestellungen",
+            "basket": "Warenkorb"
+        },
+        "page": {
+            "loadFailed": "Seite konnte nicht geladen werden",
+            "notLoggedIn": "Du bist nicht angemeldet",
+            "redirectedNotice": "Du wurdest weitergeleitet, da du nicht angemeldet bist."
+        },
+        "fullName": {
+            "inputLabel": "Vollständiger Name",
+            "updated": "Vollständiger Name wurde aktualisiert"
+        },
+        "personalInfo": {
+            "title": "Persönliche Daten",
+            "change": "Ändern",
+            "email": {
+                "label": "E-Mail",
+                "verificationSent": "Ein Bestätigungscode wurde an deine neue E-Mail-Adresse gesendet"
+            },
+            "tel": {
+                "label": "Telefonnummer",
+                "updated": "Telefonnummer wurde aktualisiert"
+            },
+            "address": {
+                "label": "Adresse",
+                "placeholder": "Straße, Stadt, PLZ, Land",
+                "updated": "Adresse wurde aktualisiert"
+            }
+        },
+        "security": {
+            "title": "Sicherheit",
+            "currentPassword": "Aktuelles Passwort",
+            "newPassword": "Neues Passwort",
+            "submit": "Passwort ändern"
+        },
+        "accountActions": {
+            "logOutTitle": "Von deinem Konto abmelden",
+            "logOut": "Abmelden",
+            "deleteTitle": "Dein Konto löschen"
+        }
+    },
+    "auth": {
+        "login": {
+            "success": "Erfolgreich angemeldet",
+            "failed": "Anmeldung fehlgeschlagen",
+            "title": "Anmeldung",
+            "submit": "Anmelden",
+            "noAccount": "Noch kein Konto? <link>Registrieren</link>"
+        },
+        "register": {
+            "success": "Ein Bestätigungslink wurde an deine E-Mail-Adresse gesendet.",
+            "failed": "Das Konto konnte nicht erstellt werden.",
+            "title": "Registrierung",
+            "submit": "Registrieren",
+            "haveAccount": "Schon ein Konto? <link>Anmelden.</link>",
+            "terms": "Ich stimme den <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzerklärung</privacy> zu"
+        },
+        "passwordChange": {
+            "success": "Passwort erfolgreich geändert"
+        },
+        "dialogLabel": "Anmeldedialog",
+        "fields": {
+            "email": "E-Mail",
+            "password": "Passwort",
+            "fullName": "Vollständiger Name",
+            "address": "Adresse (optional)",
+            "addressPlaceholder": "15 rue de Republic, Stadt, PLZ, Land"
+        },
+        "verifyEmail": {
+            "title": "Bestätigungscode eingeben",
+            "success": "E-Mail-Adresse wurde aktualisiert"
+        },
+        "deleteAccount": {
+            "title": "Bist du sicher?",
+            "description": "Wenn du dein Konto löschst, gehen alle deine aktuellen und früheren Bestellungen verloren.",
+            "success": "Konto wurde gelöscht. Tschüss!"
+        }
+    },
+    "seller": {
+        "form": {
+            "title": "Verkäuferanfrage",
+            "submit": "Kontakt aufnehmen",
+            "labels": {
+                "firstName": "Vorname",
+                "lastName": "Nachname",
+                "phone": "Telefonnummer",
+                "country": "Land",
+                "email": "E-Mail",
+                "brandName": "Markenname",
+                "companyAddress": "Firmenadresse",
+                "contactDetails": "Kontaktdaten",
+                "aboutBrand": "Über deine Marke",
+                "euResident": "Ich bin in der Europäischen Union ansässig"
+            },
+            "placeholders": {
+                "firstName": "Dein Vorname",
+                "lastName": "Dein Nachname",
+                "country": "Wohnsitzland",
+                "brandName": "Dein Markenname",
+                "companyAddress": "Straße, Stadt, PLZ und Land",
+                "contactDetails": "Wie können wir dich wegen deiner Bewerbung erreichen?",
+                "aboutBrand": "Beschreibe deine Marke und die Artikel, die du verkaufen möchtest"
+            }
+        },
+        "validation": {
+            "required": "„{field}“ ist ein Pflichtfeld",
+            "tooLong": "„{field}“ darf höchstens {max, plural, one {# Zeichen} other {# Zeichen}} enthalten",
+            "phoneInvalid": "Gib eine Telefonnummer mit 7–15 Ziffern ein, optional mit führendem +",
+            "brandDescriptionField": "Markenbeschreibung"
+        },
+        "submission": {
+            "success": "Deine Bewerbung als Verkäufer wurde eingereicht.",
+            "checkFields": "Bitte überprüfe die Felder deiner Bewerbung.",
+            "failed": "Deine Bewerbung konnte nicht gesendet werden. Bitte versuche es erneut.",
+            "sentFallback": "Anfrage wurde erfolgreich gesendet",
+            "failedFallback": "Anfrage konnte nicht gesendet werden"
+        }
+    },
+    "docs": {
+        "navigation": {
+            "title": "Kategorien",
+            "privacyPolicy": "Datenschutzerklärung",
+            "cookiesPolicy": "Cookie-Richtlinie"
+        }
+    },
+    "notifications": {
+        "logout": {
+            "success": "Erfolgreich abgemeldet"
+        },
+        "emailVerification": {
+            "tokenRejected": "Der Bestätigungslink hat nicht funktioniert.",
+            "success": "Erfolgreich registriert"
+        }
+    },
+    "ui": {
+        "scrollToTop": {
+            "label": "Nach oben scrollen"
+        },
+        "imageSlider": {
+            "previous": "Vorheriges Foto",
+            "next": "Nächstes Foto",
+            "photoAlt": "{name}, Foto {number}",
+            "photoAltFallback": "Artikelfoto {number}"
+        }
+    },
+    "languageSwitcher": {
+        "label": "Sprache",
+        "change": "Sprache ändern"
+    },
+    "notFound": {
+        "title": "Seite nicht gefunden",
+        "description": "Die gesuchte Seite ist umgezogen, ausverkauft oder hat nie existiert.",
+        "globalDescription": "Die gesuchte Seite existiert nicht.",
+        "linksLabel": "Hilfreiche Links",
+        "backHome": "Zur Startseite",
+        "openShop": "Zum Shop"
+    },
+    "validation": {
+        "emailRequired": "E-Mail ist erforderlich",
+        "emailInvalid": "Gib eine gültige E-Mail-Adresse ein",
+        "passwordRequired": "Passwort ist erforderlich",
+        "minLength": "Mindestens {count, plural, one {# Zeichen} other {# Zeichen}} erforderlich",
+        "passwordLetter": "Mindestens ein Buchstabe erforderlich",
+        "passwordNumber": "Mindestens eine Ziffer erforderlich",
+        "passwordTooLong": "Passwort ist zu lang",
+        "phoneInvalid": "Gib eine gültige Telefonnummer ein",
+        "addressFormat": "Verwende das Format: Straße, Stadt, PLZ, Land"
+    },
+    "errors": {
+        "unexpected": "Ein unerwarteter Fehler ist aufgetreten.",
+        "default": {
+            "badRequest": "Die Anfrage konnte nicht verarbeitet werden.",
+            "sessionExpired": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
+            "forbidden": "Du hast keine Berechtigung für diese Aktion.",
+            "notFound": "Die angeforderte Ressource wurde nicht gefunden.",
+            "conflict": "Die Anfrage steht im Konflikt mit dem aktuellen Stand.",
+            "tooManyRequests": "Zu viele Anfragen. Bitte versuche es später erneut.",
+            "server": "Ein Serverfehler ist aufgetreten. Bitte versuche es später erneut."
+        },
+        "register": {
+            "badRequest": "Die Registrierungsanfrage ist ungültig.",
+            "conflict": "Ein Konto mit diesen Daten existiert bereits.",
+            "invalidDetails": "Bitte überprüfe deine Registrierungsdaten.",
+            "tooManyAttempts": "Zu viele Registrierungsversuche. Bitte versuche es später erneut."
+        },
+        "verify": {
+            "badRequest": "Die Bestätigungsanfrage ist ungültig.",
+            "invalidToken": "Der Bestätigungstoken ist ungültig.",
+            "notFound": "Die Bestätigungsanfrage wurde nicht gefunden.",
+            "alreadyUsed": "Dieser Bestätigungslink wurde bereits verwendet.",
+            "expired": "Der Bestätigungslink ist ungültig oder abgelaufen.",
+            "tooManyAttempts": "Zu viele Bestätigungsversuche. Bitte versuche es später erneut."
+        },
+        "login": {
+            "badRequest": "Die Anmeldeanfrage ist ungültig.",
+            "invalidCredentials": "E-Mail oder Passwort ist falsch.",
+            "forbidden": "Du darfst dich bei diesem Konto nicht anmelden.",
+            "invalidDetails": "Bitte überprüfe deine E-Mail und dein Passwort.",
+            "tooManyAttempts": "Zu viele Anmeldeversuche. Bitte versuche es später erneut."
+        },
+        "refresh": {
+            "forbidden": "Deine Sitzung kann nicht verlängert werden."
+        },
+        "logout": {
+            "notSignedIn": "Du bist nicht mehr angemeldet.",
+            "forbidden": "Du darfst diese Aktion nicht ausführen."
+        },
+        "emailChange": {
+            "forbidden": "Du hast keine Berechtigung, diese E-Mail-Adresse zu ändern.",
+            "unavailable": "Diese E-Mail-Adresse kann nicht verwendet werden.",
+            "taken": "Diese E-Mail-Adresse ist bereits vergeben.",
+            "tooManyAttempts": "Zu viele Anfragen zur E-Mail-Änderung. Bitte versuche es später erneut.",
+            "notSent": "Die Bestätigungs-E-Mail konnte nicht gesendet werden. Bitte versuche es später erneut."
+        },
+        "emailVerification": {
+            "forbidden": "Du hast keine Berechtigung, diese E-Mail-Adresse zu bestätigen.",
+            "notFound": "Es wurde keine ausstehende E-Mail-Änderung gefunden.",
+            "invalidCode": "Der Bestätigungscode ist ungültig oder abgelaufen.",
+            "server": "Die E-Mail-Adresse konnte nicht aktualisiert werden. Bitte versuche es später erneut."
+        },
+        "passwordChange": {
+            "forbidden": "Du hast keine Berechtigung, dieses Passwort zu ändern.",
+            "userNotFound": "Der Nutzer wurde nicht gefunden.",
+            "invalid": "Das aktuelle Passwort ist falsch oder das neue Passwort ist ungültig.",
+            "tooManyAttempts": "Zu viele Versuche, das Passwort zu ändern. Bitte versuche es später erneut.",
+            "server": "Das Passwort konnte nicht geändert werden. Bitte versuche es später erneut."
+        },
+        "basket": {
+            "invalidItem": "Ungültige Daten für den Warenkorbartikel.",
+            "itemNotFound": "Der Artikel wurde im Warenkorb nicht gefunden.",
+            "get": {
+                "unauthorized": "Du musst angemeldet sein, um deinen Warenkorb zu sehen.",
+                "server": "Der Warenkorb konnte nicht geladen werden. Bitte versuche es später erneut."
+            },
+            "add": {
+                "unauthorized": "Du musst angemeldet sein, um Artikel in den Warenkorb zu legen.",
+                "notFound": "Der gewählte Artikel oder die gewählte Option wurde nicht gefunden.",
+                "conflict": "Dieser Artikel ist bereits in deinem Warenkorb.",
+                "invalidOptions": "Die gewählten Artikeloptionen oder die Menge sind ungültig.",
+                "server": "Der Artikel konnte nicht in den Warenkorb gelegt werden. Bitte versuche es später erneut."
+            },
+            "update": {
+                "unauthorized": "Du musst angemeldet sein, um deinen Warenkorb zu ändern.",
+                "forbidden": "Du darfst diesen Artikel im Warenkorb nicht ändern.",
+                "invalidOptions": "Die gewählte Menge oder die Artikeloptionen sind ungültig.",
+                "server": "Der Artikel im Warenkorb konnte nicht aktualisiert werden. Bitte versuche es später erneut."
+            },
+            "remove": {
+                "unauthorized": "Du musst angemeldet sein, um Artikel aus dem Warenkorb zu entfernen.",
+                "forbidden": "Du darfst diesen Artikel nicht aus dem Warenkorb entfernen.",
+                "server": "Der Artikel konnte nicht aus dem Warenkorb entfernt werden. Bitte versuche es später erneut."
+            }
+        }
+    },
+    "seo": {
+        "site": {
+            "tagline": "Ein Marktplatz eigens für kleine Marken",
+            "description": "Pointet Workshop ist ein Online-Marktplatz, der unabhängige Mode-, Accessoire-, Lifestyle- und Designmarken aus ganz Europa an einem Ort vereint."
+        },
+        "breadcrumbs": {
+            "home": "Startseite",
+            "shop": "Shop"
+        },
+        "notFound": {
+            "title": "Seite nicht gefunden",
+            "description": "Die gesuchte Seite existiert nicht."
+        },
+        "profile": {
+            "defaultTitle": "Konto",
+            "title": "Profil"
+        },
+        "basket": {
+            "title": "Warenkorb"
+        },
+        "preorders": {
+            "title": "Vorbestellungen"
+        },
+        "preorder": {
+            "title": "Vorbestellung Nr. {id}"
+        },
+        "orderStatus": {
+            "title": "Bestellstatus"
+        },
+        "shop": {
+            "title": "Unabhängige europäische Marken shoppen",
+            "description": "Kleidung, Taschen, Accessoires und Möbel unabhängiger europäischer Marken: nach Kategorie und Preis filtern und direkt bei Pointet Workshop bestellen oder vorbestellen."
+        },
+        "product": {
+            "fallbackDescription": "{name} von {brand}"
+        },
+        "sellers": {
+            "title": "Auf Pointet verkaufen",
+            "description": "Bewirb dich als Verkäufer bei Pointet Workshop, einem Marktplatz für unabhängige europäische Mode-, Accessoire- und Designmarken. Stell uns deine Marke vor – wir melden uns."
+        }
+    }
 }

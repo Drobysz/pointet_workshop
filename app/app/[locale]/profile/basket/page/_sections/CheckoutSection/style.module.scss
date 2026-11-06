@@ -18,13 +18,24 @@
             items-center 
             text-5xl 
             text-zinc-700
-            whitespace-nowrap;
+            whitespace-nowrap
+            leading-12
+            max-md:text-4xl
+            max-md:leading-10;
     }
     
     &__disclosure { 
         @apply text-[#52525b]
             text-sm
             leading-normal;
+    }
+
+    &__contact {
+        @apply flex flex-col gap-2 min-w-0;
+    }
+
+    .checkout_sect__emailInput {
+        @apply text-base;
     }
 
     &__preorderButton { 

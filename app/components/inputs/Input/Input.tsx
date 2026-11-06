@@ -3,7 +3,7 @@
 import cn from "classnames";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-// import { useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { InputProps } from "./Input.props";
 import s from "./input.module.scss";
 import { jersey10 } from "@/fonts/fonts";
@@ -18,7 +18,7 @@ export const Input = ({
     ...props
 }: InputProps) => {
     const [conceal, setConceal] = useState(true);
-    // const t = useTranslations("auth");
+    const t = useTranslations("common.password");
     
     let inputType = type;
     if (type === "password") {
@@ -61,7 +61,7 @@ export const Input = ({
                         type="button"
                         onClick={() => setConceal((prev) => !prev)}
                         className={s.eye}
-                        aria-label={conceal ? "show password" : "hide password"}
+                        aria-label={conceal ? t("show") : t("hide")}
                     >
                         {conceal ? <Eye size={20} /> : <EyeOff size={20} />}
                     </button>

@@ -8,8 +8,10 @@ import {
 } from '@/app/[locale]/(home)/smooth_scroll_context/SmoothScroll';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
 import { cn } from "@/helpers/cn";
+import { useTranslations } from "next-intl";
 
 export const ScrollToTopBtn = () => {
+    const t = useTranslations("ui.scrollToTop");
     const { scrollToTop } = useContext(SmoothScrollContext);
     const [isVisible, setIsVisible] = useState(false);
     const { scrollY } = useScroll();
@@ -31,6 +33,7 @@ export const ScrollToTopBtn = () => {
                     ["translate-y-full"]: !isVisible,
                 },
             )}
+            aria-label={t("label")}
             onClick={scrollToTop}
         >
             <ChevronUp 

@@ -21,7 +21,8 @@ section or an ancestor. The storefront uses these components in the home page's
 3D gallery (`ThreeDGlassGallery`).
 
 Optional props: `id`, `className`, `style`, `label`, `instructions`, `fallbackText`, and
-`idleMotion`. Translate the last three text props as appropriate. Idle motion defaults
+`idleMotion`. The three text props default to the localized `home.objects` messages
+(next-intl); pass them only to override that wording. Idle motion defaults
 to `false`; enabling it adds a slow, bounded 0.025-radian oscillation until the first
 manual interaction.
 

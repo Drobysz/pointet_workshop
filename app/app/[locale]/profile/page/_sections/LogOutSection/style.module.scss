@@ -12,6 +12,8 @@
     @apply flex
         justify-between
         content-center
+        items-center
+        gap-3
         w-full;
 
     .alert_actions_title {

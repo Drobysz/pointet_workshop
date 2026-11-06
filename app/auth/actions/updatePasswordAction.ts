@@ -1,16 +1,18 @@
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
 import { passwordChangeErrorMessages } from "@/api/core/errorMessages";
 import z from "zod";
-import { UpdatePasswordFormState, UpdatePasswordSchemes } from "../FormSchemes";
+import { UpdatePasswordFormState, createUpdatePasswordScheme } from "../FormSchemes";
 import { userApi } from "@/api/api";
 import { Id } from "@/api/types/api";
+import type { AppTranslator } from "@/i18n/types";
 
 export const updatePassword = async (
+    t: AppTranslator,
     userId: Id,
     _: UpdatePasswordFormState, 
     formData: FormData
 )=> {
-    const parsed = UpdatePasswordSchemes.safeParse({
+    const parsed = createUpdatePasswordScheme(t).safeParse({
         current_password: formData.get('current_password'),
         new_password: formData.get('new_password')
     });
@@ -36,6 +38,7 @@ export const updatePassword = async (
     } catch (error) {
         const message = getApiErrorMessage(
             error,
+            t,
             passwordChangeErrorMessages
         )
         
@@ -47,6 +50,6 @@ export const updatePassword = async (
 
     return {
         success: true,
-        message: "Password successfully changed"
+        message: t("auth.passwordChange.success")
     }
 }

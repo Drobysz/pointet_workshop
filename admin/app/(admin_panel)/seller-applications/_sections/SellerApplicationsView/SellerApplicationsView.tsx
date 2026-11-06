@@ -30,7 +30,7 @@ function ApplicationDetails({ application, onClose, onReviewed }: { application:
     } catch { setFailed(true); } finally { setPending(false); }
   }
 
-  return <Modal title={`${t("application")} #${application.id}`} onClose={onClose}>
+  return <Modal title={t("applicationTitle", { id: String(application.id) })} onClose={onClose}>
     <div className={styles.details}>
       {mode === "details" ? <>
         <dl>

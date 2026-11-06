@@ -14,11 +14,18 @@
     "notYet": "Ещё нет",
     "save": "Сохранить",
     "saving": "Сохранение…",
-    "yes": "Да"
+    "yes": "Да",
+    "fieldLabel": "{label}:"
   },
   "languages": {
     "fr": "Français",
     "ru": "Русский"
+  },
+  "metadata": {
+    "description": "Панель управления магазином",
+    "orderDetail": "Сведения о заказе",
+    "productDetail": "Сведения о товаре",
+    "userDetail": "Сведения о пользователе"
   },
   "navigation": {
     "administration": "Администрирование",
@@ -67,7 +74,14 @@
     "refunded": "Возвращён",
     "shipped": "Отправлен",
     "visible": "Виден",
-    "hidden": "Скрыт"
+    "hidden": "Скрыт",
+    "approved": "Одобрена",
+    "canceled": "Отменён",
+    "declined": "Отклонена",
+    "failed": "Ошибка оплаты",
+    "paid": "Оплачен",
+    "reported": "Жалоба",
+    "sent": "Отправлен"
   },
   "login": {
     "adminOnly": "У этой учётной записи нет прав администратора.",
@@ -110,7 +124,8 @@
     "title": "Панель управления",
     "topProducts": "Лучшие товары",
     "units": "{count, plural, one {# единица} few {# единицы} many {# единиц} other {# единицы}}",
-    "viewAll": "Показать все"
+    "viewAll": "Показать все",
+    "revenue": "Выручка"
   },
   "users": {
     "create": "Создать пользователя",
@@ -132,7 +147,8 @@
     "saveError": "Не удалось сохранить пользователя.",
     "title": "Пользователи",
     "verification": "Подтверждение",
-    "verified": "Подтверждён"
+    "verified": "Подтверждён",
+    "editLabel": "Изменить пользователя {name}"
   },
   "goods": {
     "all": "Все товары",
@@ -198,7 +214,8 @@
       "confirmRemove": "Подтвердить удаление",
       "updateError": "Не удалось изменить изображение.",
       "deleteError": "Не удалось удалить изображение."
-    }
+    },
+    "editLabel": "Изменить товар {name}"
   },
   "orders": {
     "all": "Все заказы",
@@ -215,7 +232,9 @@
     "subtotal": "Подытог",
     "summary": "Итого",
     "title": "Заказы",
-    "total": "Всего"
+    "total": "Всего",
+    "orderTitle": "Заказ #{id}",
+    "unitPrice": "{price} за единицу"
   },
   "preorders": {
     "title": "Предзаказы",
@@ -230,7 +249,8 @@
     "product": "Товар",
     "originalPrice": "Исходная цена",
     "preorderedQuantity": "Количество предзаказов",
-    "tabs": { "preorders": "Предзаказы", "analytics": "Самые предзаказываемые товары" }
+    "tabs": { "preorders": "Предзаказы", "analytics": "Самые предзаказываемые товары" },
+    "preorderTitle": "Предзаказ #{id}"
   },
   "sellerApplications": {
     "title": "Заявки продавцов",
@@ -259,7 +279,8 @@
     "sendDecline": "Подтвердить отклонение",
     "reviewError": "Не удалось обработать заявку. Повторите попытку.",
     "tabs": { "processing": "На рассмотрении", "approved": "Одобрены", "declined": "Отклонены" },
-    "reasons": { "retailer": "Розничный продавец", "jurisdiction": "Юрисдикционные ограничения", "custom": "Свой текст" }
+    "reasons": { "retailer": "Розничный продавец", "jurisdiction": "Юрисдикционные ограничения", "custom": "Свой текст" },
+    "applicationTitle": "Заявка #{id}"
   },
   "admins": {
     "accountDescription": "Учётные записи с действующим доступом к управлению.",

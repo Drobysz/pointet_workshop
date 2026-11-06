@@ -12,7 +12,9 @@ import styles from "./preorders-view.module.scss";
 type View = "preorders" | "analytics";
 
 function PaymentAmount({ preorder }: { preorder: Preorder }) {
-  return <span>{(preorder.payment_amount_cents / 100).toFixed(2)} {preorder.currency.toUpperCase()}</span>;
+  const { formatCurrency } = useAppFormatters();
+
+  return <span>{formatCurrency(preorder.payment_amount_cents / 100, preorder.currency)}</span>;
 }
 
 function PreorderList() {
@@ -52,16 +54,17 @@ function PreorderList() {
 
 function PreorderDetails({ preorder, onClose }: { preorder: Preorder; onClose: () => void }) {
   const t = useTranslations("preorders");
+  const common = useTranslations("common");
   const { formatCurrency } = useAppFormatters();
   const detail = useSWR(["preorder", preorder.id], () => import("@/queries").then(({ getPreorder }) => getPreorder(preorder.id)));
   const value = detail.data?.data ?? preorder;
 
-  return <Modal title={`${t("preorder")} #${preorder.id}`} onClose={onClose}>
+  return <Modal title={t("preorderTitle", { id: String(preorder.id) })} onClose={onClose}>
     {detail.error ? <StatePanel state="error" onRetry={() => void detail.mutate()} /> : (
       <div className={styles.details}>
-        <p><strong>{t("customer")}:</strong> {value.customer_name} · {value.customer_email}</p>
-        <p><strong>{t("paymentStatus")}:</strong> <StatusBadge value={value.payment_status} /></p>
-        <p><strong>{t("amount")}:</strong> <PaymentAmount preorder={value} /></p>
+        <p><strong>{common("fieldLabel", { label: t("customer") })}</strong> {value.customer_name} · {value.customer_email}</p>
+        <p><strong>{common("fieldLabel", { label: t("paymentStatus") })}</strong> <StatusBadge value={value.payment_status} /></p>
+        <p><strong>{common("fieldLabel", { label: t("amount") })}</strong> <PaymentAmount preorder={value} /></p>
         <h3>{t("products")}</h3>
         {detail.isLoading ? <p>{t("loading")}</p> : value.registers?.map((register) => <article key={register.id}><strong>{register.product_name}</strong><span>{register.color_name ?? "—"} · {register.size ?? "—"} · {register.quantity} × {formatCurrency(register.original_unit_price)}</span></article>)}
       </div>
@@ -71,7 +74,7 @@ function PreorderDetails({ preorder, onClose }: { preorder: Preorder; onClose: (
 
 function AnalyticsList() {
   const t = useTranslations("preorders");
-  const { formatCurrency } = useAppFormatters();
+  const { formatCurrency, formatNumber } = useAppFormatters();
   const [page, setPage] = useState(1);
   const state = useSWR(["preorder-analytics", page], () => getPreorderAnalytics(page), { keepPreviousData: true });
   if (state.isLoading && !state.data) return <StatePanel state="loading" />;
@@ -89,7 +92,7 @@ function AnalyticsList() {
     columns={[
       { key: "product", label: t("product"), render: (item) => <span className={styles.product}>{item.image_url ? <img src={item.image_url} alt="" /> : null}<strong>{item.product_name}</strong></span> },
       { key: "price", label: t("originalPrice"), align: "right", render: (item) => formatCurrency(item.original_price) },
-      { key: "quantity", label: t("preorderedQuantity"), align: "right", render: (item) => item.preordered_quantity },
+      { key: "quantity", label: t("preorderedQuantity"), align: "right", render: (item) => formatNumber(item.preordered_quantity) },
     ]}
   />;
 }

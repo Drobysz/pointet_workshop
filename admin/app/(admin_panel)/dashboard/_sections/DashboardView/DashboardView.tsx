@@ -36,14 +36,19 @@ type AnalyticsRange = (typeof ranges)[number];
 interface MetricCardsProps {
   summary: DashboardSummary;
   formatCurrency: (value: string | number) => string;
+  formatNumber: (value: string | number) => string;
 }
 
-function MetricCards({ summary, formatCurrency }: MetricCardsProps) {
+function MetricCards({
+  summary,
+  formatCurrency,
+  formatNumber,
+}: MetricCardsProps) {
   const t = useTranslations("dashboard.metrics");
   const cards = [
-    { label: t("users"), value: summary.users },
+    { label: t("users"), value: formatNumber(summary.users) },
     { label: t("revenue"), value: formatCurrency(summary.monthly_revenue) },
-    { label: t("orders"), value: summary.orders },
+    { label: t("orders"), value: formatNumber(summary.orders) },
   ];
 
   return (
@@ -128,7 +133,11 @@ function LatestOrders({ orders }: { orders: Order[] }) {
 
 export function DashboardView() {
   const t = useTranslations("dashboard");
-  const { formatCurrency } = useAppFormatters();
+  const {
+    formatAnalyticsBucket,
+    formatCurrency,
+    formatNumber,
+  } = useAppFormatters();
   const [range, setRange] = useState<AnalyticsRange>("month");
   const summary = useSWR("dashboard-summary", getSummary);
   const analytics = useSWR(
@@ -183,6 +192,7 @@ export function DashboardView() {
       <MetricCards
         summary={summaryData.data}
         formatCurrency={formatCurrency}
+        formatNumber={formatNumber}
       />
 
       <section className={styles.analytics}>
@@ -211,14 +221,29 @@ export function DashboardView() {
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={analyticsData.data}>
                   <CartesianGrid stroke="#e8e8ed" vertical={false} />
-                  <XAxis dataKey="bucket" axisLine={false} tickLine={false} />
-                  <YAxis axisLine={false} tickLine={false} />
+                  <XAxis
+                    dataKey="bucket"
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(value) => {
+                      return formatAnalyticsBucket(String(value));
+                    }}
+                  />
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(value) => formatNumber(Number(value))}
+                  />
                   <Tooltip
                     formatter={(value) => formatCurrency(Number(value))}
+                    labelFormatter={(label) => {
+                      return formatAnalyticsBucket(String(label));
+                    }}
                   />
                   <Area
                     type="monotone"
                     dataKey="revenue"
+                    name={t("revenue")}
                     stroke="#0071e3"
                     strokeWidth={2}
                     fill="#0071e3"

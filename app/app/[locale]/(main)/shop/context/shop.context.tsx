@@ -4,7 +4,6 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import { ShopContextInterface } from "./shop.interface";
 import { Category } from "@/api/types/category";
 import { GoodListParams } from "@/api/types/goods";
-import { Subcategory } from "@/api/types/subcategory";
 import { useSearchParams } from "next/navigation";
 import { PathService } from "@/helpers";
 import { useRouter } from "@/i18n/navigation";
@@ -28,31 +27,33 @@ export const ShopContextProvider = ({
     children: ReactNode;
     categories: Category[];
 })=> {
-    const searhParams = useSearchParams();
+    const searchParams = useSearchParams();
     const router = useRouter();
 
     const [
         goodFilterParams, 
         setGoodFilterParams
-    ] = useState<GoodListParams>({
-       ...(searhParams.has("min_price") && {
-            min_price: Number(searhParams.get("min_price")),
-        }),
+    ] = useState<GoodListParams>(() => {
+        const categoryId = Number(searchParams.get("category_id"));
+        const category = categories.find(item => item.id === categoryId)
+            ?? categories[0];
+        const subcategories = category?.subcategories ?? [];
+        const subcategoryParam = searchParams.get("subcategory_id");
+        const subcategory = subcategories.find(item => item.id === Number(subcategoryParam))
+            ?? subcategories[0];
 
-        ...(searhParams.has("max_price") && {
-            max_price: Number(searhParams.get("max_price")),
-        }),
-
-        category_id: searhParams.get("category_id")
-            ? Number(searhParams.get("category_id"))
-            : categories[0].id,
-
-        subcategory_id: searhParams.get("subcategory_id")
-            ? Number(searhParams.get("subcategory_id"))
-            : categories[0].subcategories![0].id,
-
-        page: Number(searhParams.get("page") ?? 1),
-        per_page: 9
+        return {
+            ...(searchParams.has("min_price") && {
+                min_price: Number(searchParams.get("min_price")),
+            }),
+            ...(searchParams.has("max_price") && {
+                max_price: Number(searchParams.get("max_price")),
+            }),
+            category_id: category?.id,
+            subcategory_id: category && subcategoryParam === "0" ? 0 : subcategory?.id,
+            page: Number(searchParams.get("page") ?? 1),
+            per_page: 9,
+        };
     });
 
     const {
@@ -74,13 +75,14 @@ export const ShopContextProvider = ({
         }
     );
 
-    const currentCategory: Category = categories.find(
+    const currentCategory = categories.find(
         c => c.id === goodFilterParams.category_id
     ) ?? categories[0];
 
-    const currentSubcategory: Subcategory = currentCategory.subcategories!.find(
+    const currentSubcategories = currentCategory?.subcategories ?? [];
+    const currentSubcategory = currentSubcategories.find(
         sc => sc.id === goodFilterParams.subcategory_id
-    ) ?? currentCategory.subcategories![0];
+    ) ?? currentSubcategories[0];
 
     const setCurrentCategory = (categoryId: number)=> {
         setGoodFilterParams(p => ({

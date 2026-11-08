@@ -59,11 +59,11 @@
         absolute bottom-4 w-full
         text-2xl text-yellow-400/85
         max-lg:text-lg
-        max-md:flex-col
-        max-md:items-center
-        max-md:bottom-3
+        max-md:top-3
         max-md:text-base
-        max-md:leading-5;
+        max-md:leading-5
+        max-sm:text-sm
+        max-[480px]:text-[8px]!
 }
 
 .chest {

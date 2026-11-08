@@ -110,7 +110,7 @@ export const CheckoutWindow = ({
             <ShadowBorderWindow
                 withoutCross
                 withoutGradient
-                className="h-fit max-lg:w-full"
+                className="h-fit w-full"
             >
                 {/* Total price */}
                 <div

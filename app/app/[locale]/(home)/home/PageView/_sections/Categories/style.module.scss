@@ -4,11 +4,12 @@
     @apply flex flex-col 
         gap-6
         h-screen
-        pb-30
+        pb-50
         justify-center
         max-lg:px-4
         max-lg:h-auto
-        max-lg:py-20;
+        max-lg:pt-20
+        max-lg:pb-50;
 }
 
 .title {
@@ -52,6 +53,7 @@
 
 .card_subtitle {
     // Keeps the copy clear of the decorative images on stacked cards.
-    @apply text-sm text-zinc-500
+    @apply text-sm 
+        text-zinc-500
         max-lg:max-w-[65%];
 }

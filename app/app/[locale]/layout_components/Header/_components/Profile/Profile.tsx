@@ -78,7 +78,7 @@ export const Profile = ()=> {
                     <MainBtn
                         onClick={handleSignUpClick}
                     >
-                        {t("account.signUp")}
+                        {t("account.signIn")}
                     </MainBtn>
                 }
             </div>

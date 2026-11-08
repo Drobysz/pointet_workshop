@@ -43,7 +43,10 @@ export const OutfitGallery = () => {
             ref={tunnelRef}
         >
             <div className={s.elevator}>
-                <h2 className={s.title} id="outfit-gallery-title">
+                <h2 
+                    className={s.title} 
+                    id="outfit-gallery-title"
+                >
                     {t("title")}
                 </h2>
                 <OutfitCarousel progress={scrollYProgress} />

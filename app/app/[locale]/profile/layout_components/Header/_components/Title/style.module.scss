@@ -9,7 +9,12 @@
         to-red-800
         leading-13
         translate-y-1
-        max-md:text-5xl
+        max-lg:text-5xl
+        max-md:text-4xl
         max-md:leading-11
-        max-md:whitespace-nowrap;
+        max-md:whitespace-nowrap
+        max-sm:text-3xl
+        max-sm:leading-9
+        max-[350px]:text-2xl!
+        max-[350px]:leading-8;
 }

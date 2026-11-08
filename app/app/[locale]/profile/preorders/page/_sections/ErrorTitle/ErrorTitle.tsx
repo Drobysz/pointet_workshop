@@ -25,7 +25,8 @@ export const ErrorTitle = ({
             {(error || isEmpty) &&
                 <h2 className={cn(
                     jersey10.className,
-                    "text-3xl"
+                    "text-3xl",
+                    "max-sm:text-2xl"
                 )}>
                     {error && t("common.states.loadFailed")}
                     {isEmpty && t("preorders.list.empty")}

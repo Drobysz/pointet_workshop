@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 section.section {
-    @apply pt-12 sm:pt-30;
+    @apply pt-18 pb-14 sm:py-30 sm:pb-14;
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas: "main";
 }
@@ -12,16 +12,40 @@ section.section {
 }
 
 .elevator {
-    @apply sticky flex flex-col justify-center gap-3 py-3 sm:gap-5 sm:py-6;
+    @apply sticky 
+        flex 
+        flex-col 
+        justify-center 
+        gap-3 
+        py-3 
+        sm:gap-5 
+        sm:py-6;
     top: var(--header-height);
     height: calc(100dvh - var(--header-height));
 }
 
 .title {
-    @apply mx-auto w-full max-w-[1270px] shrink-0 px-4
-        text-2xl leading-tight font-semibold sm:text-4xl
-        bg-clip-text text-transparent bg-linear-to-t
-        from-red-100 from-5% to-red-700 to-95%;
+    @apply mx-auto 
+        w-full 
+        max-w-[1270px] 
+        shrink-0 
+        px-4
+        text-xl
+        leading-tight 
+        font-semibold
+        lg:text-4xl
+        md:text-3xl
+        sm:text-2xl
+        max-[490px]:text-lg
+        max-[490px]:text-center
+        max-[440px]:text-base
+        max-[400px]:text-sm
+        max-[355px]:text-xs
+        bg-clip-text 
+        text-transparent 
+        bg-linear-to-t
+        from-red-100 from-5% 
+        to-red-700 to-95%;
 }
 
 @media (prefers-reduced-motion: reduce) {

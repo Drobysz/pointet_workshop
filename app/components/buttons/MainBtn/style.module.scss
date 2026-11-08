@@ -21,7 +21,8 @@
 .text {
     @apply transition-transform 
         duration-200 
-        ease-in;
+        ease-in
+        whitespace-nowrap;
 }
 
 
@@ -36,11 +37,14 @@
 .cover_text {
     @apply inline-block z-10 
         transition-transform 
-        duration-100 ease-in;
+        duration-100 ease-in
+        whitespace-nowrap;
 }
 
 .cover_text_animation {
-    @apply font-black -translate-0.5 text-white;
+    @apply font-black 
+        -translate-0.5 
+        text-white;
 }
 
 
@@ -62,5 +66,7 @@
 }
 
 .back_cover_btn_animation {
-    @apply w-full h-full scale-130 opacity-100;
+    @apply w-full h-full 
+        scale-130 
+        opacity-100;
 }

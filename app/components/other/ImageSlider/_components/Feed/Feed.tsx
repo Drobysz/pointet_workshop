@@ -45,14 +45,30 @@ export const Feed = ({
 		});
     }
 
+    useEffect(()=> {
+        scrollToCurrentImage("smooth");
+    }, [imgIdx])
+
     useEffect(() => {
         const container = containerRef.current;
 
         if (!container) return;
 
-        scrollToCurrentImage("smooth");
+        let previousWidth = container.clientWidth;
+        let previousHeight = container.clientHeight;
+
         
         const observer = new ResizeObserver(()=> {
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            if (
+                width === previousWidth &&
+                height === previousHeight
+            ) return;
+
+            previousWidth = width;
+            previousHeight = height;
             scrollToCurrentImage("instant");
         });
 
@@ -62,7 +78,7 @@ export const Feed = ({
             observer.disconnect();
         }
 
-	}, [imgIdx]);
+	});
 
     const SWIPE_DISTANCE = 50;
     const SWIPE_VELOCITY = 500;

@@ -3,10 +3,7 @@
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { useContext } from "react";
 import s from "./style.module.scss";
-import { 
-    Loading,
-    FailedToLoad,
-} from "./_components";
+import { Loading } from "./_components";
 
 import { 
     PreorderList,
@@ -40,7 +37,6 @@ export function OrdersView() {
                     />
                 }
                 {isPreOrdersLoading && <Loading />}
-                {preOrdersError && <FailedToLoad />}
             </ul>
         </div>
     );

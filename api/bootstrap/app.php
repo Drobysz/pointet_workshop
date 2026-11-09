@@ -4,6 +4,7 @@ use App\Http\Middleware\AuthenticateAccessToken;
 use App\Http\Middleware\EnsureTrustedOrigin;
 use App\Http\Middleware\OptionallyAuthenticateAccessToken;
 use App\Http\Middleware\RequireCurrentAdmin;
+use App\Http\Middleware\SetRequestLocale;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -21,7 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->api(prepend: [EnsureTrustedOrigin::class]);
+        $middleware->api(prepend: [EnsureTrustedOrigin::class], append: [SetRequestLocale::class]);
         $middleware->alias([
             'auth.jwt' => AuthenticateAccessToken::class,
             'auth.optional' => OptionallyAuthenticateAccessToken::class,

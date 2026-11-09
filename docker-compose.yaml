@@ -87,7 +87,7 @@ services:
   queue-worker:
     <<: *api-runtime
     pull_policy: never
-    command: ["php", "artisan", "queue:work", "redis", "--queue=transactional-mail,default", "--timeout=60"]
+    command: ["php", "artisan", "queue:work", "redis", "--queue=transactional-mail,translations,default", "--timeout=60"]
     restart: unless-stopped
     stop_grace_period: 65s
     depends_on:

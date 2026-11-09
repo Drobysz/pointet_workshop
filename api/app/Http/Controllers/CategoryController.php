@@ -6,12 +6,18 @@ use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\Catalog\CategoryImageService;
+use App\Services\Translation\CatalogTranslator;
+use App\Services\Translation\RequestLocale;
+use App\Services\Translation\TranslationSync;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CategoryController extends Controller
 {
-    public function __construct(private readonly CategoryImageService $images) {}
+    public function __construct(
+        private readonly CategoryImageService $images,
+        private readonly CatalogTranslator $translator,
+    ) {}
 
     public function index(Request $request): AnonymousResourceCollection
     {
@@ -20,7 +26,7 @@ class CategoryController extends Controller
         ]);
         $search = $filters['search'] ?? null;
         $categories = Category::query()
-            ->with(['subcategories', 'image'])
+            ->with(['subcategories.translations', 'image', 'translations'])
             ->when($search, function ($query, string $search): void {
                 $normalizedSearch = mb_strtolower($search);
 
@@ -37,12 +43,18 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request): CategoryResource
     {
-        return new CategoryResource($this->images->save(new Category, $request->validated('name'), $request->file('image')));
+        request()->attributes->set(RequestLocale::INCLUDE_TRANSLATIONS, true);
+        $category = $this->images->save(new Category, $request->validated('name'), $request->file('image'), sourceLocale: $request->sourceLocaleFor(null));
+
+        return new CategoryResource($this->applyTranslations($category, $request));
     }
 
     public function update(CategoryRequest $request, Category $category): CategoryResource
     {
-        return new CategoryResource($this->images->save($category, $request->validated('name'), $request->file('image'), $request->boolean('remove_image')));
+        request()->attributes->set(RequestLocale::INCLUDE_TRANSLATIONS, true);
+        $category = $this->images->save($category, $request->validated('name'), $request->file('image'), $request->boolean('remove_image'), $request->sourceLocaleFor($category));
+
+        return new CategoryResource($this->applyTranslations($category, $request));
     }
 
     public function destroy(Category $category)
@@ -50,5 +62,14 @@ class CategoryController extends Controller
         $this->images->delete($category);
 
         return response()->noContent();
+    }
+
+    private function applyTranslations(Category $category, CategoryRequest $request): Category
+    {
+        if ($this->translator->applyManual($category, $request->manualTranslations())) {
+            TranslationSync::queue($category);
+        }
+
+        return $category->load('translations');
     }
 }

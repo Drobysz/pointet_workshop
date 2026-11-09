@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\Translation\Localizer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -12,7 +13,7 @@ class GoodResource extends JsonResource
         $images = $this->relationLoaded('images') ? $this->images->groupBy('color_id') : collect();
 
         return [
-            'id' => $this->id, 'name' => $this->name, 'brand' => $this->brand, 'price' => (string) $this->price,
+            'id' => $this->id, 'name' => Localizer::name($this->resource, $request), 'brand' => $this->brand, 'price' => (string) $this->price,
             'weigh' => $this->weigh,
             'visible' => $this->visible,
             'current_quantity' => $this->current_quantity, 'inventory_version' => $this->inventory_version,
@@ -22,10 +23,11 @@ class GoodResource extends JsonResource
             'subcategory' => new SubcategoryResource($this->whenLoaded('subcategory')),
             'materials' => MaterialResource::collection($this->whenLoaded('materials')),
             'colors' => $this->whenLoaded('colors', fn () => $this->colors->map(fn ($color) => [
-                'id' => $color->id, 'name' => $color->name, 'hexcode' => $color->hexcode,
+                'id' => $color->id, 'name' => Localizer::name($color, $request), 'hexcode' => $color->hexcode,
                 'images' => ImageResource::collection($images->get($color->id, collect())),
             ])->values()),
             'created_at' => $this->created_at?->toISOString(),
+            ...Localizer::block($this->resource, $request),
         ];
     }
 }

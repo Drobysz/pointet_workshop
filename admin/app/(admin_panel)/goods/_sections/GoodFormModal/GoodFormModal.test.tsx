@@ -15,6 +15,8 @@ vi.mock("@/queries", () => ({
   uploadProductImage: vi.fn(),
   updateProductImage: vi.fn(),
   deleteProductImage: vi.fn(),
+  getTranslationUsage: vi.fn(async () => ({ data: { enabled: true, provider: "deepl", period: "2026-11", characters_used: 120, character_limit: 500000, exhausted: false, exhausted_at: null } })),
+  regenerateTranslations: vi.fn(),
 }));
 
 beforeEach(() => {
@@ -45,7 +47,8 @@ it("retries only remaining images on the same product after a partial upload fai
   fireEvent.submit(screen.getByRole("button", { name: messages.common.save }).closest("form")!);
   await waitFor(() => expect(saved).toHaveBeenCalledTimes(1));
   expect(createGood).toHaveBeenCalledTimes(1);
-  expect(updateGood).toHaveBeenCalledWith(42, expect.objectContaining({ brand: "Atelier Nord", weigh: 640, inventory_version: 1, inventory: [{ id: 5, color_id: 2, size: null, quantity: 0 }], material_ids: [3] }));
+  expect(updateGood).toHaveBeenCalledWith(42, expect.objectContaining({ brand: "Atelier Nord", weigh: 640, inventory_version: 1, inventory: [{ id: 5, color_id: 2, size: null, quantity: 0 }], material_ids: [3], source_locale: "fr" }));
+  expect(updateGood).toHaveBeenCalledWith(42, expect.not.objectContaining({ translations: expect.anything() }));
   expect(uploadProductImage).toHaveBeenNthCalledWith(1, 42, 2, first);
   expect(uploadProductImage).toHaveBeenNthCalledWith(2, 42, 2, second);
   expect(uploadProductImage).toHaveBeenNthCalledWith(3, 42, 2, second);

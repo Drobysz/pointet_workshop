@@ -1,5 +1,6 @@
 import { basketApi, guestBasketApi, ordersApi, preorderApi } from '@/api/api';
 import useSWR from 'swr';
+import { useLocale } from 'next-intl';
 import { BasketItem, BasketListResponse } from '@/api/types/basket';
 import { Order, OrderListResponse } from '@/api/types/orders';
 import { AuthStatus } from '@/app/[locale]/context/global.interface';
@@ -21,6 +22,8 @@ export const useUserData = <T extends UserDataType>(
     type: T, 
     authStatus: AuthStatus
 )=> {
+    // Basket and order lines carry localized product names.
+    const locale = useLocale();
     const authRequestLibrary: {
         [K in UserDataType]: ()=> Promise<UserDataMap[K]>
     } = {
@@ -48,7 +51,7 @@ export const useUserData = <T extends UserDataType>(
     }
 
     return useSWR<UserDataReturnMap[T]>(
-        authStatus === "loading" ? null : [type, authStatus],
+        authStatus === "loading" ? null : [type, authStatus, locale],
         userDataRequest,
         {
             refreshInterval: 10 * 60 * 1000,

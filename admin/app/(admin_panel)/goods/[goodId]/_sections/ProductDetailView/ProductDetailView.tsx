@@ -104,6 +104,39 @@ function ProductGallery({ product }: ProductGalleryProps) {
   );
 }
 
+function NameTranslations({ product }: { product: Good }) {
+  const t = useTranslations("translations");
+  const languages = useTranslations("languages");
+  const translations = product.translations;
+
+  if (!translations) {
+    return null;
+  }
+
+  return (
+    <Panel as="section" className={styles.translations}>
+      <h2 className={styles.descriptionTitle}>{t("title")}</h2>
+      <DetailList
+        layout="stacked"
+        items={[
+          {
+            key: "source",
+            label: t("sourceLocale"),
+            value: product.source_locale ? languages(product.source_locale) : "—",
+          },
+          ...Object.entries(translations).map(([locale, entry]) => ({
+            key: locale,
+            label: languages(locale),
+            value: entry.name
+              ? `${entry.name} · ${entry.name_is_manual ? t("status.manual") : t("status.automatic")}`
+              : t("status.pending"),
+          })),
+        ]}
+      />
+    </Panel>
+  );
+}
+
 export function ProductDetailView({ goodId }: { goodId: string }) {
   const t = useTranslations("goods");
   const { formatCurrency, formatNumber, formatWeight } = useAppFormatters();
@@ -193,6 +226,8 @@ export function ProductDetailView({ goodId }: { goodId: string }) {
           <p className={styles.description}>{product.description}</p>
         </Panel>
       </div>
+
+      <NameTranslations product={product} />
 
       <InventoryStock
         product={product}

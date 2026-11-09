@@ -16,9 +16,10 @@ interface GoodPageProps {
 
 /**
  * Shared by `generateMetadata` and the page, so a product is requested
- * once per render. Unknown products resolve to the 404 page.
+ * once per render. Unknown products resolve to the 404 page. The name comes
+ * back in the page locale; the description stays in its source language.
  */
-const getGood = cache(async (goodId: string): Promise<Good> => {
+const getGood = cache(async (goodId: string, locale: string): Promise<Good> => {
     const id = Number(goodId);
 
     if (!Number.isInteger(id) || id <= 0) {
@@ -26,7 +27,7 @@ const getGood = cache(async (goodId: string): Promise<Good> => {
     }
 
     try {
-        const { data } = await categoryApi.getGood(id);
+        const { data } = await categoryApi.getGood(id, locale);
 
         return data;
     } catch (error) {
@@ -47,8 +48,10 @@ export async function generateMetadata({
         locale: currentLocale,
         namespace: "seo.product",
     });
-    const good = await getGood(good_id);
+    const good = await getGood(good_id, currentLocale);
 
+    // The localized name carries the title; the description is never a
+    // machine translation, so it is shown as written by the seller.
     return SeoService.getPageMetadata({
         locale,
         pathname: `/goods/${good.id}`,
@@ -70,7 +73,7 @@ export default async function GoodPage({
     setRequestLocale(SeoService.resolveLocale(locale));
 
     const t = await getTranslations("seo.breadcrumbs");
-    const good = await getGood(good_id);
+    const good = await getGood(good_id, SeoService.resolveLocale(locale));
 
     return (
         <GoodContextProvider

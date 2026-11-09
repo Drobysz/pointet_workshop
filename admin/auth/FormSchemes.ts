@@ -44,4 +44,9 @@ export const goodSchema = z.object({
   description: z.string().trim().min(1).max(65_535),
   visible: z.boolean().default(true),
   material_ids: z.array(z.coerce.number().int().positive()),
+  source_locale: z.string().min(2).max(8).optional(),
+  translations: z.record(
+    z.string(),
+    z.object({ name: z.string().trim().max(255).nullable() }),
+  ).optional(),
 });

@@ -16,6 +16,7 @@ use App\Http\Controllers\SellerApplicationController;
 use App\Http\Controllers\SendcloudWebhookController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -85,6 +86,7 @@ Route::middleware('auth.jwt')->group(function (): void {
             Route::get('/preorder/analytics', [PreorderController::class, 'analytics']);
             Route::get('/seller/requests', [SellerApplicationController::class, 'index']);
             Route::get('/seller/requests/{sellerApplication}', [SellerApplicationController::class, 'show']);
+            Route::get('/translations/usage', [TranslationController::class, 'usage']);
         });
 
         Route::middleware('throttle:api-write')->group(function (): void {
@@ -100,6 +102,9 @@ Route::middleware('auth.jwt')->group(function (): void {
 
             Route::post('/admins', [AdminController::class, 'store']);
             Route::post('/seller/requests/{sellerApplication}/response', [SellerApplicationController::class, 'respond']);
+            Route::post('/translations/{type}/{id}/regenerate', [TranslationController::class, 'regenerate'])
+                ->whereIn('type', ['goods', 'categories', 'subcategories', 'colors', 'materials'])
+                ->whereNumber('id');
 
             Route::apiResource('categories', CategoryController::class)->only(['store', 'update', 'destroy']);
             Route::apiResource('subcategories', SubcategoryController::class)->only(['store', 'update', 'destroy']);

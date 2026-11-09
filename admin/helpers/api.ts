@@ -37,6 +37,12 @@ function createRequestHeaders(init: RequestInit): Headers {
 
   headers.set("Accept", "application/json");
 
+  // Catalog labels come back in the administrator's interface language,
+  // which is also the default source language of new records.
+  if (typeof document !== "undefined" && document.documentElement.lang && !headers.has("Accept-Language")) {
+    headers.set("Accept-Language", document.documentElement.lang);
+  }
+
   if (init.body && !(init.body instanceof FormData)) {
     headers.set("Content-Type", "application/json");
   }

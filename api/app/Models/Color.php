@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
+use App\Services\Translation\Contracts\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Color extends Model
+class Color extends Model implements Translatable
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
 
-    protected $fillable = ['name', 'hexcode'];
+    protected $fillable = ['name', 'hexcode', 'source_locale'];
 
     public function goods(): BelongsToMany
     {

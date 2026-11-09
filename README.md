@@ -26,6 +26,7 @@ An e-commerce project with a Next.js storefront and administration panel, a Lara
 - Per-color/size inventory rows with additive restocking and transactional checkout deductions.
 - Historical order-item snapshots so catalog edits do not rewrite past orders.
 - Responsive admin routes for Dashboard, Users, Orders, Goods, Admins, and Markers with loading, error, empty, retry, search, and pagination states.
+- Five interface languages (en, fr, de, it, ru) in both frontends, plus DeepL-backed translation of product names and catalog labels. Product descriptions stay in their source language.
 
 ## Quick start with Docker
 
@@ -247,6 +248,35 @@ stripe listen \
 
 Set `STRIPE_WEBHOOK_SECRET` in `api/.env` to the local listener's signing secret and apply it with `docker compose up -d api`. Keep the listener running while you complete a test preorder. A successful delivery shows HTTP `200` in the listener output.
 
+### Catalog translations (DeepL)
+
+Short catalog labels are localized into every supported language (en, fr, de, it, ru): product names, categories, subcategories, colors and materials. Product descriptions are deliberately **not** translated and are never sent to DeepL: every visitor sees the description in the language the seller wrote it in, while the product name, page title and breadcrumbs follow the visitor's language.
+
+Translations live in two tables. `good_translations` holds one row per product and locale with nullable `description`, `short_description`, `meta_title` and `meta_description` columns that stay empty until description localization is explicitly enabled (`translation.goods.fields` in `api/config/translation.php`). The universal `translations` table holds every other label. Each catalog record stores its `source_locale`; on creation it defaults to the administrator's interface language (sent as `Accept-Language`) and can be overridden per record in the admin forms.
+
+Missing translations are produced asynchronously by the `translations` queue: a job per changed record recomputes what is still missing, reuses existing translations of identical source text, skips manual translations and identifiers (SKU-like codes, numbers), batches up to 50 texts per DeepL request and records the characters sent in `translation_usage`. When the configured monthly limit is reached, or DeepL answers HTTP 456, automatic translation pauses until the next calendar month and labels fall back to their source language; `php artisan translations:sync` (scheduled daily) picks up what is still pending. Public API clients choose the language with `?locale=` or `Accept-Language`; administrators receive the source labels and every translation with `include_translations=1`.
+
+| Variable | Setting |
+| --- | --- |
+| `TRANSLATION_PROVIDER` | `deepl` (default) or `null` to disable automatic translation while keeping manual translations. |
+| `DEEPL_API_KEY` | DeepL API Free or Pro key. Never exposed to the frontends. Leave empty to disable automatic translation. |
+| `DEEPL_API_URL` | Optional. Defaults to `https://api-free.deepl.com` for `:fx` keys and `https://api.deepl.com` otherwise. |
+| `DEEPL_MONTHLY_CHARACTER_LIMIT` | Local guard for the plan quota, 500000 for the Free plan. `0` disables the local limit; DeepL's own 456 answer is still honoured. |
+| `TRANSLATION_DEFAULT_SOURCE_LOCALE` | Source language used when neither the request nor the record declares one. Default `en`. |
+| `TRANSLATION_QUEUE` | Queue name, `translations` by default. Add it to the worker's `--queue` list. |
+
+Useful commands from `api`:
+
+```bash
+php artisan translations:sync
+```
+
+```bash
+php artisan translations:sync --type=goods --force
+```
+
+The first fills in every missing translation in batches; `--force` also regenerates automatic ones (manual translations are always kept).
+
 ### Transactional email
 
 The API records email intents in PostgreSQL alongside successful seller submissions, paid Stripe preorders, eligible sign-ins, and first-time account verification. Laravel's scheduler places due intents on the Redis `transactional-mail` queue once per minute. A queue worker delivers them.
@@ -267,7 +297,7 @@ For local development, run these commands from `api` and keep the worker and sch
 
 ```bash
 php artisan migrate
-php artisan queue:work redis --queue=transactional-mail,default --timeout=60
+php artisan queue:work redis --queue=transactional-mail,translations,default --timeout=60
 php artisan schedule:work
 ```
 
@@ -280,7 +310,7 @@ docker compose ps api queue-worker scheduler
 
 Use `docker compose logs --tail=100 queue-worker scheduler` to check process output. The Laravel log records unsuccessful delivery attempts by outbox ID. For a seller application, look up `seller:<application-id>` in `transactional_emails`. An unsent row with `available_at` set is eligible for dispatch at that time. A row with no `sent_at` or `available_at` has exhausted its retries. Applications submitted before email recording was enabled may have no outbox row.
 
-In production, run `php artisan migrate --force` during release, supervise `php artisan queue:work redis --queue=transactional-mail,default --timeout=60`, and invoke `php artisan schedule:run` once per minute from cron or the deployment scheduler. Run `php artisan queue:restart` on release so workers reload the code and configuration.
+In production, run `php artisan migrate --force` during release, supervise `php artisan queue:work redis --queue=transactional-mail,translations,default --timeout=60`, and invoke `php artisan schedule:run` once per minute from cron or the deployment scheduler. Run `php artisan queue:restart` on release so workers reload the code and configuration.
 
 Use `php artisan transactional-mail:dispatch` for an immediate outbox scan. Delivery failures retry after 1, 5, 15, and 60 minutes. After the fifth failed attempt, correct the issue and run `php artisan transactional-mail:retry <outbox-id>`. The outbox stores an encrypted recipient and payload until acceptance by the configured transport, then removes the payload and retains the unique event key. `sent_at` records transport acceptance. SMTP can deliver a duplicate if the connection or worker fails after the server accepts the message and before the application records that acceptance.
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import useSWR from "swr";
 import { goodSchema } from "@/auth/FormSchemes";
 import {
@@ -12,13 +12,14 @@ import {
   Select,
   StatePanel,
   Textarea,
+  TranslationFields,
 } from "@/components";
 import { ApiError } from "@/helpers";
 import { InventoryEditor, type InventoryDraft } from "@/components/InventoryEditor/InventoryEditor";
 import { ImageDropzone } from "@/components/ImageDropzone/ImageDropzone";
 import { MarkerPicker, type SelectableMarker } from "@/components/MarkerPicker/MarkerPicker";
 import { ProductImageEditor } from "@/components/ProductImageEditor/ProductImageEditor";
-import type { Color, Good, GoodPayload } from "@/interface/domain";
+import type { Color, Good, GoodPayload, TranslationsPayload } from "@/interface/domain";
 import {
   createGood,
   getCatalogOptions,
@@ -54,9 +55,13 @@ function getNumberArray(formData: FormData, field: string): number[] {
 function buildGoodPayload(
   formData: FormData,
   inventory: InventoryDraft[],
-  inventoryVersion?: number,
+  inventoryVersion: number | undefined,
+  sourceLocale: string,
+  translations: TranslationsPayload,
 ): GoodPayload | null {
   const formValues = {
+    source_locale: sourceLocale,
+    ...(Object.keys(translations).length > 0 && { translations }),
     name: formData.get("name"),
     brand: formData.get("brand"),
     category_id: formData.get("category_id"),
@@ -85,7 +90,12 @@ function GoodForm({
   const common = useTranslations("common");
   const validation = useTranslations("validation");
   const inventoryText = useTranslations("inventory");
+  const translationText = useTranslations("translations");
+  const interfaceLocale = useLocale();
   const options = useSWR("catalog-form-options", getCatalogOptions);
+  // New products are written in the administrator's interface language unless they say otherwise.
+  const [sourceLocale, setSourceLocale] = useState(good?.source_locale ?? interfaceLocale);
+  const [translationEdits, setTranslationEdits] = useState<TranslationsPayload>({});
   const [categoryId, setCategoryId] = useState(good?.category_id ?? 0);
   const [error, setError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -209,7 +219,13 @@ function GoodForm({
   async function handleSubmit(formData: FormData) {
     setError("");
 
-    const payload = buildGoodPayload(formData, inventory, savedVersion.current);
+    const payload = buildGoodPayload(
+      formData,
+      inventory,
+      savedVersion.current,
+      sourceLocale,
+      translationEdits,
+    );
 
     if (!payload) {
       setError(validation("checkForm"));
@@ -236,6 +252,7 @@ function GoodForm({
         : await createGood(payload);
       savedId.current = result.data.id;
       savedVersion.current = result.data.inventory_version;
+      setTranslationEdits({});
       setInventory(result.data.inventory.map((row) => ({
         ...row,
         key: String(row.id),
@@ -337,8 +354,21 @@ function GoodForm({
           </Select>
         </div>
 
+        <TranslationFields
+          kind="goods"
+          entity={good}
+          entityId={good?.id}
+          sourceLocale={sourceLocale}
+          onSourceLocaleChange={setSourceLocale}
+          edits={translationEdits}
+          onEditsChange={setTranslationEdits}
+          disabled={isSaving}
+          onRegenerated={good ? onImagesChanged : undefined}
+        />
+
         <Textarea
           label={t("form.description")}
+          hint={translationText("descriptionNotice")}
           name="description"
           defaultValue={good?.description ?? ""}
           required

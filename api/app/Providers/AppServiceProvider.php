@@ -2,8 +2,19 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
+use App\Models\Color;
+use App\Models\Good;
+use App\Models\Material;
+use App\Models\Subcategory;
 use App\Services\Auth\AccessTokenService;
+use App\Services\Translation\CatalogTranslator;
+use App\Services\Translation\Contracts\TranslationProvider;
+use App\Services\Translation\Providers\DeepLTranslationProvider;
+use App\Services\Translation\Providers\NullTranslationProvider;
+use App\Services\Translation\TranslationUsageTracker;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -16,7 +27,25 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(TranslationProvider::class, function (): TranslationProvider {
+            $key = (string) config('translation.deepl.api_key');
+
+            return match (config('translation.provider')) {
+                'deepl' => $key !== ''
+                    ? new DeepLTranslationProvider($key, config('translation.deepl.api_url') ?: null, (int) config('translation.deepl.timeout', 15))
+                    : new NullTranslationProvider,
+                default => new NullTranslationProvider,
+            };
+        });
+        $this->app->singleton(TranslationUsageTracker::class, fn (): TranslationUsageTracker => new TranslationUsageTracker(
+            (string) config('translation.provider', 'deepl'),
+            ((int) config('translation.deepl.monthly_character_limit')) > 0 ? (int) config('translation.deepl.monthly_character_limit') : null,
+        ));
+        $this->app->singleton(CatalogTranslator::class, fn ($app): CatalogTranslator => new CatalogTranslator(
+            $app->make(TranslationProvider::class),
+            $app->make(TranslationUsageTracker::class),
+            (int) config('translation.batch_size', 50),
+        ));
     }
 
     /**
@@ -24,6 +53,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Relation::morphMap([
+            'good' => Good::class,
+            'category' => Category::class,
+            'subcategory' => Subcategory::class,
+            'color' => Color::class,
+            'material' => Material::class,
+        ]);
         RateLimiter::for('api-read', fn (Request $request) => Limit::perMinute(
             $this->attempts('api_get'),
         )->by($this->clientKey($request)));

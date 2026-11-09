@@ -7,6 +7,7 @@ import { GoodListParams } from "@/api/types/goods";
 import { useSearchParams } from "next/navigation";
 import { PathService } from "@/helpers";
 import { useRouter } from "@/i18n/navigation";
+import { useLocale } from "next-intl";
 import useSWR from "swr";
 import { categoryApi } from "@/api/api";
 
@@ -29,6 +30,7 @@ export const ShopContextProvider = ({
 })=> {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const locale = useLocale();
 
     const [
         goodFilterParams, 
@@ -62,10 +64,12 @@ export const ShopContextProvider = ({
         data: goodsPagination,
         mutate: mutateGoods
     } = useSWR(
-        "goods",
+        // Product names are localized, so a language switch refetches the page.
+        ["goods", locale],
         async ()=> {
             return await categoryApi.getGoods(
-                goodFilterParams
+                goodFilterParams,
+                locale,
             );
         },
         {

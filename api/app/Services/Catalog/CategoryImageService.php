@@ -12,16 +12,19 @@ use Throwable;
 
 class CategoryImageService
 {
-    public function save(Category $category, string $name, ?UploadedFile $file, bool $remove = false): Category
+    public function save(Category $category, string $name, ?UploadedFile $file, bool $remove = false, ?string $sourceLocale = null): Category
     {
         $uploadedPath = null;
         $oldPath = null;
         try {
-            $category = DB::transaction(function () use ($category, $name, $file, $remove, &$uploadedPath, &$oldPath): Category {
+            $category = DB::transaction(function () use ($category, $name, $file, $remove, $sourceLocale, &$uploadedPath, &$oldPath): Category {
                 if ($category->exists) {
                     $category = Category::query()->lockForUpdate()->findOrFail($category->id);
                 }
                 $category->name = $name;
+                if ($sourceLocale) {
+                    $category->source_locale = $sourceLocale;
+                }
                 $category->save();
                 if ($file || $remove) {
                     $oldImage = $category->image;

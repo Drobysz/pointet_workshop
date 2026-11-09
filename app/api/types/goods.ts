@@ -11,6 +11,8 @@ import { Material } from "./material";
 
 export interface Good {
     id: Id;
+
+    /** Localized to the requested language when a translation exists. */
     name: string;
     brand: string;
 
@@ -29,6 +31,8 @@ export interface Good {
     current_quantity: number;
     inventory_version: number;
     inventory: InventoryRow[];
+
+    /** Always in the language the seller wrote it in; never machine translated. */
     description: string;
     category_id: Id;
     subcategory_id: Id;

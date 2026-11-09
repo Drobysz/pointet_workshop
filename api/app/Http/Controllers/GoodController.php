@@ -6,15 +6,24 @@ use App\Http\Requests\GoodRequest;
 use App\Http\Resources\GoodResource;
 use App\Models\Good;
 use App\Services\Catalog\InventoryService;
+use App\Services\Translation\CatalogTranslator;
+use App\Services\Translation\RequestLocale;
+use App\Services\Translation\TranslationSync;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
 
 class GoodController extends Controller
 {
-    private const RESOURCE_RELATIONS = ['category.image', 'subcategory', 'colors', 'materials', 'inventory'];
+    private const RESOURCE_RELATIONS = [
+        'category.image', 'category.translations', 'subcategory.translations', 'colors.translations',
+        'materials.translations', 'inventory', 'translations',
+    ];
 
-    public function __construct(private readonly InventoryService $inventory) {}
+    public function __construct(
+        private readonly InventoryService $inventory,
+        private readonly CatalogTranslator $translator,
+    ) {}
 
     public function index(Request $request): AnonymousResourceCollection
     {
@@ -24,6 +33,7 @@ class GoodController extends Controller
     public function adminIndex(Request $request): AnonymousResourceCollection
     {
         $this->authorize('viewAny', Good::class);
+        request()->attributes->set(RequestLocale::INCLUDE_TRANSLATIONS, true);
 
         return $this->collection($request, visibleOnly: false);
     }
@@ -38,6 +48,7 @@ class GoodController extends Controller
     public function adminShow(Good $good): GoodResource
     {
         $this->authorize('view', $good);
+        request()->attributes->set(RequestLocale::INCLUDE_TRANSLATIONS, true);
 
         return $this->resource($good);
     }
@@ -46,10 +57,12 @@ class GoodController extends Controller
     {
         $this->authorize('create', Good::class);
         $data = $request->validated();
-        $good = DB::transaction(function () use ($data): Good {
-            $good = Good::create($this->attributes($data));
+        request()->attributes->set(RequestLocale::INCLUDE_TRANSLATIONS, true);
+        $good = DB::transaction(function () use ($request, $data): Good {
+            $good = Good::create([...$this->attributes($data), 'source_locale' => $request->sourceLocaleFor(null)]);
             $this->inventory->replace($good, $data['inventory']);
             $good->materials()->sync($data['material_ids']);
+            $this->translator->applyManual($good, $request->manualTranslations());
 
             return $good;
         });
@@ -61,7 +74,8 @@ class GoodController extends Controller
     {
         $this->authorize('update', $good);
         $data = $request->validated();
-        DB::transaction(function () use ($data, $good): void {
+        request()->attributes->set(RequestLocale::INCLUDE_TRANSLATIONS, true);
+        DB::transaction(function () use ($request, $data, $good): void {
             $locked = Good::query()->lockForUpdate()->findOrFail($good->id);
             $inventoryIsStale = $locked->inventory_version
                 !== (int) $data['inventory_version'];
@@ -70,9 +84,12 @@ class GoodController extends Controller
                 409,
                 'Stock changed while this form was open. Reload the product before saving.',
             );
-            $locked->update($this->attributes($data));
+            $locked->update([...$this->attributes($data), 'source_locale' => $request->sourceLocaleFor($locked)]);
             $this->inventory->replace($locked, $data['inventory']);
             $locked->materials()->sync($data['material_ids']);
+            if ($this->translator->applyManual($locked, $request->manualTranslations())) {
+                TranslationSync::queue($locked);
+            }
         });
 
         return $this->resource($good->fresh());

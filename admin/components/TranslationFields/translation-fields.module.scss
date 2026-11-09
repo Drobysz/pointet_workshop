@@ -1,0 +1,71 @@
+// Source-language picker and per-language name translations shown inside
+// the catalog forms. Controls come from `Field`; this file only lays them out.
+
+.root {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-inner);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.legend {
+  padding: 0 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.rows {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.manual :global(input) {
+  border-color: var(--accent, currentColor);
+}
+
+.notice {
+  margin: 0;
+  padding: 0.65rem 0.8rem;
+  border-radius: var(--radius-inner);
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.warning {
+  color: var(--danger);
+}
+
+.message {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 40rem) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

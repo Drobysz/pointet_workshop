@@ -21,6 +21,7 @@ export class ApiClient {
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
+                    ...this.localeHeaders(),
                     ...options.headers,
                 }
             }
@@ -55,6 +56,22 @@ export class ApiClient {
         }
 
         return res.json();
+    }
+
+    /**
+     * Catalog labels (product, category, color and material names) are
+     * returned in the requested language. In the browser the `<html lang>`
+     * set by the locale layout is used; server components pass the locale
+     * explicitly through the per-request headers.
+     */
+    private localeHeaders(): Record<string, string> {
+        if (typeof document === "undefined") {
+            return {};
+        }
+
+        const locale = document.documentElement.lang;
+
+        return locale ? { "Accept-Language": locale } : {};
     }
 
     private async getReshreshPromise(): Promise<AuthenticatedResponse> {

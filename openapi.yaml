@@ -24,6 +24,18 @@ info:
 
 
     Regular GET endpoints are limited to 300 requests/minute and ordinary POST, PATCH, PUT, and DELETE endpoints to 120 requests/minute. Authenticated requests are keyed by user ID; public requests are keyed by IP address. Local environments multiply configurable limits by default. Login, registration, password changes, email-code requests and verification, and refresh-token rotation use the dedicated limits described on their operations. All rate-limit failures return the standard JSON error envelope with HTTP 429 and Laravel retry headers.
+
+
+    Guest checkout uses an HttpOnly guest_token cookie (name, lifetime, domain, and Secure are configurable; defaults are one year, Path=/, SameSite=Lax, and Secure outside the local environment). It is created the first time an anonymous visitor starts a pre-order checkout and is the only credential accepted by the guest order and pre-order history endpoints. Guest baskets live in the browser: the API validates them on request and never stores basket rows for guests. Guest endpoints do not return 401; an unknown, expired, or revoked guest cookie yields an empty page or 404.
+
+
+    Pre-order checkout is a fixed EUR 1.00 Stripe Checkout payment per basket. POST /preorders records a private checkout session with an immutable basket snapshot and returns the Stripe payment URL. A pre-order exists only after the signed Stripe webhook confirms the payment; at that point stock is decremented, the authenticated basket is cleared, and a confirmation email is queued. Pre-order history endpoints therefore list paid pre-orders only. Checkout requires CHECKOUT_MODE=preorder and a configured Stripe secret.
+
+
+    Catalog labels (product, category, subcategory, color and material names) are localized. Public reads return each label in the language selected with the locale query parameter or the Accept-Language header (en, fr, de, it, ru), falling back to the record's source language when no translation exists. Product descriptions are never translated and are always returned as written. Administrators pass include_translations=1 (automatic on /admin/goods and on every catalog mutation response) to receive the source label together with the source_locale and translations blocks, and may send source_locale and translations with catalog mutations. Missing translations are produced asynchronously by the DeepL integration on the translations queue.
+
+
+    Successful sign-in, verification, and refresh responses also set a one-year HttpOnly workshop_device cookie that identifies the browser. A sign-in from a browser without a recognised device cookie while another session is active queues a new-device notification email. Logout does not clear this cookie.
   x-source-files:
     - api/routes/api.php
     - api/app/Http/Controllers
@@ -32,6 +44,13 @@ info:
     - api/app/Http/Middleware
     - api/app/Policies
     - api/config/auth_tokens.php
+    - api/config/checkout.php
+    - api/config/guest_sessions.php
+    - api/config/rate_limits.php
+    - api/app/Services/Checkout
+    - api/app/Services/SellerApplications
+    - api/app/Services/Translation
+    - api/config/translation.php
 servers:
   - url: /api
     description: Same-origin API (recommended behind the configured reverse proxy).
@@ -55,9 +74,17 @@ tags:
   - name: Administrators
     description: Administrator account provisioning and lookup.
   - name: Basket
-    description: Current-user basket and authorized entry management.
+    description: Current-user basket, authorized entry management, and stateless guest basket validation.
   - name: Orders
-    description: Order creation, history, and administrator status changes.
+    description: Order creation, account and guest order history, and administrator status changes.
+  - name: Pre-orders
+    description: Fixed-price Stripe pre-order checkout, account and guest pre-order history, and administrator management.
+  - name: Seller applications
+    description: Public seller onboarding requests and administrator review.
+  - name: Webhooks
+    description: Inbound Stripe and Sendcloud callbacks.
+  - name: Translations
+    description: Automatic catalog label translation status and regeneration.
   - name: Product images
     description: S3-backed product-color image management.
   - name: Dashboard
@@ -125,7 +152,9 @@ paths:
               description: Multiple Set-Cookie headers set access_token and refresh_token (or
                 expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
                 by default. Secure, names, domain, and lifetimes are
-                configurable. Tokens are not returned in JSON.
+                configurable. Tokens are not returned in JSON. Successful
+                sign-in, verification, and refresh responses also set the
+                one-year HttpOnly workshop_device cookie.
               schema:
                 type: string
         "400":
@@ -180,7 +209,9 @@ paths:
               description: Multiple Set-Cookie headers set access_token and refresh_token (or
                 expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
                 by default. Secure, names, domain, and lifetimes are
-                configurable. Tokens are not returned in JSON.
+                configurable. Tokens are not returned in JSON. Successful
+                sign-in, verification, and refresh responses also set the
+                one-year HttpOnly workshop_device cookie.
               schema:
                 type: string
         "401":
@@ -226,7 +257,9 @@ paths:
               description: Multiple Set-Cookie headers set access_token and refresh_token (or
                 expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
                 by default. Secure, names, domain, and lifetimes are
-                configurable. Tokens are not returned in JSON.
+                configurable. Tokens are not returned in JSON. Successful
+                sign-in, verification, and refresh responses also set the
+                one-year HttpOnly workshop_device cookie.
               schema:
                 type: string
         "401":
@@ -240,7 +273,9 @@ paths:
               description: Multiple Set-Cookie headers set access_token and refresh_token (or
                 expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
                 by default. Secure, names, domain, and lifetimes are
-                configurable. Tokens are not returned in JSON.
+                configurable. Tokens are not returned in JSON. Successful
+                sign-in, verification, and refresh responses also set the
+                one-year HttpOnly workshop_device cookie.
               schema:
                 type: string
         "403":
@@ -281,7 +316,9 @@ paths:
               description: Multiple Set-Cookie headers set access_token and refresh_token (or
                 expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
                 by default. Secure, names, domain, and lifetimes are
-                configurable. Tokens are not returned in JSON.
+                configurable. Tokens are not returned in JSON. Successful
+                sign-in, verification, and refresh responses also set the
+                one-year HttpOnly workshop_device cookie.
               schema:
                 type: string
         "403":
@@ -319,7 +356,9 @@ paths:
               description: Multiple Set-Cookie headers set access_token and refresh_token (or
                 expire both on logout/failure). HttpOnly; Path=/; SameSite=Lax
                 by default. Secure, names, domain, and lifetimes are
-                configurable. Tokens are not returned in JSON.
+                configurable. Tokens are not returned in JSON. Successful
+                sign-in, verification, and refresh responses also set the
+                one-year HttpOnly workshop_device cookie.
               schema:
                 type: string
         "401":
@@ -366,7 +405,7 @@ paths:
       summary: List catalog products
       operationId: getGoods
       description: Public catalog of visible products ordered by descending ID. Search matches product
-        name or description; supports category, subcategory, and price filters. Each
+        name, its translation in the requested language, or description; supports category, subcategory, and price filters. Each
         product contains complete category, subcategory, materials, inventory, and
         colors-with-images data.
       security: []
@@ -383,6 +422,9 @@ paths:
           $ref: "#/components/responses/ServerError"
       x-access: public
       parameters:
+        - $ref: "#/components/parameters/Locale"
+        - $ref: "#/components/parameters/AcceptLanguage"
+        - $ref: "#/components/parameters/IncludeTranslations"
         - $ref: "#/components/parameters/Page"
         - $ref: "#/components/parameters/PerPage"
         - $ref: "#/components/parameters/Search"
@@ -1913,6 +1955,62 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/BasketCreateRequest"
+    delete:
+      tags:
+        - Basket
+      summary: Clear the current user basket
+      operationId: deleteBasket
+      description: Deletes every basket entry of the authenticated user. Succeeds with
+        204 even when the basket is already empty.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+  /basket/validate:
+    post:
+      tags:
+        - Basket
+      summary: Validate a guest basket
+      operationId: postBasketValidate
+      description: Resolves browser-held guest basket lines against current inventory
+        without storing anything. Lines referencing hidden products, missing
+        rows, or rows with no stock are dropped; duplicate inventory IDs are
+        merged (capped at 99); quantities are clamped to available stock. The
+        returned entry id is the inventory row id, not a basket row id, and
+        images are filtered to the selected color. Limited to 120 requests per
+        minute per IP.
+      security: []
+      responses:
+        "200":
+          description: Validated basket lines; may be empty.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasketItemList"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GuestBasketValidationRequest"
   "/basket/{basket}":
     parameters:
       - name: basket
@@ -2096,6 +2194,76 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/OrderCreateRequest"
+  /orders/guest:
+    get:
+      tags:
+        - Orders
+      summary: List guest orders
+      operationId: getOrdersGuest
+      description: Paginated orders that belong to the guest session identified by the
+        guest_token cookie, newest placed_at first. Cancelled orders are
+        excluded. Without a valid cookie the response is an empty page, not an
+        error.
+      security:
+        - guestCookie: []
+        - {}
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderPage"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: guest
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/HistoryPerPage"
+  "/orders/guest/{orderId}":
+    parameters:
+      - name: orderId
+        in: path
+        required: true
+        description: Order identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags:
+        - Orders
+      summary: Get guest order details
+      operationId: getOrdersGuestOrderId
+      description: Returns a non-cancelled order owned by the guest session identified by
+        the guest_token cookie. Orders that belong to an account, belong to a
+        different guest session, or are cancelled return 404. The customer
+        field is always null for guest orders.
+      security:
+        - guestCookie: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/OrderDetail"
+                required:
+                  - data
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: guest
   "/orders/{order}":
     parameters:
       - name: order
@@ -2239,6 +2407,674 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
       x-access: admin
+  /preorders:
+    get:
+      tags:
+        - Pre-orders
+      summary: List pre-orders
+      operationId: getPreorders
+      description: Paginated paid pre-orders, newest first, with their line snapshots.
+        Customers see their own; administrators see all and may filter by
+        user_id. Search matches an exact numeric pre-order ID or a substring
+        of the customer email. Only paid pre-orders exist in this collection,
+        so payment_status values other than paid yield an empty page.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreorderPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+      parameters:
+        - $ref: "#/components/parameters/Search"
+        - name: user_id
+          in: query
+          description: Administrator-only filter; ignored for customers.
+          schema:
+            type: integer
+        - name: payment_status
+          in: query
+          schema:
+            $ref: "#/components/schemas/PreorderPaymentStatus"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/HistoryPerPage"
+    post:
+      tags:
+        - Pre-orders
+      summary: Start a pre-order checkout
+      operationId: postPreorders
+      description: Creates a private checkout session with an immutable basket snapshot
+        and a Stripe Checkout session for the fixed EUR 1.00 pre-order payment,
+        then returns the Stripe URL to redirect the customer to. Authenticated
+        callers (access cookie or bearer token; an invalid token is treated as
+        a guest) check out their stored basket and their account email; items
+        and email are ignored. Guests submit items plus a contact email, and
+        the response sets the guest_token cookie when the browser has none.
+        The idempotency_key scopes retries per account or guest session; a
+        retry returns the existing session with 200 instead of creating a new
+        one. Every line must reference a visible product with enough stock,
+        but stock is not reserved until payment. Requires CHECKOUT_MODE=preorder
+        (otherwise 409) and a configured Stripe secret (otherwise 503). Limited
+        to 120 requests per minute.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+        - guestCookie: []
+        - {}
+      responses:
+        "201":
+          description: Checkout session created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PreorderCheckoutSession"
+                required:
+                  - data
+          headers:
+            Set-Cookie:
+              description: Set for anonymous callers without a valid guest session; the
+                HttpOnly guest_token cookie (configurable name, one-year
+                default) identifies the guest for history and checkout-status
+                lookups.
+              schema:
+                type: string
+        "200":
+          description: Idempotent retry; the existing checkout session for this
+            idempotency_key is returned unchanged.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PreorderCheckoutSession"
+                required:
+                  - data
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          description: Checkout mode is not preorder, or a guest retried an
+            idempotency_key with a different contact email.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Validation failed, the basket is empty, a product is no longer
+            available, the requested quantity exceeds stock, or a guest omitted
+            the email.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ValidationError"
+                  - $ref: "#/components/schemas/Error"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "502":
+          $ref: "#/components/responses/BadGateway"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: optional
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PreorderCreateRequest"
+  /preorders/guest:
+    get:
+      tags:
+        - Pre-orders
+      summary: List guest pre-orders
+      operationId: getPreordersGuest
+      description: Paginated paid pre-orders that belong to the guest session identified
+        by the guest_token cookie, newest first, with line snapshots. Without a
+        valid cookie the response is an empty page, not an error.
+      security:
+        - guestCookie: []
+        - {}
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreorderPage"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: guest
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/HistoryPerPage"
+  "/preorders/guest/{preorderId}":
+    parameters:
+      - name: preorderId
+        in: path
+        required: true
+        description: Pre-order identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags:
+        - Pre-orders
+      summary: Get guest pre-order details
+      operationId: getPreordersGuestPreorderId
+      description: Returns a paid pre-order owned by the guest session identified by the
+        guest_token cookie. Pre-orders that belong to an account or to a
+        different guest session return 404.
+      security:
+        - guestCookie: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Preorder"
+                required:
+                  - data
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: guest
+  "/preorders/{preorder}":
+    parameters:
+      - name: preorder
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags:
+        - Pre-orders
+      summary: Get pre-order details
+      operationId: getPreordersPreorder
+      description: Available to the pre-order owner or an administrator. Includes line
+        snapshots with color-scoped product images.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Preorder"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: authenticated
+    put:
+      tags:
+        - Pre-orders
+      summary: Cancel a pre-order
+      operationId: putPreordersPreorder
+      description: Administrator access required. The only accepted payment_status is
+        canceled, and the policy rejects paid pre-orders with 403. Because
+        pre-orders are only created once paid, this operation is effectively
+        reserved for records in other states. Does not refund or restock.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Preorder"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PreorderUpdateRequest"
+    patch:
+      tags:
+        - Pre-orders
+      summary: Cancel a pre-order
+      operationId: patchPreordersPreorder
+      description: Administrator access required. The only accepted payment_status is
+        canceled, and the policy rejects paid pre-orders with 403. Because
+        pre-orders are only created once paid, this operation is effectively
+        reserved for records in other states. Does not refund or restock.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Preorder"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PreorderUpdateRequest"
+    delete:
+      tags:
+        - Pre-orders
+      summary: Delete a pre-order
+      operationId: deletePreordersPreorder
+      description: Administrator access required. Paid pre-orders cannot be deleted
+        (403). Deleting cascades to line snapshots and does not restock.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  "/stripe/checkout-sessions/{sessionId}":
+    parameters:
+      - name: sessionId
+        in: path
+        required: true
+        description: Stripe Checkout session identifier as returned to the success URL
+          via {CHECKOUT_SESSION_ID}.
+        schema:
+          type: string
+          pattern: ^cs_[A-Za-z0-9_]+$
+    get:
+      tags:
+        - Pre-orders
+      summary: Get pre-order checkout status
+      operationId: getStripeCheckoutSessionsSessionId
+      description: Lets the success page poll the private checkout session after
+        returning from Stripe. The session owner (access cookie or bearer
+        token), an administrator, or the guest session that started it (via
+        the guest_token cookie) may read it; anyone else receives 403.
+        payment_status becomes paid and preorder_id is filled once the Stripe
+        webhook has been processed. Limited to 300 requests per minute.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+        - guestCookie: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PreorderCheckoutSession"
+                required:
+                  - data
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: optional
+  /preorder/analytics:
+    get:
+      tags:
+        - Pre-orders
+      summary: List pre-order demand per product
+      operationId: getPreorderAnalytics
+      description: Administrator access required. Paginated products with the total
+        quantity reserved through paid pre-orders, highest demand first and
+        then by product id. Products without pre-orders are included with
+        zero. image_url is the stored URL of the first product image, not a
+        freshly signed URL.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreorderAnalyticsPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/HistoryPerPage"
+  /seller/requests:
+    get:
+      tags:
+        - Seller applications
+      summary: List seller applications
+      operationId: getSellerRequests
+      description: Administrator access required. Paginated applications, newest first,
+        optionally filtered by status.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SellerApplicationPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      parameters:
+        - name: status
+          in: query
+          schema:
+            $ref: "#/components/schemas/SellerApplicationStatus"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/HistoryPerPage"
+    post:
+      tags:
+        - Seller applications
+      summary: Submit a seller application
+      operationId: postSellerRequests
+      description: Public. Stores the application with status processing and queues an
+        acknowledgment email. Submissions are deduplicated on a fingerprint of
+        the normalised payload (email lower-cased), so an identical resubmission
+        returns the original record; the response always reports status
+        processing with no review data, even if the original has since been
+        reviewed. Limited to 3 requests per 15 minutes per normalised email/IP.
+      security: []
+      responses:
+        "201":
+          description: Accepted application (new or deduplicated).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/SellerApplication"
+                required:
+                  - data
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: public
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SellerApplicationCreateRequest"
+  "/seller/requests/{sellerApplication}":
+    parameters:
+      - name: sellerApplication
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags:
+        - Seller applications
+      summary: Get a seller application
+      operationId: getSellerRequestsSellerApplication
+      description: Administrator access required.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/SellerApplication"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  "/seller/requests/{sellerApplication}/response":
+    parameters:
+      - name: sellerApplication
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    post:
+      tags:
+        - Seller applications
+      summary: Review a seller application
+      operationId: postSellerRequestsSellerApplicationResponse
+      description: Administrator access required. Approves or declines an application
+        that is still processing, records the reviewer and response message,
+        and queues the decision email to the applicant. A second review
+        returns 409. Mail queueing failures are logged and do not fail the
+        request.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Reviewed application.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/SellerApplication"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SellerApplicationReviewRequest"
+  /webhooks/stripe:
+    post:
+      tags:
+        - Webhooks
+      summary: Receive Stripe Checkout events
+      operationId: postWebhooksStripe
+      description: Called by Stripe, not by clients. The raw body must be signed with the
+        configured webhook secret (Stripe-Signature with a timestamp within
+        five minutes); an invalid or missing signature or non-JSON body returns
+        400. Events are deduplicated by Stripe event id. For
+        checkout.session.completed and checkout.session.async_payment_succeeded
+        with payment_status paid, the matching checkout session (via
+        metadata.preorder_checkout_session_id) is marked paid, a Preorder with
+        line snapshots is created, inventory is decremented, the account basket
+        is cleared, and a confirmation email is queued. An amount or currency
+        mismatch returns 422. checkout.session.expired marks the session
+        canceled; checkout.session.async_payment_failed marks it failed. Other
+        or unmatched events are acknowledged without changes. Not rate limited;
+        exempt from the Origin check because Stripe sends no Origin header.
+      security: []
+      parameters:
+        - name: Stripe-Signature
+          in: header
+          required: true
+          description: Stripe signature header (t=timestamp,v1=hex HMAC-SHA256 of
+            "timestamp.body").
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Event received (processed or ignored).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StripeWebhookAck"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StripeEvent"
+  /webhooks/sendcloud:
+    post:
+      tags:
+        - Webhooks
+      summary: Receive Sendcloud parcel events
+      operationId: postWebhooksSendcloud
+      description: Called by Sendcloud, not by clients. Currently acknowledges every
+        payload without verifying the Sendcloud-Signature header or changing
+        any order; signature verification and status handling are pending.
+      security: []
+      responses:
+        "200":
+          description: Acknowledged.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SendcloudWebhookAck"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: webhook
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
   "/goods/{good}/images":
     parameters:
       - name: good
@@ -2547,6 +3383,84 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
       x-access: admin
+  /translations/usage:
+    get:
+      tags:
+        - Translations
+      summary: Automatic translation status
+      operationId: getTranslationsUsage
+      description: Whether a provider is configured, the characters sent during the current calendar
+        month, the configured plan limit and whether the quota is exhausted. While
+        exhausted, new labels keep their source language until the next period.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/TranslationUsage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  /translations/{type}/{id}/regenerate:
+    post:
+      tags:
+        - Translations
+      summary: Regenerate automatic translations of a record
+      operationId: postTranslationsRegenerate
+      description: Queues a fresh automatic translation of the record's translatable labels into every
+        other supported language. Manual translations are kept. Descriptions are never
+        translated. Returns 202 once the job is queued.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [goods, categories, subcategories, colors, materials]
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        "202":
+          description: Regeneration queued.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      queued:
+                        type: boolean
+                        example: true
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
 components:
   securitySchemes:
     accessCookie:
@@ -2566,6 +3480,14 @@ components:
       name: refresh_token
       description: Rotating opaque refresh token; refresh/logout also accept a JSON
         body fallback.
+    guestCookie:
+      type: apiKey
+      in: cookie
+      name: guest_token
+      description: Opaque HttpOnly guest session token issued by POST /preorders for
+        anonymous checkouts. Configurable name; one-year default lifetime.
+        Guest endpoints treat a missing or invalid cookie as an empty
+        history rather than an authentication error.
   parameters:
     Page:
       name: page
@@ -2593,6 +3515,15 @@ components:
         minimum: 1
         maximum: 100
         default: 50
+    HistoryPerPage:
+      name: per_page
+      in: query
+      description: Number of records per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
     Search:
       name: search
       in: query
@@ -2600,6 +3531,31 @@ components:
       schema:
         type: string
         maxLength: 120
+    Locale:
+      name: locale
+      in: query
+      description: Language of the returned catalog labels. Overrides the Accept-Language header.
+        Unsupported values are ignored.
+      schema:
+        type: string
+        enum: [en, fr, de, it, ru]
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      description: Preferred languages of the returned catalog labels; the first supported one
+        wins. Product descriptions are never translated. Without a supported
+        language, labels fall back to English or to the record's source language.
+      schema:
+        type: string
+        example: de-DE,de;q=0.9,en;q=0.8
+    IncludeTranslations:
+      name: include_translations
+      in: query
+      description: Administrative view. Returns labels in their source language together with the
+        source_locale, translatable_fields and translations properties.
+      schema:
+        type: boolean
+        default: false
   responses:
     Unauthorized:
       description: Missing, expired, or invalid authentication credentials.
@@ -2617,6 +3573,13 @@ components:
     NotFound:
       description: Requested resource does not exist. The error code can be not_found
         or request_failed depending on exception handling.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    BadRequest:
+      description: Malformed request, such as an invalid webhook signature or
+        payload; the error code is request_failed.
       content:
         application/json:
           schema:
@@ -2645,6 +3608,20 @@ components:
               - $ref: "#/components/schemas/Error"
     NoContent:
       description: Operation completed; no response body.
+    BadGateway:
+      description: An upstream provider (Stripe) returned an unusable response; the
+        error code is request_failed.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    ServiceUnavailable:
+      description: A required integration is not configured in this deployment; the
+        error code is request_failed.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
     ServerError:
       description: Unexpected server or storage/database failure. Error body depends
         on deployment exception handling and debug configuration.
@@ -2753,7 +3730,94 @@ components:
         - basket_goods_count
         - email_verified_at
         - created_at
+    TranslationEntry:
+      type: object
+      description: One translated label. A null name means the automatic translation is still pending
+        (or was skipped because the provider quota is exhausted).
+      properties:
+        name:
+          anyOf:
+            - type: string
+            - type: "null"
+        name_is_manual:
+          type: boolean
+          description: Entered by an administrator; never overwritten automatically.
+        name_is_stale:
+          type: boolean
+          description: Automatic translation of a previous source text; regenerated by the queue.
+      required: [name, name_is_manual, name_is_stale]
+    TranslationBlock:
+      type: object
+      description: Present only when include_translations is requested or on administrative responses.
+      properties:
+        source_locale:
+          type: string
+          enum: [en, fr, de, it, ru]
+          description: Language the source label is written in.
+        translatable_fields:
+          type: array
+          items:
+            type: string
+          example: [name]
+        translations:
+          type: object
+          description: Keyed by every supported locale except source_locale.
+          additionalProperties:
+            $ref: "#/components/schemas/TranslationEntry"
+    TranslationWriteFields:
+      type: object
+      description: Optional localization inputs accepted by every catalog mutation.
+      properties:
+        source_locale:
+          type: string
+          enum: [en, fr, de, it, ru]
+          description: Language the name is written in. Defaults to the Accept-Language of the request
+            on create and to the stored value on update.
+        translations:
+          type: object
+          description: Manual name translations keyed by locale. A non-empty name is stored as manual;
+            null or an empty string clears a manual translation so it is regenerated
+            automatically. Only the name field is accepted; descriptions are rejected with 422.
+          additionalProperties:
+            type: object
+            properties:
+              name:
+                anyOf:
+                  - type: string
+                    maxLength: 255
+                  - type: "null"
+          example:
+            de:
+              name: Lederjacke
+    TranslationUsage:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: False when no provider key is configured; manual translations still work.
+        provider:
+          type: string
+          example: deepl
+        period:
+          type: string
+          example: "2026-11"
+        characters_used:
+          type: integer
+        character_limit:
+          anyOf:
+            - type: integer
+            - type: "null"
+        exhausted:
+          type: boolean
+        exhausted_at:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+      required: [enabled, provider, period, characters_used, character_limit, exhausted, exhausted_at]
     Category:
+      allOf:
+        - $ref: "#/components/schemas/TranslationBlock"
       type: object
       properties:
         id:
@@ -2762,6 +3826,7 @@ components:
           minimum: 1
         name:
           type: string
+          description: Localized to the requested language; the source label when include_translations is set.
         subcategories:
           type: array
           items:
@@ -2785,6 +3850,8 @@ components:
         - name
         - image_id
     Subcategory:
+      allOf:
+        - $ref: "#/components/schemas/TranslationBlock"
       type: object
       properties:
         id:
@@ -2793,6 +3860,7 @@ components:
           minimum: 1
         name:
           type: string
+          description: Localized to the requested language; the source label when include_translations is set.
         category_id:
           type: integer
           format: int64
@@ -2806,6 +3874,8 @@ components:
         - name
         - category_id
     Color:
+      allOf:
+        - $ref: "#/components/schemas/TranslationBlock"
       type: object
       properties:
         id:
@@ -2814,6 +3884,7 @@ components:
           minimum: 1
         name:
           type: string
+          description: Localized to the requested language; the source label when include_translations is set.
         hexcode:
           type: string
           pattern: ^#[0-9A-Fa-f]{6}$
@@ -2823,6 +3894,8 @@ components:
         - name
         - hexcode
     Material:
+      allOf:
+        - $ref: "#/components/schemas/TranslationBlock"
       type: object
       properties:
         id:
@@ -2831,6 +3904,7 @@ components:
           minimum: 1
         name:
           type: string
+          description: Localized to the requested language; the source label when include_translations is set.
       required:
         - id
         - name
@@ -2911,6 +3985,8 @@ components:
         - size
         - quantity
     Good:
+      allOf:
+        - $ref: "#/components/schemas/TranslationBlock"
       type: object
       properties:
         id:
@@ -2919,6 +3995,7 @@ components:
           minimum: 1
         name:
           type: string
+          description: Localized to the requested language; the source label on administrative responses.
         brand:
           type: string
           maxLength: 255
@@ -3024,6 +4101,13 @@ components:
           anyOf:
             - $ref: "#/components/schemas/InventoryRow"
             - type: "null"
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/Image"
+          description: Product images for the selected color, ordered by sort_order.
+      description: For guest basket validation, id equals the inventory row id and
+        quantity is clamped to available stock.
       required:
         - id
         - good_register_id
@@ -3031,6 +4115,7 @@ components:
         - quantity
         - good
         - color
+        - images
     OrderStatus:
       type: string
       enum:
@@ -3126,6 +4211,12 @@ components:
             expose a currency field.
         status:
           $ref: "#/components/schemas/OrderStatus"
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/Image"
+          description: Current product images for the ordered color, ordered by
+            sort_order. Empty when the product or inventory row no longer exists.
       required:
         - id
         - good_id
@@ -3137,6 +4228,7 @@ components:
         - quantity
         - line_total
         - status
+        - images
     OrderDetail:
       allOf:
         - $ref: "#/components/schemas/Order"
@@ -3628,6 +4720,8 @@ components:
         - full_name
         - password
     GoodWriteRequest:
+      allOf:
+        - $ref: "#/components/schemas/TranslationWriteFields"
       type: object
       properties:
         name:
@@ -3764,6 +4858,8 @@ components:
       required:
         - quantity
     CategoryWriteRequest:
+      allOf:
+        - $ref: "#/components/schemas/TranslationWriteFields"
       type: object
       properties:
         name:
@@ -3778,6 +4874,8 @@ components:
       required:
         - name
     SubcategoryWriteRequest:
+      allOf:
+        - $ref: "#/components/schemas/TranslationWriteFields"
       type: object
       properties:
         name:
@@ -3793,6 +4891,8 @@ components:
         - name
         - category_id
     ColorWriteRequest:
+      allOf:
+        - $ref: "#/components/schemas/TranslationWriteFields"
       type: object
       properties:
         name:
@@ -3808,6 +4908,8 @@ components:
         - name
         - hexcode
     MaterialWriteRequest:
+      allOf:
+        - $ref: "#/components/schemas/TranslationWriteFields"
       type: object
       properties:
         name:
@@ -4063,3 +5165,489 @@ components:
       description: Multipart creation/update. For updates send POST to
         /categories/{category} with _method=PUT or _method=PATCH. Existing
         text-only JSON requests continue to work.
+    OrderPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Order"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    GuestBasketLineRequest:
+      type: object
+      properties:
+        inventory_id:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Inventory row (color plus optional size) identifier.
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 99
+      required:
+        - inventory_id
+        - quantity
+    GuestBasketValidationRequest:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/GuestBasketLineRequest"
+          maxItems: 20
+          description: Browser-held basket lines. Must be present; an empty array is
+            allowed and returns an empty list.
+      required:
+        - items
+    PreorderPaymentStatus:
+      type: string
+      enum:
+        - pending
+        - paid
+        - failed
+        - canceled
+        - refunded
+    PreorderCreateRequest:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+          format: uuid
+          description: Client-generated key scoped to the account or guest session.
+            Reusing it returns the existing checkout session.
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Required for guests; lower-cased and trimmed. Ignored for
+            authenticated callers, whose account email is used.
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/GuestBasketLineRequest"
+          maxItems: 20
+          description: Guest basket lines. Ignored for authenticated callers, whose
+            stored basket is used.
+      description: Authenticated callers only need idempotency_key. Guests must supply
+        email and items.
+      required:
+        - idempotency_key
+    PreorderUpdateRequest:
+      type: object
+      properties:
+        payment_status:
+          type: string
+          enum:
+            - canceled
+      required:
+        - payment_status
+    PreorderCheckoutSession:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Private checkout session id (also Stripe client_reference_id).
+        payment_status:
+          $ref: "#/components/schemas/PreorderPaymentStatus"
+        payment_amount_cents:
+          type: integer
+          minimum: 0
+          example: 100
+          description: Fixed pre-order payment; currently always 100.
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: eur
+          description: Lower-case ISO 4217 code; currently always eur.
+        paid_at:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+        checkout_url:
+          type: string
+          format: uri
+          description: Stripe-hosted payment page. Omitted only when Stripe has not
+            returned a URL for this session.
+        preorder_id:
+          anyOf:
+            - type: integer
+              format: int64
+              minimum: 1
+            - type: "null"
+          description: Set once the webhook has created the Preorder.
+      required:
+        - id
+        - payment_status
+        - payment_amount_cents
+        - currency
+        - paid_at
+        - preorder_id
+    PreorderRegister:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        good_id:
+          anyOf:
+            - type: integer
+              format: int64
+              minimum: 1
+            - type: "null"
+        good_register_id:
+          anyOf:
+            - type: integer
+              format: int64
+              minimum: 1
+            - type: "null"
+        product_name:
+          type: string
+        color_name:
+          anyOf:
+            - type: string
+            - type: "null"
+        size:
+          anyOf:
+            - type: string
+            - type: "null"
+          description: Size label snapshot at checkout.
+        original_unit_price:
+          type: string
+          pattern: ^\d+\.\d{2}$
+          example: "125.00"
+          description: Catalog price snapshot at checkout, serialized as a string. The
+            pre-order payment itself is the fixed payment_amount_cents.
+        quantity:
+          type: integer
+          minimum: 1
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/Image"
+          description: Current product images for the pre-ordered color, ordered by
+            sort_order. Empty when the product or inventory row no longer exists.
+      required:
+        - id
+        - good_id
+        - good_register_id
+        - product_name
+        - color_name
+        - size
+        - original_unit_price
+        - quantity
+        - images
+    Preorder:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        user_id:
+          anyOf:
+            - type: integer
+              format: int64
+              minimum: 1
+            - type: "null"
+          description: Null for guest pre-orders.
+        customer_name:
+          type: string
+          description: Account full name, or the name Stripe collected for guests
+            ("Guest checkout" when none).
+        customer_email:
+          type: string
+          format: email
+          maxLength: 255
+        payment_status:
+          $ref: "#/components/schemas/PreorderPaymentStatus"
+        payment_amount_cents:
+          type: integer
+          minimum: 0
+          example: 100
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: eur
+        paid_at:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+        created_at:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+        checkout_url:
+          type: string
+          format: uri
+          description: Reserved; not emitted by the current implementation.
+        registers:
+          type: array
+          items:
+            $ref: "#/components/schemas/PreorderRegister"
+          description: Line snapshots; always loaded on list and detail responses.
+      required:
+        - id
+        - user_id
+        - customer_name
+        - customer_email
+        - payment_status
+        - payment_amount_cents
+        - currency
+        - paid_at
+        - created_at
+        - registers
+    PreorderPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Preorder"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    PreorderAnalyticsRow:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+          minimum: 1
+        product_name:
+          type: string
+        image_url:
+          anyOf:
+            - type: string
+              format: uri
+            - type: "null"
+          description: Stored URL of the first product image by sort_order; not a signed
+            URL and may be null.
+        original_price:
+          type: string
+          pattern: ^\d+(\.\d+)?$
+          example: "125.00"
+          description: Current catalog price serialized as a string.
+        preordered_quantity:
+          type: integer
+          minimum: 0
+          description: Units reserved through paid pre-orders.
+      required:
+        - product_id
+        - product_name
+        - image_url
+        - original_price
+        - preordered_quantity
+    PreorderAnalyticsPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/PreorderAnalyticsRow"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    SellerApplicationStatus:
+      type: string
+      enum:
+        - processing
+        - approved
+        - declined
+    SellerApplicationCreateRequest:
+      type: object
+      properties:
+        first_name:
+          type: string
+          maxLength: 100
+        last_name:
+          type: string
+          maxLength: 100
+        tel_number:
+          type: string
+          pattern: ^\+?[1-9][0-9]{6,14}$
+          description: E.164-style digits with optional leading plus.
+        country:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        brand_name:
+          type: string
+          maxLength: 160
+        company_address:
+          type: string
+          maxLength: 500
+        description_of_contact:
+          type: string
+          maxLength: 4000
+        description_of_brand:
+          type: string
+          maxLength: 4000
+        is_resident_of_eu:
+          type: boolean
+      required:
+        - first_name
+        - last_name
+        - tel_number
+        - country
+        - email
+        - brand_name
+        - company_address
+        - description_of_contact
+        - description_of_brand
+        - is_resident_of_eu
+    SellerApplicationReviewRequest:
+      type: object
+      properties:
+        approved:
+          type: boolean
+        response:
+          type: string
+          maxLength: 5000
+          description: Message sent to the applicant and stored as response_message.
+      required:
+        - approved
+        - response
+    SellerApplication:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        first_name:
+          type: string
+        last_name:
+          type: string
+        tel_number:
+          type: string
+        country:
+          type: string
+        email:
+          type: string
+          format: email
+        brand_name:
+          type: string
+        company_address:
+          type: string
+        description_of_contact:
+          type: string
+        description_of_brand:
+          type: string
+        isResidentOfEU:
+          type: boolean
+          description: Camel-cased in responses; the request field is is_resident_of_eu.
+        status:
+          $ref: "#/components/schemas/SellerApplicationStatus"
+        reviewed_at:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+        response_message:
+          anyOf:
+            - type: string
+            - type: "null"
+        created_at:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+      description: Public submission responses always report status processing with
+        null reviewed_at and response_message.
+      required:
+        - id
+        - first_name
+        - last_name
+        - tel_number
+        - country
+        - email
+        - brand_name
+        - company_address
+        - description_of_contact
+        - description_of_brand
+        - isResidentOfEU
+        - status
+        - reviewed_at
+        - response_message
+        - created_at
+    SellerApplicationPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SellerApplication"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - data
+        - links
+        - meta
+    StripeEvent:
+      type: object
+      description: Stripe event envelope. Only id, type, and data.object (a Checkout
+        Session with metadata.preorder_checkout_session_id) are read.
+      properties:
+        id:
+          type: string
+          example: evt_1Nv0XYZ
+        type:
+          type: string
+          example: checkout.session.completed
+        data:
+          type: object
+          properties:
+            object:
+              type: object
+              additionalProperties: true
+      required:
+        - id
+        - type
+      additionalProperties: true
+    StripeWebhookAck:
+      type: object
+      properties:
+        received:
+          type: boolean
+          const: true
+      required:
+        - received
+    SendcloudWebhookAck:
+      type: object
+      properties:
+        success:
+          type: boolean
+          const: true
+      required:
+        - success

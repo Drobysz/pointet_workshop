@@ -27,7 +27,36 @@ export interface ProductImage {
   sort_order: number;
 }
 
-export interface Color {
+/** One translated label with its bookkeeping, keyed by locale in `translations`. */
+export interface TranslationEntry {
+  name: string | null;
+  name_is_manual: boolean;
+  name_is_stale: boolean;
+}
+
+/** Present on administrative responses of translatable catalog records. */
+export interface TranslatableEntity {
+  source_locale?: string;
+  translatable_fields?: string[];
+  translations?: Record<string, TranslationEntry>;
+}
+
+/** Manual translation edits: `null` hands a locale back to automatic translation. */
+export type TranslationsPayload = Record<string, { name: string | null }>;
+
+export type TranslatableKind = "goods" | "categories" | "subcategories" | "colors" | "materials";
+
+export interface TranslationUsage {
+  enabled: boolean;
+  provider: string;
+  period: string;
+  characters_used: number;
+  character_limit: number | null;
+  exhausted: boolean;
+  exhausted_at: string | null;
+}
+
+export interface Color extends TranslatableEntity {
   id: number;
   name: string;
   hexcode: string;
@@ -41,7 +70,7 @@ export interface CategoryImage {
   url: string | null;
 }
 
-export interface Category {
+export interface Category extends TranslatableEntity {
   id: number;
   name: string;
   subcategories?: Subcategory[];
@@ -49,14 +78,14 @@ export interface Category {
   image?: CategoryImage | null;
 }
 
-export interface Subcategory {
+export interface Subcategory extends TranslatableEntity {
   id: number;
   name: string;
   category_id: number;
   category?: Category;
 }
 
-export interface Material {
+export interface Material extends TranslatableEntity {
   id: number;
   name: string;
 }
@@ -73,7 +102,7 @@ export interface InventoryRow extends InventoryInput {
   good_id: number;
 }
 
-export interface Good {
+export interface Good extends TranslatableEntity {
   id: number;
   name: string;
   brand: string;
@@ -105,6 +134,8 @@ export interface GoodPayload {
   description: string;
   visible: boolean;
   material_ids: number[];
+  source_locale?: string;
+  translations?: TranslationsPayload;
 }
 
 export interface ProductImagePayload {

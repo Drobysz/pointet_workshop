@@ -12,3 +12,4 @@ export * from "./Segmented/Segmented";
 export * from "./Spinner/Spinner";
 export * from "./StatePanel/StatePanel";
 export * from "./StatusBadge/StatusBadge";
+export * from "./TranslationFields/TranslationFields";

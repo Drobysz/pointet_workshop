@@ -28,3 +28,5 @@ Artisan::command('transactional-mail:retry {id}', function () {
 })->purpose('Make an exhausted transactional email eligible for delivery again');
 
 Schedule::command('transactional-mail:dispatch')->everyMinute()->withoutOverlapping(5);
+// Picks up labels left untranslated by a failed job or an exhausted monthly quota.
+Schedule::command('translations:sync')->dailyAt('03:00')->withoutOverlapping(60);

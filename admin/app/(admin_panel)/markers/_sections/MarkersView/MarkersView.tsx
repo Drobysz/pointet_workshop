@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import useSWR from "swr";
 import {
   Button,
@@ -15,10 +15,11 @@ import {
   Segmented,
   Select,
   StatePanel,
+  TranslationFields,
 } from "@/components";
 import { useTableQueryState } from "@/hooks";
 import { ImageDropzone } from "@/components/ImageDropzone/ImageDropzone";
-import type { Category, Color, Subcategory } from "@/interface/domain";
+import type { Category, Color, Subcategory, TranslationsPayload } from "@/interface/domain";
 import {
   createMarker,
   deleteMarker,
@@ -41,6 +42,7 @@ const markerKinds: MarkerKind[] = [
 export function MarkersView() {
   const t = useTranslations("markers");
   const common = useTranslations("common");
+  const interfaceLocale = useLocale();
   const tableState = useTableQueryState();
   const [kind, setKind] = useState<MarkerKind>("categories");
   const [editingMarker, setEditingMarker] = useState<Marker | "new">();
@@ -49,7 +51,17 @@ export function MarkersView() {
   const [isSaving, setIsSaving] = useState(false);
   const [categoryImage, setCategoryImage] = useState<{ file: File; url: string }>();
   const [removeImage, setRemoveImage] = useState(false);
+  const [sourceLocale, setSourceLocale] = useState(interfaceLocale);
+  const [translationEdits, setTranslationEdits] = useState<TranslationsPayload>({});
   const objectUrl = useRef<string | undefined>(undefined);
+
+  function openEditor(marker: Marker | "new") {
+    setError("");
+    resetImage();
+    setSourceLocale(marker === "new" ? interfaceLocale : marker.source_locale ?? interfaceLocale);
+    setTranslationEdits({});
+    setEditingMarker(marker);
+  }
 
   useEffect(() => () => {
     if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
@@ -92,10 +104,17 @@ export function MarkersView() {
     }
 
     setIsSaving(true);
-    const body = kind === "categories" ? formData : payload;
+    const body: FormData | Record<string, unknown> = kind === "categories"
+      ? formData
+      : { ...payload, source_locale: sourceLocale, translations: translationEdits };
     if (body instanceof FormData) {
       if (categoryImage) body.set("image", categoryImage.file);
       else if (removeImage) body.set("remove_image", "1");
+      body.set("source_locale", sourceLocale);
+      // An empty value clears a manual translation so the automatic one returns.
+      for (const [locale, edit] of Object.entries(translationEdits)) {
+        body.set(`translations[${locale}][name]`, edit.name ?? "");
+      }
     }
     try {
       if (editingMarker === "new") {
@@ -105,6 +124,7 @@ export function MarkersView() {
         await updateMarker(kind, editingMarker.id, body);
       }
       resetImage();
+      setTranslationEdits({});
 
       await refreshMarkerData();
       setEditingMarker(undefined);
@@ -185,11 +205,7 @@ export function MarkersView() {
             icon
             size="sm"
             aria-label={t("editLabel", { name: marker.name })}
-            onClick={() => {
-              setError("");
-              resetImage();
-              setEditingMarker(marker);
-            }}
+            onClick={() => openEditor(marker)}
           >
             <Pencil size={15} aria-hidden="true" />
           </Button>
@@ -239,11 +255,7 @@ export function MarkersView() {
         actions={(
           <Button
             variant="primary"
-            onClick={() => {
-              setError("");
-              resetImage();
-              setEditingMarker("new");
-            }}
+            onClick={() => openEditor("new")}
           >
             <Plus size={17} aria-hidden="true" />
             {t("create")}
@@ -326,6 +338,17 @@ export function MarkersView() {
                   ))}
                 </Select>
               ) : null}
+              <TranslationFields
+                kind={kind}
+                entity={markerForDefaults}
+                entityId={markerForDefaults?.id}
+                sourceLocale={sourceLocale}
+                onSourceLocaleChange={setSourceLocale}
+                edits={translationEdits}
+                onEditsChange={setTranslationEdits}
+                disabled={isSaving}
+                onRegenerated={markerForDefaults ? refreshMarkerData : undefined}
+              />
               {kind === "categories" ? (
                 <ImageDropzone
                   label={t("image")}

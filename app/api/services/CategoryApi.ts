@@ -6,31 +6,50 @@ import { GoodListParams, GoodPage, GoodResponse } from "../types/goods";
 
 const ALL_GOODS_PAGE_SIZE = 100;
 
+/**
+ * Catalog labels come back localized. Server components must pass the page
+ * locale, as there is no document to read it from; browser calls send the
+ * current `<html lang>` automatically.
+ */
+function localeHeaders(locale?: string): Record<string, string> | undefined {
+    return locale ? { "Accept-Language": locale } : undefined;
+}
+
 export class CategoryApi {
     constructor (
         private readonly api: PublicApiClient,
     ) {}
 
-    public getCategories (): Promise<CategoryList> {
-        return this.api.get<CategoryList>("/categories");
+    public getCategories (
+        locale?: string,
+    ): Promise<CategoryList> {
+        return this.api.get<CategoryList>(
+            "/categories",
+            false,
+            localeHeaders(locale),
+        );
     }
 
     public getGoods (
         params?: GoodListParams,
+        locale?: string,
     ): Promise<GoodPage> {
         const urlParams = PathService.paramsToString(params ?? {});
         const endpoint = params
             ? `/goods?${urlParams}`
             : "/goods";
 
-        return this.api.get<GoodPage>(endpoint);
+        return this.api.get<GoodPage>(endpoint, false, localeHeaders(locale));
     }
 
     public getGood (
         goodId: Id,
+        locale?: string,
     ): Promise<GoodResponse> {
         return this.api.get<GoodResponse>(
-            `/goods/${goodId}`
+            `/goods/${goodId}`,
+            false,
+            localeHeaders(locale),
         );
     }
 

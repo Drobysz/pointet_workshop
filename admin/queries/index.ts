@@ -5,5 +5,6 @@ export * from "./markers/markerQueries";
 export * from "./orders/orderQueries";
 export * from "./preorders/preorderQueries";
 export * from "./sellerApplications/sellerApplicationQueries";
+export * from "./translations/translationQueries";
 export * from "./users/userQueries";
 

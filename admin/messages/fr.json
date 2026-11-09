@@ -23,7 +23,10 @@
     "view": "Voir"
   },
   "languages": {
+    "en": "English",
     "fr": "Français",
+    "de": "Deutsch",
+    "it": "Italiano",
     "ru": "Русский"
   },
   "metadata": {
@@ -404,5 +407,30 @@
     "added": "{count} unité(s) ajoutée(s) — {variant}.",
     "restockError": "Impossible d’ajouter le stock. Vérifiez la quantité actuelle avant de réessayer.",
     "conflict": "Le stock a changé depuis l’ouverture du formulaire. Fermez puis rouvrez le produit avant d’enregistrer."
+  },
+  "translations": {
+    "title": "Traductions du nom",
+    "description": "Le nom est traduit automatiquement dans les autres langues. Saisissez une traduction pour la remplacer manuellement ; les traductions manuelles sont conservées quand le nom change.",
+    "descriptionNotice": "La description n’est pas traduite : chaque visiteur la voit dans la langue où elle a été rédigée.",
+    "sourceLocale": "Langue source",
+    "sourceLocaleHint": "Langue dans laquelle le nom est rédigé. Par défaut, la langue de votre interface.",
+    "placeholder": "Traduction automatique",
+    "status": {
+      "pending": "Traduction automatique en attente",
+      "automatic": "Automatique",
+      "manual": "Manuelle",
+      "stale": "Obsolète, régénérée à l’enregistrement",
+      "unsaved": "Manuelle, enregistrée avec le formulaire",
+      "reset": "Retour à la traduction automatique à l’enregistrement"
+    },
+    "reset": "Utiliser la traduction automatique",
+    "resetLabel": "Utiliser la traduction automatique pour {language}",
+    "regenerate": "Régénérer les traductions automatiques",
+    "regenerateQueued": "Les traductions automatiques sont en cours de régénération.",
+    "regenerateError": "Impossible de lancer les traductions.",
+    "quotaExhausted": "La traduction automatique est en pause : le quota mensuel de caractères est épuisé. Les nouveaux noms restent dans leur langue source jusqu’à la prochaine période.",
+    "disabled": "La traduction automatique n’est pas configurée. Les traductions peuvent être saisies manuellement.",
+    "usage": "{used} caractères sur {limit} utilisés ce mois-ci",
+    "usageUnlimited": "{used} caractères utilisés ce mois-ci"
   }
 }

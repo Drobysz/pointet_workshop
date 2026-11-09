@@ -42,12 +42,13 @@ export default async function ShopLayout({
     children: ReactNode;
 }>) {
     const { locale } = await params;
-    setRequestLocale(SeoService.resolveLocale(locale));
+    const currentLocale = SeoService.resolveLocale(locale);
+    setRequestLocale(currentLocale);
 
     const t = await getTranslations("catalog");
     const tBreadcrumbs = await getTranslations("seo.breadcrumbs");
     await connection();
-    const { data: categories } = await categoryApi.getCategories();
+    const { data: categories } = await categoryApi.getCategories(currentLocale);
 
     return (
         <>

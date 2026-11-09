@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasGoodTranslations;
+use App\Services\Translation\Contracts\Translatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Good extends Model
+class Good extends Model implements Translatable
 {
-    use HasFactory;
+    use HasFactory, HasGoodTranslations;
 
     protected $attributes = [
         'weigh' => 0,
@@ -27,6 +29,7 @@ class Good extends Model
         'current_quantity',
         'description',
         'visible',
+        'source_locale',
     ];
 
     protected function casts(): array
@@ -84,7 +87,14 @@ class Good extends Model
             ->when(isset($filters['max_price']), fn (Builder $q) => $q->where('price', '<=', $filters['max_price']))
             ->when($filters['search'] ?? null, function (Builder $q, string $search): void {
                 $phrase = mb_strtolower(trim($search));
-                $q->where(fn (Builder $inner) => $inner->whereRaw('LOWER(name) LIKE ?', ["%{$phrase}%"])->orWhereRaw('LOWER(description) LIKE ?', ["%{$phrase}%"]));
+                $locale = app()->getLocale();
+                $q->where(fn (Builder $inner) => $inner
+                    ->whereRaw('LOWER(name) LIKE ?', ["%{$phrase}%"])
+                    ->orWhereRaw('LOWER(description) LIKE ?', ["%{$phrase}%"])
+                    // Visitors search in their own language: translated names match too.
+                    ->orWhereHas('translations', fn (Builder $translation) => $translation
+                        ->where('locale', $locale)
+                        ->whereRaw('LOWER(name) LIKE ?', ["%{$phrase}%"])));
             });
     }
 

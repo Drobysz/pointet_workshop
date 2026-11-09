@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Concerns\ValidatesTranslations;
 use App\Services\Catalog\InventoryService;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -9,6 +10,8 @@ use Illuminate\Validation\Validator;
 
 class GoodRequest extends FormRequest
 {
+    use ValidatesTranslations;
+
     public function authorize(): bool
     {
         return true;
@@ -50,6 +53,7 @@ class GoodRequest extends FormRequest
             'inventory.*.quantity' => ['required', 'integer', 'min:0', 'max:'.InventoryService::MAX_QUANTITY],
             'material_ids' => ['present', 'array'],
             'material_ids.*' => ['integer', 'distinct', 'exists:materials,id'],
+            ...$this->translationRules(config('translation.goods.fields', ['name'])),
         ];
     }
 

@@ -6,9 +6,14 @@ section.section {
     grid-template-areas: "main";
 }
 
+// Scroll distance of the section: half a viewport per slide, plus the
+// viewport the sticky stage occupies at the end. `svh` on both the tunnel
+// and the stage keeps the layout stable while a mobile browser toggles
+// its address bar.
 .tunnel {
     @apply relative;
-    height: 700svh;
+    --slide-distance: 50svh;
+    height: calc(var(--slide-count, 12) * var(--slide-distance) + 100svh);
 }
 
 .elevator {
@@ -20,8 +25,8 @@ section.section {
         py-3 
         sm:gap-5 
         sm:py-6;
-    top: var(--header-height);
-    height: calc(100dvh - var(--header-height));
+    top: var(--header-height, 0px);
+    height: calc(100svh - var(--header-height, 0px));
 }
 
 .title {

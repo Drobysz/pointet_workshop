@@ -1,10 +1,9 @@
 import { motion, useTransform } from "framer-motion";
-import Image from "next/image";
-import type { CSSProperties } from "react";
+import { cn } from "@/helpers";
+import { OutfitImage } from "../OutfitImage/OutfitImage";
 import type { CurvedCardProps } from "./CurvedCard.props";
 import s from "./style.module.scss";
 
-const IMAGE_SIZES = "(min-width: 768px) 53vw, 78vw";
 const DEPTH_RANGE = 1.2;
 const SIDE_FORWARD_RATIO = 0.045;
 const CENTER_BACK_RATIO = 0.13;
@@ -24,6 +23,8 @@ export const CurvedCard = ({
     trackIndex,
     perspective,
     filterId,
+    isNearby,
+    isEager,
 }: CurvedCardProps) => {
     const trackOffset = useTransform(trackIndex, (current) => index - current);
     const rotateY = useTransform(trackOffset, (distance) => {
@@ -42,16 +43,16 @@ export const CurvedCard = ({
 
     return (
         <motion.div
-            className={s.frame}
+            // Off-screen cards are neither painted nor run through the
+            // displacement filter, so only the visible few are rasterised.
+            className={cn(s.frame, !isNearby && s.frame_far)}
             style={{ z, rotateY }}
         >
-            <Image
-                className={s.image}
-                style={{ "--curve": `url("#${filterId}")` } as CSSProperties}
+            <OutfitImage
                 src={src}
                 alt={alt}
-                fill
-                sizes={IMAGE_SIZES}
+                eager={isEager}
+                filterId={isNearby ? filterId : undefined}
             />
         </motion.div>
     );

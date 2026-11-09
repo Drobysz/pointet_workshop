@@ -5,8 +5,10 @@
     --slide-width: 78%;
     --slide-gap: 0.6%;
     --slide-inset: calc((100% - var(--slide-width)) / 2);
-    --slide-step: calc(var(--slide-width) + var(--slide-gap));
     overflow: clip;
+    // The projected cards never leak outside the stage, and their
+    // movement cannot invalidate the layout around it.
+    contain: layout paint;
     container-type: inline-size;
 }
 
@@ -16,11 +18,17 @@
     grid-auto-columns: var(--slide-width);
     gap: var(--slide-gap);
     transform-style: preserve-3d;
+    will-change: transform;
 }
 
 .slide {
     @apply relative min-h-0 min-w-0;
     transform-style: preserve-3d;
+}
+
+// Static slide frame of the reduced-motion fallback.
+.frame {
+    @apply absolute inset-0;
 }
 
 .stage::before,
@@ -46,14 +54,18 @@
 @media (prefers-reduced-motion: reduce) {
     .stage {
         @apply flex-none overflow-x-auto;
+        contain: none;
         scroll-snap-type: x mandatory;
         direction: ltr;
     }
 
     .track {
+        // Overrides the inline motion styles of the frame rendered before
+        // the client switches to the static fallback.
         @apply flex transform-none!;
         inset-inline-start: 0;
         height: min(55svh, 32rem);
+        will-change: auto;
     }
 
     .slide {

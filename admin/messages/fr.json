@@ -207,6 +207,8 @@
     "product": "Produit",
     "productColors": "Couleurs du produit",
     "revenue": "Chiffre d’affaires",
+    "deleteConfirm": "Supprimer {name} ? Le produit, son stock et ses images seront supprimés définitivement.",
+    "deleteError": "Impossible de supprimer le produit.",
     "saveError": "Impossible d’enregistrer le produit.",
     "stock": "Stock",
     "subcategory": "Sous-catégorie",

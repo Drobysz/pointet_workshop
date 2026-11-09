@@ -207,6 +207,8 @@
     "product": "Produkt",
     "productColors": "Produktfarben",
     "revenue": "Umsatz",
+    "deleteConfirm": "{name} löschen? Das Produkt, sein Bestand und seine Bilder werden endgültig entfernt.",
+    "deleteError": "Das Produkt konnte nicht gelöscht werden.",
     "saveError": "Das Produkt konnte nicht gespeichert werden.",
     "stock": "Bestand",
     "subcategory": "Unterkategorie",

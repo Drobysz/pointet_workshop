@@ -207,6 +207,8 @@
     "product": "Product",
     "productColors": "Product colours",
     "revenue": "Revenue",
+    "deleteConfirm": "Delete {name}? The product, its stock and its images will be removed permanently.",
+    "deleteError": "Unable to delete the product.",
     "saveError": "Unable to save the product.",
     "stock": "Stock",
     "subcategory": "Subcategory",

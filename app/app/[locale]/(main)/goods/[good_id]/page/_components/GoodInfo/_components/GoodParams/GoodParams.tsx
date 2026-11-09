@@ -21,7 +21,7 @@ export const GoodParams = ({
 
     const params = [
         { labelKey: "itemNumber", value: good.id },
-        { labelKey: "weight", value: good.weigh },
+        { labelKey: "weight", value: `${good.weigh}g` },
         { labelKey: "brand", value: good.brand },
         { labelKey: "subcategory", value: good.subcategory.name },
         { labelKey: "materials", value: good.materials.map(m => m.name) },

@@ -1,10 +1,11 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { SWRConfig } from "swr";
-import { beforeEach, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import messages from "@/messages/fr.json";
 import { GoodFormModal } from "./GoodFormModal";
-import { createGood, uploadProductImage, updateGood } from "@/queries";
+import type { Good } from "@/interface/domain";
+import { createGood, deleteGood, getGood, uploadProductImage, updateGood } from "@/queries";
 
 vi.mock("@/queries", () => ({
   getCatalogOptions: vi.fn(async () => ({ categories: [{ id: 1, name: "Home", subcategories: [{ id: 1, name: "Chairs" }] }] })),
@@ -12,6 +13,7 @@ vi.mock("@/queries", () => ({
   getGood: vi.fn(),
   createGood: vi.fn(async () => ({ data: { id: 42, inventory_version: 1, inventory: [{ id: 5, good_id: 42, color_id: 2, size: null, quantity: 0 }] } })),
   updateGood: vi.fn(async () => ({ data: { id: 42, inventory_version: 1, inventory: [{ id: 5, good_id: 42, color_id: 2, size: null, quantity: 0 }] } })),
+  deleteGood: vi.fn(async () => undefined),
   uploadProductImage: vi.fn(),
   updateProductImage: vi.fn(),
   deleteProductImage: vi.fn(),
@@ -24,6 +26,8 @@ beforeEach(() => {
   URL.createObjectURL = vi.fn(() => "blob:test-image");
   URL.revokeObjectURL = vi.fn();
 });
+
+afterEach(cleanup);
 
 it("retries only remaining images on the same product after a partial upload failure", async () => {
   const saved = vi.fn(async () => {});
@@ -52,4 +56,19 @@ it("retries only remaining images on the same product after a partial upload fai
   expect(uploadProductImage).toHaveBeenNthCalledWith(1, 42, 2, first);
   expect(uploadProductImage).toHaveBeenNthCalledWith(2, 42, 2, second);
   expect(uploadProductImage).toHaveBeenNthCalledWith(3, 42, 2, second);
+});
+
+it("deletes the product only after the confirmation step", async () => {
+  const good = { id: 42, name: "Oak chair", brand: "Atelier Nord", price: "25.00", weigh: 640, category_id: 1, subcategory_id: 1, description: "Restored oak chair", visible: true, source_locale: "fr", inventory_version: 1, inventory: [], colors: [], materials: [] } as unknown as Good;
+  vi.mocked(getGood).mockResolvedValue({ data: good });
+  const saved = vi.fn(async () => {});
+  const closed = vi.fn();
+  render(<NextIntlClientProvider locale="fr" messages={messages}><SWRConfig value={{ provider: () => new Map(), dedupingInterval: 0 }}><GoodFormModal good={good} onClose={closed} onSaved={saved} /></SWRConfig></NextIntlClientProvider>);
+  fireEvent.click(await screen.findByRole("button", { name: messages.common.delete }));
+  expect(deleteGood).not.toHaveBeenCalled();
+  expect(screen.queryByRole("button", { name: messages.common.save })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: messages.common.delete }));
+  await waitFor(() => expect(closed).toHaveBeenCalledTimes(1));
+  expect(deleteGood).toHaveBeenCalledWith(42);
+  expect(saved).toHaveBeenCalledTimes(1);
 });

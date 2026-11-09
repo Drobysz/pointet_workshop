@@ -36,6 +36,19 @@
   border-top: 1px solid var(--line);
 }
 
+// Destructive action sits apart from cancel/save, on the opposite edge.
+.deleteAction {
+  margin-right: auto;
+}
+
+.deleteConfirm {
+  flex: 1;
+  align-self: center;
+  margin-right: auto;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
 .visibility {
   display: flex;
   align-items: center;
@@ -69,6 +82,10 @@
   .visibility {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .deleteConfirm {
+    order: 1;
   }
 
   .actions {

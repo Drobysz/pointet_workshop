@@ -8,7 +8,7 @@ import { cn } from "@/helpers";
 import { jersey10 } from "@/fonts/fonts";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
-import { useContext, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { CircularProgress } from "@mui/material";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
@@ -22,11 +22,13 @@ export const CheckoutWindow = ({
     currentInventoryId,
     quantity,
     goodName,
+    setCurrentQuantity,
 }: {
     price: string;
     currentInventoryId: number;
     quantity: number;
     goodName: string;
+    setCurrentQuantity: Dispatch<SetStateAction<number>>;
 })=> {
     const { 
         authStatus,
@@ -77,9 +79,17 @@ export const CheckoutWindow = ({
                 await mutateBasket();
                 setNotification({ status: "success", text: message });
             } catch (error) {
-                setNotification({ status: "error", text: getApiErrorMessage(error, t, basketErrorMessages.addItem) });
+                setNotification({ 
+                    status: "error", 
+                    text: getApiErrorMessage(
+                        error, 
+                        t, 
+                        basketErrorMessages.addItem
+                    )
+                });
             } finally {
                 setIsBasketPending(false);
+                setCurrentQuantity(0);
             }
             return ;
         }
@@ -102,6 +112,7 @@ export const CheckoutWindow = ({
             });
         } finally {
             setIsBasketPending(false);
+            setCurrentQuantity(0);
         }
     }
 

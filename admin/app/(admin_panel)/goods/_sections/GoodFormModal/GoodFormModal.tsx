@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Trash2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import useSWR from "swr";
 import { goodSchema } from "@/auth/FormSchemes";
@@ -22,6 +22,7 @@ import { ProductImageEditor } from "@/components/ProductImageEditor/ProductImage
 import type { Color, Good, GoodPayload, TranslationsPayload } from "@/interface/domain";
 import {
   createGood,
+  deleteGood,
   getCatalogOptions,
   getGood,
   updateGood,
@@ -99,6 +100,8 @@ function GoodForm({
   const [categoryId, setCategoryId] = useState(good?.category_id ?? 0);
   const [error, setError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isVisible, setIsVisible] = useState(good?.visible ?? true);
   const [selectedColors, setSelectedColors] = useState<Color[]>(
     good?.colors ?? [],
@@ -288,9 +291,30 @@ function GoodForm({
     }
   }
 
+  async function handleDelete() {
+    if (!good) {
+      return;
+    }
+
+    setError("");
+    setIsDeleting(true);
+    onBusyChange?.(true);
+
+    try {
+      await deleteGood(good.id);
+      await onSaved();
+      onClose();
+    } catch {
+      setError(t("deleteError"));
+    } finally {
+      setIsDeleting(false);
+      onBusyChange?.(false);
+    }
+  }
+
   return (
     <form onSubmit={handleFormSubmit} className={styles.form}>
-      <fieldset disabled={isSaving} className={styles.formFields}>
+      <fieldset disabled={isSaving || isDeleting} className={styles.formFields}>
         <div className={styles.grid}>
           <Input
             label={t("form.name")}
@@ -462,14 +486,47 @@ function GoodForm({
 
       {error ? <p className={styles.error} role="alert">{error}</p> : null}
 
-      <div className={styles.actions}>
-        <Button variant="secondary" disabled={isSaving} onClick={onClose}>
-          {common("cancel")}
-        </Button>
-        <Button type="submit" variant="primary" pending={isSaving}>
-          {isSaving ? common("saving") : common("save")}
-        </Button>
-      </div>
+      {isConfirmingDelete && good ? (
+        <div className={styles.actions}>
+          <p className={styles.deleteConfirm}>
+            {t("deleteConfirm", { name: good.name })}
+          </p>
+          <Button
+            variant="secondary"
+            disabled={isDeleting}
+            onClick={() => setIsConfirmingDelete(false)}
+          >
+            {common("cancel")}
+          </Button>
+          <Button
+            variant="danger"
+            pending={isDeleting}
+            onClick={() => void handleDelete()}
+          >
+            {common("delete")}
+          </Button>
+        </div>
+      ) : (
+        <div className={styles.actions}>
+          {good ? (
+            <Button
+              variant="danger"
+              className={styles.deleteAction}
+              disabled={isSaving}
+              onClick={() => setIsConfirmingDelete(true)}
+            >
+              <Trash2 size={17} aria-hidden="true" />
+              {common("delete")}
+            </Button>
+          ) : null}
+          <Button variant="secondary" disabled={isSaving} onClick={onClose}>
+            {common("cancel")}
+          </Button>
+          <Button type="submit" variant="primary" pending={isSaving}>
+            {isSaving ? common("saving") : common("save")}
+          </Button>
+        </div>
+      )}
     </form>
   );
 }

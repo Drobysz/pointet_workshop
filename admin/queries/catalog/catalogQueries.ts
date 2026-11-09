@@ -32,6 +32,10 @@ export function updateGood(id: number, payload: GoodPayload) {
   });
 }
 
+export function deleteGood(id: number) {
+  return requestBackend<void>(`/goods/${id}`, { method: "DELETE" });
+}
+
 export async function getCatalogOptions() {
   const { getAllCategories } = await import("../markers/markerQueries");
   const categories = await getAllCategories();

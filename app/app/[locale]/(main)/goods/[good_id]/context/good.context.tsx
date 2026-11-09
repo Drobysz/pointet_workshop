@@ -32,6 +32,8 @@ export const GoodContextProvider = ({
     good: Good;
     children: ReactNode;
 })=> {
+    const isOneSize = good.inventory.length <= 1;
+
     const [
         currentColorId, 
         setCurrentColorId
@@ -40,7 +42,12 @@ export const GoodContextProvider = ({
     const [
         currentInventoryId, 
         setCurrentInventoryId
-    ] = useState<number | null>(null);
+    ] = useState<number | null>(
+        isOneSize 
+            ? (good.inventory[0].id ?? null) 
+            : null
+    );
+ 
     const [
         currentQuantity, 
         setCurrentQuantity

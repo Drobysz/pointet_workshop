@@ -207,6 +207,8 @@
     "product": "Prodotto",
     "productColors": "Colori del prodotto",
     "revenue": "Fatturato",
+    "deleteConfirm": "Eliminare {name}? Il prodotto, le sue scorte e le sue immagini saranno rimossi definitivamente.",
+    "deleteError": "Impossibile eliminare il prodotto.",
     "saveError": "Impossibile salvare il prodotto.",
     "stock": "Scorte",
     "subcategory": "Sottocategoria",

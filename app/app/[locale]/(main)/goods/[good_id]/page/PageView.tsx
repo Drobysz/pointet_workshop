@@ -18,7 +18,9 @@ export const PageView = ({
     const { 
         currentColor,
         currentInventoryId,
-        currentQuantity
+        currentQuantity,
+
+        setCurrentQuantity,
     } = useContext(GoodContext);
 
     return (
@@ -39,6 +41,7 @@ export const PageView = ({
                 goodName={good.name}
                 quantity={currentQuantity}
                 currentInventoryId={currentInventoryId ?? 0}
+                setCurrentQuantity={setCurrentQuantity}
             />
         </div>
     )

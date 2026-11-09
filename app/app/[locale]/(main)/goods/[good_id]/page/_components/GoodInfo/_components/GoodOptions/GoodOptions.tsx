@@ -27,6 +27,9 @@ export const GoodOptions = ({
     const currentInventoryItem = good.inventory.find(
         inv => inv.id == currentInventoryId
     );
+    const currentColorIventoryItems = good.inventory.filter(
+        inv => inv.color_id == currentColorId && inv.quantity > 0
+    );
     const maxQuantity = currentInventoryItem?.quantity ?? 0;
     const isOneSize = good.inventory.length <= 1;
     const showQuantitySelector 
@@ -52,7 +55,7 @@ export const GoodOptions = ({
             </div>
 
             <SizeFeed 
-                inventory={good.inventory}
+                inventory={currentColorIventoryItems}
                 goodName={good.name}
                 currentInventoryId={currentInventoryId}
                 setCurrentInventoryId={setCurrentInventoryId}

@@ -6,6 +6,7 @@ use App\Http\Requests\GoodRequest;
 use App\Http\Resources\GoodResource;
 use App\Models\Good;
 use App\Services\Catalog\InventoryService;
+use App\Services\Catalog\ProductImageService;
 use App\Services\Translation\CatalogTranslator;
 use App\Services\Translation\RequestLocale;
 use App\Services\Translation\TranslationSync;
@@ -23,6 +24,7 @@ class GoodController extends Controller
     public function __construct(
         private readonly InventoryService $inventory,
         private readonly CatalogTranslator $translator,
+        private readonly ProductImageService $images,
     ) {}
 
     public function index(Request $request): AnonymousResourceCollection
@@ -98,6 +100,8 @@ class GoodController extends Controller
     public function destroy(Good $good)
     {
         $this->authorize('delete', $good);
+        // Rows cascade in the database; stored files have to be removed explicitly.
+        $good->images->each(fn ($image) => $this->images->delete($image));
         $good->delete();
 
         return response()->noContent();

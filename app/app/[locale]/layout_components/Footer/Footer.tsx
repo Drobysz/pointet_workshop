@@ -12,8 +12,11 @@ import {
     DocLinks,
     Noise,
 } from "./_components";
+import { useWindowWidth } from "@/hooks";
+import { cn } from "@/helpers";
 
 export const Footer = ()=> {
+    const isSpreadVisible = useWindowWidth(640) as boolean;
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({
         target: ref,
@@ -23,11 +26,16 @@ export const Footer = ()=> {
     return (
         <footer
             ref={ref}
-            className={s.footer_background}
+            className={cn(
+                s.footer_background,
+                !isSpreadVisible && "pt-2 rounded-2xl"
+            )}
         >
-            <SpreadingGradient 
-                progress={scrollYProgress}
-            />
+            {isSpreadVisible &&
+                <SpreadingGradient 
+                    progress={scrollYProgress}
+                />
+            }
             <GridContainer
                 innerClassName={s.inner_content}
             >

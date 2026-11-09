@@ -15,7 +15,12 @@
     "save": "Сохранить",
     "saving": "Сохранение…",
     "yes": "Да",
-    "fieldLabel": "{label}:"
+    "fieldLabel": "{label}:",
+    "back": "Назад",
+    "menu": "Меню",
+    "optional": "Необязательно",
+    "details": "Подробности",
+    "view": "Открыть"
   },
   "languages": {
     "fr": "Français",
@@ -39,7 +44,12 @@
     "preorders": "Предзаказы",
     "sellerApplications": "Заявки продавцов",
     "signOut": "Выйти",
-    "users": "Пользователи"
+    "users": "Пользователи",
+    "brandSuffix": "Admin",
+    "workspace": "Панель управления",
+    "sections": "Разделы",
+    "account": "Учётная запись",
+    "language": "Язык"
   },
   "table": {
     "next": "Далее",
@@ -47,7 +57,9 @@
     "previous": "Назад",
     "results": "{count, plural, one {# результат} few {# результата} many {# результатов} other {# результата}}",
     "searchLabel": "Поиск по таблице",
-    "searchPlaceholder": "Поиск"
+    "searchPlaceholder": "Поиск",
+    "pageInfo": "Страница {page} / {total}",
+    "pageLabel": "Страница {page}"
   },
   "states": {
     "empty": {
@@ -94,7 +106,9 @@
     "signingIn": "Вход…",
     "subtitle": "Используйте учётную запись администратора.",
     "title": "Вход",
-    "validation": "Проверьте введённые данные."
+    "validation": "Проверьте введённые данные.",
+    "brandTagline": "Мастерская маленьких брендов",
+    "welcome": "Вход для администраторов"
   },
   "verify": {
     "confirmed": "Учётная запись готова. Теперь можно продолжить.",
@@ -125,7 +139,9 @@
     "topProducts": "Лучшие товары",
     "units": "{count, plural, one {# единица} few {# единицы} many {# единиц} other {# единицы}}",
     "viewAll": "Показать все",
-    "revenue": "Выручка"
+    "revenue": "Выручка",
+    "metricsLabel": "Ключевые показатели",
+    "rangeLabel": "Период"
   },
   "users": {
     "create": "Создать пользователя",
@@ -148,7 +164,9 @@
     "title": "Пользователи",
     "verification": "Подтверждение",
     "verified": "Подтверждён",
-    "editLabel": "Изменить пользователя {name}"
+    "editLabel": "Изменить пользователя {name}",
+    "back": "Все пользователи",
+    "profile": "Профиль"
   },
   "goods": {
     "all": "Все товары",
@@ -215,7 +233,10 @@
       "updateError": "Не удалось изменить изображение.",
       "deleteError": "Не удалось удалить изображение."
     },
-    "editLabel": "Изменить товар {name}"
+    "editLabel": "Изменить товар {name}",
+    "back": "Все товары",
+    "details": "Карточка товара",
+    "imagesCount": "{count, plural, one {# изображение} few {# изображения} many {# изображений} other {# изображения}}"
   },
   "orders": {
     "all": "Все заказы",
@@ -234,7 +255,9 @@
     "title": "Заказы",
     "total": "Всего",
     "orderTitle": "Заказ #{id}",
-    "unitPrice": "{price} за единицу"
+    "unitPrice": "{price} за единицу",
+    "itemsCount": "{count, plural, one {# товар} few {# товара} many {# товаров} other {# товара}}",
+    "back": "Все заказы"
   },
   "preorders": {
     "title": "Предзаказы",
@@ -249,8 +272,13 @@
     "product": "Товар",
     "originalPrice": "Исходная цена",
     "preorderedQuantity": "Количество предзаказов",
-    "tabs": { "preorders": "Предзаказы", "analytics": "Самые предзаказываемые товары" },
-    "preorderTitle": "Предзаказ #{id}"
+    "tabs": {
+      "preorders": "Предзаказы",
+      "analytics": "Самые предзаказываемые товары"
+    },
+    "preorderTitle": "Предзаказ #{id}",
+    "details": "Состав предзаказа",
+    "close": "Закрыть"
   },
   "sellerApplications": {
     "title": "Заявки продавцов",
@@ -278,8 +306,16 @@
     "sendApproval": "Подтвердить одобрение",
     "sendDecline": "Подтвердить отклонение",
     "reviewError": "Не удалось обработать заявку. Повторите попытку.",
-    "tabs": { "processing": "На рассмотрении", "approved": "Одобрены", "declined": "Отклонены" },
-    "reasons": { "retailer": "Розничный продавец", "jurisdiction": "Юрисдикционные ограничения", "custom": "Свой текст" },
+    "tabs": {
+      "processing": "На рассмотрении",
+      "approved": "Одобрены",
+      "declined": "Отклонены"
+    },
+    "reasons": {
+      "retailer": "Розничный продавец",
+      "jurisdiction": "Юрисдикционные ограничения",
+      "custom": "Свой текст"
+    },
     "applicationTitle": "Заявка #{id}"
   },
   "admins": {
@@ -294,7 +330,8 @@
     "role": "Роль",
     "temporaryPassword": "Временный пароль",
     "title": "Администраторы",
-    "verified": "Подтверждён"
+    "verified": "Подтверждён",
+    "details": "Сведения об администраторе"
   },
   "markers": {
     "categories": "Категории",
@@ -318,7 +355,8 @@
     "title": "Справочники",
     "typeLabel": "Тип справочника",
     "deleteLabel": "Удалить {name}",
-    "image": "Изображение категории"
+    "image": "Изображение категории",
+    "kinds": "Тип справочника"
   },
   "validation": {
     "checkForm": "Проверьте введённые данные.",

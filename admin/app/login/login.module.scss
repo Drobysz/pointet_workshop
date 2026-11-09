@@ -1,8 +1,79 @@
-@reference "tailwindcss";
-.page { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 520px); min-height: 100vh; background: #fff; }
-.intro { @apply flex flex-col justify-end; background: #000; color: #fff; padding: clamp(32px, 7vw, 96px); }
-.mark { @apply flex items-center justify-center; background: #fff; color: #000; width: 46px; height: 46px; border-radius: 12px; font-size: 21px; font-weight: 700; margin-bottom: auto; }
-.intro h1 { font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif; font-size: clamp(42px, 6vw, 72px); font-weight: 600; letter-spacing: -.045em; line-height: 1; max-width: 9ch; }
-.intro p { color: #a1a1a6; font-size: 17px; margin-top: 22px; max-width: 42ch; }
-@media (max-width: 52rem) { .page { grid-template-columns: 1fr; } .intro { min-height: 38vh; padding: 28px; } .mark { margin-bottom: 70px; } .intro h1 { font-size: 42px; max-width: none; } }
+@use "../../styles/mixins" as m;
 
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+  gap: 1rem;
+  min-height: 100dvh;
+  padding: 1rem;
+  background: var(--canvas);
+}
+
+// Storefront hero: a red radial window with the wordmark rising from below.
+.intro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 420px;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background-image: radial-gradient(circle, #fecaca 10%, #f87171 95%);
+  container-type: inline-size;
+}
+
+.signs {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: rgba(250, 204, 21, 0.85);
+  @include m.label-font(1.2rem);
+}
+
+.wordmark {
+  font-family: var(--font-brand);
+  // Sized by the window itself so the word always fits its width.
+  font-size: clamp(3rem, 17cqw, 12rem);
+  line-height: 0.8;
+  text-transform: uppercase;
+  translate: 0 22%;
+  background-image: linear-gradient(to top, transparent 5%, var(--color-chalky-700) 95%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.formColumn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 3rem) 0;
+}
+
+@media (max-width: 52rem) {
+  .page {
+    grid-template-columns: 1fr;
+    align-content: start;
+  }
+
+  .intro {
+    min-height: 220px;
+  }
+
+  .signs {
+    font-size: 0.95rem;
+  }
+
+  .wordmark {
+    font-size: clamp(3rem, 17cqw, 8rem);
+  }
+
+  .formColumn {
+    padding: 0.5rem 0 1.5rem;
+  }
+}

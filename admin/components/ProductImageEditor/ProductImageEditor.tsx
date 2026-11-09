@@ -13,6 +13,8 @@ import {
   deleteProductImage,
   updateProductImage,
 } from "@/queries";
+import { Button } from "../Button/Button";
+import { Input, Select } from "../Field/Field";
 import styles from "./product-image-editor.module.scss";
 
 interface ProductImageEditorProps {
@@ -45,12 +47,8 @@ function ProductImageRow({
 }: ProductImageRowProps) {
   const t = useTranslations("goods.images");
   const common = useTranslations("common");
-  const [draft, setDraft] = useState<ProductImagePayload>(() => {
-    return createPayload(image);
-  });
-  const [saved, setSaved] = useState<ProductImagePayload>(() => {
-    return createPayload(image);
-  });
+  const [draft, setDraft] = useState<ProductImagePayload>(() => createPayload(image));
+  const [saved, setSaved] = useState<ProductImagePayload>(() => createPayload(image));
   const [error, setError] = useState("");
   const [isRemoving, setIsRemoving] = useState(false);
   const [isWorking, setIsWorking] = useState(false);
@@ -113,57 +111,40 @@ function ProductImageRow({
       </div>
 
       <div className={styles.fields}>
-        <label>
-          {t("name")}
-          <input
-            value={draft.name}
-            maxLength={120}
-            disabled={controlsDisabled}
-            onChange={(event) => {
-              setDraft((current) => ({
-                ...current,
-                name: event.target.value,
-              }));
-            }}
-          />
-        </label>
-
-        <label>
-          {t("assignedColor")}
-          <select
-            value={draft.color_id}
-            disabled={controlsDisabled}
-            onChange={(event) => {
-              setDraft((current) => ({
-                ...current,
-                color_id: Number(event.target.value),
-              }));
-            }}
-          >
-            {colors.map((color) => (
-              <option key={color.id} value={color.id}>
-                {color.name}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label>
-          {t("order")}
-          <input
-            type="number"
-            min="0"
-            max="65535"
-            value={draft.sort_order}
-            disabled={controlsDisabled}
-            onChange={(event) => {
-              setDraft((current) => ({
-                ...current,
-                sort_order: Number(event.target.value),
-              }));
-            }}
-          />
-        </label>
+        <Input
+          label={t("name")}
+          value={draft.name}
+          maxLength={120}
+          disabled={controlsDisabled}
+          onChange={(event) => {
+            setDraft((current) => ({ ...current, name: event.target.value }));
+          }}
+        />
+        <Select
+          label={t("assignedColor")}
+          value={draft.color_id}
+          disabled={controlsDisabled}
+          onChange={(event) => {
+            setDraft((current) => ({ ...current, color_id: Number(event.target.value) }));
+          }}
+        >
+          {colors.map((color) => (
+            <option key={color.id} value={color.id}>
+              {color.name}
+            </option>
+          ))}
+        </Select>
+        <Input
+          label={t("order")}
+          type="number"
+          min="0"
+          max="65535"
+          value={draft.sort_order}
+          disabled={controlsDisabled}
+          onChange={(event) => {
+            setDraft((current) => ({ ...current, sort_order: Number(event.target.value) }));
+          }}
+        />
       </div>
 
       {error ? <p className={styles.error} role="alert">{error}</p> : null}
@@ -171,43 +152,46 @@ function ProductImageRow({
       <div className={styles.rowActions}>
         {isRemoving ? (
           <>
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="sm"
               disabled={controlsDisabled}
               onClick={() => setIsRemoving(false)}
             >
               <X size={15} aria-hidden="true" />
               {common("cancel")}
-            </button>
-            <button
-              type="button"
-              className={styles.dangerButton}
+            </Button>
+            <Button
+              variant="danger"
+              size="sm"
               disabled={controlsDisabled}
               onClick={() => void handleRemove()}
             >
               <Trash2 size={15} aria-hidden="true" />
               {t("confirmRemove")}
-            </button>
+            </Button>
           </>
         ) : (
           <>
-            <button
-              type="button"
+            <Button
+              variant="outline"
+              size="sm"
               disabled={controlsDisabled || !isDirty || !draft.name.trim()}
               onClick={() => void handleSave()}
             >
               <Save size={15} aria-hidden="true" />
               {t("saveImage")}
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
               className={styles.removeButton}
               disabled={controlsDisabled}
               onClick={() => setIsRemoving(true)}
             >
               <Trash2 size={15} aria-hidden="true" />
               {t("removeImage")}
-            </button>
+            </Button>
           </>
         )}
       </div>
@@ -221,13 +205,17 @@ export function ProductImageEditor({
   images,
   onChanged,
 }: ProductImageEditorProps) {
-  const t = useTranslations("goods.images");
+  const t = useTranslations("goods");
 
   return (
     <section className={styles.root} aria-labelledby="current-images-title">
       <div className={styles.heading}>
-        <h3 id="current-images-title">{t("currentTitle")}</h3>
-        <span>{images.length}</span>
+        <h3 id="current-images-title" className={styles.title}>
+          {t("images.currentTitle")}
+        </h3>
+        <span className={styles.badge}>
+          {t("imagesCount", { count: images.length })}
+        </span>
       </div>
 
       {images.length ? (
@@ -243,7 +231,7 @@ export function ProductImageEditor({
           ))}
         </ul>
       ) : (
-        <p className={styles.empty}>{t("emptyCurrent")}</p>
+        <p className={styles.empty}>{t("images.emptyCurrent")}</p>
       )}
     </section>
   );

@@ -5,11 +5,20 @@ import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";
 import { adminSchema } from "@/auth/FormSchemes";
-import { EntityTable, Modal, PageHeader, StatePanel } from "@/components";
+import {
+  Button,
+  DetailList,
+  EntityTable,
+  Input,
+  Modal,
+  PageHeader,
+  Panel,
+  StatePanel,
+} from "@/components";
 import { useAppFormatters, useTableQueryState } from "@/hooks";
 import type { User } from "@/interface/domain";
 import { createAdmin, getUsers } from "@/queries";
-import styles from "./admins-view.module.scss";
+import formStyles from "@/components/FormModal/form-modal.module.scss";
 
 export function AdminsView() {
   const t = useTranslations("admins");
@@ -49,32 +58,35 @@ export function AdminsView() {
     }
   }
 
+  function closeCreate() {
+    setError("");
+    setIsCreateOpen(false);
+  }
+
   const header = (
     <PageHeader
       title={t("title")}
       description={t("accountDescription")}
       actions={(
-        <button
-          className={styles.primary}
-          type="button"
-          onClick={() => setIsCreateOpen(true)}
-        >
-          <Plus size={17} />
+        <Button variant="primary" onClick={() => setIsCreateOpen(true)}>
+          <Plus size={17} aria-hidden="true" />
           {t("create")}
-        </button>
+        </Button>
       )}
     />
   );
 
   if (admins.isLoading && !admins.data) {
-    return <>{header}<StatePanel state="loading" /></>;
+    return <>{header}<Panel><StatePanel state="loading" /></Panel></>;
   }
 
   if (admins.error || !admins.data) {
     return (
       <>
         {header}
-        <StatePanel state="error" onRetry={() => void admins.mutate()} />
+        <Panel>
+          <StatePanel state="error" onRetry={() => void admins.mutate()} />
+        </Panel>
       </>
     );
   }
@@ -84,11 +96,7 @@ export function AdminsView() {
       key: "name",
       label: t("administrator"),
       render: (admin: User) => (
-        <button
-          type="button"
-          data-link
-          onClick={() => setSelectedAdmin(admin)}
-        >
+        <button type="button" data-link onClick={() => setSelectedAdmin(admin)}>
           {admin.full_name}
         </button>
       ),
@@ -128,24 +136,29 @@ export function AdminsView() {
       />
 
       {isCreateOpen ? (
-        <Modal title={t("createTitle")} onClose={() => setIsCreateOpen(false)}>
-          <form action={handleCreate} className={styles.form}>
-            <label>
-              {t("fullName")}
-              <input name="full_name" required />
-            </label>
-            <label>
-              {common("email")}
-              <input name="email" type="email" required />
-            </label>
-            <label>
-              {t("temporaryPassword")}
-              <input name="password" type="password" minLength={12} required />
-            </label>
-            {error ? <p role="alert">{error}</p> : null}
-            <button type="submit" disabled={isSaving}>
-              {isSaving ? common("creating") : t("create")}
-            </button>
+        <Modal title={t("createTitle")} onClose={closeCreate}>
+          <form action={handleCreate} className={formStyles.form}>
+            <fieldset disabled={isSaving} className={formStyles.formFields}>
+              <Input label={t("fullName")} name="full_name" required />
+              <Input label={common("email")} name="email" type="email" required />
+              <Input
+                label={t("temporaryPassword")}
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                minLength={12}
+                required
+              />
+            </fieldset>
+            {error ? <p className={formStyles.error} role="alert">{error}</p> : null}
+            <div className={formStyles.actions}>
+              <Button variant="secondary" disabled={isSaving} onClick={closeCreate}>
+                {common("cancel")}
+              </Button>
+              <Button type="submit" variant="primary" pending={isSaving}>
+                {isSaving ? common("creating") : t("create")}
+              </Button>
+            </div>
           </form>
         </Modal>
       ) : null}
@@ -155,28 +168,20 @@ export function AdminsView() {
           title={selectedAdmin.full_name}
           onClose={() => setSelectedAdmin(undefined)}
         >
-          <dl className={styles.details}>
-            <div>
-              <dt>{common("email")}</dt>
-              <dd>{selectedAdmin.email}</dd>
-            </div>
-            <div>
-              <dt>{t("role")}</dt>
-              <dd>{t("administrator")}</dd>
-            </div>
-            <div>
-              <dt>{t("emailVerified")}</dt>
-              <dd>
-                {selectedAdmin.email_verified_at
+          <DetailList
+            items={[
+              { key: "email", label: common("email"), value: selectedAdmin.email },
+              { key: "role", label: t("role"), value: t("administrator") },
+              {
+                key: "verified",
+                label: t("emailVerified"),
+                value: selectedAdmin.email_verified_at
                   ? formatDate(selectedAdmin.email_verified_at)
-                  : common("notYet")}
-              </dd>
-            </div>
-            <div>
-              <dt>{t("created")}</dt>
-              <dd>{formatDate(selectedAdmin.created_at)}</dd>
-            </div>
-          </dl>
+                  : common("notYet"),
+              },
+              { key: "created", label: t("created"), value: formatDate(selectedAdmin.created_at) },
+            ]}
+          />
         </Modal>
       ) : null}
     </>

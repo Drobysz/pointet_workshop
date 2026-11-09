@@ -1,7 +1,8 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { ButtonLink, Spinner } from "@/components";
 import { verifyAccount } from "@/queries";
 import styles from "./VerifyView.module.scss";
 
@@ -27,9 +28,15 @@ export const VerifyView = ({ token }: { token: string }) => {
   return (
     <main className={styles.page}>
       <section className={styles.card} aria-live="polite">
-        <h1>{t("title")}</h1>
-        <p>{t(messageKey)}</p>
-        <Link href="/login">{t("goToLogin")}</Link>
+        <span className={styles.wordmark} aria-hidden="true">Pointet</span>
+        <h1 className={styles.title}>{t("title")}</h1>
+        <p className={styles.message}>
+          {messageKey === "confirming" ? <Spinner size={16} /> : null}
+          {t(messageKey)}
+        </p>
+        <ButtonLink href="/login" variant="primary">
+          {t("goToLogin")}
+        </ButtonLink>
       </section>
     </main>
   );

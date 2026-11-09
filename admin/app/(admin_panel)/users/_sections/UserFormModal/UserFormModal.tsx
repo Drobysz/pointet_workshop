@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { userSchema } from "@/auth/FormSchemes";
-import { Modal } from "@/components";
+import { Button, Input, Modal } from "@/components";
 import type { User, UserPayload } from "@/interface/domain";
 import { createUser, updateUser } from "@/queries";
 import styles from "@/components/FormModal/form-modal.module.scss";
@@ -79,52 +79,42 @@ export function UserFormModal({
       onClose={onClose}
     >
       <form action={handleSubmit} className={styles.form}>
-        <label className={styles.field}>
-          {t("form.fullName")}
-          <input
+        <fieldset disabled={isSaving} className={styles.formFields}>
+          <Input
+            label={t("form.fullName")}
             name="full_name"
             defaultValue={user?.full_name ?? ""}
             maxLength={255}
             required
           />
-        </label>
-
-        <label className={styles.field}>
-          {t("form.email")}
-          <input
+          <Input
+            label={t("form.email")}
             name="email"
             type="email"
             defaultValue={user?.email ?? ""}
             autoComplete="email"
             required
           />
-        </label>
-
-        <label className={styles.field}>
-          {t("form.password")}
-          <input
+          <Input
+            label={t("form.password")}
             name="password"
             type="password"
             autoComplete="new-password"
             minLength={8}
             required={!isEditing}
+            hint={isEditing ? t("form.passwordEditHint") : t("form.passwordCreateHint")}
           />
-          <small>
-            {isEditing
-              ? t("form.passwordEditHint")
-              : t("form.passwordCreateHint")}
-          </small>
-        </label>
+        </fieldset>
 
         {error ? <p className={styles.error} role="alert">{error}</p> : null}
 
         <div className={styles.actions}>
-          <button type="button" onClick={onClose}>
+          <Button variant="secondary" disabled={isSaving} onClick={onClose}>
             {common("cancel")}
-          </button>
-          <button type="submit" disabled={isSaving}>
+          </Button>
+          <Button type="submit" variant="primary" pending={isSaving}>
             {isSaving ? common("saving") : common("save")}
-          </button>
+          </Button>
         </div>
       </form>
     </Modal>

@@ -11,10 +11,11 @@ export interface EntityTableProps<T> {
   columns: TableColumn<T>[];
   rows: T[];
   rowKey: (row: T) => string | number;
-  search: string;
+  /** Current search text; omit `onSearch` to hide the search field. */
+  search?: string;
   page?: number;
   totalPages?: number;
   total: number;
-  onSearch: (value: string) => void;
+  onSearch?: (value: string) => void;
   onPage?: (page: number) => void;
 }

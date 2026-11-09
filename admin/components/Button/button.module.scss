@@ -1,0 +1,119 @@
+@use "../../styles/mixins" as m;
+
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 42px;
+  padding: 0 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  white-space: nowrap;
+  @include m.label-font(1.05rem);
+  transition:
+    background-color 0.2s ease-out,
+    color 0.2s ease-out,
+    border-color 0.2s ease-out,
+    box-shadow 0.2s ease-out,
+    scale 0.15s ease-out;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:active:not(:disabled) {
+    scale: 0.98;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.pending {
+  cursor: wait;
+}
+
+// Storefront MainBtn: soft red radial at rest, saturated radial on hover.
+.primary {
+  @include m.accent-radial-soft;
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    @include m.accent-radial;
+  }
+}
+
+.secondary {
+  background: rgba(229, 231, 235, 0.8);
+  color: var(--ink-soft);
+
+  &:hover:not(:disabled) {
+    background: rgba(209, 213, 219, 0.9);
+    color: var(--ink);
+  }
+}
+
+.outline {
+  background: var(--surface);
+  border-color: var(--line-strong);
+  color: var(--ink-soft);
+
+  &:hover:not(:disabled) {
+    border-color: var(--accent-mid);
+    color: var(--accent);
+  }
+}
+
+.danger {
+  background: var(--accent);
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: rgba(185, 28, 28, 0.85);
+  }
+}
+
+// Round, quiet control for icons (storefront burger and close buttons).
+.ghost {
+  background: rgba(229, 231, 235, 0.7);
+  color: var(--accent-strong);
+
+  &:hover:not(:disabled) {
+    background: rgba(254, 226, 226, 0.9);
+    color: var(--accent);
+  }
+}
+
+.sm {
+  min-height: 34px;
+  padding: 0 0.75rem;
+  font-size: 0.9rem;
+}
+
+.lg {
+  min-height: 48px;
+  padding: 0 1.25rem;
+  font-size: 1.2rem;
+}
+
+.icon {
+  width: 42px;
+  padding: 0;
+  border-radius: 9999px;
+
+  &.sm {
+    width: 34px;
+  }
+
+  &.lg {
+    width: 48px;
+  }
+}
+
+.full {
+  width: 100%;
+}

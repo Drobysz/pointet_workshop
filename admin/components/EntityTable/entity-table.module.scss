@@ -1,25 +1,130 @@
-@reference "tailwindcss";
-.panel { background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-.toolbar { @apply flex items-center justify-between gap-4; border-bottom: 1px solid var(--border); padding: 14px 16px; }
-.toolbar label { @apply flex items-center gap-2; background: var(--canvas); border: 1px solid transparent; border-radius: 9px; min-width: min(360px, 70vw); padding: 9px 11px; color: var(--muted); }
-.toolbar label:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,113,227,.12); }
-.toolbar input { outline: none; width: 100%; color: var(--ink); font-size: 14px; }
-.toolbar > span { color: var(--muted); font-size: 13px; white-space: nowrap; }
-.scroller { overflow-x: auto; }
-.panel table { border-collapse: collapse; min-width: 720px; width: 100%; }
-.panel th { background: #fbfbfd; color: var(--muted); font-size: 12px; font-weight: 600; padding: 12px 16px; text-align: left; }
-.panel td { border-top: 1px solid var(--border); color: var(--ink); font-size: 14px; padding: 15px 16px; }
-.panel tbody tr:hover { background: #fafafc; }
-.panel a, .panel button[data-link] { color: var(--link); font-weight: 600; }
-.right { text-align: right !important; }
-.pagination { @apply flex items-center justify-between gap-4; border-top: 1px solid var(--border); padding: 12px 16px; }
-.pagination > button { border: 1px solid var(--border); border-radius: 8px; min-height: 36px; padding: 0 12px; }
-.pagination > button:disabled { color: #aaa; cursor: not-allowed; }
-.pagination div { @apply flex items-center; }
-.pagination span { @apply flex items-center; }
-.pagination span button { border-radius: 7px; height: 34px; min-width: 34px; }
-.pagination span button[aria-current="page"] { background: var(--ink); color: #fff; }
-.pagination i { color: var(--muted); font-style: normal; padding: 0 4px; }
-.pagination button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-@media (max-width: 40rem) { .toolbar { @apply items-stretch flex-col; } .toolbar label { min-width: 0; } .pagination { @apply flex-wrap; } }
+@use "../../styles/mixins" as m;
 
+.panel {
+  @include m.surface-card;
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.25rem;
+}
+
+.search {
+  width: min(360px, 100%);
+}
+
+.count {
+  margin-left: auto;
+  color: var(--muted);
+  white-space: nowrap;
+  @include m.label-font(0.95rem);
+}
+
+.scroller {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+
+  th {
+    padding: 0.7rem 1.25rem;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: rgba(243, 244, 246, 0.6);
+    color: var(--muted);
+    text-align: left;
+    white-space: nowrap;
+    @include m.label-font(0.95rem);
+  }
+
+  td {
+    padding: 0.85rem 1.25rem;
+    border-top: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 0.9rem;
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    transition: background-color 0.15s ease-out;
+
+    &:first-child td {
+      border-top: 0;
+    }
+
+    &:hover {
+      background: rgba(254, 226, 226, 0.45);
+    }
+  }
+
+  a,
+  button[data-link] {
+    color: var(--accent);
+    font-weight: 600;
+    transition: color 0.15s ease-out;
+
+    &:hover {
+      color: var(--accent-strong);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+
+  small {
+    color: var(--muted);
+  }
+}
+
+.right {
+  text-align: right !important;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 0.9rem 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.pageInfo {
+  color: var(--muted);
+  @include m.label-font(0.95rem);
+}
+
+@media (max-width: 40rem) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.75rem 1rem;
+  }
+
+  .search {
+    width: 100%;
+  }
+
+  .count {
+    margin-left: 0;
+  }
+
+  .table th,
+  .table td {
+    padding-inline: 1rem;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem 1rem;
+  }
+}

@@ -1,13 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";
-import { EntityTable, Modal, PageHeader, StatePanel } from "@/components";
+import {
+  Button,
+  EntityTable,
+  Input,
+  Modal,
+  PageHeader,
+  Panel,
+  Segmented,
+  Select,
+  StatePanel,
+} from "@/components";
 import { useTableQueryState } from "@/hooks";
 import { ImageDropzone } from "@/components/ImageDropzone/ImageDropzone";
-import Image from "next/image";
 import type { Category, Color, Subcategory } from "@/interface/domain";
 import {
   createMarker,
@@ -18,6 +28,7 @@ import {
   type Marker,
   type MarkerKind,
 } from "@/queries";
+import formStyles from "@/components/FormModal/form-modal.module.scss";
 import styles from "./markers-view.module.scss";
 
 const markerKinds: MarkerKind[] = [
@@ -39,7 +50,11 @@ export function MarkersView() {
   const [categoryImage, setCategoryImage] = useState<{ file: File; url: string }>();
   const [removeImage, setRemoveImage] = useState(false);
   const objectUrl = useRef<string | undefined>(undefined);
-  useEffect(() => () => { if (objectUrl.current) URL.revokeObjectURL(objectUrl.current); }, []);
+
+  useEffect(() => () => {
+    if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
+  }, []);
+
   function resetImage() {
     if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
     objectUrl.current = undefined;
@@ -114,16 +129,29 @@ export function MarkersView() {
     }
   }
 
+  function closeEditor() {
+    if (isSaving) return;
+    resetImage();
+    setError("");
+    setEditingMarker(undefined);
+  }
+
   const columns = [
     {
       key: "name",
       label: common("name"),
-      render: (marker: Marker) => (
-        <span className={styles.categoryName}>
-          {kind === "categories" && (marker as Category).image?.url ? <Image src={(marker as Category).image!.url!} alt="" width={40} height={40} unoptimized /> : null}
-          <strong>{marker.name}</strong>
-        </span>
-      ),
+      render: (marker: Marker) => {
+        const image = kind === "categories" ? (marker as Category).image : undefined;
+
+        return (
+          <span className={styles.name}>
+            {image?.url ? (
+              <Image src={image.url} alt="" width={40} height={40} unoptimized />
+            ) : null}
+            <strong>{marker.name}</strong>
+          </span>
+        );
+      },
     },
     ...(kind === "subcategories" ? [{
       key: "category",
@@ -140,8 +168,8 @@ export function MarkersView() {
 
         return (
           <span className={styles.swatch}>
-            <i style={{ background: color.hexcode }} />
-            {color.hexcode}
+            <i style={{ background: color.hexcode }} aria-hidden="true" />
+            <code>{color.hexcode}</code>
           </span>
         );
       },
@@ -152,8 +180,10 @@ export function MarkersView() {
       align: "right" as const,
       render: (marker: Marker) => (
         <span className={styles.actions}>
-          <button
-            type="button"
+          <Button
+            variant="ghost"
+            icon
+            size="sm"
             aria-label={t("editLabel", { name: marker.name })}
             onClick={() => {
               setError("");
@@ -161,15 +191,21 @@ export function MarkersView() {
               setEditingMarker(marker);
             }}
           >
-            <Pencil size={16} />
-          </button>
-          <button
-            type="button"
+            <Pencil size={15} aria-hidden="true" />
+          </Button>
+          <Button
+            variant="ghost"
+            icon
+            size="sm"
+            className={styles.remove}
             aria-label={t("deleteLabel", { name: marker.name })}
-            onClick={() => setRemovingMarker(marker)}
+            onClick={() => {
+              setError("");
+              setRemovingMarker(marker);
+            }}
           >
-            <Trash2 size={16} />
-          </button>
+            <Trash2 size={15} aria-hidden="true" />
+          </Button>
         </span>
       ),
     },
@@ -188,6 +224,12 @@ export function MarkersView() {
         total: markers.data.meta.total,
       }
     : undefined;
+  const existingImage = (markerForDefaults as Category | undefined)?.image;
+  const dropzoneImages = categoryImage
+    ? [{ id: "pending", name: categoryImage.file.name, url: categoryImage.url }]
+    : !removeImage && existingImage?.url
+      ? [{ id: "existing", name: existingImage.name, url: existingImage.url }]
+      : [];
 
   return (
     <>
@@ -195,38 +237,33 @@ export function MarkersView() {
         title={t("title")}
         description={t("description")}
         actions={(
-          <button
-            type="button"
-            className={styles.primary}
+          <Button
+            variant="primary"
             onClick={() => {
               setError("");
               resetImage();
               setEditingMarker("new");
             }}
           >
-            <Plus size={17} />
+            <Plus size={17} aria-hidden="true" />
             {t("create")}
-          </button>
+          </Button>
         )}
       />
 
-      <div className={styles.tabs} role="tablist" aria-label={t("typeLabel")}>
-        {markerKinds.map((markerKind) => (
-          <button
-            type="button"
-            role="tab"
-            aria-selected={kind === markerKind}
-            key={markerKind}
-            onClick={() => changeKind(markerKind)}
-          >
-            {t(markerKind)}
-          </button>
-        ))}
-      </div>
+      <Segmented
+        className={styles.tabs}
+        label={t("typeLabel")}
+        value={kind}
+        onChange={changeKind}
+        items={markerKinds.map((markerKind) => ({ value: markerKind, label: t(markerKind) }))}
+      />
 
-      {markers.isLoading ? <StatePanel state="loading" /> : null}
+      {markers.isLoading ? <Panel><StatePanel state="loading" /></Panel> : null}
       {markers.error || (!markers.isLoading && !markers.data) ? (
-        <StatePanel state="error" onRetry={() => void markers.mutate()} />
+        <Panel>
+          <StatePanel state="error" onRetry={() => void markers.mutate()} />
+        </Panel>
       ) : null}
       {markers.data && (
         markers.data.data.length || tableState.searchQuery
@@ -245,42 +282,40 @@ export function MarkersView() {
       ) : null}
       {markers.data
         && !markers.data.data.length
-        && !tableState.searchQuery ? <StatePanel state="empty" /> : null}
+        && !tableState.searchQuery ? <Panel><StatePanel state="empty" /></Panel> : null}
 
       {editingMarker ? (
-        <Modal
-          title={t(modalTitleKey, { kind: t(kind) })}
-          onClose={() => { if (!isSaving) { resetImage(); setEditingMarker(undefined); } }}
-        >
-          <form onSubmit={(event) => { event.preventDefault(); if (!isSaving) void handleSave(new FormData(event.currentTarget)); }} className={styles.form}>
-            <fieldset disabled={isSaving} className={styles.formFields}>
-            <label>
-              {common("name")}
-              <input
+        <Modal title={t(modalTitleKey, { kind: t(kind) })} onClose={closeEditor}>
+          <form
+            className={formStyles.form}
+            onSubmit={(event) => {
+              event.preventDefault();
+              if (!isSaving) void handleSave(new FormData(event.currentTarget));
+            }}
+          >
+            <fieldset disabled={isSaving} className={formStyles.formFields}>
+              <Input
+                label={common("name")}
                 name="name"
                 defaultValue={markerForDefaults?.name ?? ""}
                 required
               />
-            </label>
-            {kind === "colors" ? (
-              <label>
-                {t("hexColor")}
-                <input
-                  name="hexcode"
-                  defaultValue={(markerForDefaults as Color)?.hexcode ?? "#1d1d1f"}
-                  pattern="^#[0-9A-Fa-f]{6}$"
-                  required
-                />
-              </label>
-            ) : null}
-            {kind === "subcategories" ? (
-              <label>
-                {t("category")}
-                <select
+              {kind === "colors" ? (
+                <div className={styles.colorField}>
+                  <Input
+                    label={t("hexColor")}
+                    name="hexcode"
+                    defaultValue={(markerForDefaults as Color | undefined)?.hexcode ?? "#1d1d1f"}
+                    pattern="^#[0-9A-Fa-f]{6}$"
+                    required
+                  />
+                </div>
+              ) : null}
+              {kind === "subcategories" ? (
+                <Select
+                  label={t("category")}
                   name="category_id"
-                  defaultValue={
-                    (markerForDefaults as Subcategory)?.category_id ?? ""
-                  }
+                  defaultValue={(markerForDefaults as Subcategory | undefined)?.category_id ?? ""}
                   required
                 >
                   <option value="" disabled>{t("selectCategory")}</option>
@@ -289,26 +324,35 @@ export function MarkersView() {
                       {category.name}
                     </option>
                   ))}
-                </select>
-              </label>
-            ) : null}
-            {kind === "categories" ? (
-              <ImageDropzone
-                label={t("image")}
-                disabled={isSaving}
-                images={categoryImage ? [{ id: "pending", name: categoryImage.file.name, url: categoryImage.url }] : !removeImage && (markerForDefaults as Category)?.image?.url ? [{ id: "existing", name: (markerForDefaults as Category).image!.name, url: (markerForDefaults as Category).image!.url! }] : []}
-                onFiles={([file]) => {
-                  if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
-                  objectUrl.current = URL.createObjectURL(file);
-                  setCategoryImage({ file, url: objectUrl.current });
-                  setRemoveImage(false);
-                }}
-                onRemove={() => { resetImage(); setRemoveImage(true); }}
-              />
-            ) : null}
+                </Select>
+              ) : null}
+              {kind === "categories" ? (
+                <ImageDropzone
+                  label={t("image")}
+                  disabled={isSaving}
+                  images={dropzoneImages}
+                  onFiles={([file]) => {
+                    if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
+                    objectUrl.current = URL.createObjectURL(file);
+                    setCategoryImage({ file, url: objectUrl.current });
+                    setRemoveImage(false);
+                  }}
+                  onRemove={() => {
+                    resetImage();
+                    setRemoveImage(true);
+                  }}
+                />
+              ) : null}
             </fieldset>
-            {error ? <p role="alert">{error}</p> : null}
-            <button type="submit" disabled={isSaving}>{isSaving ? common("saving") : common("save")}</button>
+            {error ? <p className={formStyles.error} role="alert">{error}</p> : null}
+            <div className={formStyles.actions}>
+              <Button variant="secondary" disabled={isSaving} onClick={closeEditor}>
+                {common("cancel")}
+              </Button>
+              <Button type="submit" variant="primary" pending={isSaving}>
+                {isSaving ? common("saving") : common("save")}
+              </Button>
+            </div>
           </form>
         </Modal>
       ) : null}
@@ -320,14 +364,14 @@ export function MarkersView() {
         >
           <div className={styles.confirm}>
             <p>{t("deleteConfirm", { name: removingMarker.name })}</p>
-            {error ? <p role="alert">{error}</p> : null}
-            <div>
-              <button type="button" onClick={() => setRemovingMarker(undefined)}>
+            {error ? <p className={formStyles.error} role="alert">{error}</p> : null}
+            <div className={formStyles.actions}>
+              <Button variant="secondary" onClick={() => setRemovingMarker(undefined)}>
                 {common("cancel")}
-              </button>
-              <button type="button" onClick={handleRemove}>
+              </Button>
+              <Button variant="danger" onClick={() => void handleRemove()}>
                 {common("delete")}
-              </button>
+              </Button>
             </div>
           </div>
         </Modal>

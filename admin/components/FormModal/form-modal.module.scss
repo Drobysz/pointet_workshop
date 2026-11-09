@@ -1,199 +1,81 @@
-@reference "tailwindcss";
+// Layout recipes shared by the entity forms rendered inside `Modal`.
+// Controls themselves come from the `Field` and `Button` components.
 
 .form {
-  @apply flex flex-col;
-  gap: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formFields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 .grid {
   display: grid;
-  gap: 16px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.field {
-  @apply flex flex-col;
-  color: var(--ink);
-  font-size: 14px;
-  font-weight: 600;
-  gap: 7px;
-}
-
-.field input,
-.field select,
-.field textarea {
-  background: var(--surface);
-  border: 1px solid #86868b;
-  border-radius: 10px;
-  font-weight: 400;
-  min-height: 44px;
-  outline: none;
-  padding: 0 12px;
-  width: 100%;
-}
-
-.field textarea {
-  min-height: 110px;
-  padding-block: 10px;
-  resize: vertical;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
-}
-
-.field small {
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 400;
-}
-
-.fieldset {
-  border: 0;
-  margin: 0;
-  padding: 0;
-}
-
-.fieldset legend {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 9px;
-}
-
-.checks {
-  display: grid;
-  gap: 8px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.check {
-  @apply flex items-center;
-  background: var(--canvas);
-  border-radius: 10px;
-  cursor: pointer;
-  gap: 9px;
-  min-height: 42px;
-  padding: 0 11px;
-}
-
-.check input {
-  accent-color: var(--blue);
-  height: 16px;
-  width: 16px;
-}
-
-.swatch {
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 50%;
-  height: 18px;
-  width: 18px;
+  gap: 1rem;
 }
 
 .error {
   color: var(--danger);
-  margin: 0;
+  font-size: 0.9rem;
 }
 
 .actions {
-  @apply flex justify-end;
-  border-top: 1px solid var(--border);
-  gap: 8px;
-  margin-top: 2px;
-  padding-top: 18px;
-}
-
-.actions button {
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  min-height: 42px;
-  padding: 0 15px;
-}
-
-.actions button[type="submit"] {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--surface);
-  font-weight: 600;
-}
-
-.actions button:disabled {
-  cursor: wait;
-  opacity: 0.55;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
 }
 
 .visibility {
-  align-items: center;
-  background: var(--canvas);
-  border: 1px solid var(--border);
-  border-radius: 16px;
   display: flex;
-  gap: 16px;
-  justify-content: space-between;
-  padding: 14px;
-}
-
-.visibility > div {
-  display: grid;
-  gap: 3px;
-}
-
-.visibility strong {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.visibility span {
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.visibility button {
   align-items: center;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  display: inline-flex;
-  flex-shrink: 0;
-  font-size: 14px;
-  font-weight: 600;
-  gap: 7px;
-  min-height: 42px;
-  padding: 0 13px;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-inner);
+  background: var(--surface-soft);
 }
 
-.visibility button:focus-visible {
-  outline: 2px solid var(--blue);
-  outline-offset: 2px;
-}
+.visibilityCopy {
+  display: grid;
+  gap: 0.15rem;
 
-.visibleButton {
-  background: var(--surface);
-  color: var(--ink);
-}
+  strong {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
 
-.hiddenButton {
-  background: var(--ink);
-  border-color: var(--ink) !important;
-  color: var(--surface);
+  span {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
 }
 
 @media (max-width: 40rem) {
-  .grid,
-  .checks {
+  .grid {
     grid-template-columns: 1fr;
   }
 
   .visibility {
-    align-items: stretch;
     flex-direction: column;
+    align-items: stretch;
   }
 
-  .visibility button {
-    justify-content: center;
+  .actions {
+    flex-direction: column-reverse;
+
+    > * {
+      width: 100%;
+    }
   }
 }
-
-.formFields { display: flex; flex-direction: column; gap: 18px; border: 0; padding: 0; margin: 0; min-width: 0; }

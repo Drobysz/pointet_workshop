@@ -1,27 +1,36 @@
-@reference "tailwindcss";
+@use "../../styles/mixins" as m;
 
 .badge {
-  background: var(--canvas);
-  border-radius: 9px;
-  color: var(--ink);
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 4px 7px;
-  text-transform: capitalize;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem 0.15rem;
+  border-radius: var(--radius-chip);
+  background: var(--surface-muted);
+  color: var(--ink-soft);
+  white-space: nowrap;
+  @include m.label-font(0.95rem);
 }
 
-.visible,
-.delivered,
-.sent {
-  color: var(--link);
+.success {
+  background: var(--success-tint);
+  color: var(--success);
 }
 
-.hidden {
+.danger {
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+
+.warning {
+  background: var(--warning-tint);
+  color: var(--warning);
+}
+
+.info {
+  background: var(--info-tint);
+  color: var(--info);
+}
+
+.neutral {
   color: var(--muted);
-}
-
-.reported,
-.cancelled {
-  color: var(--danger);
 }

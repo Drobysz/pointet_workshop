@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { loginSchema } from "@/auth/FormSchemes";
+import { Button, Input } from "@/components";
 import { login } from "@/queries";
 import styles from "./login-form.module.scss";
 
@@ -43,30 +44,36 @@ export function LoginForm() {
   }
 
   return (
-    <section className={styles.wrapper}>
-      <form action={handleSubmit}>
-        <div>
-          <h2>{t("title")}</h2>
-          <p>{t("subtitle")}</p>
+    <section className={styles.window} aria-labelledby="login-title">
+      <form action={handleSubmit} className={styles.form}>
+        <div className={styles.heading}>
+          <h1 id="login-title" className={styles.title}>{t("title")}</h1>
+          <p className={styles.subtitle}>{t("subtitle")}</p>
         </div>
-        <label>
-          {t("email")}
-          <input name="email" type="email" autoComplete="email" required />
-        </label>
-        <label>
-          {t("password")}
-          <input
+
+        <div className={styles.fields}>
+          <Input
+            label={t("email")}
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+          />
+          <Input
+            label={t("password")}
             name="password"
             type="password"
             autoComplete="current-password"
             minLength={8}
             required
           />
-        </label>
+        </div>
+
         {error ? <p className={styles.error} role="alert">{error}</p> : null}
-        <button type="submit" disabled={isSubmitting}>
+
+        <Button type="submit" variant="primary" size="lg" full pending={isSubmitting}>
           {isSubmitting ? t("signingIn") : t("signIn")}
-        </button>
+        </Button>
       </form>
     </section>
   );

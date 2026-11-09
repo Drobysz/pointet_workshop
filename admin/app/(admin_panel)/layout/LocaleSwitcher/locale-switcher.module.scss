@@ -1,0 +1,70 @@
+@use "../../../../styles/mixins" as m;
+
+.switcher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 42px;
+  padding: 0 0.85rem;
+  border-radius: var(--radius-control);
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background-color 0.2s ease-out;
+
+  &:hover,
+  &:focus-within {
+    background: var(--surface-muted);
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--ink-soft);
+}
+
+.label {
+  flex-shrink: 0;
+  color: var(--muted);
+  @include m.label-font(1rem);
+}
+
+.select {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.25rem 0.25rem;
+  border: 0;
+  border-radius: var(--radius-chip);
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+
+  &:disabled {
+    cursor: wait;
+    opacity: 0.6;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--accent-ring);
+  }
+}
+
+.compact {
+  justify-content: center;
+  padding: 0;
+
+  .label {
+    display: none;
+  }
+
+  // The native select stays operable but hides behind the globe.
+  .select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    opacity: 0;
+  }
+}

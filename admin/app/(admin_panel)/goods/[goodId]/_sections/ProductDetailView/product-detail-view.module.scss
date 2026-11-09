@@ -1,33 +1,228 @@
-@reference "tailwindcss";
-.back { @apply inline-flex items-center; color: var(--link); font-size: 14px; font-weight: 600; gap: 6px; margin-bottom: 20px; }
-.hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, .8fr); background: #fff; border: 1px solid var(--border); border-radius: 18px; overflow: hidden; }
-.gallery { background: var(--canvas); padding: clamp(16px, 3vw, 30px); }
-.stage { aspect-ratio: 4 / 3; position: relative; overflow: hidden; }
-.stage img { object-fit: contain; }
-.placeholder { @apply flex items-center justify-center; border-radius: 16px; height: 100%; min-height: 300px; }
-.placeholder::after { content: ""; position: absolute; inset: 15%; background: rgba(255,255,255,.55); border-radius: 50%; filter: blur(30px); }
-.placeholder span { color: rgba(0,0,0,.65); font-size: clamp(28px, 5vw, 54px); font-weight: 600; letter-spacing: -.04em; position: relative; z-index: 1; text-align: center; }
-.controls { @apply absolute flex items-center; bottom: 14px; left: 50%; transform: translateX(-50%); background: rgba(29,29,31,.82); border-radius: 100px; color: #fff; gap: 7px; padding: 4px; }
-.controls button { @apply flex items-center justify-center; border-radius: 50%; height: 34px; width: 34px; }
-.controls span { font-size: 11px; min-width: 38px; text-align: center; }
-.colors { @apply flex flex-wrap; gap: 8px; margin-top: 16px; }
-.colors button { @apply flex items-center; background: #fff; border: 1px solid var(--border); border-radius: 9px; min-height: 42px; gap: 8px; padding: 0 11px; }
-.colors button[aria-pressed="true"] { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(0,113,227,.12); }
-.colors button span { border: 1px solid rgba(0,0,0,.14); border-radius: 50%; height: 18px; width: 18px; }
-.colors button strong { font-size: 13px; font-weight: 600; }
-.info { padding: clamp(24px, 4vw, 42px); }
-.price { font-size: 32px; font-weight: 600; letter-spacing: -.03em; }
-.info dl { border-bottom: 1px solid var(--border); margin: 20px 0 24px; }
-.info dl div { @apply flex justify-between gap-5; border-top: 1px solid var(--border); padding: 13px 0; }
-.info dt { color: var(--muted); }
-.info dd { font-weight: 600; text-align: right; }
-.info h2, .statistics h2 { font-size: 19px; font-weight: 600; letter-spacing: -.02em; }
-.info p { color: var(--muted); margin-top: 9px; white-space: pre-line; }
-.statistics { background: #000; border-radius: 18px; color: #fff; margin-top: 16px; padding: clamp(24px, 4vw, 40px); }
-.statistics > div { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 22px; }
-.statistics article { @apply flex flex-col; }
-.statistics article + article { border-left: 1px solid #424245; padding-left: 24px; }
-.statistics span { color: #a1a1a6; font-size: 13px; }
-.statistics strong { font-size: clamp(28px, 4vw, 42px); font-weight: 600; letter-spacing: -.035em; margin-top: 6px; }
-@media (max-width: 64rem) { .hero { grid-template-columns: 1fr; } }
-@media (max-width: 38rem) { .statistics > div { grid-template-columns: 1fr; gap: 16px; } .statistics article + article { border-left: 0; border-top: 1px solid #424245; padding-left: 0; padding-top: 16px; } }
+@use "../../../../../../styles/mixins" as m;
+
+.tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+// Storefront product header tags.
+.tag {
+  padding: 0.15rem 0.6rem 0.1rem;
+  border-radius: 9999px;
+  background: rgba(209, 213, 219, 0.7);
+  color: var(--ink-soft);
+  @include m.label-font(0.95rem);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.8fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.stage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-inner);
+  background: var(--surface-soft);
+
+  img {
+    object-fit: contain;
+  }
+}
+
+.placeholder {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 300px;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 15%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    filter: blur(30px);
+  }
+
+  span {
+    position: relative;
+    z-index: 1;
+    padding: 0 1rem;
+    color: rgba(0, 0, 0, 0.6);
+    text-align: center;
+    @include m.label-font(clamp(1.75rem, 5vw, 3.2rem));
+  }
+}
+
+// Storefront image slider controls: a dark pill floating over the picture.
+.controls {
+  position: absolute;
+  bottom: 0.9rem;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem;
+  border-radius: 9999px;
+  background: rgba(39, 39, 42, 0.82);
+  color: #fff;
+  translate: -50% 0;
+  backdrop-filter: blur(6px);
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background-color 0.15s ease-out;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+  }
+
+  span {
+    min-width: 42px;
+    text-align: center;
+    @include m.label-font(0.9rem);
+  }
+}
+
+.colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.color {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 40px;
+  padding: 0 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--ink-soft);
+  @include m.label-font(1rem);
+  transition:
+    border-color 0.15s ease-out,
+    color 0.15s ease-out,
+    box-shadow 0.15s ease-out;
+
+  &:hover {
+    border-color: var(--accent-mid);
+    color: var(--accent);
+  }
+}
+
+.colorActive {
+  border-color: var(--accent-mid);
+  box-shadow: 0 0 0 2px var(--accent-ring);
+  color: var(--accent);
+}
+
+.colorSwatch {
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 50%;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+// Storefront price tag.
+.price {
+  @include m.display-font(2.8rem);
+  color: var(--accent);
+}
+
+.descriptionTitle {
+  color: var(--ink);
+  @include m.label-font(1.25rem);
+}
+
+.description {
+  margin-top: -0.75rem;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  white-space: pre-line;
+}
+
+// Storefront hero window: red radial surface with warm display figures.
+.statistics {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: var(--radius-card);
+  background-image: radial-gradient(circle, #fecaca 10%, #f87171 95%);
+  box-shadow: var(--shadow-card);
+}
+
+.statisticsTitle {
+  color: rgba(127, 29, 29, 0.85);
+  @include m.label-font(1.4rem);
+}
+
+.statisticsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.statistic {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-inner);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+
+  span {
+    color: var(--accent-strong);
+    @include m.label-font(1rem);
+  }
+
+  strong {
+    overflow-wrap: anywhere;
+    color: var(--accent);
+    @include m.display-font(clamp(2rem, 4vw, 2.8rem));
+  }
+}
+
+@media (max-width: 64rem) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 38rem) {
+  .statisticsGrid {
+    grid-template-columns: 1fr;
+  }
+}

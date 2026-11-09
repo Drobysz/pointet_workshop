@@ -1,29 +1,36 @@
-@reference "tailwindcss";
-
 .shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: 100dvh;
   background: var(--canvas);
-  height: 100dvh;
-  overflow: hidden;
 }
 
 .main {
-  height: 100dvh;
-  margin-left: 248px;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-  padding: clamp(24px, 4vw, 52px);
-  scrollbar-gutter: stable;
+  min-width: 0;
 }
 
-@media (max-width: 60rem) {
-  .main {
-    margin-left: 76px;
+.content {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: clamp(1.25rem, 3vw, 2.5rem) clamp(1rem, 3vw, 2.5rem) 4rem;
+}
+
+// Tablet: the sidebar collapses to an icon rail.
+@media (max-width: 64rem) {
+  .shell {
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
   }
 }
 
-@media (max-width: 40rem) {
-  .main {
-    margin-left: 0;
-    padding: 88px 16px 24px;
+// Mobile: sticky top bar and a drawer replace the sidebar.
+@media (max-width: 47.99rem) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .content {
+    padding: 1rem 1rem 3rem;
   }
 }

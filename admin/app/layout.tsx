@@ -1,7 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import { fontVariables } from "@/fonts/fonts";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#f3f4f6",
+  colorScheme: "light",
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const login = await getTranslations("login");
@@ -22,7 +30,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={fontVariables}>
       <body>
         <NextIntlClientProvider messages={messages}>
           {children}

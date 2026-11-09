@@ -1,79 +1,17 @@
 "use client";
 
-import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { cn } from "@/helpers";
+import { Pagination } from "../Pagination/Pagination";
+import { SearchField } from "../SearchField/SearchField";
 import type { EntityTableProps } from "./EntityTable.props";
 import styles from "./entity-table.module.scss";
-
-function getVisiblePages(page: number, totalPages: number): number[] {
-  return Array.from({ length: totalPages }, (_, index) => index + 1).filter(
-    (value) => {
-      const isBoundary = value === 1 || value === totalPages;
-      const isNearCurrentPage = Math.abs(value - page) <= 1;
-
-      return isBoundary || isNearCurrentPage;
-    },
-  );
-}
-
-interface TablePaginationProps {
-  page: number;
-  totalPages: number;
-  onPage: (page: number) => void;
-}
-
-function TablePagination({
-  page,
-  totalPages,
-  onPage,
-}: TablePaginationProps) {
-  const t = useTranslations("table");
-  const pages = getVisiblePages(page, totalPages);
-
-  return (
-    <nav className={styles.pagination} aria-label={t("paginationLabel")}>
-      <button
-        type="button"
-        disabled={page <= 1}
-        onClick={() => onPage(page - 1)}
-      >
-        {t("previous")}
-      </button>
-      <div>
-        {pages.map((value, index) => {
-          const previousPage = pages[index - 1];
-          const hasGap = index > 0 && value - previousPage > 1;
-
-          return (
-            <span key={value}>
-              {hasGap ? <i>…</i> : null}
-              <button
-                type="button"
-                aria-current={value === page ? "page" : undefined}
-                onClick={() => onPage(value)}
-              >
-                {value}
-              </button>
-            </span>
-          );
-        })}
-      </div>
-      <button
-        type="button"
-        disabled={page >= totalPages}
-        onClick={() => onPage(page + 1)}
-      >
-        {t("next")}
-      </button>
-    </nav>
-  );
-}
 
 export function EntityTable<T>({
   columns,
   rows,
   rowKey,
-  search,
+  search = "",
   page,
   totalPages,
   total,
@@ -90,26 +28,27 @@ export function EntityTable<T>({
   return (
     <section className={styles.panel}>
       <div className={styles.toolbar}>
-        <label>
-          <Search size={17} />
-          <span className="sr-only">{t("searchLabel")}</span>
-          <input
+        {onSearch ? (
+          <SearchField
+            className={styles.search}
             value={search}
-            onChange={(event) => onSearch(event.target.value)}
+            onChange={onSearch}
+            label={t("searchLabel")}
             placeholder={t("searchPlaceholder")}
           />
-        </label>
-        <span>{t("results", { count: total })}</span>
+        ) : null}
+        <span className={styles.count}>{t("results", { count: total })}</span>
       </div>
 
       <div className={styles.scroller}>
-        <table>
+        <table className={styles.table}>
           <thead>
             <tr>
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className={column.align === "right" ? styles.right : undefined}
+                  scope="col"
+                  className={cn(column.align === "right" && styles.right)}
                 >
                   {column.label}
                 </th>
@@ -122,7 +61,7 @@ export function EntityTable<T>({
                 {columns.map((column) => (
                   <td
                     key={column.key}
-                    className={column.align === "right" ? styles.right : undefined}
+                    className={cn(column.align === "right" && styles.right)}
                   >
                     {column.render(row)}
                   </td>
@@ -133,8 +72,13 @@ export function EntityTable<T>({
         </table>
       </div>
 
-      {pagination ? (
-        <TablePagination {...pagination} />
+      {pagination && pagination.totalPages > 1 ? (
+        <div className={styles.footer}>
+          <span className={styles.pageInfo}>
+            {t("pageInfo", { page: pagination.page, total: pagination.totalPages })}
+          </span>
+          <Pagination {...pagination} />
+        </div>
       ) : null}
     </section>
   );

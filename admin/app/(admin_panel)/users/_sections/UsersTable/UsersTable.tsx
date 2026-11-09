@@ -5,11 +5,16 @@ import Link from "next/link";
 import { Pencil, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";
-import { EntityTable, PageHeader, StatePanel } from "@/components";
+import {
+  Button,
+  EntityTable,
+  PageHeader,
+  Panel,
+  StatePanel,
+} from "@/components";
 import { useAppFormatters, useTableQueryState } from "@/hooks";
 import type { User } from "@/interface/domain";
 import { getUsers } from "@/queries";
-import actionStyles from "@/components/TableActions/table-actions.module.scss";
 import { UserFormModal } from "../UserFormModal/UserFormModal";
 
 export function UsersTable() {
@@ -29,27 +34,25 @@ export function UsersTable() {
       title={t("title")}
       description={t("description")}
       actions={(
-        <button
-          className={actionStyles.primary}
-          type="button"
-          onClick={() => setEditingUser("new")}
-        >
-          <Plus size={17} />
+        <Button variant="primary" onClick={() => setEditingUser("new")}>
+          <Plus size={17} aria-hidden="true" />
           {t("create")}
-        </button>
+        </Button>
       )}
     />
   );
 
   if (users.isLoading && !users.data) {
-    return <>{header}<StatePanel state="loading" /></>;
+    return <>{header}<Panel><StatePanel state="loading" /></Panel></>;
   }
 
   if (users.error || !users.data) {
     return (
       <>
         {header}
-        <StatePanel state="error" onRetry={() => void users.mutate()} />
+        <Panel>
+          <StatePanel state="error" onRetry={() => void users.mutate()} />
+        </Panel>
       </>
     );
   }
@@ -59,9 +62,7 @@ export function UsersTable() {
       key: "name",
       label: t("customer"),
       render: (user: User) => (
-        <Link href={`/users/${user.id}`} data-link>
-          {user.full_name}
-        </Link>
+        <Link href={`/users/${user.id}`}>{user.full_name}</Link>
       ),
     },
     {
@@ -86,14 +87,15 @@ export function UsersTable() {
       label: common("actions"),
       align: "right" as const,
       render: (user: User) => (
-        <button
-          className={actionStyles.iconButton}
-          type="button"
+        <Button
+          variant="ghost"
+          icon
+          size="sm"
           aria-label={t("editLabel", { name: user.full_name })}
           onClick={() => setEditingUser(user)}
         >
-          <Pencil size={16} />
-        </button>
+          <Pencil size={15} aria-hidden="true" />
+        </Button>
       ),
     },
   ];
@@ -104,7 +106,7 @@ export function UsersTable() {
     <>
       {header}
       {hasNoUsers ? (
-        <StatePanel state="empty" />
+        <Panel><StatePanel state="empty" /></Panel>
       ) : (
         <EntityTable<User>
           rows={users.data.data}

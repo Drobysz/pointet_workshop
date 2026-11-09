@@ -1,64 +1,41 @@
 "use client";
 
-import { CSSProperties, useContext, useId, useRef, useState } from "react";
-import { ActiveQuantityTag, MainBtn, SlideSheet } from "@/components";
-import { GlobalContext } from "@/app/[locale]/context/global.context";
+import { useId, useRef, useState } from "react";
+import { SlideSheet } from "@/components";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn, PathService } from "@/helpers";
 import { useMediaQuery } from "@/hooks";
 import { tinyFive } from "@/fonts/fonts";
 import { headerPages } from "../../helpers";
-import {
-    LanguageOption,
-    LogOutBtn,
-    ProfileHeader,
-} from "../Profile/_components/ProfileIcon/ProfileMenu/_components";
+import { AccountSection } from "./_components";
+import { getItemStyle } from "./helpers";
 import s from "./style.module.scss";
 import { useTranslations } from "next-intl";
 
 // The burger menu replaces the header navigation below Tailwind `md`.
 const MOBILE_QUERY = "(max-width: 767px)";
 
-const getItemStyle = (index: number)=> (
-    { "--item-index": index } as CSSProperties
-);
-
 export const MobileMenu = ()=> {
-    const {
-        user,
-        userError,
-        basketList,
-        preOrdersList,
-        setPopUpWindow,
-    } = useContext(GlobalContext);
     const t = useTranslations("navigation");
 
     const menuId = useId();
     const pathname = usePathname();
     const triggerRef = useRef<HTMLButtonElement | null>(null);
-    const [isOpen, setIsOpen] = useState(false);
+
+    // The pathname the menu was opened on. Any route change (a link in
+    // the menu, history navigation) closes the menu without an effect.
+    const [openedAt, setOpenedAt] = useState<string | null>(null);
+
+    if (openedAt !== null && openedAt !== pathname) {
+        setOpenedAt(null);
+    }
 
     // The menu must not stay open (and lock scrolling) on wider screens.
     const isMobile = useMediaQuery(MOBILE_QUERY);
-    const isMenuOpen = isOpen && isMobile;
+    const isMenuOpen = openedAt === pathname && isMobile;
 
-    const isAuth = Boolean(user && !userError);
-    const basketQuantity = (basketList ?? [])
-        .reduce((acc, val) => acc + val.quantity, 0);
-    const preOrderQuantity = preOrdersList?.length ?? 0;
-
-    const accountPages = [
-        ...(isAuth ? [{ label: t("account.profile"), href: "/profile", quantity: 0 }] : []),
-        { label: t("account.preorders"), href: "/profile/preorders", quantity: preOrderQuantity },
-        { label: t("account.basket"), href: "/profile/basket", quantity: basketQuantity },
-    ];
-
-    const closeMenu = ()=> setIsOpen(false);
-
-    const handleSignUpClick = ()=> {
-        closeMenu();
-        setPopUpWindow("LoginForm");
-    };
+    const closeMenu = ()=> setOpenedAt(null);
+    const toggleMenu = ()=> setOpenedAt(isMenuOpen ? null : pathname);
 
     return (
         <>
@@ -69,7 +46,7 @@ export const MobileMenu = ()=> {
                 aria-label={isMenuOpen ? t("mobileMenu.close") : t("mobileMenu.open")}
                 aria-expanded={isMenuOpen}
                 aria-controls={menuId}
-                onClick={()=> setIsOpen(p => !p)}
+                onClick={toggleMenu}
             >
                 <span className={s.burger__line} />
                 <span className={s.burger__line} />
@@ -114,58 +91,10 @@ export const MobileMenu = ()=> {
                     </ul>
                 </nav>
 
-                <section
-                    className={cn(s.account, s.item)}
-                    style={getItemStyle(headerPages.length)}
-                    aria-label={t("account.sectionLabel")}
-                >
-                    {user && isAuth &&
-                        <ProfileHeader
-                            email={user.email}
-                            full_name={user.full_name}
-                        />
-                    }
-                    <ul>
-                        {accountPages.map((page)=>
-                            <li key={`mobile-account-${page.href}`}>
-                                <Link
-                                    className={s.account_link}
-                                    href={page.href}
-                                    onClick={closeMenu}
-                                >
-                                    {page.label}
-                                    {page.quantity > 0 &&
-                                        <ActiveQuantityTag
-                                            quantity={page.quantity}
-                                        />
-                                    }
-                                </Link>
-                            </li>
-                        )}
-                    </ul>
-                    <div className={s.account_language}>
-                        <LanguageOption />
-                    </div>
-                    {isAuth &&
-                        <LogOutBtn
-                            setIsOpen={setIsOpen}
-                        />
-                    }
-                </section>
-
-                {!isAuth &&
-                    <div
-                        className={s.item}
-                        style={getItemStyle(headerPages.length + 1)}
-                    >
-                        <MainBtn
-                            className="w-full"
-                            onClick={handleSignUpClick}
-                        >
-                            {t("account.signIn")}
-                        </MainBtn>
-                    </div>
-                }
+                <AccountSection
+                    itemIndex={headerPages.length}
+                    onClose={closeMenu}
+                />
             </SlideSheet>
         </>
     )

@@ -1,4 +1,4 @@
-import { RefObject, useEffect } from "react";
+import { RefObject, useEffect, useLayoutEffect, useRef } from "react";
 
 interface UseDismissProps {
     isOpen: boolean;
@@ -6,41 +6,51 @@ interface UseDismissProps {
     refs: RefObject<HTMLElement | null>[];
 };
 
+/**
+ * Calls `onDismiss` on a click outside of `refs` or on Escape while
+ * `isOpen`. The document listeners are attached once per open state:
+ * the latest `refs` and `onDismiss` are read through a ref, so callers
+ * may pass inline arrays and callbacks without re-subscribing on every
+ * render.
+ */
 export const useDismiss = ({
     isOpen,
     refs,
     onDismiss,
 }: UseDismissProps)=> {
-    return (
-        useEffect(()=>{
-            if (!isOpen) return;
+    const latest = useRef({ refs, onDismiss });
 
-            const handleMouseClick = (e: MouseEvent)=> {
-                const target = e.target as Node;
+    useLayoutEffect(()=> {
+        latest.current = { refs, onDismiss };
+    });
 
-                const isInside = refs.some(
-                    ref => ref.current?.contains(target)
-                );
+    useEffect(()=>{
+        if (!isOpen) return;
 
-                if (!isInside) {
-                    onDismiss();
-                }
-            };
+        const handleMouseClick = (e: MouseEvent)=> {
+            const target = e.target as Node;
 
-            const handleKeyDown = (e: KeyboardEvent)=> {
-                if (e.key === 'Escape') {
-                    onDismiss();
-                }
-            };
+            const isInside = latest.current.refs.some(
+                ref => ref.current?.contains(target)
+            );
 
-            document.addEventListener('mousedown', handleMouseClick);
-            document.addEventListener('keydown', handleKeyDown);
-
-            return ()=> {
-                document.removeEventListener('mousedown', handleMouseClick);
-                document.removeEventListener('keydown', handleKeyDown);
+            if (!isInside) {
+                latest.current.onDismiss();
             }
+        };
 
-        }, [isOpen, refs, onDismiss])
-    )
+        const handleKeyDown = (e: KeyboardEvent)=> {
+            if (e.key === 'Escape') {
+                latest.current.onDismiss();
+            }
+        };
+
+        document.addEventListener('mousedown', handleMouseClick);
+        document.addEventListener('keydown', handleKeyDown);
+
+        return ()=> {
+            document.removeEventListener('mousedown', handleMouseClick);
+            document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [isOpen]);
 }

@@ -1,0 +1,134 @@
+@use "../../../../styles/mixins" as m;
+
+.bar,
+.overlay,
+.sheet {
+  display: none;
+}
+
+@media (max-width: 47.99rem) {
+  // Storefront header: translucent, blurred, rounded bottom corners.
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: var(--topbar-height);
+    padding: 0.35rem 1rem;
+    border-radius: 0 0 2rem 2rem;
+    background-image: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.5) 5%,
+      rgba(255, 255, 255, 0.01)
+    );
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  .burger {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background: rgba(229, 231, 235, 0.7);
+    transition:
+      scale 0.2s ease-in,
+      background-color 0.2s ease-in;
+
+    &:active {
+      scale: 0.95;
+    }
+  }
+
+  .burgerLine {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 9999px;
+    background: var(--accent-strong);
+    transition:
+      translate 0.3s var(--ease-out),
+      rotate 0.3s var(--ease-out);
+  }
+
+  // The two lines meet in the middle and cross.
+  .burgerOpen {
+    background: var(--accent-tint);
+
+    .burgerLine:first-child {
+      translate: 0 4px;
+      rotate: 45deg;
+    }
+
+    .burgerLine:last-child {
+      translate: 0 -4px;
+      rotate: -45deg;
+    }
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: block;
+    background: var(--overlay);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.35s var(--ease-out),
+      visibility 0s linear 0.35s;
+  }
+
+  .overlayOpen {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  // Unfolds from behind the sticky bar (z-index 50) like the storefront sheet.
+  .sheet {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 100dvh;
+    padding: calc(var(--topbar-height) + 0.75rem) 1rem 1.5rem;
+    border-radius: 0 0 2rem 2rem;
+    background: var(--canvas);
+    box-shadow: var(--shadow-sheet);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    outline: none;
+    translate: 0 -100%;
+    visibility: hidden;
+    transition:
+      translate 0.45s var(--ease-out),
+      visibility 0s linear 0.45s;
+  }
+
+  .sheetOpen {
+    translate: 0 0;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .account {
+    @include m.surface-card(var(--radius-inner));
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    box-shadow: none;
+    border: 1px solid var(--line);
+  }
+}

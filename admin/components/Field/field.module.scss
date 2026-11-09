@@ -1,0 +1,86 @@
+@use "../../styles/mixins" as m;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.label {
+  padding-left: 0.5rem;
+  color: var(--muted);
+  @include m.label-font(1.05rem);
+}
+
+.control {
+  @include m.control-base;
+}
+
+.selectWrap {
+  position: relative;
+  display: block;
+}
+
+.select {
+  appearance: none;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.chevron {
+  position: absolute;
+  top: 50%;
+  right: 0.9rem;
+  color: var(--muted);
+  translate: 0 -50%;
+  pointer-events: none;
+}
+
+.textarea {
+  min-height: 7rem;
+  padding-block: 0.7rem;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.hint {
+  padding-left: 0.5rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.error {
+  padding-left: 0.5rem;
+  color: var(--danger);
+  font-size: 0.85rem;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 42px;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-control);
+  background: var(--surface-soft);
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  transition: background-color 0.15s ease-out;
+
+  &:hover {
+    background: var(--accent-tint);
+  }
+}
+
+.checkInput {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  accent-color: var(--accent-mid);
+  cursor: pointer;
+}
+
+.checkLabel {
+  font-size: 0.9rem;
+}

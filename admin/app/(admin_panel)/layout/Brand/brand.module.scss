@@ -1,0 +1,33 @@
+@use "../../../../styles/mixins" as m;
+
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  width: fit-content;
+  padding: 0.2rem 0.25rem;
+  border-radius: var(--radius-chip);
+}
+
+.wordmark {
+  font-family: var(--font-brand);
+  font-size: 1.85rem;
+  line-height: 1;
+  @include m.brand-gradient-text;
+}
+
+.tag {
+  padding: 0.1rem 0.4rem 0.05rem;
+  border-radius: var(--radius-chip);
+  background: var(--surface-muted);
+  color: var(--ink-soft);
+  @include m.label-font(0.8rem);
+}
+
+.markOnly {
+  gap: 0;
+
+  .tag {
+    display: none;
+  }
+}

@@ -7,12 +7,16 @@ export default async function LoginPage() {
 
   return (
     <main className={styles.page}>
-      <section className={styles.intro}>
-        <div className={styles.mark}>W</div>
-        <h1>{t("heading")}</h1>
-        <p>{t("description")}</p>
+      <section className={styles.intro} aria-hidden="true">
+        <span className={styles.signs}>
+          <span>{t("welcome")}</span>
+          <span>{t("brandTagline")}</span>
+        </span>
+        <span className={styles.wordmark}>Pointet</span>
       </section>
-      <LoginForm />
+      <div className={styles.formColumn}>
+        <LoginForm />
+      </div>
     </main>
   );
 }

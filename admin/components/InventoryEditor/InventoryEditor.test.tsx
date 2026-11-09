@@ -25,7 +25,7 @@ it("accepts custom numeric and letter sizes and calculates the total", () => {
 });
 
 it("rejects duplicate normalized sizes and quantities outside supported limits", () => {
-  const payload = { name: "Shirt", category_id: 1, subcategory_id: 1, price: 10, description: "Cotton shirt", material_ids: [], inventory: [
+  const payload = { name: "Shirt", brand: "Atelier", category_id: 1, subcategory_id: 1, price: 10, description: "Cotton shirt", material_ids: [], inventory: [
     { color_id: 1, size: "XL", quantity: 2 }, { color_id: 1, size: " xl ", quantity: 1 },
   ] };
   expect(goodSchema.safeParse(payload).success).toBe(false);

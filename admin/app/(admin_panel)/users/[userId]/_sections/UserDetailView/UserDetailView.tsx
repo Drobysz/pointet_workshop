@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";
-import { EntityTable, PageHeader, StatePanel, StatusBadge } from "@/components";
+import {
+  EntityTable,
+  PageHeader,
+  Panel,
+  StatePanel,
+  StatusBadge,
+} from "@/components";
 import { useAppFormatters, useTableQueryState } from "@/hooks";
 import type { Order } from "@/interface/domain";
 import { getOrders, getUser } from "@/queries";
@@ -27,18 +33,20 @@ export function UserDetailView({ userId }: { userId: string }) {
     || (orders.isLoading && !orders.data);
 
   if (isInitialLoading) {
-    return <StatePanel state="loading" />;
+    return <Panel><StatePanel state="loading" /></Panel>;
   }
 
   if (user.error || orders.error || !user.data || !orders.data) {
     return (
-      <StatePanel
-        state="error"
-        onRetry={() => {
-          void user.mutate();
-          void orders.mutate();
-        }}
-      />
+      <Panel>
+        <StatePanel
+          state="error"
+          onRetry={() => {
+            void user.mutate();
+            void orders.mutate();
+          }}
+        />
+      </Panel>
     );
   }
 
@@ -48,7 +56,7 @@ export function UserDetailView({ userId }: { userId: string }) {
       key: "id",
       label: ordersCopy("order"),
       render: (order: Order) => (
-        <Link href={`/orders/${order.id}`} data-link>#{order.id}</Link>
+        <Link href={`/orders/${order.id}`}>#{order.id}</Link>
       ),
     },
     {
@@ -75,27 +83,28 @@ export function UserDetailView({ userId }: { userId: string }) {
   const showOrdersTable = Boolean(
     orders.data.data.length || tableState.searchQuery,
   );
+  const facts = [
+    { key: "email", label: common("email"), value: profile.email },
+    { key: "verification", label: t("verification"), value: verification },
+    { key: "joined", label: t("joined"), value: formatDate(profile.created_at) },
+  ];
 
   return (
     <>
       <PageHeader
         title={profile.full_name}
         description={t("profileDescription")}
+        back={{ href: "/users", label: t("back") }}
       />
-      <section className={styles.profile}>
-        <div>
-          <span>{common("email")}</span>
-          <strong>{profile.email}</strong>
-        </div>
-        <div>
-          <span>{t("verification")}</span>
-          <strong>{verification}</strong>
-        </div>
-        <div>
-          <span>{t("joined")}</span>
-          <strong>{formatDate(profile.created_at)}</strong>
-        </div>
-      </section>
+
+      <Panel className={styles.profile} aria-label={t("profile")}>
+        {facts.map((fact) => (
+          <div key={fact.key} className={styles.fact}>
+            <span className={styles.factLabel}>{fact.label}</span>
+            <strong className={styles.factValue}>{fact.value}</strong>
+          </div>
+        ))}
+      </Panel>
 
       <h2 className={styles.heading}>{t("orders")}</h2>
       {showOrdersTable ? (
@@ -108,7 +117,7 @@ export function UserDetailView({ userId }: { userId: string }) {
           columns={columns}
         />
       ) : (
-        <StatePanel state="empty" />
+        <Panel><StatePanel state="empty" compact /></Panel>
       )}
     </>
   );

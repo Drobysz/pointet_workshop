@@ -1,15 +1,86 @@
-.root { min-width: 0; }
-.root h3 { font-size: 15px; font-weight: 600; margin: 0 0 8px; }
-.root p { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
-.color { border: 0; border-top: 1px solid var(--border); margin: 16px 0; padding: 12px 0 0; min-width: 0; }
-.color legend { font-size: 14px; font-weight: 600; padding-right: 8px; }
-.rows { max-height: 288px; overflow-y: auto; overscroll-behavior: contain; padding: 3px; margin: -3px -3px 10px; }
-.row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(100px, .65fr) auto; gap: 10px; align-items: end; margin-bottom: 10px; }
-.row label { display: grid; gap: 6px; font-size: 14px; min-width: 0; }
-.row input { width: 100%; min-width: 0; min-height: 44px; padding: 0 12px; border: 1px solid #86868b; border-radius: 9px; background: var(--surface); }
-.row input[readonly] { background: var(--canvas); }
-.root button { border: 1px solid var(--border); border-radius: 9px; min-height: 44px; padding: 0 12px; font-size: 14px; }
-.root button:disabled { opacity: .5; cursor: not-allowed; }
-.root input:focus-visible, .root button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-.root .total { color: var(--ink); font-weight: 600; }
-@media (max-width: 40rem) { .row { grid-template-columns: minmax(0, 1fr) minmax(80px, .6fr); } .row button { grid-column: 1 / -1; justify-self: start; } }
+@use "../../styles/mixins" as m;
+
+.root {
+  min-width: 0;
+}
+
+.title {
+  margin: 0 0 0.35rem;
+  padding-left: 0.5rem;
+  color: var(--muted);
+  @include m.label-font(1.05rem);
+}
+
+.hint {
+  margin: 0 0 0.75rem;
+  padding-left: 0.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.color {
+  min-width: 0;
+  margin: 0 0 0.75rem;
+  padding: 0.9rem 1rem 1rem;
+  border: 0;
+  border-radius: var(--radius-inner);
+  background: var(--surface-soft);
+}
+
+.legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+  color: var(--ink);
+  @include m.label-font(1.05rem);
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+}
+
+.rows {
+  max-height: 288px;
+  margin: 0.5rem -0.25rem 0.75rem;
+  padding: 0.25rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(100px, 0.65fr) auto;
+  gap: 0.75rem;
+  align-items: end;
+  margin-bottom: 0.75rem;
+
+  input[readonly] {
+    background: var(--surface-muted);
+  }
+}
+
+.removeButton {
+  margin-bottom: 1px;
+}
+
+.total {
+  margin: 0.25rem 0 0;
+  padding-left: 0.5rem;
+  color: var(--ink);
+  @include m.label-font(1.05rem);
+}
+
+@media (max-width: 40rem) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) minmax(80px, 0.6fr);
+  }
+
+  .removeButton {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}

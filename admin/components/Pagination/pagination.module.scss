@@ -1,0 +1,101 @@
+@use "../../styles/mixins" as m;
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.pages {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.switcher,
+.page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #9ca3af;
+  color: #4b5563;
+  background: transparent;
+  transition:
+    scale 0.15s ease-in,
+    color 0.1s ease-in,
+    background-color 0.15s ease-in,
+    border-color 0.15s ease-in;
+
+  &:hover:not(:disabled):not(.current) {
+    @include m.accent-radial;
+    border-color: #fca5a5;
+  }
+
+  &:active:not(:disabled) {
+    scale: 0.98;
+  }
+}
+
+.switcher {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-control);
+
+  &:disabled {
+    border-color: var(--line);
+    color: var(--faint);
+    cursor: not-allowed;
+  }
+}
+
+.page {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 0.4rem;
+  border-radius: 0.5rem;
+  font-variant-numeric: tabular-nums;
+
+  &:hover:not(.current) {
+    scale: 1.02;
+  }
+}
+
+.current {
+  @include m.accent-radial;
+  border-color: transparent;
+  box-shadow: 0 10px 25px -10px #f87171;
+  pointer-events: none;
+}
+
+.ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  color: var(--muted);
+}
+
+@media (max-width: 35rem) {
+  .nav {
+    gap: 0.6rem;
+  }
+
+  .pages {
+    gap: 0.25rem;
+  }
+
+  .page {
+    min-width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .switcher {
+    width: 32px;
+    height: 32px;
+  }
+}

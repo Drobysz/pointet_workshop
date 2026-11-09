@@ -1,0 +1,131 @@
+@use "../../../../styles/mixins" as m;
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 44px;
+  padding: 0 0.85rem;
+  border-radius: var(--radius-control);
+  color: var(--ink-soft);
+  overflow: hidden;
+  isolation: isolate;
+  @include m.label-font(1.15rem);
+  transition:
+    color 0.2s ease-out,
+    scale 0.15s ease-out;
+
+  // Storefront profile menu: a red sweep rises from below on hover.
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 100%;
+    background: var(--accent-tint);
+    scale: 0.5 1;
+    translate: 0 100%;
+    transition:
+      translate 0.5s var(--ease-out),
+      scale 0.5s var(--ease-out);
+  }
+
+  &:hover {
+    color: var(--accent);
+
+    &::before {
+      scale: 1.5;
+      translate: 0 0;
+    }
+  }
+
+  &:active {
+    scale: 0.98;
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  transition: color 0.2s ease-out;
+}
+
+.label {
+  min-width: 0;
+  padding-top: 0.1em;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.active {
+  @include m.accent-radial;
+
+  &,
+  &:hover {
+    color: #fff;
+  }
+
+  &::before {
+    display: none;
+  }
+}
+
+// Desktop sidebar / tablet rail.
+.sidebar {
+  @media (max-width: 64rem) {
+    .link {
+      justify-content: center;
+      padding: 0;
+    }
+
+    .label {
+      @include m.visually-hidden;
+    }
+  }
+}
+
+// Mobile drawer: dark block with white rows (storefront burger menu).
+.sheet {
+  padding: 0.75rem;
+  border-radius: var(--radius-inner);
+  background: #3f3f46;
+
+  .list {
+    gap: 0.4rem;
+  }
+
+  .link {
+    min-height: 50px;
+    border-radius: 0.5rem;
+    background: var(--surface);
+    color: var(--ink-soft);
+    font-size: 1.35rem;
+
+    &::before {
+      display: none;
+    }
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  .active {
+    @include m.accent-radial;
+    color: #fff;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+

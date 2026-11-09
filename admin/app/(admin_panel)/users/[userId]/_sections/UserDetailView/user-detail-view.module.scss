@@ -1,8 +1,58 @@
-@reference "tailwindcss";
-.profile { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: #fff; border: 1px solid var(--border); border-radius: 14px; margin-bottom: 28px; }
-.profile div { @apply flex flex-col; padding: 18px 20px; }
-.profile div + div { border-left: 1px solid var(--border); }
-.profile span { color: var(--muted); font-size: 12px; }
-.profile strong { font-size: 15px; margin-top: 6px; overflow-wrap: anywhere; }
-.heading { font-size: 21px; font-weight: 600; letter-spacing: -.02em; margin-bottom: 12px; }
-@media (max-width: 48rem) { .profile { grid-template-columns: 1fr; } .profile div + div { border-left: 0; border-top: 1px solid var(--border); } }
+@use "../../../../../../styles/mixins" as m;
+
+.profile {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.25rem 1rem;
+  border-left: 1px dashed var(--faint);
+
+  &:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+.factLabel {
+  color: var(--muted);
+  @include m.label-font(0.95rem);
+}
+
+.factValue {
+  font-size: 0.95rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.heading {
+  margin-bottom: 0.75rem;
+  padding-left: 0.25rem;
+  color: var(--ink);
+  @include m.label-font(1.5rem);
+}
+
+@media (max-width: 48rem) {
+  .profile {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .fact {
+    padding: 0.6rem 0 0;
+    border-left: 0;
+    border-top: 1px dashed var(--faint);
+
+    &:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
+}

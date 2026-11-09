@@ -1,0 +1,57 @@
+@use "../../styles/mixins" as m;
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 100%;
+  padding: 0.25rem;
+  margin: -0.25rem;
+  overflow-x: auto;
+  @include m.hide-scrollbar;
+}
+
+.chip {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 0.9rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background-image: linear-gradient(to top left, #e5e7eb, #d1d5db);
+  box-shadow: 0 0 0 2px transparent;
+  transition:
+    scale 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover:not(.selected) {
+    scale: 0.97;
+  }
+}
+
+.chipLabel {
+  @include m.label-font(1.1rem);
+  @include m.zinc-gradient-text;
+  transition: color 0.2s ease;
+}
+
+.selected {
+  @include m.accent-radial;
+  border-color: #fca5a5;
+  box-shadow: 0 0 0 2px rgba(252, 165, 165, 0.4);
+
+  .chipLabel {
+    background-image: none;
+    color: #fff;
+  }
+}
+
+.sm .chip {
+  min-height: 32px;
+  padding: 0 0.7rem;
+}
+
+.sm .chipLabel {
+  font-size: 0.9rem;
+}

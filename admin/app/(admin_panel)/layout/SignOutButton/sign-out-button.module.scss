@@ -1,0 +1,51 @@
+@use "../../../../styles/mixins" as m;
+
+// Storefront profile menu log-out row: red, the icon slides in on hover.
+.button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 42px;
+  padding: 0 0.85rem;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--accent-mid);
+  text-align: left;
+  @include m.label-font(1.05rem);
+  transition:
+    background-color 0.2s ease-out,
+    color 0.2s ease-out;
+
+  &:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--accent);
+  }
+
+  &:disabled {
+    cursor: wait;
+    opacity: 0.7;
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  transition: translate 0.25s var(--ease-out);
+
+  .button:hover & {
+    translate: 2px 0;
+  }
+}
+
+.label {
+  padding-top: 0.1em;
+}
+
+.compact {
+  justify-content: center;
+  padding: 0;
+
+  .label {
+    display: none;
+  }
+}

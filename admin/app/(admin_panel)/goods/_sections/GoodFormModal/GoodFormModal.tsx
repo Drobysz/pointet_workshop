@@ -5,7 +5,14 @@ import { Eye, EyeOff } from "lucide-react";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";
 import { goodSchema } from "@/auth/FormSchemes";
-import { Modal, StatePanel } from "@/components";
+import {
+  Button,
+  Input,
+  Modal,
+  Select,
+  StatePanel,
+  Textarea,
+} from "@/components";
 import { ApiError } from "@/helpers";
 import { InventoryEditor, type InventoryDraft } from "@/components/InventoryEditor/InventoryEditor";
 import { ImageDropzone } from "@/components/ImageDropzone/ImageDropzone";
@@ -182,13 +189,14 @@ function GoodForm({
   }
 
   if (options.isLoading) {
-    return <StatePanel state="loading" />;
+    return <StatePanel state="loading" compact />;
   }
 
   if (options.error || !options.data) {
     return (
       <StatePanel
         state="error"
+        compact
         onRetry={() => void options.mutate()}
       />
     );
@@ -266,30 +274,23 @@ function GoodForm({
   return (
     <form onSubmit={handleFormSubmit} className={styles.form}>
       <fieldset disabled={isSaving} className={styles.formFields}>
-      <div className={styles.grid}>
-        <label className={styles.field}>
-          {t("form.name")}
-          <input
+        <div className={styles.grid}>
+          <Input
+            label={t("form.name")}
             name="name"
             defaultValue={good?.name ?? ""}
             maxLength={255}
             required
           />
-        </label>
-
-        <label className={styles.field}>
-          {t("form.brand")}
-          <input
+          <Input
+            label={t("form.brand")}
             name="brand"
             defaultValue={good?.brand ?? ""}
             maxLength={255}
             required
           />
-        </label>
-
-        <label className={styles.field}>
-          {t("form.price")}
-          <input
+          <Input
+            label={t("form.price")}
             name="price"
             type="number"
             defaultValue={good?.price ?? ""}
@@ -297,11 +298,8 @@ function GoodForm({
             step="0.01"
             required
           />
-        </label>
-
-        <label className={styles.field}>
-          {t("form.weigh")}
-          <input
+          <Input
+            label={t("form.weigh")}
             name="weigh"
             type="number"
             defaultValue={good?.weigh ?? 0}
@@ -309,11 +307,8 @@ function GoodForm({
             step="1"
             required
           />
-        </label>
-
-        <label className={styles.field}>
-          {t("form.category")}
-          <select
+          <Select
+            label={t("form.category")}
             name="category_id"
             value={categoryId || ""}
             onChange={(event) => setCategoryId(Number(event.target.value))}
@@ -325,12 +320,9 @@ function GoodForm({
                 {category.name}
               </option>
             ))}
-          </select>
-        </label>
-
-        <label className={styles.field}>
-          {t("form.subcategory")}
-          <select
+          </Select>
+          <Select
+            label={t("form.subcategory")}
             name="subcategory_id"
             defaultValue={good?.subcategory_id ?? ""}
             key={categoryId}
@@ -342,78 +334,73 @@ function GoodForm({
                 {subcategory.name}
               </option>
             ))}
-          </select>
-        </label>
+          </Select>
+        </div>
 
-      </div>
-
-      <label className={styles.field}>
-        {t("form.description")}
-        <textarea
+        <Textarea
+          label={t("form.description")}
           name="description"
           defaultValue={good?.description ?? ""}
           required
         />
-      </label>
 
-      <section className={styles.visibility}>
-        <div>
-          <strong>{t("form.visibility")}</strong>
-          <span>{t("form.visibilityDescription")}</span>
-        </div>
-        <input
-          type="hidden"
-          name="visible"
-          value={String(isVisible)}
-        />
-        <button
-          type="button"
-          aria-pressed={isVisible}
-          className={isVisible ? styles.visibleButton : styles.hiddenButton}
-          onClick={() => setIsVisible((current) => !current)}
-        >
-          {isVisible ? (
-            <Eye size={17} aria-hidden="true" />
-          ) : (
-            <EyeOff size={17} aria-hidden="true" />
-          )}
-          {isVisible ? t("visible") : t("hidden")}
-        </button>
-      </section>
+        <section className={styles.visibility}>
+          <div className={styles.visibilityCopy}>
+            <strong>{t("form.visibility")}</strong>
+            <span>{t("form.visibilityDescription")}</span>
+          </div>
+          <input
+            type="hidden"
+            name="visible"
+            value={String(isVisible)}
+          />
+          <Button
+            variant={isVisible ? "outline" : "secondary"}
+            aria-pressed={isVisible}
+            onClick={() => setIsVisible((current) => !current)}
+          >
+            {isVisible ? (
+              <Eye size={17} aria-hidden="true" />
+            ) : (
+              <EyeOff size={17} aria-hidden="true" />
+            )}
+            {isVisible ? t("visible") : t("hidden")}
+          </Button>
+        </section>
 
-      <MarkerPicker
-        kind="colors"
-        name="color_ids"
-        label={t("form.colors")}
-        selected={selectedColors}
-        onChange={changeColors}
-        disabled={isSaving}
-      />
-      <InventoryEditor
-        colors={selectedColors}
-        rows={inventory}
-        onChange={setInventory}
-        disabled={isSaving}
-      />
-      <MarkerPicker
-        kind="materials"
-        name="material_ids"
-        label={t("form.materials")}
-        selected={selectedMaterials}
-        onChange={setSelectedMaterials}
-        disabled={isSaving}
-      />
-      {good ? (
-        <ProductImageEditor
-          colors={good.colors}
+        <MarkerPicker
+          kind="colors"
+          name="color_ids"
+          label={t("form.colors")}
+          selected={selectedColors}
+          onChange={changeColors}
           disabled={isSaving}
-          images={currentImages}
-          onChanged={onImagesChanged}
         />
-      ) : null}
-      <label className={styles.field}>
-        {t("images.color")}
-        <select
+        <InventoryEditor
+          colors={selectedColors}
+          rows={inventory}
+          onChange={setInventory}
+          disabled={isSaving}
+        />
+        <MarkerPicker
+          kind="materials"
+          name="material_ids"
+          label={t("form.materials")}
+          selected={selectedMaterials}
+          onChange={setSelectedMaterials}
+          disabled={isSaving}
+        />
+        {good ? (
+          <ProductImageEditor
+            colors={good.colors}
+            disabled={isSaving}
+            images={currentImages}
+            onChanged={onImagesChanged}
+          />
+        ) : null}
+        <Select
+          label={t("images.color")}
+          hint={t("images.colorHint")}
           value={activeColor?.id ?? ""}
           onChange={(event) => setUploadColor(Number(event.target.value))}
           disabled={!selectedColors.length || isSaving}
@@ -426,32 +413,32 @@ function GoodForm({
               {color.name}
             </option>
           ))}
-        </select>
-        <small>{t("images.colorHint")}</small>
-      </label>
-      <ImageDropzone
-        label={t("images.title")}
-        multiple
-        disabled={isSaving}
-        disableSelection={!activeColor}
-        images={images.map((image) => ({
-          id: image.id,
-          name: image.file.name,
-          url: image.url,
-          detail: image.colorName,
-        }))}
-        onRemove={removeImage}
-        onFiles={addImages}
-      />
+        </Select>
+        <ImageDropzone
+          label={t("images.title")}
+          multiple
+          disabled={isSaving}
+          disableSelection={!activeColor}
+          images={images.map((image) => ({
+            id: image.id,
+            name: image.file.name,
+            url: image.url,
+            detail: image.colorName,
+          }))}
+          onRemove={removeImage}
+          onFiles={addImages}
+        />
       </fieldset>
 
       {error ? <p className={styles.error} role="alert">{error}</p> : null}
 
       <div className={styles.actions}>
-        <button type="button" disabled={isSaving} onClick={onClose}>{common("cancel")}</button>
-        <button type="submit" disabled={isSaving}>
+        <Button variant="secondary" disabled={isSaving} onClick={onClose}>
+          {common("cancel")}
+        </Button>
+        <Button type="submit" variant="primary" pending={isSaving}>
           {isSaving ? common("saving") : common("save")}
-        </button>
+        </Button>
       </div>
     </form>
   );
@@ -473,10 +460,10 @@ export function GoodFormModal({
   const title = good ? t("editTitle") : t("createTitle");
 
   return (
-    <Modal title={title} onClose={() => { if (!busy) onClose(); }}>
-      {good && detail.isLoading ? <StatePanel state="loading" /> : null}
+    <Modal title={title} size="lg" onClose={() => { if (!busy) onClose(); }}>
+      {good && detail.isLoading ? <StatePanel state="loading" compact /> : null}
       {good && detail.error ? (
-        <StatePanel state="error" onRetry={() => void detail.mutate()} />
+        <StatePanel state="error" compact onRetry={() => void detail.mutate()} />
       ) : null}
       {!good || detail.data ? (
         <GoodForm

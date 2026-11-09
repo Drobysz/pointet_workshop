@@ -7,15 +7,19 @@
     backface-visibility: hidden;
 }
 
+.frame_far {
+    @apply invisible;
+}
+
 .image {
     @apply object-cover;
     object-position: center 35%;
-    filter: var(--curve);
+    filter: var(--curve, none);
 }
 
 @media (prefers-reduced-motion: reduce) {
     .frame {
-        @apply inset-0 transform-none!;
+        @apply inset-0 transform-none! visible;
     }
 
     .image {

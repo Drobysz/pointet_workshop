@@ -5,11 +5,17 @@ import Link from "next/link";
 import { Pencil, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";
-import { EntityTable, PageHeader, StatePanel, StatusBadge } from "@/components";
+import {
+  Button,
+  EntityTable,
+  PageHeader,
+  Panel,
+  StatePanel,
+  StatusBadge,
+} from "@/components";
 import { useAppFormatters, useTableQueryState } from "@/hooks";
 import type { Good } from "@/interface/domain";
 import { getGoods } from "@/queries";
-import actionStyles from "@/components/TableActions/table-actions.module.scss";
 import { GoodFormModal } from "../GoodFormModal/GoodFormModal";
 
 export function GoodsTable() {
@@ -33,27 +39,25 @@ export function GoodsTable() {
       title={t("title")}
       description={t("description")}
       actions={(
-        <button
-          className={actionStyles.primary}
-          type="button"
-          onClick={() => setEditingGood("new")}
-        >
-          <Plus size={17} />
+        <Button variant="primary" onClick={() => setEditingGood("new")}>
+          <Plus size={17} aria-hidden="true" />
           {t("create")}
-        </button>
+        </Button>
       )}
     />
   );
 
   if (goods.isLoading && !goods.data) {
-    return <>{header}<StatePanel state="loading" /></>;
+    return <>{header}<Panel><StatePanel state="loading" /></Panel></>;
   }
 
   if (goods.error || !goods.data) {
     return (
       <>
         {header}
-        <StatePanel state="error" onRetry={() => void goods.mutate()} />
+        <Panel>
+          <StatePanel state="error" onRetry={() => void goods.mutate()} />
+        </Panel>
       </>
     );
   }
@@ -63,7 +67,7 @@ export function GoodsTable() {
       key: "name",
       label: t("product"),
       render: (good: Good) => (
-        <Link href={`/goods/${good.id}`} data-link>{good.name}</Link>
+        <Link href={`/goods/${good.id}`}>{good.name}</Link>
       ),
     },
     {
@@ -113,14 +117,15 @@ export function GoodsTable() {
       label: common("actions"),
       align: "right" as const,
       render: (good: Good) => (
-        <button
-          className={actionStyles.iconButton}
-          type="button"
+        <Button
+          variant="ghost"
+          icon
+          size="sm"
           aria-label={t("editLabel", { name: good.name })}
           onClick={() => setEditingGood(good)}
         >
-          <Pencil size={16} />
-        </button>
+          <Pencil size={15} aria-hidden="true" />
+        </Button>
       ),
     },
   ];
@@ -131,7 +136,7 @@ export function GoodsTable() {
     <>
       {header}
       {hasNoGoods ? (
-        <StatePanel state="empty" />
+        <Panel><StatePanel state="empty" /></Panel>
       ) : (
         <EntityTable<Good>
           rows={goods.data.data}

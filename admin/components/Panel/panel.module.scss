@@ -1,0 +1,57 @@
+@use "../../styles/mixins" as m;
+
+.panel {
+  @include m.surface-card;
+  min-width: 0;
+}
+
+.inset {
+  @include m.surface-inset;
+  box-shadow: none;
+}
+
+.padded {
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.title {
+  color: var(--ink);
+  @include m.label-font(1.5rem);
+}
+
+.description {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 40rem) {
+  .header {
+    flex-direction: column;
+  }
+
+  .actions {
+    width: 100%;
+  }
+}

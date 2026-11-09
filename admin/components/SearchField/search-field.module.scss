@@ -1,0 +1,60 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.icon {
+  position: absolute;
+  left: 0.8rem;
+  color: var(--muted);
+  pointer-events: none;
+  transition:
+    color 0.2s ease-out,
+    scale 0.2s ease-out;
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 0.9rem 0 2.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: var(--surface-muted);
+  color: var(--ink);
+  font-size: 0.9rem;
+  box-shadow: 0 0 0 2px transparent;
+  transition:
+    box-shadow 0.2s ease-out,
+    border-color 0.2s ease-out,
+    color 0.2s ease-out,
+    background-color 0.2s ease-out;
+
+  &::placeholder {
+    color: var(--muted);
+  }
+
+  &::-webkit-search-cancel-button {
+    cursor: pointer;
+  }
+
+  &:focus {
+    border-color: #f87171;
+    box-shadow: 0 0 0 2px rgba(252, 165, 165, 0.7);
+    color: var(--accent);
+    outline: none;
+  }
+
+  &:focus + .icon,
+  .wrapper:focus-within .icon {
+    color: var(--accent);
+    scale: -1 1;
+  }
+}
+
+.wrapper:focus-within .icon {
+  color: var(--accent);
+  scale: -1 1;
+}

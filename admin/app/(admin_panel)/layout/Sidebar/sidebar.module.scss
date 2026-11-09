@@ -1,0 +1,76 @@
+@use "../../../../styles/mixins" as m;
+
+.aside {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100dvh;
+  padding: 1rem 0 1rem 1rem;
+}
+
+.card {
+  @include m.surface-card;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  height: 100%;
+  padding: 1.1rem 0.85rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  @include m.hide-scrollbar;
+}
+
+.brand {
+  display: flex;
+  justify-content: center;
+  padding: 0 0.25rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+}
+
+.brandMark,
+.localeCompact,
+.signOutCompact {
+  display: none;
+}
+
+@media (max-width: 64rem) {
+  .aside {
+    padding-left: 0.6rem;
+  }
+
+  .card {
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+  }
+
+  .brand {
+    padding-bottom: 0.7rem;
+  }
+
+  .brandFull,
+  .localeFull,
+  .signOutFull {
+    display: none;
+  }
+
+  .brandMark,
+  .localeCompact,
+  .signOutCompact {
+    display: flex;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .aside {
+    display: none;
+  }
+}

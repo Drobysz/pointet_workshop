@@ -63,11 +63,8 @@
                 "privacyPolicy": "Politique de confidentialité"
             },
             "legal": {
-                "legalNotice": "Mentions légales",
-                "privacyPolicy": "Politique de confidentialité",
-                "cookiesPolicy": "Politique de cookies",
-                "refundPolicy": "Retours et remboursements",
-                "sellerPolicy": "Conditions vendeurs"
+                "documents": "Documents",
+                "privacyPolicy": "Politique de confidentialité"
             },
             "developedBy": "Développé par <link>Drobysz</link>"
         }

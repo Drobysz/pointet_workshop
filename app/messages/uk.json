@@ -63,11 +63,8 @@
                 "privacyPolicy": "Політика конфіденційності"
             },
             "legal": {
-                "legalNotice": "Правова інформація",
-                "privacyPolicy": "Політика конфіденційності",
-                "cookiesPolicy": "Політика використання cookie",
-                "refundPolicy": "Повернення та відшкодування",
-                "sellerPolicy": "Умови для продавців"
+                "documents": "Документи",
+                "privacyPolicy": "Політика конфіденційності"
             },
             "developedBy": "Розробка: <link>Drobysz</link>"
         }

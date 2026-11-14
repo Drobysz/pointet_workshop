@@ -24,10 +24,7 @@ export type LinkColumn = {
 export type DocLink = {
     /** Key of the document name below `navigation.footer.legal`. */
     labelKey:
-        | "legalNotice"
-        | "privacyPolicy"
-        | "cookiesPolicy"
-        | "refundPolicy"
-        | "sellerPolicy";
+        | "documents"
+        | "privacyPolicy";
     link: string;
 }

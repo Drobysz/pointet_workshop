@@ -23,15 +23,12 @@ export const footerColumnLinks: LinkColumn[] = [
         rows: [
             { text: "Instagram", link: "#" },
             { text: "TikTok", link: "#" },
-            { text: "WhatsApp", link: "#" },
+            { text: "Telegram", link: "#" },
         ],
     },
 ];
 
 export const footerDocLinks: DocLink[] = [
-    { labelKey: "legalNotice", link: "/docs/legal_notice" },
+    { labelKey: "documents", link: "/docs/legal_notice" },
     { labelKey: "privacyPolicy", link: "/docs/privacy_policy" },
-    { labelKey: "cookiesPolicy", link: "/docs/cookies_policy" },
-    { labelKey: "refundPolicy", link: "/docs/refund_policy" },
-    { labelKey: "sellerPolicy", link: "/docs/seller_policy" },
 ];

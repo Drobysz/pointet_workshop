@@ -63,11 +63,8 @@
                 "privacyPolicy": "Privacy policy"
             },
             "legal": {
-                "legalNotice": "Legal notice",
-                "privacyPolicy": "Privacy Policy",
-                "cookiesPolicy": "Cookies Policy",
-                "refundPolicy": "Refund policy",
-                "sellerPolicy": "Seller terms"
+                "documents": "Documents",
+                "privacyPolicy": "Privacy Policy"
             },
             "developedBy": "Developed by <link>Drobysz</link>"
         }

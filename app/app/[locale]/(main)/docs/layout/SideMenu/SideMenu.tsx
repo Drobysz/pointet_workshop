@@ -13,8 +13,12 @@ import { tinyFive } from "@/fonts/fonts";
 import { useTranslations } from "next-intl";
 
 const DOC_LINKS = [
+    { href: "/docs/legal_notice", labelKey: "legalNotice" },
     { href: "/docs/privacy_policy", labelKey: "privacyPolicy" },
     { href: "/docs/cookies_policy", labelKey: "cookiesPolicy" },
+    { href: "/docs/refund_policy", labelKey: "refundPolicy" },
+    { href: "/docs/seller_policy", labelKey: "sellerPolicy" },
+    { href: "/docs/seller_rules", labelKey: "sellerRules" },
 ] as const;
 
 export const SideMenu = ({

@@ -78,7 +78,7 @@ class TransactionalEmails
 
     private function locale(?string $locale): string
     {
-        return in_array($locale, ['en', 'fr', 'de', 'it', 'ru'], true) ? $locale : 'en';
+        return in_array($locale, ['en', 'fr', 'de', 'it', 'ru', 'uk'], true) ? $locale : 'en';
     }
 
     private function record(string $template, string $id, ?string $recipient, ?string $locale = null, array $data = []): void

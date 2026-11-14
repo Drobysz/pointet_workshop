@@ -1,0 +1,368 @@
+{
+    "title": "Condizioni per i venditori",
+    "lastUpdated": "2026-11-14",
+    "description": "Condizioni di attività dei venditori sul marketplace pointet.fr: servizi della piattaforma, registrazione, stoccaggio e spedizione dei prodotti, versamenti, resi e procedura di sospensione.",
+    "sections": [
+        {
+            "id": "parties",
+            "title": "Parti e oggetto",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le presenti condizioni disciplinano i rapporti tra il gestore del marketplace pointet.fr — {{LEGAL_OPERATOR_NAME}}, {{LEGAL_TRADE_NAME}}, SIREN {{LEGAL_SIREN}} (di seguito, il «Gestore») — e il produttore o venditore registrato sul marketplace (di seguito, il «Venditore»). I diritti e gli obblighi che le presenti condizioni e le Regole della piattaforma attribuiscono alla Piattaforma sono esercitati e assunti dal Gestore."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Con la registrazione il Venditore accetta le presenti condizioni e le ",
+                        {
+                            "text": "Regole della piattaforma per i venditori",
+                            "href": "/docs/seller_rules"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Definizioni",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "services",
+            "title": "Servizi della Piattaforma",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "La Piattaforma mette a disposizione del Venditore:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "uno spazio per la vendita",
+                                "strong": true
+                            },
+                            " di abbigliamento e accessori agli acquirenti;"
+                        ],
+                        [
+                            {
+                                "text": "lo stoccaggio e la spedizione dei prodotti",
+                                "strong": true
+                            },
+                            " tramite i centri di fulfilment del gruppo Byrd — a scelta del Venditore;"
+                        ],
+                        [
+                            {
+                                "text": "la console del venditore",
+                                "strong": true
+                            },
+                            " per la gestione del catalogo, delle giacenze, degli ordini e dei resi; i dati dei magazzini sono sincronizzati tramite la Byrd API."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "La Piattaforma è un intermediario. Il contratto di vendita è concluso direttamente tra il Venditore e l'acquirente; la Piattaforma non è il venditore dei prodotti del Venditore."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "eligibility",
+            "title": "Chi può registrarsi",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "La registrazione è aperta ai venditori professionali (società e imprenditori individuali) stabiliti in uno dei seguenti paesi:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "gli Stati dell'Unione europea e gli Stati aderenti all'accordo di Schengen (compresi Islanda, Liechtenstein, Norvegia e Svizzera);"
+                        ],
+                        [
+                            "Ucraina;"
+                        ],
+                        [
+                            "Turchia;"
+                        ],
+                        [
+                            "i paesi dell'Asia centrale: Kazakistan, Kirghizistan, Tagikistan, Turkmenistan, Uzbekistan."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Ai fini della registrazione il Venditore fornisce le informazioni su di sé e sulla propria attività e si sottopone alla verifica del prestatore di servizi di pagamento Payoneer. Il Venditore garantisce che le informazioni sono veritiere e le aggiorna in caso di variazione. La Piattaforma ha il diritto di rifiutare la registrazione se i dati sono incompleti o non veritieri oppure se la verifica non è stata superata."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Il Venditore stabilito al di fuori dell'UE è tenuto a indicare, per i propri prodotti, una persona responsabile stabilita nell'UE (articolo 16 del Regolamento (UE) 2023/988 relativo alla sicurezza generale dei prodotti)."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "fulfilment",
+            "title": "Stoccaggio e spedizione dei prodotti",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Per ciascun prodotto il Venditore sceglie una delle due opzioni seguenti."
+                    ]
+                },
+                {
+                    "heading": "Fulfilment Byrd"
+                },
+                {
+                    "paragraph": [
+                        "Il prodotto è conservato in un magazzino del gruppo Byrd ed è spedito all'acquirente dal magazzino. I costi di stoccaggio, di gestione e di spedizione sono a carico del Venditore, secondo le tariffe che gli sono comunicate prima del conferimento del prodotto al magazzino. Il Venditore è responsabile della consegna del prodotto al magazzino, della sua etichettatura e della corrispondenza tra le informazioni presenti nella console e le giacenze effettive."
+                    ]
+                },
+                {
+                    "heading": "Stoccaggio e spedizione in proprio"
+                },
+                {
+                    "paragraph": [
+                        "Il Venditore conserva il prodotto presso di sé, lo spedisce direttamente all'acquirente entro il termine indicato nella pagina del prodotto e comunica il numero di tracciamento tramite la console. In caso di spedizione da un paese al di fuori dell'UE, il Venditore è responsabile dello sdoganamento, dei dazi e delle imposte, in modo che l'acquirente non sostenga costi non indicati al momento della conclusione dell'ordine."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "payments",
+            "title": "Prezzi, pagamento e versamenti",
+            "blocks": [
+                {
+                    "list": [
+                        [
+                            "Il Venditore stabilisce autonomamente i prezzi. Il prezzo per l'acquirente è indicato in euro e comprende tutte le imposte."
+                        ],
+                        [
+                            "L'acquirente paga l'ordine tramite il prestatore di servizi di pagamento della Piattaforma. I versamenti al Venditore sono effettuati sul suo conto Payoneer."
+                        ],
+                        [
+                            "L'importo del compenso della Piattaforma e la periodicità dei versamenti sono comunicati al Venditore prima del completamento della registrazione e sono visualizzati nella console del venditore. Il compenso è trattenuto dall'importo del versamento."
+                        ],
+                        [
+                            "Il Venditore adempie autonomamente i propri obblighi fiscali. La Piattaforma comunica le informazioni sui redditi dei venditori alle autorità fiscali quando ciò è richiesto dalla legge (DAC7) e trasmette ogni anno al Venditore un riepilogo delle sue operazioni."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "returns",
+            "title": "Resi e responsabilità nei confronti dell'acquirente",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il Venditore è pienamente responsabile dei propri prodotti nei confronti dell'acquirente:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "accetta il recesso dall'acquisto entro 14 giorni ed effettua il rimborso entro il termine stabilito dalla ",
+                            {
+                                "text": "Politica di reso e rimborso",
+                                "href": "/docs/refund_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            "risponde in base alla garanzia legale di conformità (2 anni) e per i vizi occulti;"
+                        ],
+                        [
+                            "sostiene i rimborsi agli acquirenti relativi ai propri prodotti; la Piattaforma ha il diritto di trattenere l'importo del rimborso dai futuri versamenti al Venditore, se il rimborso è stato effettuato a spese della Piattaforma;"
+                        ],
+                        [
+                            "risponde alle richieste degli acquirenti entro 2 giorni lavorativi."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Il Venditore non può stabilire condizioni di reso meno favorevoli di quelle previste dalla Politica di reso e rimborso della Piattaforma."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "seller-obligations",
+            "title": "Obblighi del Venditore relativi ai prodotti",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il Venditore garantisce che i propri prodotti e le proprie inserzioni sono leciti, sicuri e conformi ai requisiti dell'UE e della Francia, e di essere titolare di tutti i diritti sul prodotto, sulla denominazione, sulle immagini e sulle descrizioni. I requisiti dettagliati sono contenuti nelle ",
+                        {
+                            "text": "Regole della piattaforma per i venditori",
+                            "href": "/docs/seller_rules"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ranking",
+            "title": "Visualizzazione e posizionamento dei prodotti",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "L'ordine predefinito dei prodotti nel catalogo è determinato dai seguenti parametri principali: la pertinenza rispetto alla ricerca effettuata e ai filtri selezionati, la disponibilità del prodotto e la data del suo inserimento. La Piattaforma non offre promozione a pagamento e non modifica il posizionamento di un prodotto dietro compenso. Se la Piattaforma vende prodotti propri, questi sono visualizzati secondo le stesse regole applicate ai prodotti dei venditori."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "data-access",
+            "title": "Accesso ai dati",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il Venditore ha accesso, nella console, ai dati relativi ai propri prodotti, ordini e resi e ai dati degli acquirenti nella misura necessaria per l'esecuzione dell'ordine."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Il Venditore utilizza i dati degli acquirenti esclusivamente per l'esecuzione dell'ordine e del reso, non li utilizza per l'invio di comunicazioni promozionali, non li comunica a terzi e li cancella dopo aver adempiuto i propri obblighi. Il Venditore stabilito al di fuori del SEE accetta le clausole contrattuali tipo della Commissione europea, che la Piattaforma mette a disposizione al momento della registrazione."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "restrictions",
+            "title": "Limitazione, sospensione e cessazione",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "La Piattaforma ha il diritto di nascondere un singolo prodotto, sospendere la visualizzazione di tutti i prodotti del Venditore, congelare i versamenti o porre fine al contratto nei seguenti casi:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "violazione delle presenti condizioni o delle Regole della piattaforma;"
+                        ],
+                        [
+                            "sanzioni, ordine o richiesta delle autorità della Francia o di un altro Stato dell'UE, comprese le restrizioni sanzionatorie dell'UE;"
+                        ],
+                        [
+                            "dati di registrazione non veritieri o rifiuto di confermarli;"
+                        ],
+                        [
+                            "prodotto illegale o non sicuro, violazione dei diritti di terzi;"
+                        ],
+                        [
+                            "fondato sospetto di frode."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Procedura:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "la Piattaforma comunica al Venditore la decisione e le relative motivazioni tramite email al più tardi nel momento in cui la limitazione acquista efficacia;"
+                        ],
+                        [
+                            "la Piattaforma comunica la cessazione integrale del contratto con un preavviso di almeno 30 giorni, salvo i casi in cui la cessazione immediata è imposta dalla legge o è dovuta a una violazione reiterata;"
+                        ],
+                        [
+                            "il congelamento dei versamenti non dura più di quanto necessario per la verifica, per l'adempimento degli obblighi nei confronti degli acquirenti (rimborsi, controversie) o per l'esecuzione della decisione di un'autorità;"
+                        ],
+                        [
+                            "il Venditore può contestare la decisione scrivendo a ",
+                            {
+                                "text": "{{LEGAL_EMAIL}}",
+                                "href": "mailto:{{LEGAL_EMAIL}}"
+                            },
+                            "; la Piattaforma esamina il reclamo e risponde entro 14 giorni. Se la violazione è stata sanata o la decisione era errata, l'attività è ripristinata senza indugio."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Il Venditore può porre fine al contratto in qualsiasi momento, dopo aver adempiuto gli obblighi relativi agli ordini già conclusi e ai resi e aver ritirato a proprie spese i prodotti dal magazzino Byrd."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "notices",
+            "title": "Segnalazioni di contenuti illegali",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Chiunque può segnalare un prodotto o un'inserzione illegali all'indirizzo ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        ". La Piattaforma esamina le segnalazioni in modo tempestivo e obiettivo e comunica la decisione adottata al segnalante e al Venditore (Regolamento (UE) 2022/2065, Regolamento sui servizi digitali — DSA)."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "changes",
+            "title": "Modifica delle condizioni",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "La Piattaforma comunica al Venditore la modifica delle condizioni tramite email almeno 15 giorni prima della loro entrata in vigore. Il Venditore che non accetta le modifiche ha il diritto di porre fine al contratto prima di tale data."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "liability",
+            "title": "Responsabilità",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "La Piattaforma risponde del funzionamento dello spazio di vendita e della console, ma non dei prodotti del Venditore, della loro liceità, della loro qualità e della loro consegna. La Piattaforma non risponde delle interruzioni del servizio di Byrd, di Payoneer e dei servizi di consegna, ma assiste il Venditore nella loro risoluzione. Nessuna disposizione delle presenti condizioni limita la responsabilità che per legge non può essere limitata."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "law",
+            "title": "Diritto applicabile e controversie",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Alle presenti condizioni si applica il diritto francese. Le parti tentano anzitutto di risolvere la controversia mediante la procedura di esame dei reclami descritta nella sezione ",
+                        {
+                            "text": "«Limitazione, sospensione e cessazione»",
+                            "href": "/docs/seller_policy#restrictions"
+                        },
+                        ". Se non si raggiunge un accordo, la controversia è devoluta ai tribunali competenti del luogo di registrazione del Gestore."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Gestore del sito",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

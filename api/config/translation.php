@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'locales' => ['en', 'fr', 'de', 'it', 'ru'],
+    'locales' => ['en', 'fr', 'de', 'it', 'ru', 'uk'],
 
     // Used when neither the request nor the record declares a source locale.
     'default_source_locale' => env('TRANSLATION_DEFAULT_SOURCE_LOCALE', 'en'),

@@ -20,7 +20,7 @@ class UserUpdateRequest extends FormRequest
             'full_name' => ['sometimes', 'string', 'max:255'],
             'address' => ['sometimes', 'string', 'max:255'],
             'tel' => ['nullable', 'string', 'max:255'],
-            'language' => ['sometimes', Rule::in(['en', 'it', 'fr', 'ru', 'de'])],
+            'language' => ['sometimes', Rule::in(['en', 'it', 'fr', 'ru', 'de', 'uk'])],
         ];
     }
 }

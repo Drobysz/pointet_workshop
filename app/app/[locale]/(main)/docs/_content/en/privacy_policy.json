@@ -1,0 +1,401 @@
+{
+    "title": "Privacy Policy",
+    "lastUpdated": "2026-11-14",
+    "description": "Which personal data of buyers and sellers the pointet.fr marketplace processes, for what purposes, with whom it is shared and what rights you have.",
+    "sections": [
+        {
+            "id": "controller",
+            "title": "Who is responsible for your data",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The data controller (the person responsible for the processing) of personal data is {{LEGAL_OPERATOR_NAME}}, {{LEGAL_FORM}}, trading as {{LEGAL_TRADE_NAME}}, SIREN {{LEGAL_SIREN}}, address: {{LEGAL_ADDRESS}}, email: ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "This policy applies to buyers and sellers on the pointet.fr marketplace and has been drawn up in accordance with Regulation (EU) 2016/679 (GDPR) and the French Data Protection Act (Loi Informatique et Libertés)."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Definitions",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "buyer-data",
+            "title": "Buyers' data",
+            "blocks": [
+                {
+                    "heading": "What data we store"
+                },
+                {
+                    "list": [
+                        [
+                            "full name;"
+                        ],
+                        [
+                            "email address;"
+                        ],
+                        [
+                            "delivery address and, if you have provided it, telephone number;"
+                        ],
+                        [
+                            "your orders and pre-orders (products, quantities, prices, dates, statuses);"
+                        ],
+                        [
+                            "the contents of your basket;"
+                        ],
+                        [
+                            "for an account — a password hash (we do not store the password itself) and technical session records: identifiers, expiry time, IP address and browser information."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "We do not receive or store bank card details: they are processed by the payment provider Stripe."
+                    ]
+                },
+                {
+                    "heading": "What we use it for"
+                },
+                {
+                    "paragraph": [
+                        "This data is used solely to place your order, take payment for it and deliver it, to maintain your account and order history, to contact you about your order and to comply with the obligations imposed on us by law. We do not use your data for advertising, do not sell it and do not use it to build profiles."
+                    ]
+                },
+                {
+                    "heading": "Legal bases"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Purpose"
+                            ],
+                            [
+                                "Legal basis (Article 6 GDPR)"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "Placing, payment and delivery of an order, account, returns"
+                                ],
+                                [
+                                    "Performance of a contract — Article 6(1)(b)"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Retention of invoices and accounting records, responding to requests from public authorities"
+                                ],
+                                [
+                                    "Legal obligation — Article 6(1)(c)"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Protecting sessions, preventing fraud and abuse"
+                                ],
+                                [
+                                    "Legitimate interests — Article 6(1)(f)"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "seller-data",
+            "title": "Sellers' data",
+            "blocks": [
+                {
+                    "heading": "What data we store"
+                },
+                {
+                    "list": [
+                        [
+                            "the data required to register a seller account with the payment provider Payoneer: information on the identity of the seller or of the company's representative, contact details, business information (name, registration number and tax number, address, country), payout details and the supporting documents required by Payoneer;"
+                        ],
+                        [
+                            "account and seller console data: product catalogue, stock, orders, returns;"
+                        ],
+                        [
+                            "correspondence with us and the record of breaches of the platform rules, if any."
+                        ]
+                    ]
+                },
+                {
+                    "heading": "What we use it for"
+                },
+                {
+                    "paragraph": [
+                        "Sellers' data is used to conclude and perform the contract with the seller, to open an account with Payoneer and make payouts, to list products, to store and dispatch products through the warehouses of the Byrd group, to fulfil the tax obligations of the platform operator (including the annual reporting of sellers' income to the French tax administration under the DAC7 rules), and to verify compliance with the platform rules and with sanctions restrictions."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Legal bases: performance of a contract — Article 6(1)(b) GDPR; legal obligation — Article 6(1)(c); legitimate interests in the security and integrity of the platform — Article 6(1)(f)."
+                    ]
+                },
+                {
+                    "heading": "Public information about the seller"
+                },
+                {
+                    "paragraph": [
+                        "The seller's name, status as a professional seller, address and contact details are shown to buyers on the product page: this is required by EU consumer protection and product safety legislation."
+                    ]
+                },
+                {
+                    "heading": "Suspension of a seller's activity"
+                },
+                {
+                    "paragraph": [
+                        "The marketplace reserves the right to suspend a seller's activity — to hide the seller's products and freeze payouts from the account — in the event of a breach of the platform rules, or in the event of sanctions or an order issued by the authorities of France or another EU Member State. In such cases we process the seller's data to the extent necessary to carry out the verification and to enforce the decision. The suspension procedure is described in the ",
+                        {
+                            "text": "Seller Terms",
+                            "href": "/docs/seller_policy#restrictions"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "recipients",
+            "title": "Who we share data with",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "We share data only with those who need it in order to fulfil an order or where the law so requires:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "the seller of the product",
+                                "strong": true
+                            },
+                            " — name, delivery address and order contents, so that the seller can dispatch the product and process a return;"
+                        ],
+                        [
+                            {
+                                "text": "the Byrd group (fulfilment)",
+                                "strong": true
+                            },
+                            " — name, delivery address and order contents, if the product is stored in a Byrd warehouse;"
+                        ],
+                        [
+                            {
+                                "text": "delivery carriers",
+                                "strong": true
+                            },
+                            " — name, address and a contact detail for delivery notifications;"
+                        ],
+                        [
+                            {
+                                "text": "Stripe",
+                                "strong": true
+                            },
+                            " — the data required to accept payment from the buyer;"
+                        ],
+                        [
+                            {
+                                "text": "Payoneer",
+                                "strong": true
+                            },
+                            " — sellers' data for account opening and payouts; Payoneer acts as an independent data controller of this data;"
+                        ],
+                        [
+                            {
+                                "text": "the hosting provider",
+                                "strong": true
+                            },
+                            " {{LEGAL_HOSTING_NAME}} — as a processor acting on our instructions;"
+                        ],
+                        [
+                            {
+                                "text": "public authorities",
+                                "strong": true
+                            },
+                            " — where the law so requires."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "transfers",
+            "title": "Transfers outside the EEA",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Sellers on the marketplace may be located outside the European Economic Area (Ukraine, Turkey, the countries of Central Asia). If you buy a product that such a seller dispatches itself, your name and delivery address are transferred to that seller in order to fulfil the order. The seller's country is shown on the product page before you place the order."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Such a transfer is safeguarded by the European Commission's standard contractual clauses incorporated into the contract with the seller and, in their absence, relies on the necessity of performing the contract with you (Article 49(1)(b) GDPR). Stripe and Payoneer may process data outside the EEA using their own safeguard mechanisms. A copy of the applicable safeguards may be requested at ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "retention",
+            "title": "Retention periods",
+            "blocks": [
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Data"
+                            ],
+                            [
+                                "Retention period"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "Buyer account and basket"
+                                ],
+                                [
+                                    "For as long as the account exists; an inactive account is deleted 3 years after the last activity"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Orders, invoices and accounting records"
+                                ],
+                                [
+                                    "10 years (Article L123-22 of the French Commercial Code)"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Incomplete registration"
+                                ],
+                                [
+                                    "24 hours"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Session records"
+                                ],
+                                [
+                                    "Until the session token expires or is revoked"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Seller data"
+                                ],
+                                [
+                                    "For the duration of the contract and 5 years after its termination; accounting records — 10 years"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "rights",
+            "title": "Your rights",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "You have the right to request access to your data, its rectification, its erasure, the restriction of its processing and its portability, and to object to processing based on legitimate interests. You may also give instructions on what is to happen to your data after your death."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "To exercise your rights, write to ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "; we will reply within one month. Do not send passwords or tokens."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "If you believe that your rights have been infringed, you may lodge a complaint with the CNIL (",
+                        {
+                            "text": "www.cnil.fr",
+                            "href": "https://www.cnil.fr"
+                        },
+                        ") or with the supervisory authority of your country."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "security",
+            "title": "Security",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Passwords are stored only in hashed form, session tokens are transmitted in secure cookies over HTTPS, and access to data is restricted. For more information about cookies, see the ",
+                        {
+                            "text": "Cookie Policy",
+                            "href": "/docs/cookies_policy"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "children",
+            "title": "Children",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The service is not intended for persons under the age of 16. Purchases are made by persons who have the legal capacity to enter into contracts."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "changes",
+            "title": "Changes",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "We will notify you of material changes to this policy on the website or by email before they take effect. The date of the last update is shown at the top of the document."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Website operator",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

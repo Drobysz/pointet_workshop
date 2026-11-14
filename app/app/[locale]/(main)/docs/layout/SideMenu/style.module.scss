@@ -40,9 +40,15 @@
 }
 
 @media (max-width: 680px) {
+    // The row of documents scrolls inside its own pill: it must never be
+    // wider than the screen, however many documents there are.
+    .sticky_nav {
+        @apply min-w-0 max-w-full;
+    }
+
     .list_wrap {
         @apply overflow-x-auto py-1 px-3
-            w-fit;
+            w-fit max-w-full justify-start;
         
         scrollbar-width: none;
         -ms-overflow-style: none;

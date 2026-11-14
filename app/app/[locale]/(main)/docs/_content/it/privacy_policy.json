@@ -1,0 +1,401 @@
+{
+    "title": "Informativa sulla privacy",
+    "lastUpdated": "2026-11-14",
+    "description": "Quali dati personali degli acquirenti e dei venditori tratta il marketplace pointet.fr, per quali finalità, a chi sono comunicati e quali sono i Suoi diritti.",
+    "sections": [
+        {
+            "id": "controller",
+            "title": "Chi risponde dei Suoi dati",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il titolare del trattamento (il soggetto che risponde del trattamento) dei dati personali è {{LEGAL_OPERATOR_NAME}}, {{LEGAL_FORM}}, che opera con la denominazione {{LEGAL_TRADE_NAME}}, SIREN {{LEGAL_SIREN}}, indirizzo: {{LEGAL_ADDRESS}}, email: ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "La presente informativa si applica agli acquirenti e ai venditori del marketplace pointet.fr ed è redatta in conformità al Regolamento (UE) 2016/679 (GDPR) e alla legge francese «Informatique et Libertés»."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Definizioni",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "buyer-data",
+            "title": "Dati degli acquirenti",
+            "blocks": [
+                {
+                    "heading": "Quali dati conserviamo"
+                },
+                {
+                    "list": [
+                        [
+                            "nome e cognome;"
+                        ],
+                        [
+                            "indirizzo di posta elettronica;"
+                        ],
+                        [
+                            "indirizzo di consegna e numero di telefono, se da Lei indicato;"
+                        ],
+                        [
+                            "i Suoi ordini e preordini (prodotti, quantità, prezzi, date, stati);"
+                        ],
+                        [
+                            "contenuto del carrello;"
+                        ],
+                        [
+                            "per l'account — l'hash della password (la password stessa non viene conservata) e le registrazioni tecniche delle sessioni: identificativi, periodo di validità, indirizzo IP e informazioni sul browser."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Non riceviamo né conserviamo i dati della carta bancaria: sono trattati dal prestatore di servizi di pagamento Stripe."
+                    ]
+                },
+                {
+                    "heading": "Per quali finalità li utilizziamo"
+                },
+                {
+                    "paragraph": [
+                        "Questi dati sono utilizzati esclusivamente per la conclusione dell'ordine, il suo pagamento e la sua consegna, per la gestione del Suo account e dello storico degli ordini, per contattarLa in merito all'ordine e per adempiere gli obblighi che la legge ci impone. Non utilizziamo i Suoi dati a fini pubblicitari, non li vendiamo e non li utilizziamo per creare profili."
+                    ]
+                },
+                {
+                    "heading": "Basi giuridiche"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Finalità"
+                            ],
+                            [
+                                "Base giuridica (articolo 6 del GDPR)"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "Conclusione, pagamento e consegna dell'ordine, account, resi"
+                                ],
+                                [
+                                    "Esecuzione del contratto — articolo 6, paragrafo 1, lettera b)"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Conservazione delle fatture e dei documenti contabili, risposte alle richieste delle autorità"
+                                ],
+                                [
+                                    "Obbligo legale — articolo 6, paragrafo 1, lettera c)"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Protezione delle sessioni, prevenzione delle frodi e degli abusi"
+                                ],
+                                [
+                                    "Legittimo interesse — articolo 6, paragrafo 1, lettera f)"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "seller-data",
+            "title": "Dati dei venditori",
+            "blocks": [
+                {
+                    "heading": "Quali dati conserviamo"
+                },
+                {
+                    "list": [
+                        [
+                            "i dati necessari per la registrazione del conto del venditore presso il prestatore di servizi di pagamento Payoneer: informazioni sull'identità del venditore o del rappresentante della società, dati di contatto, informazioni sull'attività (denominazione, numero di registrazione e numero di identificazione fiscale, indirizzo, paese), coordinate per i versamenti e documenti giustificativi richiesti da Payoneer;"
+                        ],
+                        [
+                            "i dati dell'account e della console del venditore: catalogo dei prodotti, giacenze, ordini, resi;"
+                        ],
+                        [
+                            "la corrispondenza con noi e lo storico delle eventuali violazioni delle regole della piattaforma."
+                        ]
+                    ]
+                },
+                {
+                    "heading": "Per quali finalità li utilizziamo"
+                },
+                {
+                    "paragraph": [
+                        "I dati dei venditori sono utilizzati per la conclusione e l'esecuzione del contratto con il venditore, per l'apertura del conto presso Payoneer e per i versamenti, per la pubblicazione dei prodotti, per lo stoccaggio e la spedizione dei prodotti tramite i magazzini del gruppo Byrd, per l'adempimento degli obblighi fiscali del gestore della piattaforma (compresa la comunicazione annuale all'amministrazione fiscale francese delle informazioni sui redditi dei venditori secondo le norme DAC7), nonché per verificare il rispetto delle regole della piattaforma e delle restrizioni sanzionatorie."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Basi giuridiche: esecuzione del contratto — articolo 6, paragrafo 1, lettera b), del GDPR; obbligo legale — articolo 6, paragrafo 1, lettera c); legittimo interesse alla sicurezza e alla correttezza della piattaforma — articolo 6, paragrafo 1, lettera f)."
+                    ]
+                },
+                {
+                    "heading": "Informazioni pubbliche sul venditore"
+                },
+                {
+                    "paragraph": [
+                        "La denominazione, la qualità di venditore professionale, l'indirizzo e i dati di contatto del venditore sono mostrati agli acquirenti nella pagina del prodotto: lo richiede la normativa dell'UE in materia di tutela dei consumatori e di sicurezza dei prodotti."
+                    ]
+                },
+                {
+                    "heading": "Sospensione dell'attività del venditore"
+                },
+                {
+                    "paragraph": [
+                        "Il marketplace si riserva il diritto di sospendere l'attività del venditore — nascondere i suoi prodotti e congelare i versamenti dal conto — in caso di violazione delle regole della piattaforma oppure in caso di sanzioni o di un ordine delle autorità della Francia o di un altro Stato dell'UE. In tali casi trattiamo i dati del venditore nella misura necessaria per la verifica e per l'esecuzione della decisione. La procedura di sospensione è descritta nelle ",
+                        {
+                            "text": "Condizioni per i venditori",
+                            "href": "/docs/seller_policy#restrictions"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "recipients",
+            "title": "A chi comunichiamo i dati",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Comunichiamo i dati soltanto a coloro ai quali ciò è necessario per l'esecuzione dell'ordine o in base alla legge:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "al venditore del prodotto",
+                                "strong": true
+                            },
+                            " — nome, indirizzo di consegna e contenuto dell'ordine, affinché possa spedire il prodotto e gestire il reso;"
+                        ],
+                        [
+                            {
+                                "text": "al gruppo Byrd (fulfilment)",
+                                "strong": true
+                            },
+                            " — nome, indirizzo di consegna e contenuto dell'ordine, se il prodotto è conservato in un magazzino Byrd;"
+                        ],
+                        [
+                            {
+                                "text": "ai servizi di consegna",
+                                "strong": true
+                            },
+                            " — nome, indirizzo e recapito per le notifiche di consegna;"
+                        ],
+                        [
+                            {
+                                "text": "a Stripe",
+                                "strong": true
+                            },
+                            " — i dati necessari per ricevere il pagamento dall'acquirente;"
+                        ],
+                        [
+                            {
+                                "text": "a Payoneer",
+                                "strong": true
+                            },
+                            " — i dati dei venditori per l'apertura del conto e per i versamenti; Payoneer agisce in qualità di titolare autonomo del trattamento di tali dati;"
+                        ],
+                        [
+                            {
+                                "text": "al fornitore di hosting",
+                                "strong": true
+                            },
+                            " {{LEGAL_HOSTING_NAME}} — in qualità di responsabile del trattamento, per nostro conto;"
+                        ],
+                        [
+                            {
+                                "text": "alle autorità",
+                                "strong": true
+                            },
+                            " — quando lo richiede la legge."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "transfers",
+            "title": "Trasferimento al di fuori del SEE",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "I venditori del marketplace possono trovarsi al di fuori dello Spazio economico europeo (Ucraina, Turchia, paesi dell'Asia centrale). Se Lei acquista un prodotto che un tale venditore spedisce in proprio, il Suo nome e il Suo indirizzo di consegna gli sono trasferiti per l'esecuzione dell'ordine. Il paese del venditore è indicato nella pagina del prodotto prima della conclusione dell'ordine."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Tale trasferimento è tutelato dalle clausole contrattuali tipo della Commissione europea, incluse nel contratto con il venditore, e, in loro assenza, si fonda sulla necessità di eseguire il contratto concluso con Lei (articolo 49, paragrafo 1, lettera b), del GDPR). Stripe e Payoneer possono trattare i dati al di fuori del SEE avvalendosi di propri meccanismi di tutela. Una copia delle garanzie applicate può essere richiesta all'indirizzo ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "retention",
+            "title": "Periodi di conservazione",
+            "blocks": [
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Dati"
+                            ],
+                            [
+                                "Periodo di conservazione"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "Account dell'acquirente e carrello"
+                                ],
+                                [
+                                    "Finché l'account esiste; l'account inattivo è eliminato dopo 3 anni dall'ultima attività"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Ordini, fatture e documenti contabili"
+                                ],
+                                [
+                                    "10 anni (articolo L123-22 del Codice di commercio francese)"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Registrazione non completata"
+                                ],
+                                [
+                                    "24 ore"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Registrazioni delle sessioni"
+                                ],
+                                [
+                                    "Fino alla scadenza o alla revoca del token di sessione"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Dati del venditore"
+                                ],
+                                [
+                                    "Per la durata del contratto e per 5 anni dopo la sua cessazione; documenti contabili — 10 anni"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "rights",
+            "title": "I Suoi diritti",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Lei ha il diritto di chiedere l'accesso ai Suoi dati, la loro rettifica, la loro cancellazione, la limitazione del trattamento e la portabilità, nonché di opporsi al trattamento fondato sul legittimo interesse. Può inoltre impartire disposizioni sulla sorte dei Suoi dati dopo la morte."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Per esercitare i Suoi diritti scriva a ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "; risponderemo entro un mese. Non invii password né token."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Se ritiene che i Suoi diritti siano stati violati, può proporre reclamo alla CNIL (",
+                        {
+                            "text": "www.cnil.fr",
+                            "href": "https://www.cnil.fr"
+                        },
+                        ") o all'autorità di controllo del Suo paese."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "security",
+            "title": "Sicurezza",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le password sono conservate esclusivamente sotto forma di hash, i token di sessione sono trasmessi in cookie protetti tramite HTTPS, l'accesso ai dati è limitato. Maggiori informazioni sui cookie sono disponibili nell'",
+                        {
+                            "text": "Informativa sui cookie",
+                            "href": "/docs/cookies_policy"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "children",
+            "title": "Minori",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il servizio non è destinato alle persone di età inferiore a 16 anni. Gli acquisti sono effettuati da persone che hanno la capacità di concludere contratti."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "changes",
+            "title": "Modifiche",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Comunicheremo le modifiche sostanziali della presente informativa sul sito o tramite email prima della loro entrata in vigore. La data dell'ultimo aggiornamento è indicata all'inizio del documento."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Gestore del sito",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

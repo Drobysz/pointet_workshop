@@ -63,8 +63,11 @@
                 "privacyPolicy": "Politique de confidentialité"
             },
             "legal": {
+                "legalNotice": "Mentions légales",
                 "privacyPolicy": "Politique de confidentialité",
-                "cookiesPolicy": "Politique de cookies"
+                "cookiesPolicy": "Politique de cookies",
+                "refundPolicy": "Retours et remboursements",
+                "sellerPolicy": "Conditions vendeurs"
             },
             "developedBy": "Développé par <link>Drobysz</link>"
         }
@@ -384,8 +387,12 @@
     "docs": {
         "navigation": {
             "title": "Rubriques",
+            "legalNotice": "Mentions légales",
             "privacyPolicy": "Politique de confidentialité",
-            "cookiesPolicy": "Politique de cookies"
+            "cookiesPolicy": "Politique de cookies",
+            "refundPolicy": "Retours et remboursements",
+            "sellerPolicy": "Conditions vendeurs",
+            "sellerRules": "Règles pour les vendeurs"
         }
     },
     "notifications": {

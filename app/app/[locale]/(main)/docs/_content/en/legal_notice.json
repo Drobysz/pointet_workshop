@@ -1,0 +1,177 @@
+{
+    "title": "Legal Notice",
+    "lastUpdated": "2026-11-14",
+    "description": "Information about the publisher and hosting of the pointet.fr website, contact details, the procedure for reporting illegal content and dispute resolution.",
+    "sections": [
+        {
+            "id": "publisher",
+            "title": "Website publisher",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The pointet.fr website is published and operated by:"
+                    ]
+                },
+                {
+                    "shared": "operator"
+                },
+                {
+                    "paragraph": [
+                        "Publication director: {{LEGAL_OPERATOR_NAME}}."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "hosting",
+            "title": "Hosting",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The website is hosted by the hosting provider {{LEGAL_HOSTING_NAME}}, {{LEGAL_HOSTING_ADDRESS}}, telephone: {{LEGAL_HOSTING_PHONE}}."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "activity",
+            "title": "Website activity",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "pointet.fr is a marketplace for clothing and accessories. The Operator provides professional sellers with a venue for selling their products and acts as an intermediary: the contract of sale is concluded directly between the seller and the buyer. The seller of each product is identified on the product page and in the order confirmation."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "The terms of use of the website are set out in the following documents:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "Privacy Policy",
+                                "href": "/docs/privacy_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Cookie Policy",
+                                "href": "/docs/cookies_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Returns and Refund Policy",
+                                "href": "/docs/refund_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Seller Terms",
+                                "href": "/docs/seller_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Platform Rules for Sellers",
+                                "href": "/docs/seller_rules"
+                            },
+                            "."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "contact",
+            "title": "Contact and reports of illegal content",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Single point of contact for users and public authorities: ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        ". We accept communications in French and English."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Any person may also use this address to report a product or listing that they consider to be illegal. Please provide a link to the page, the reason why you consider the content to be illegal, your name and your email address. We process notices in a timely and objective manner and give notice of the decision taken."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "intellectual-property",
+            "title": "Intellectual property",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The name, logo, design, texts and software code of the website belong to the Operator or are lawfully used by the Operator. The photographs, names and descriptions of products belong to the sellers or to their rights holders. Any copying or use of these materials without prior written permission is prohibited, except where expressly permitted by law."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "personal-data",
+            "title": "Personal data and cookies",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The way in which personal data is processed and your rights are described in the ",
+                        {
+                            "text": "Privacy Policy",
+                            "href": "/docs/privacy_policy"
+                        },
+                        ". Information about cookies is provided in the ",
+                        {
+                            "text": "Cookie Policy",
+                            "href": "/docs/cookies_policy"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "disputes",
+            "title": "Disputes and mediation",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "French law applies to the website and to the documents published on it. A consumer retains the protection afforded by the mandatory provisions of the law of their country of residence."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "If a dispute could not be settled directly, the consumer is entitled to refer it free of charge to the consumer mediator: {{LEGAL_MEDIATOR_NAME}}, ",
+                        {
+                            "text": "{{LEGAL_MEDIATOR_URL}}",
+                            "href": "{{LEGAL_MEDIATOR_URL}}"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "liability",
+            "title": "Liability",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The Operator makes reasonable efforts to ensure that the information on the website is accurate and that the website is available, but does not guarantee the absence of errors or interruptions. Product information is provided by the sellers, who are responsible for its accuracy. The website may contain links to third-party resources; the Operator is not responsible for their content."
+                    ]
+                }
+            ]
+        }
+    ]
+}

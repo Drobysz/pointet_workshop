@@ -63,8 +63,11 @@
                 "privacyPolicy": "Политика конфиденциальности"
             },
             "legal": {
+                "legalNotice": "Правовая информация",
                 "privacyPolicy": "Политика конфиденциальности",
-                "cookiesPolicy": "Политика использования cookie"
+                "cookiesPolicy": "Политика использования cookie",
+                "refundPolicy": "Возврат и возмещение",
+                "sellerPolicy": "Условия для продавцов"
             },
             "developedBy": "Разработка: <link>Drobysz</link>"
         }
@@ -384,8 +387,12 @@
     "docs": {
         "navigation": {
             "title": "Разделы",
+            "legalNotice": "Правовая информация",
             "privacyPolicy": "Политика конфиденциальности",
-            "cookiesPolicy": "Политика использования cookie"
+            "cookiesPolicy": "Политика использования cookie",
+            "refundPolicy": "Возврат и возмещение",
+            "sellerPolicy": "Условия для продавцов",
+            "sellerRules": "Правила для продавцов"
         }
     },
     "notifications": {

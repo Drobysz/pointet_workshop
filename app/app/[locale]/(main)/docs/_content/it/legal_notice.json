@@ -1,0 +1,177 @@
+{
+    "title": "Note legali",
+    "lastUpdated": "2026-11-14",
+    "description": "Informazioni sull'editore e sull'hosting del sito pointet.fr, contatti, modalità di segnalazione dei contenuti illegali e di risoluzione delle controversie.",
+    "sections": [
+        {
+            "id": "publisher",
+            "title": "Editore del sito",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il sito pointet.fr è edito e gestito da:"
+                    ]
+                },
+                {
+                    "shared": "operator"
+                },
+                {
+                    "paragraph": [
+                        "Direttore della pubblicazione: {{LEGAL_OPERATOR_NAME}}."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "hosting",
+            "title": "Hosting",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il sito è ospitato dal fornitore di hosting {{LEGAL_HOSTING_NAME}}, {{LEGAL_HOSTING_ADDRESS}}, telefono: {{LEGAL_HOSTING_PHONE}}."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "activity",
+            "title": "Attività del sito",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "pointet.fr è un marketplace di abbigliamento e accessori. Il Gestore mette a disposizione dei venditori professionali uno spazio per la vendita dei prodotti e agisce in qualità di intermediario: il contratto di vendita è concluso direttamente tra il venditore e l'acquirente. Il venditore di ciascun prodotto è indicato nella pagina del prodotto e nella conferma dell'ordine."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Le condizioni di utilizzo del sito sono descritte nei seguenti documenti:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "Informativa sulla privacy",
+                                "href": "/docs/privacy_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Informativa sui cookie",
+                                "href": "/docs/cookies_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Politica di reso e rimborso",
+                                "href": "/docs/refund_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Condizioni per i venditori",
+                                "href": "/docs/seller_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Regole della piattaforma per i venditori",
+                                "href": "/docs/seller_rules"
+                            },
+                            "."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "contact",
+            "title": "Contatti e segnalazione di contenuti illegali",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Punto di contatto unico per gli utenti e per le autorità: ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        ". Accettiamo comunicazioni in francese e in inglese."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Allo stesso indirizzo chiunque può segnalare un prodotto o un'inserzione che ritiene illegali. Indichi il link alla pagina, il motivo per cui ritiene illegale il contenuto, il Suo nome e la Sua email. Esaminiamo le segnalazioni in modo tempestivo e obiettivo e comunichiamo la decisione adottata."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "intellectual-property",
+            "title": "Proprietà intellettuale",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il nome, il logo, la veste grafica, i testi e il codice software del sito appartengono al Gestore o sono da questi utilizzati legittimamente. Le fotografie, le denominazioni e le descrizioni dei prodotti appartengono ai venditori o ai rispettivi titolari dei diritti. Qualsiasi riproduzione o utilizzo di tali materiali senza previa autorizzazione scritta è vietato, salvo i casi espressamente consentiti dalla legge."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "personal-data",
+            "title": "Dati personali e cookie",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le modalità di trattamento dei dati personali e i Suoi diritti sono descritti nell'",
+                        {
+                            "text": "Informativa sulla privacy",
+                            "href": "/docs/privacy_policy"
+                        },
+                        ". Le informazioni sui cookie sono riportate nell'",
+                        {
+                            "text": "Informativa sui cookie",
+                            "href": "/docs/cookies_policy"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "disputes",
+            "title": "Controversie e mediazione",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Al sito e ai documenti in esso pubblicati si applica il diritto francese. Il consumatore conserva la tutela che gli è assicurata dalle norme imperative del paese in cui risiede."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Se non è stato possibile risolvere la controversia direttamente, il consumatore ha il diritto di rivolgersi gratuitamente al mediatore dei consumatori: {{LEGAL_MEDIATOR_NAME}}, ",
+                        {
+                            "text": "{{LEGAL_MEDIATOR_URL}}",
+                            "href": "{{LEGAL_MEDIATOR_URL}}"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "liability",
+            "title": "Responsabilità",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il Gestore compie ogni ragionevole sforzo affinché le informazioni presenti sul sito siano esatte e il sito sia accessibile, ma non garantisce l'assenza di errori e di interruzioni del servizio. Le informazioni sui prodotti sono fornite dai venditori, che rispondono della loro esattezza. Il sito può contenere link a risorse di terzi; il Gestore non risponde del loro contenuto."
+                    ]
+                }
+            ]
+        }
+    ]
+}

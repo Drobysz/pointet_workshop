@@ -39,7 +39,7 @@ class UserCreateRequest extends FormRequest
             ],
             'language' => [
                 'nullable',
-                Rule::in(['en', 'it', 'fr', 'ru', 'de']),
+                Rule::in(['en', 'it', 'fr', 'ru', 'de', 'uk']),
             ],
             'password' => [
                 'required',

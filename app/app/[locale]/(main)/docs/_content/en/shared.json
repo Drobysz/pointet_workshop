@@ -1,0 +1,152 @@
+{
+    "lastUpdatedLabel": "Last updated",
+    "blocks": {
+        "operator": [
+            {
+                "paragraph": [
+                    {
+                        "text": "{{LEGAL_TRADE_NAME}}",
+                        "strong": true
+                    },
+                    " — {{LEGAL_OPERATOR_NAME}}, {{LEGAL_FORM}}. SIREN: {{LEGAL_SIREN}}. SIRET: {{LEGAL_SIRET}}. Registration: {{LEGAL_REGISTRY}}. Address: {{LEGAL_ADDRESS}}. VAT: {{LEGAL_VAT}}."
+                ]
+            },
+            {
+                "paragraph": [
+                    "Email: ",
+                    {
+                        "text": "{{LEGAL_EMAIL}}",
+                        "href": "mailto:{{LEGAL_EMAIL}}"
+                    },
+                    ". Telephone: {{LEGAL_PHONE}}."
+                ]
+            }
+        ],
+        "definitions": [
+            {
+                "paragraph": [
+                    "In the documents on this website, the following terms have the meanings set out below, whether or not they are capitalised:"
+                ]
+            },
+            {
+                "list": [
+                    [
+                        {
+                            "text": "Platform (marketplace)",
+                            "strong": true
+                        },
+                        " — the online marketplace pointet.fr, on which Sellers offer Products to Buyers, including the website, the accounts and the Seller Console."
+                    ],
+                    [
+                        {
+                            "text": "Operator",
+                            "strong": true
+                        },
+                        " — the person who operates the Platform and provides its services: {{LEGAL_OPERATOR_NAME}}, trading as {{LEGAL_TRADE_NAME}}. The Operator's details are set out in the ",
+                        {
+                            "text": "Legal Notice",
+                            "href": "/docs/legal_notice"
+                        },
+                        "."
+                    ],
+                    [
+                        {
+                            "text": "User",
+                            "strong": true
+                        },
+                        " — any person who visits or uses the Platform: a Guest, a Buyer or a Seller."
+                    ],
+                    [
+                        {
+                            "text": "Guest",
+                            "strong": true
+                        },
+                        " — a User who uses the Platform without signing in to an Account."
+                    ],
+                    [
+                        {
+                            "text": "Buyer",
+                            "strong": true
+                        },
+                        " — a natural person who orders Products on the Platform for purposes unrelated to their professional activity (a consumer)."
+                    ],
+                    [
+                        {
+                            "text": "Seller",
+                            "strong": true
+                        },
+                        " — a manufacturer or other professional seller (a company or a sole proprietor (entrepreneur individuel)) that is registered on the Platform and offers its Products there."
+                    ],
+                    [
+                        {
+                            "text": "Account",
+                            "strong": true
+                        },
+                        " — a User's personal space on the Platform, accessible after registration and sign-in."
+                    ],
+                    [
+                        {
+                            "text": "Seller Console",
+                            "strong": true
+                        },
+                        " — the section of the Platform in which the Seller manages its catalogue, stock, Orders and returns."
+                    ],
+                    [
+                        {
+                            "text": "Product",
+                            "strong": true
+                        },
+                        " — an item of clothing or an accessory that a Seller offers on the Platform."
+                    ],
+                    [
+                        {
+                            "text": "Order",
+                            "strong": true
+                        },
+                        " — a contract for the sale of a Product concluded between a Buyer and a Seller through the Platform."
+                    ],
+                    [
+                        {
+                            "text": "Pre-order",
+                            "strong": true
+                        },
+                        " — an Order for a Product that is not yet in stock and will be manufactured or supplied at a later date."
+                    ],
+                    [
+                        {
+                            "text": "Byrd Warehouse (fulfilment)",
+                            "strong": true
+                        },
+                        " — the storage, picking and packing, and dispatch services for Products provided by the fulfilment centres of the Byrd group."
+                    ],
+                    [
+                        {
+                            "text": "Payment Providers",
+                            "strong": true
+                        },
+                        " — Stripe, through which Buyers pay for Orders, and Payoneer, through which Sellers receive payouts."
+                    ],
+                    [
+                        {
+                            "text": "Platform Rules",
+                            "strong": true
+                        },
+                        " — the ",
+                        {
+                            "text": "Platform Rules for Sellers",
+                            "href": "/docs/seller_rules"
+                        },
+                        ", which are binding on every Seller."
+                    ],
+                    [
+                        {
+                            "text": "Business Day",
+                            "strong": true
+                        },
+                        " — any day other than a Saturday, a Sunday or a public holiday in France."
+                    ]
+                ]
+            }
+        ]
+    }
+}

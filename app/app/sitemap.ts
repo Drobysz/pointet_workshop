@@ -18,8 +18,12 @@ const STATIC_ROUTES: SitemapRoute[] = [
     { pathname: "/home", changeFrequency: "weekly", priority: 1 },
     { pathname: "/shop", changeFrequency: "daily", priority: 0.9 },
     { pathname: "/sellers", changeFrequency: "monthly", priority: 0.6 },
+    { pathname: "/docs/legal_notice", changeFrequency: "yearly", priority: 0.2 },
     { pathname: "/docs/privacy_policy", changeFrequency: "yearly", priority: 0.2 },
     { pathname: "/docs/cookies_policy", changeFrequency: "yearly", priority: 0.2 },
+    { pathname: "/docs/refund_policy", changeFrequency: "yearly", priority: 0.2 },
+    { pathname: "/docs/seller_policy", changeFrequency: "yearly", priority: 0.2 },
+    { pathname: "/docs/seller_rules", changeFrequency: "yearly", priority: 0.2 },
 ];
 
 const getGoodRoutes = unstable_cache(async (): Promise<SitemapRoute[]> => {

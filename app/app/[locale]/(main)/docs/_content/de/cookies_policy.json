@@ -1,0 +1,256 @@
+{
+    "title": "Cookie-Richtlinie",
+    "lastUpdated": "2026-11-14",
+    "description": "Welche Cookies der Marktplatz pointet.fr verwendet, wozu sie dienen, wie lange sie gespeichert werden und wie Sie sie verwalten können.",
+    "sections": [
+        {
+            "id": "introduction",
+            "title": "Über dieses Dokument",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Diese Richtlinie erläutert, welche Cookies der Marktplatz pointet.fr verwendet, wozu sie dienen und wie Sie sie verwalten können. Wie wir personenbezogene Daten verarbeiten, erfahren Sie in der ",
+                        {
+                            "text": "Datenschutzerklärung",
+                            "href": "/docs/privacy_policy"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "what-are-cookies",
+            "title": "Was Cookies sind",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Cookies sind kleine Datenelemente, die eine Website in Ihrem Browser speichert. Sie ermöglichen es, eine Sitzung über mehrere Anfragen hinweg wiederzuerkennen und sich Ihre Einstellungen sowie den Inhalt Ihres Warenkorbs zu merken."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "cookies-we-use",
+            "title": "Welche Cookies wir verwenden",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Wir verwenden ausschließlich Cookies, die für den Betrieb des von Ihnen angeforderten Dienstes unbedingt erforderlich sind. Analyse-, Werbe- und Tracking-Cookies gibt es auf der Website nicht."
+                    ]
+                },
+                {
+                    "heading": "Authentifizierungs-Cookies (für angemeldete Nutzer)"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Cookie"
+                            ],
+                            [
+                                "Zweck"
+                            ],
+                            [
+                                "Speicherdauer"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "access_token"
+                                ],
+                                [
+                                    "Zugriffstoken (JWT): bestätigt Ihre Identität bei geschützten Anfragen"
+                                ],
+                                [
+                                    "15 Minuten ab Ausstellung oder Erneuerung"
+                                ]
+                            ],
+                            [
+                                [
+                                    "refresh_token"
+                                ],
+                                [
+                                    "Aktualisierungstoken (JWT): verlängert die Sitzung ohne erneute Anmeldung; wird bei jeder Erneuerung ersetzt, das vorherige Token wird widerrufen"
+                                ],
+                                [
+                                    "30 Tage ab Ausstellung oder Erneuerung"
+                                ]
+                            ]
+                        ]
+                    }
+                },
+                {
+                    "paragraph": [
+                        "Diese Cookies tragen das Attribut HttpOnly (für JavaScript im Browser nicht zugänglich), werden nur über HTTPS übertragen (Attribut Secure) und verwenden SameSite=Lax. Sie enthalten Anmeldedaten der Sitzung und keine Werbekennungen."
+                    ]
+                },
+                {
+                    "heading": "Cookies für Gäste (nicht angemeldete Nutzer)"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Cookie"
+                            ],
+                            [
+                                "Zweck"
+                            ],
+                            [
+                                "Speicherdauer"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "pointet-guest-basket"
+                                ],
+                                [
+                                    "Speichert den Inhalt des Warenkorbs, solange Sie nicht in einem Konto angemeldet sind"
+                                ],
+                                [
+                                    "30 Tage"
+                                ]
+                            ],
+                            [
+                                [
+                                    "guest_token"
+                                ],
+                                [
+                                    "Kennung der Gastsitzung: ermöglicht es einem Gast, seine Bestellungen und Vorbestellungen ohne Registrierung einzusehen. Trägt das Attribut HttpOnly"
+                                ],
+                                [
+                                    "12 Monate"
+                                ]
+                            ]
+                        ]
+                    }
+                },
+                {
+                    "paragraph": [
+                        "Nach der Anmeldung im Konto werden Warenkorb, Bestellungen und Vorbestellungen auf dem Server gespeichert und sind mit Ihrem Konto verknüpft."
+                    ]
+                },
+                {
+                    "heading": "Einstellungs-Cookies"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Cookie"
+                            ],
+                            [
+                                "Zweck"
+                            ],
+                            [
+                                "Speicherdauer"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "NEXT_LOCALE"
+                                ],
+                                [
+                                    "Merkt sich die gewählte Sprache der Website; enthält nur den Sprachcode"
+                                ],
+                                [
+                                    "Bis zu 12 Monate ab der Sprachauswahl"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "consent",
+            "title": "Warum wir keine Einwilligung einholen",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Nach Artikel 82 des französischen Datenschutzgesetzes (Loi Informatique et Libertés) und den Empfehlungen der CNIL ist keine Einwilligung erforderlich für Cookies, die unbedingt erforderlich sind, um einen vom Nutzer ausdrücklich gewünschten Dienst bereitzustellen: Anmeldung, Warenkorb, Einsicht in die eigenen Bestellungen, Sprachauswahl. Alle unsere Cookies fallen in diese Kategorie, daher wird kein Einwilligungsbanner angezeigt."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Sollten wir Analyse- oder Werbe-Cookies hinzufügen, werden wir diese Richtlinie vorab aktualisieren und Ihre Einwilligung einholen."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "third-parties",
+            "title": "Dienste Dritter",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Zahlung erfolgt auf einer gesicherten Seite des Zahlungsdienstleisters Stripe. Auf seiner Seite kann Stripe eigene Cookies setzen, die für die Abwicklung der Zahlung und den Schutz vor Betrug erforderlich sind; für diese gilt die Richtlinie von Stripe."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Das Aufrufen externer Links (zum Beispiel zu WhatsApp oder Instagram) unterliegt den Regeln dieser Dienste."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "managing-cookies",
+            "title": "Wie Sie Cookies verwalten",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Sie können Cookies in den Einstellungen Ihres Browsers löschen oder blockieren. Die Folgen:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "ohne Authentifizierungs-Cookies können Sie sich nicht in Ihrem Konto anmelden oder dort angemeldet bleiben;"
+                        ],
+                        [
+                            "ohne Gast-Cookies bleiben der Warenkorb und die Bestellübersicht des Gastes zwischen den Besuchen nicht erhalten;"
+                        ],
+                        [
+                            "ohne das Sprach-Cookie wird die Website in der Standardsprache geöffnet."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Beim Abmelden vom Konto werden die Authentifizierungs-Cookies im aktuellen Browser gelöscht."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "changes",
+            "title": "Änderungen und Kontakt",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Wir aktualisieren diese Richtlinie, wenn sich die verwendeten Cookies ändern; das Datum der Fassung (Stand) ist am Anfang des Dokuments angegeben. Fragen richten Sie bitte an ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Betreiber der Website",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

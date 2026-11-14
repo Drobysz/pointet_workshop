@@ -1,0 +1,256 @@
+{
+    "title": "Cookie Policy",
+    "lastUpdated": "2026-11-14",
+    "description": "Which cookies the pointet.fr marketplace uses, what they are for, how long they are stored and how to manage them.",
+    "sections": [
+        {
+            "id": "introduction",
+            "title": "About this document",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "This policy explains which cookies the pointet.fr marketplace uses, what they are for and how to manage them. For information on how we process personal data, see the ",
+                        {
+                            "text": "Privacy Policy",
+                            "href": "/docs/privacy_policy"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "what-are-cookies",
+            "title": "What cookies are",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Cookies are small pieces of data that a website stores in your browser. They make it possible to recognise a session between requests and to remember your settings and the contents of your basket."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "cookies-we-use",
+            "title": "Which cookies we use",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "We use only cookies that are strictly necessary for the operation of the service you request. There are no analytics, advertising or tracking cookies on the website."
+                    ]
+                },
+                {
+                    "heading": "Authentication cookies (for signed-in users)"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Cookie"
+                            ],
+                            [
+                                "Purpose"
+                            ],
+                            [
+                                "Lifetime"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "access_token"
+                                ],
+                                [
+                                    "Access token (JWT): confirms your identity for protected requests"
+                                ],
+                                [
+                                    "15 minutes from issue or refresh"
+                                ]
+                            ],
+                            [
+                                [
+                                    "refresh_token"
+                                ],
+                                [
+                                    "Refresh token (JWT): extends the session without signing in again; it is replaced on each refresh and the previous one is revoked"
+                                ],
+                                [
+                                    "30 days from issue or refresh"
+                                ]
+                            ]
+                        ]
+                    }
+                },
+                {
+                    "paragraph": [
+                        "These cookies have the HttpOnly attribute (they are not accessible to JavaScript in the browser), are sent only over HTTPS (the Secure attribute) and use SameSite=Lax. They contain session credentials, not advertising identifiers."
+                    ]
+                },
+                {
+                    "heading": "Guest cookies (for users who are not signed in)"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Cookie"
+                            ],
+                            [
+                                "Purpose"
+                            ],
+                            [
+                                "Lifetime"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "pointet-guest-basket"
+                                ],
+                                [
+                                    "Stores the contents of your basket while you are not signed in to an account"
+                                ],
+                                [
+                                    "30 days"
+                                ]
+                            ],
+                            [
+                                [
+                                    "guest_token"
+                                ],
+                                [
+                                    "Guest session identifier: allows a guest to view their orders and pre-orders without registering. Has the HttpOnly attribute"
+                                ],
+                                [
+                                    "12 months"
+                                ]
+                            ]
+                        ]
+                    }
+                },
+                {
+                    "paragraph": [
+                        "Once you have signed in to your account, your basket, orders and pre-orders are stored on the server and linked to your account."
+                    ]
+                },
+                {
+                    "heading": "Preference cookies"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Cookie"
+                            ],
+                            [
+                                "Purpose"
+                            ],
+                            [
+                                "Lifetime"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "NEXT_LOCALE"
+                                ],
+                                [
+                                    "Remembers the website language you have selected; contains only the language code"
+                                ],
+                                [
+                                    "Up to 12 months from the time the language is selected"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "consent",
+            "title": "Why we do not ask for consent",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Under Article 82 of the French Data Protection Act (Loi Informatique et Libertés) and the recommendations of the CNIL, consent is not required for cookies that are strictly necessary to provide a service expressly requested by the user: authentication, the basket, viewing your own orders and language selection. All our cookies fall into this category, so no consent banner is displayed."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "If we add analytics or advertising cookies, we will update this policy in advance and ask for your consent."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "third-parties",
+            "title": "Third-party services",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Payment takes place on a secure page of the payment provider Stripe. On its own page, Stripe may set its own cookies that are necessary to process the payment and to prevent fraud; those cookies are governed by Stripe's policy."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Following external links (for example, to WhatsApp or Instagram) is subject to the rules of those services."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "managing-cookies",
+            "title": "How to manage cookies",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "You can delete or block cookies in your browser settings. The consequences are as follows:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "without the authentication cookies, you will not be able to sign in to your account or stay signed in;"
+                        ],
+                        [
+                            "without the guest cookies, a guest's basket and list of orders will not be kept between visits;"
+                        ],
+                        [
+                            "without the language cookie, the website will open in the default language."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Signing out of your account deletes the authentication cookies in the current browser."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "changes",
+            "title": "Changes and contact",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "We update this policy whenever the set of cookies changes; the date of the last update is shown at the top of the document. Please send any questions to ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Website operator",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

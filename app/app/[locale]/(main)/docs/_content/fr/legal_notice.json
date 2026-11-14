@@ -1,0 +1,177 @@
+{
+    "title": "Mentions légales",
+    "lastUpdated": "2026-11-14",
+    "description": "Informations sur l'éditeur et l'hébergeur du site pointet.fr, coordonnées, modalités de signalement des contenus illicites et de règlement des litiges.",
+    "sections": [
+        {
+            "id": "publisher",
+            "title": "Éditeur du site",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le site pointet.fr est édité et exploité par :"
+                    ]
+                },
+                {
+                    "shared": "operator"
+                },
+                {
+                    "paragraph": [
+                        "Directeur de la publication : {{LEGAL_OPERATOR_NAME}}."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "hosting",
+            "title": "Hébergement",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le site est hébergé par l'hébergeur {{LEGAL_HOSTING_NAME}}, {{LEGAL_HOSTING_ADDRESS}}, téléphone : {{LEGAL_HOSTING_PHONE}}."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "activity",
+            "title": "Activité du site",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "pointet.fr est une place de marché de vêtements et d'accessoires. L'Opérateur met à la disposition de vendeurs professionnels un espace de vente pour leurs produits et agit en qualité d'intermédiaire : le contrat de vente est conclu directement entre le vendeur et l'acheteur. Le vendeur de chaque produit est indiqué sur la page du produit et dans la confirmation de commande."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Les conditions d'utilisation du site sont décrites dans les documents suivants :"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "Politique de confidentialité",
+                                "href": "/docs/privacy_policy"
+                            },
+                            " ;"
+                        ],
+                        [
+                            {
+                                "text": "Politique relative aux cookies",
+                                "href": "/docs/cookies_policy"
+                            },
+                            " ;"
+                        ],
+                        [
+                            {
+                                "text": "Politique de retour et de remboursement",
+                                "href": "/docs/refund_policy"
+                            },
+                            " ;"
+                        ],
+                        [
+                            {
+                                "text": "Conditions applicables aux vendeurs",
+                                "href": "/docs/seller_policy"
+                            },
+                            " ;"
+                        ],
+                        [
+                            {
+                                "text": "Règles de la plateforme pour les vendeurs",
+                                "href": "/docs/seller_rules"
+                            },
+                            "."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "contact",
+            "title": "Contact et signalement des contenus illicites",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Point de contact unique pour les utilisateurs et les autorités : ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        ". Nous traitons les demandes en français et en anglais."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Toute personne peut signaler à cette même adresse un produit ou une annonce qu'elle considère comme illicite. Indiquez le lien vers la page, la raison pour laquelle vous considérez le contenu comme illicite, votre nom et votre adresse e-mail. Nous examinons les signalements en temps opportun et de manière objective, et nous communiquons la décision prise."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "intellectual-property",
+            "title": "Propriété intellectuelle",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le nom, le logo, la présentation graphique, les textes et le code logiciel du site appartiennent à l'Opérateur ou sont utilisés par lui de manière licite. Les photographies, les dénominations et les descriptions des produits appartiennent aux vendeurs ou à leurs ayants droit. Toute reproduction ou utilisation de ces éléments sans autorisation écrite préalable est interdite, sauf dans les cas expressément autorisés par la loi."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "personal-data",
+            "title": "Données personnelles et cookies",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Les modalités de traitement des données personnelles et vos droits sont décrits dans la ",
+                        {
+                            "text": "Politique de confidentialité",
+                            "href": "/docs/privacy_policy"
+                        },
+                        ". Les informations relatives aux cookies figurent dans la ",
+                        {
+                            "text": "Politique relative aux cookies",
+                            "href": "/docs/cookies_policy"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "disputes",
+            "title": "Litiges et médiation",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le site et les documents qui y sont publiés sont soumis au droit français. Le consommateur conserve la protection que lui assurent les dispositions impératives de son pays de résidence."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Si le litige n'a pas pu être résolu directement, le consommateur peut recourir gratuitement au médiateur de la consommation : {{LEGAL_MEDIATOR_NAME}}, ",
+                        {
+                            "text": "{{LEGAL_MEDIATOR_URL}}",
+                            "href": "{{LEGAL_MEDIATOR_URL}}"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "liability",
+            "title": "Responsabilité",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "L'Opérateur met en œuvre des efforts raisonnables pour que les informations figurant sur le site soient exactes et que le site soit accessible, mais ne garantit ni l'absence d'erreurs ni l'absence d'interruptions de service. Les informations relatives aux produits sont fournies par les vendeurs, qui répondent de leur exactitude. Le site peut contenir des liens vers des ressources tierces ; l'Opérateur n'est pas responsable de leur contenu."
+                    ]
+                }
+            ]
+        }
+    ]
+}

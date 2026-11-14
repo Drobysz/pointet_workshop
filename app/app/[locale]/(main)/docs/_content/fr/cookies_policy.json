@@ -1,0 +1,256 @@
+{
+    "title": "Politique relative aux cookies",
+    "lastUpdated": "2026-11-14",
+    "description": "Quels cookies la place de marché pointet.fr utilise, à quoi ils servent, combien de temps ils sont conservés et comment les gérer.",
+    "sections": [
+        {
+            "id": "introduction",
+            "title": "À propos de ce document",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "La présente politique explique quels cookies la place de marché pointet.fr utilise, à quoi ils servent et comment les gérer. Pour savoir comment nous traitons les données personnelles, consultez la ",
+                        {
+                            "text": "Politique de confidentialité",
+                            "href": "/docs/privacy_policy"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "what-are-cookies",
+            "title": "Que sont les cookies",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Les cookies sont de petits fragments de données que le site enregistre dans votre navigateur. Ils permettent de reconnaître votre session d'une requête à l'autre et de mémoriser vos préférences ainsi que le contenu de votre panier."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "cookies-we-use",
+            "title": "Les cookies que nous utilisons",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Nous utilisons uniquement des cookies strictement nécessaires au fonctionnement du service que vous demandez. Le site ne comporte aucun cookie de mesure d'audience, publicitaire ou de traçage."
+                    ]
+                },
+                {
+                    "heading": "Cookies d'authentification (pour les utilisateurs connectés)"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Cookie"
+                            ],
+                            [
+                                "Finalité"
+                            ],
+                            [
+                                "Durée de conservation"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "access_token"
+                                ],
+                                [
+                                    "Jeton d'accès (JWT) : atteste votre identité lors des requêtes protégées"
+                                ],
+                                [
+                                    "15 minutes à compter de son émission ou de son renouvellement"
+                                ]
+                            ],
+                            [
+                                [
+                                    "refresh_token"
+                                ],
+                                [
+                                    "Jeton de renouvellement (JWT) : prolonge la session sans nouvelle connexion ; il est remplacé à chaque renouvellement et le précédent est révoqué"
+                                ],
+                                [
+                                    "30 jours à compter de son émission ou de son renouvellement"
+                                ]
+                            ]
+                        ]
+                    }
+                },
+                {
+                    "paragraph": [
+                        "Ces cookies portent l'attribut HttpOnly (ils sont inaccessibles au JavaScript du navigateur), sont transmis uniquement en HTTPS (attribut Secure) et utilisent SameSite=Lax. Ils contiennent des données d'authentification de session et non des identifiants publicitaires."
+                    ]
+                },
+                {
+                    "heading": "Cookies destinés aux invités (utilisateurs non connectés)"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Cookie"
+                            ],
+                            [
+                                "Finalité"
+                            ],
+                            [
+                                "Durée de conservation"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "pointet-guest-basket"
+                                ],
+                                [
+                                    "Conserve le contenu du panier tant que vous n'êtes pas connecté à votre compte"
+                                ],
+                                [
+                                    "30 jours"
+                                ]
+                            ],
+                            [
+                                [
+                                    "guest_token"
+                                ],
+                                [
+                                    "Identifiant de session invité : permet à l'invité de consulter ses commandes et précommandes sans inscription. Porte l'attribut HttpOnly"
+                                ],
+                                [
+                                    "12 mois"
+                                ]
+                            ]
+                        ]
+                    }
+                },
+                {
+                    "paragraph": [
+                        "Une fois que vous êtes connecté à votre compte, votre panier, vos commandes et vos précommandes sont conservés sur le serveur et rattachés à votre compte."
+                    ]
+                },
+                {
+                    "heading": "Cookies de préférences"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Cookie"
+                            ],
+                            [
+                                "Finalité"
+                            ],
+                            [
+                                "Durée de conservation"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "NEXT_LOCALE"
+                                ],
+                                [
+                                    "Mémorise la langue du site que vous avez choisie ; ne contient que le code de la langue"
+                                ],
+                                [
+                                    "Jusqu'à 12 mois à compter du choix de la langue"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "consent",
+            "title": "Pourquoi nous ne demandons pas votre consentement",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Conformément à l'article 82 de la loi française « Informatique et Libertés » et aux recommandations de la CNIL, le consentement n'est pas requis pour les cookies strictement nécessaires à la fourniture d'un service expressément demandé par l'utilisateur : authentification, panier, consultation de ses commandes, choix de la langue. Tous nos cookies relèvent de cette catégorie ; c'est pourquoi aucun bandeau de consentement n'est affiché."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Si nous ajoutons des cookies de mesure d'audience ou publicitaires, nous mettrons préalablement à jour la présente politique et vous demanderons votre consentement."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "third-parties",
+            "title": "Services tiers",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le paiement s'effectue sur une page sécurisée du prestataire de services de paiement Stripe. Sur sa page, Stripe peut déposer ses propres cookies, nécessaires à l'exécution du paiement et à la prévention de la fraude ; ils sont régis par la politique de Stripe."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "L'utilisation des liens externes (par exemple vers WhatsApp ou Instagram) est soumise aux règles de ces services."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "managing-cookies",
+            "title": "Comment gérer les cookies",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Vous pouvez supprimer ou bloquer les cookies dans les paramètres de votre navigateur. Conséquences :"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "sans les cookies d'authentification, vous ne pourrez pas vous connecter à votre compte ni y rester connecté ;"
+                        ],
+                        [
+                            "sans les cookies destinés aux invités, le panier et la liste des commandes de l'invité ne seront pas conservés d'une visite à l'autre ;"
+                        ],
+                        [
+                            "sans le cookie de langue, le site s'affichera dans la langue par défaut."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "La déconnexion de votre compte supprime les cookies d'authentification dans le navigateur utilisé."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "changes",
+            "title": "Modifications et contact",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Nous mettons à jour la présente politique lorsque la liste des cookies évolue ; la date de dernière mise à jour est indiquée au début du document. Adressez vos questions à ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Opérateur du site",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

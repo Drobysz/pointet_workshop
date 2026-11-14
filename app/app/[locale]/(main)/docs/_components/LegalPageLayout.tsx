@@ -1,15 +1,23 @@
 import type { ReactNode } from "react";
+import type { Locale } from "next-intl";
 import s from "./legal.module.scss";
-import content from "./content.json";
 
 type LegalPageLayoutProps = {
     title: string;
     lastUpdated: string;
+    lastUpdatedLabel: string;
+    locale: Locale;
     children: ReactNode;
 };
 
-export function LegalPageLayout({ title, lastUpdated, children }: LegalPageLayoutProps) {
-    const formattedDate = new Intl.DateTimeFormat("en-GB", {
+export function LegalPageLayout({
+    title,
+    lastUpdated,
+    lastUpdatedLabel,
+    locale,
+    children,
+}: LegalPageLayoutProps) {
+    const formattedDate = new Intl.DateTimeFormat(locale, {
         day: "numeric",
         month: "long",
         year: "numeric",
@@ -17,11 +25,11 @@ export function LegalPageLayout({ title, lastUpdated, children }: LegalPageLayou
     }).format(new Date(`${lastUpdated}T00:00:00Z`));
 
     return (
-        <article className={s.article} lang="en" aria-labelledby="policy-title">
+        <article className={s.article} aria-labelledby="policy-title">
             <header className={s.header}>
                 <h1 id="policy-title" className={s.title}>{title}</h1>
                 <p className={s.updated}>
-                    {content.lastUpdatedLabel}: <time dateTime={lastUpdated}>{formattedDate}</time>
+                    {lastUpdatedLabel}: <time dateTime={lastUpdated}>{formattedDate}</time>
                 </p>
             </header>
             {children}

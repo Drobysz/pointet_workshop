@@ -130,6 +130,22 @@ services:
     environment:
       HOSTNAME: 0.0.0.0
       INTERNAL_API_URL: http://api:8000/api
+      # Operator details shown in the legal documents (see app/.env.example).
+      LEGAL_OPERATOR_NAME: ${LEGAL_OPERATOR_NAME:-}
+      LEGAL_TRADE_NAME: ${LEGAL_TRADE_NAME:-}
+      LEGAL_FORM: ${LEGAL_FORM:-}
+      LEGAL_SIREN: ${LEGAL_SIREN:-}
+      LEGAL_SIRET: ${LEGAL_SIRET:-}
+      LEGAL_REGISTRY: ${LEGAL_REGISTRY:-}
+      LEGAL_ADDRESS: ${LEGAL_ADDRESS:-}
+      LEGAL_VAT: ${LEGAL_VAT:-}
+      LEGAL_EMAIL: ${LEGAL_EMAIL:-}
+      LEGAL_PHONE: ${LEGAL_PHONE:-}
+      LEGAL_HOSTING_NAME: ${LEGAL_HOSTING_NAME:-}
+      LEGAL_HOSTING_ADDRESS: ${LEGAL_HOSTING_ADDRESS:-}
+      LEGAL_HOSTING_PHONE: ${LEGAL_HOSTING_PHONE:-}
+      LEGAL_MEDIATOR_NAME: ${LEGAL_MEDIATOR_NAME:-}
+      LEGAL_MEDIATOR_URL: ${LEGAL_MEDIATOR_URL:-}
     depends_on:
       api:
         condition: service_healthy

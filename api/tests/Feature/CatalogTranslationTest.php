@@ -27,6 +27,9 @@ class CatalogTranslationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // The request and row counts asserted below assume this exact set:
+        // adding a storefront locale must not change them.
+        config()->set('translation.locales', ['en', 'fr', 'de', 'it', 'ru']);
         config()->set('translation.deepl.api_key', 'test-key:fx');
         config()->set('translation.deepl.monthly_character_limit', 500000);
         $this->admin = User::factory()->create(['role' => 'admin']);

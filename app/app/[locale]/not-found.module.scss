@@ -6,6 +6,7 @@
         items-center
         justify-center
         min-h-[80vh]
+        pb-20
         px-2 py-6;
 }
 
@@ -39,13 +40,18 @@
 
 .title {
     @apply text-xl sm:text-3xl
-        text-yellow-400/85;
+        bg-clip-text
+        text-transparent
+        bg-linear-to-b
+        from-red-700
+        to-red-300;
 }
 
 .description {
     @apply max-w-md
         text-sm sm:text-base
-        text-red-950/70;
+        text-red-800/70
+        font-bold;
 }
 
 .links {

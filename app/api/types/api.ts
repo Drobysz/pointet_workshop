@@ -9,7 +9,8 @@ export type Language =
     | "it"
     | "fr"
     | "ru"
-    | "de";
+    | "de"
+    | "uk";
 
 export type UserRole =
     | "user"

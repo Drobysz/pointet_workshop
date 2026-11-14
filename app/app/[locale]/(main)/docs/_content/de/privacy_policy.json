@@ -1,0 +1,401 @@
+{
+    "title": "Datenschutzerklärung",
+    "lastUpdated": "2026-11-14",
+    "description": "Welche personenbezogenen Daten von Käufern und Verkäufern der Marktplatz pointet.fr verarbeitet, zu welchen Zwecken, an wen sie übermittelt werden und welche Rechte Sie haben.",
+    "sections": [
+        {
+            "id": "controller",
+            "title": "Wer für Ihre Daten verantwortlich ist",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Verantwortlicher (die für die Verarbeitung verantwortliche Person) für die personenbezogenen Daten ist {{LEGAL_OPERATOR_NAME}}, {{LEGAL_FORM}}, tätig unter der Bezeichnung {{LEGAL_TRADE_NAME}}, SIREN {{LEGAL_SIREN}}, Anschrift: {{LEGAL_ADDRESS}}, E-Mail: ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Diese Datenschutzerklärung gilt für Käufer und Verkäufer des Marktplatzes pointet.fr und wurde in Übereinstimmung mit der Verordnung (EU) 2016/679 (DSGVO) und dem französischen Datenschutzgesetz (Loi Informatique et Libertés) erstellt."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Begriffsbestimmungen",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "buyer-data",
+            "title": "Daten der Käufer",
+            "blocks": [
+                {
+                    "heading": "Welche Daten wir speichern"
+                },
+                {
+                    "list": [
+                        [
+                            "vollständiger Name;"
+                        ],
+                        [
+                            "E-Mail-Adresse;"
+                        ],
+                        [
+                            "Lieferadresse und, sofern Sie sie angegeben haben, Telefonnummer;"
+                        ],
+                        [
+                            "Ihre Bestellungen und Vorbestellungen (Waren, Mengen, Preise, Daten, Status);"
+                        ],
+                        [
+                            "Inhalt des Warenkorbs;"
+                        ],
+                        [
+                            "für das Konto – der Hash des Passworts (das Passwort selbst speichern wir nicht) und technische Sitzungsprotokolle: Kennungen, Gültigkeitsdauer, IP-Adresse und Angaben zum Browser."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Bankkartendaten erhalten und speichern wir nicht: Sie werden vom Zahlungsdienstleister Stripe verarbeitet."
+                    ]
+                },
+                {
+                    "heading": "Wofür wir sie verwenden"
+                },
+                {
+                    "paragraph": [
+                        "Diese Daten werden ausschließlich für die Aufgabe der Bestellung, deren Bezahlung und Lieferung, für die Führung Ihres Kontos und Ihrer Bestellhistorie, für die Kommunikation mit Ihnen zu Ihrer Bestellung und für die Erfüllung der uns gesetzlich auferlegten Pflichten verwendet. Wir verwenden Ihre Daten nicht für Werbung, verkaufen sie nicht und erstellen daraus keine Profile."
+                    ]
+                },
+                {
+                    "heading": "Rechtsgrundlagen"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Zweck"
+                            ],
+                            [
+                                "Rechtsgrundlage (Artikel 6 DSGVO)"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "Aufgabe, Bezahlung und Lieferung der Bestellung, Konto, Rückgaben"
+                                ],
+                                [
+                                    "Erfüllung eines Vertrags – Artikel 6 Abs. 1 Buchst. b"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Aufbewahrung von Rechnungen und Buchhaltungsunterlagen, Beantwortung von Anfragen der Behörden"
+                                ],
+                                [
+                                    "Rechtliche Verpflichtung – Artikel 6 Abs. 1 Buchst. c"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Schutz der Sitzungen, Verhinderung von Betrug und Missbrauch"
+                                ],
+                                [
+                                    "Berechtigtes Interesse – Artikel 6 Abs. 1 Buchst. f"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "seller-data",
+            "title": "Daten der Verkäufer",
+            "blocks": [
+                {
+                    "heading": "Welche Daten wir speichern"
+                },
+                {
+                    "list": [
+                        [
+                            "Daten, die für die Registrierung des Zahlungskontos des Verkäufers beim Zahlungsdienstleister Payoneer erforderlich sind: Angaben zur Identität des Verkäufers oder des Vertreters des Unternehmens, Kontaktdaten, Angaben zum Unternehmen (Name, Register- und Steuernummer, Anschrift, Land), Auszahlungsdaten und die von Payoneer verlangten Nachweisdokumente;"
+                        ],
+                        [
+                            "Daten des Kontos und der Verkäuferkonsole: Warenkatalog, Lagerbestände, Bestellungen, Retouren;"
+                        ],
+                        [
+                            "die Korrespondenz mit uns und die Historie etwaiger Verstöße gegen die Plattformregeln."
+                        ]
+                    ]
+                },
+                {
+                    "heading": "Wofür wir sie verwenden"
+                },
+                {
+                    "paragraph": [
+                        "Die Daten der Verkäufer werden verwendet für den Abschluss und die Erfüllung des Vertrags mit dem Verkäufer, die Eröffnung des Zahlungskontos bei Payoneer und die Auszahlungen, das Einstellen der Waren, die Lagerung und den Versand der Waren über die Lager der Byrd-Gruppe, die Erfüllung der steuerlichen Pflichten des Plattformbetreibers (einschließlich der jährlichen Übermittlung von Angaben zu den Einkünften der Verkäufer an die französische Steuerverwaltung nach den DAC7-Vorschriften) sowie für die Prüfung der Einhaltung der Plattformregeln und der Sanktionsbeschränkungen."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Rechtsgrundlagen: Erfüllung eines Vertrags – Artikel 6 Abs. 1 Buchst. b DSGVO; rechtliche Verpflichtung – Artikel 6 Abs. 1 Buchst. c; berechtigtes Interesse an der Sicherheit und Integrität der Plattform – Artikel 6 Abs. 1 Buchst. f."
+                    ]
+                },
+                {
+                    "heading": "Öffentliche Angaben zum Verkäufer"
+                },
+                {
+                    "paragraph": [
+                        "Name, Status als gewerblicher Verkäufer, Anschrift und Kontaktdaten des Verkäufers werden den Käufern auf der Produktseite angezeigt: Dies verlangen die EU-Rechtsvorschriften über den Verbraucherschutz und die Produktsicherheit."
+                    ]
+                },
+                {
+                    "heading": "Aussetzung der Tätigkeit des Verkäufers"
+                },
+                {
+                    "paragraph": [
+                        "Der Marktplatz behält sich das Recht vor, die Tätigkeit eines Verkäufers auszusetzen – seine Waren auszublenden und die Auszahlungen von seinem Zahlungskonto einzufrieren –, wenn gegen die Plattformregeln verstoßen wird oder wenn Sanktionen oder eine Anordnung der Behörden Frankreichs oder eines anderen EU-Mitgliedstaats vorliegen. In diesen Fällen verarbeiten wir die Daten des Verkäufers in dem Umfang, der für die Prüfung und die Umsetzung der Entscheidung erforderlich ist. Das Verfahren der Aussetzung ist in den ",
+                        {
+                            "text": "Bedingungen für Verkäufer",
+                            "href": "/docs/seller_policy#restrictions"
+                        },
+                        " beschrieben."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "recipients",
+            "title": "An wen wir Daten übermitteln",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Wir übermitteln Daten nur an diejenigen, bei denen dies für die Ausführung der Bestellung oder von Gesetzes wegen erforderlich ist:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "Verkäufer der Ware",
+                                "strong": true
+                            },
+                            " – Name, Lieferadresse und Inhalt der Bestellung, damit er die Ware versenden und eine Rückgabe bearbeiten kann;"
+                        ],
+                        [
+                            {
+                                "text": "Byrd-Gruppe (Fulfillment)",
+                                "strong": true
+                            },
+                            " – Name, Lieferadresse und Inhalt der Bestellung, wenn die Ware in einem Byrd-Lager gelagert wird;"
+                        ],
+                        [
+                            {
+                                "text": "Lieferdienste",
+                                "strong": true
+                            },
+                            " – Name, Adresse und Kontaktangabe für Benachrichtigungen über die Zustellung;"
+                        ],
+                        [
+                            {
+                                "text": "Stripe",
+                                "strong": true
+                            },
+                            " – die Daten, die für die Entgegennahme der Zahlung des Käufers erforderlich sind;"
+                        ],
+                        [
+                            {
+                                "text": "Payoneer",
+                                "strong": true
+                            },
+                            " – Daten der Verkäufer für die Eröffnung des Zahlungskontos und die Auszahlungen; Payoneer handelt als eigenständiger Verantwortlicher für diese Daten;"
+                        ],
+                        [
+                            {
+                                "text": "Hosting-Anbieter",
+                                "strong": true
+                            },
+                            " {{LEGAL_HOSTING_NAME}} – als Auftragsverarbeiter, in unserem Auftrag;"
+                        ],
+                        [
+                            {
+                                "text": "Behörden",
+                                "strong": true
+                            },
+                            " – wenn das Gesetz dies verlangt."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "transfers",
+            "title": "Übermittlung außerhalb des EWR",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Verkäufer des Marktplatzes können außerhalb des Europäischen Wirtschaftsraums ansässig sein (Ukraine, Türkei, Länder Zentralasiens). Wenn Sie eine Ware kaufen, die ein solcher Verkäufer selbst versendet, werden Ihr Name und Ihre Lieferadresse zur Ausführung der Bestellung an ihn übermittelt. Das Land des Verkäufers ist vor Abschluss der Bestellung auf der Produktseite angegeben."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Diese Übermittlung ist durch die Standardvertragsklauseln der Europäischen Kommission abgesichert, die in den Vertrag mit dem Verkäufer aufgenommen sind; fehlen diese, stützt sie sich auf die Erforderlichkeit für die Erfüllung des Vertrags mit Ihnen (Artikel 49 Abs. 1 Buchst. b DSGVO). Stripe und Payoneer können Daten außerhalb des EWR unter Einsatz eigener Schutzmechanismen verarbeiten. Eine Kopie der angewandten Garantien können Sie unter ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        " anfordern."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "retention",
+            "title": "Speicherfristen",
+            "blocks": [
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Daten"
+                            ],
+                            [
+                                "Speicherdauer"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "Käuferkonto und Warenkorb"
+                                ],
+                                [
+                                    "Solange das Konto besteht; ein inaktives Konto wird 3 Jahre nach der letzten Aktivität gelöscht"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Bestellungen, Rechnungen und Buchhaltungsunterlagen"
+                                ],
+                                [
+                                    "10 Jahre (Artikel L123-22 des französischen Handelsgesetzbuchs)"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Nicht abgeschlossene Registrierung"
+                                ],
+                                [
+                                    "24 Stunden"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Sitzungsprotokolle"
+                                ],
+                                [
+                                    "Bis zum Ablauf oder Widerruf des Sitzungstokens"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Daten des Verkäufers"
+                                ],
+                                [
+                                    "Für die Dauer des Vertrags und 5 Jahre nach dessen Beendigung; Buchhaltungsunterlagen – 10 Jahre"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "rights",
+            "title": "Ihre Rechte",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Sie haben das Recht, Auskunft über Ihre Daten, deren Berichtigung, Löschung, die Einschränkung der Verarbeitung und die Datenübertragbarkeit zu verlangen sowie einer Verarbeitung zu widersprechen, die auf einem berechtigten Interesse beruht. Sie können außerdem Anweisungen zum Schicksal Ihrer Daten nach Ihrem Tod hinterlassen."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Um Ihre Rechte auszuüben, schreiben Sie an ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "; wir antworten innerhalb eines Monats. Senden Sie keine Passwörter und Tokens."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Wenn Sie der Ansicht sind, dass Ihre Rechte verletzt wurden, können Sie Beschwerde bei der CNIL (",
+                        {
+                            "text": "www.cnil.fr",
+                            "href": "https://www.cnil.fr"
+                        },
+                        ") oder bei der Aufsichtsbehörde Ihres Landes einlegen."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "security",
+            "title": "Sicherheit",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Passwörter werden nur als Hash gespeichert, Sitzungstokens werden in geschützten Cookies über HTTPS übertragen, der Zugriff auf die Daten ist beschränkt. Näheres zu Cookies finden Sie in der ",
+                        {
+                            "text": "Cookie-Richtlinie",
+                            "href": "/docs/cookies_policy"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "children",
+            "title": "Kinder",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Der Dienst ist nicht für Personen unter 16 Jahren bestimmt. Käufe werden von Personen getätigt, die berechtigt sind, Verträge zu schließen."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "changes",
+            "title": "Änderungen",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Über wesentliche Änderungen dieser Datenschutzerklärung informieren wir vor deren Inkrafttreten auf der Website oder per E-Mail. Das Datum der Fassung (Stand) ist am Anfang des Dokuments angegeben."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Betreiber der Website",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

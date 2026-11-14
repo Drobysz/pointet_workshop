@@ -20,7 +20,7 @@ class RegisterRequest extends FormRequest
             'full_name' => ['required', 'string', 'max:255'],
             'address' => ['sometimes', 'string', 'max:255'],
             'tel' => ['nullable', 'string', 'max:255'],
-            'language' => ['nullable', Rule::in(['en', 'it', 'fr', 'ru', 'de'])],
+            'language' => ['nullable', Rule::in(['en', 'it', 'fr', 'ru', 'de', 'uk'])],
             'refer_id' => ['nullable', 'integer', 'exists:users,id'],
         ];
     }

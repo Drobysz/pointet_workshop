@@ -17,6 +17,7 @@ const OPEN_GRAPH_LOCALES: Record<Locale, string> = {
     de: "de_DE",
     it: "it_IT",
     ru: "ru_RU",
+    uk: "uk_UA",
 };
 
 export interface PageMetadataParams {

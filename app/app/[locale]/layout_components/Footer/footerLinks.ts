@@ -5,7 +5,7 @@ export const footerColumnLinks: LinkColumn[] = [
         titleKey: "support",
         rows: [
             {
-                text: "alexdrobyszfr@gmail.com",
+                text: "support@pointet.fr",
                 link: "mailto:alexdrobyszfr@gmail.com",
             },
         ],
@@ -29,6 +29,9 @@ export const footerColumnLinks: LinkColumn[] = [
 ];
 
 export const footerDocLinks: DocLink[] = [
+    { labelKey: "legalNotice", link: "/docs/legal_notice" },
     { labelKey: "privacyPolicy", link: "/docs/privacy_policy" },
     { labelKey: "cookiesPolicy", link: "/docs/cookies_policy" },
+    { labelKey: "refundPolicy", link: "/docs/refund_policy" },
+    { labelKey: "sellerPolicy", link: "/docs/seller_policy" },
 ];

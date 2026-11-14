@@ -23,6 +23,11 @@ export type LinkColumn = {
 
 export type DocLink = {
     /** Key of the document name below `navigation.footer.legal`. */
-    labelKey: "privacyPolicy" | "cookiesPolicy";
+    labelKey:
+        | "legalNotice"
+        | "privacyPolicy"
+        | "cookiesPolicy"
+        | "refundPolicy"
+        | "sellerPolicy";
     link: string;
 }

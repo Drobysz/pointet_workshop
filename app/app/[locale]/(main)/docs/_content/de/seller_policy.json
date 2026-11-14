@@ -1,0 +1,368 @@
+{
+    "title": "Bedingungen für Verkäufer",
+    "lastUpdated": "2026-11-14",
+    "description": "Bedingungen für die Tätigkeit von Verkäufern auf dem Marktplatz pointet.fr: Dienste der Plattform, Registrierung, Lagerung und Versand der Waren, Auszahlungen, Rückgaben und Verfahren der Aussetzung.",
+    "sections": [
+        {
+            "id": "parties",
+            "title": "Parteien und Gegenstand",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Diese Bedingungen regeln das Verhältnis zwischen dem Betreiber des Marktplatzes pointet.fr – {{LEGAL_OPERATOR_NAME}}, {{LEGAL_TRADE_NAME}}, SIREN {{LEGAL_SIREN}} (im Folgenden „Betreiber“) – und dem auf dem Marktplatz registrierten Hersteller oder Verkäufer (im Folgenden „Verkäufer“). Die Rechte und Pflichten, die diese Bedingungen und die Plattformregeln der Plattform zuweisen, werden vom Betreiber ausgeübt und getragen."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Mit der Registrierung akzeptiert der Verkäufer diese Bedingungen und die ",
+                        {
+                            "text": "Plattformregeln für Verkäufer",
+                            "href": "/docs/seller_rules"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Begriffsbestimmungen",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "services",
+            "title": "Dienste der Plattform",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Plattform stellt dem Verkäufer bereit:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "einen Marktplatz für den Verkauf",
+                                "strong": true
+                            },
+                            " von Kleidung und Accessoires an Käufer;"
+                        ],
+                        [
+                            {
+                                "text": "Lagerung und Versand der Waren",
+                                "strong": true
+                            },
+                            " über die Fulfillment-Zentren der Byrd-Gruppe – auf Wunsch des Verkäufers;"
+                        ],
+                        [
+                            {
+                                "text": "die Verkäuferkonsole",
+                                "strong": true
+                            },
+                            " zur Verwaltung von Katalog, Lagerbeständen, Bestellungen und Retouren; die Lagerdaten werden über die Byrd-API synchronisiert."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Die Plattform ist Vermittler. Der Kaufvertrag wird unmittelbar zwischen dem Verkäufer und dem Käufer geschlossen; die Plattform ist nicht Verkäufer der Waren des Verkäufers."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "eligibility",
+            "title": "Wer sich registrieren kann",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Registrierung steht gewerblichen Verkäufern (Unternehmen und Einzelunternehmern) offen, die in einem der folgenden Länder niedergelassen sind:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "Mitgliedstaaten der Europäischen Union und Staaten des Schengener Übereinkommens (einschließlich Island, Liechtenstein, Norwegen und der Schweiz);"
+                        ],
+                        [
+                            "Ukraine;"
+                        ],
+                        [
+                            "Türkei;"
+                        ],
+                        [
+                            "Länder Zentralasiens: Kasachstan, Kirgisistan, Tadschikistan, Turkmenistan, Usbekistan."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Für die Registrierung macht der Verkäufer Angaben zu sich und seinem Unternehmen und durchläuft die Prüfung des Zahlungsdienstleisters Payoneer. Der Verkäufer gewährleistet, dass die Angaben zutreffend sind, und aktualisiert sie bei Änderungen. Die Plattform ist berechtigt, die Registrierung abzulehnen, wenn die Angaben unvollständig oder unzutreffend sind oder die Prüfung nicht bestanden wurde."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Ein außerhalb der EU niedergelassener Verkäufer ist verpflichtet, für seine Waren eine in der EU niedergelassene verantwortliche Person zu benennen (Artikel 16 der Verordnung (EU) 2023/988 über die allgemeine Produktsicherheit)."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "fulfilment",
+            "title": "Lagerung und Versand der Waren",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Für jede Ware wählt der Verkäufer eine von zwei Optionen."
+                    ]
+                },
+                {
+                    "heading": "Byrd-Fulfillment"
+                },
+                {
+                    "paragraph": [
+                        "Die Ware wird in einem Lager der Byrd-Gruppe gelagert und von dort an den Käufer versandt. Die Kosten für Lagerung, Abwicklung und Versand trägt der Verkäufer nach den Tarifen, die ihm vor der Einlagerung der Ware mitgeteilt werden. Der Verkäufer ist verantwortlich für die Anlieferung der Ware an das Lager, deren Kennzeichnung und die Übereinstimmung der Angaben in der Konsole mit den tatsächlichen Beständen."
+                    ]
+                },
+                {
+                    "heading": "Eigene Lagerung und eigener Versand"
+                },
+                {
+                    "paragraph": [
+                        "Der Verkäufer lagert die Ware bei sich, versendet sie selbst innerhalb der auf der Produktseite angegebenen Frist an den Käufer und übermittelt die Sendungsverfolgungsnummer über die Konsole. Beim Versand aus einem Land außerhalb der EU ist der Verkäufer für Zollabfertigung, Zölle und Steuern so verantwortlich, dass dem Käufer keine Kosten entstehen, die bei Abschluss der Bestellung nicht angegeben waren."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "payments",
+            "title": "Preise, Zahlung und Auszahlungen",
+            "blocks": [
+                {
+                    "list": [
+                        [
+                            "Der Verkäufer legt die Preise selbst fest. Der Preis für den Käufer wird in Euro angegeben und enthält alle Steuern."
+                        ],
+                        [
+                            "Der Käufer bezahlt die Bestellung über den Zahlungsdienstleister der Plattform. Auszahlungen an den Verkäufer erfolgen auf sein Zahlungskonto bei Payoneer."
+                        ],
+                        [
+                            "Die Höhe der Vergütung der Plattform und der Auszahlungsrhythmus werden dem Verkäufer vor Abschluss der Registrierung mitgeteilt und in der Verkäuferkonsole angezeigt. Die Vergütung wird vom Auszahlungsbetrag einbehalten."
+                        ],
+                        [
+                            "Der Verkäufer erfüllt seine steuerlichen Pflichten eigenverantwortlich. Die Plattform übermittelt Angaben zu den Einkünften der Verkäufer an die Steuerbehörden, wenn dies gesetzlich vorgeschrieben ist (DAC7), und übersendet dem Verkäufer jährlich eine Übersicht über seine Geschäftsvorgänge."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "returns",
+            "title": "Rückgaben und Haftung gegenüber dem Käufer",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Der Verkäufer trägt gegenüber dem Käufer die volle Verantwortung für seine Waren:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "er akzeptiert den Widerruf des Kaufs innerhalb von 14 Tagen und erstattet das Geld innerhalb der in der ",
+                            {
+                                "text": "Rückgabe- und Erstattungsrichtlinie",
+                                "href": "/docs/refund_policy"
+                            },
+                            " festgelegten Frist;"
+                        ],
+                        [
+                            "er haftet aus der gesetzlichen Gewährleistung (Konformitätsgarantie, 2 Jahre) und für versteckte Mängel;"
+                        ],
+                        [
+                            "er trägt die Erstattungen an Käufer für seine Waren; die Plattform ist berechtigt, den Erstattungsbetrag von künftigen Auszahlungen an den Verkäufer einzubehalten, wenn die Erstattung auf ihre Kosten erfolgt ist;"
+                        ],
+                        [
+                            "er beantwortet Anfragen von Käufern innerhalb von 2 Werktagen."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Der Verkäufer darf keine Rückgabebedingungen festlegen, die ungünstiger sind als in der Rückgabe- und Erstattungsrichtlinie der Plattform vorgesehen."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "seller-obligations",
+            "title": "Pflichten des Verkäufers in Bezug auf die Waren",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Der Verkäufer gewährleistet, dass seine Waren und Angebote rechtmäßig und sicher sind und den Anforderungen der EU und Frankreichs entsprechen und dass er selbst über alle Rechte an der Ware, der Bezeichnung, den Bildern und den Beschreibungen verfügt. Die detaillierten Anforderungen sind in den ",
+                        {
+                            "text": "Plattformregeln für Verkäufer",
+                            "href": "/docs/seller_rules"
+                        },
+                        " enthalten."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ranking",
+            "title": "Darstellung und Ranking der Waren",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Reihenfolge der Waren im Katalog wird standardmäßig durch die folgenden Hauptparameter bestimmt: Übereinstimmung mit der Suchanfrage und den gewählten Filtern, Verfügbarkeit der Ware und Datum ihrer Hinzufügung. Die Plattform bietet keine bezahlte Hervorhebung an und ändert die Position einer Ware nicht gegen Entgelt. Verkauft die Plattform eigene Waren, werden diese nach denselben Regeln angezeigt wie die Waren der Verkäufer."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "data-access",
+            "title": "Zugang zu Daten",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Der Verkäufer hat in der Konsole Zugang zu den Daten über seine Waren, Bestellungen und Retouren sowie zu den Daten der Käufer in dem für die Ausführung der Bestellung erforderlichen Umfang."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Der Verkäufer verwendet die Daten der Käufer ausschließlich für die Ausführung der Bestellung und die Abwicklung der Rückgabe, verwendet sie nicht für Mailings, gibt sie nicht an Dritte weiter und löscht sie nach Erfüllung seiner Pflichten. Ein außerhalb des EWR niedergelassener Verkäufer akzeptiert die Standardvertragsklauseln der Europäischen Kommission, die die Plattform bei der Registrierung bereitstellt."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "restrictions",
+            "title": "Beschränkung, Aussetzung und Beendigung",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Plattform ist berechtigt, in den folgenden Fällen eine einzelne Ware auszublenden, die Anzeige aller Waren des Verkäufers auszusetzen, Auszahlungen einzufrieren oder den Vertrag zu beenden:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "Verstoß gegen diese Bedingungen oder die Plattformregeln;"
+                        ],
+                        [
+                            "Sanktionen, Anordnung oder Ersuchen der Behörden Frankreichs oder eines anderen EU-Mitgliedstaats, einschließlich der Sanktionsbeschränkungen der EU;"
+                        ],
+                        [
+                            "unzutreffende Registrierungsdaten oder die Weigerung, diese zu bestätigen;"
+                        ],
+                        [
+                            "rechtswidrige oder unsichere Ware, Verletzung von Rechten Dritter;"
+                        ],
+                        [
+                            "begründeter Verdacht auf Betrug."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Verfahren:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "die Plattform teilt dem Verkäufer die Entscheidung und deren Gründe per E-Mail spätestens zu dem Zeitpunkt mit, zu dem die Beschränkung wirksam wird;"
+                        ],
+                        [
+                            "über die vollständige Beendigung des Vertrags informiert die Plattform mindestens 30 Tage im Voraus, außer in Fällen, in denen die sofortige Beendigung gesetzlich vorgeschrieben ist oder durch einen wiederholten Verstoß veranlasst ist;"
+                        ],
+                        [
+                            "das Einfrieren der Auszahlungen dauert nicht länger, als für die Prüfung, die Erfüllung von Verpflichtungen gegenüber Käufern (Erstattungen, Streitigkeiten) oder die Umsetzung einer behördlichen Entscheidung erforderlich ist;"
+                        ],
+                        [
+                            "der Verkäufer kann die Entscheidung anfechten, indem er an ",
+                            {
+                                "text": "{{LEGAL_EMAIL}}",
+                                "href": "mailto:{{LEGAL_EMAIL}}"
+                            },
+                            " schreibt; die Plattform prüft die Beschwerde und antwortet innerhalb von 14 Tagen. Wurde der Verstoß behoben oder war die Entscheidung fehlerhaft, wird die Tätigkeit unverzüglich wiederhergestellt."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Der Verkäufer kann den Vertrag jederzeit beenden, nachdem er seine Verpflichtungen aus bereits aufgegebenen Bestellungen und Rückgaben erfüllt und seine Waren auf eigene Kosten aus dem Byrd-Lager abgeholt hat."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "notices",
+            "title": "Meldungen rechtswidriger Inhalte",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Jede Person kann eine rechtswidrige Ware oder ein rechtswidriges Angebot unter der Adresse ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        " melden. Die Plattform bearbeitet Meldungen zeitnah und objektiv und teilt dem Meldenden und dem Verkäufer die getroffene Entscheidung mit (Verordnung (EU) 2022/2065, Gesetz über digitale Dienste – DSA)."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "changes",
+            "title": "Änderung der Bedingungen",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Plattform informiert den Verkäufer per E-Mail über Änderungen der Bedingungen mindestens 15 Tage vor deren Inkrafttreten. Ein Verkäufer, der mit den Änderungen nicht einverstanden ist, ist berechtigt, den Vertrag vor diesem Datum zu beenden."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "liability",
+            "title": "Haftung",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Plattform haftet für den Betrieb des Marktplatzes und der Konsole, nicht jedoch für die Waren des Verkäufers, deren Rechtmäßigkeit, Qualität und Lieferung. Die Plattform haftet nicht für Betriebsunterbrechungen bei Byrd, Payoneer und den Lieferdiensten, unterstützt den Verkäufer jedoch bei deren Behebung. Nichts in diesen Bedingungen beschränkt eine Haftung, die von Gesetzes wegen nicht beschränkt werden kann."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "law",
+            "title": "Anwendbares Recht und Streitigkeiten",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Für diese Bedingungen gilt französisches Recht. Die Parteien versuchen zunächst, eine Streitigkeit über das Beschwerdeverfahren beizulegen, das im Abschnitt ",
+                        {
+                            "text": "„Beschränkung, Aussetzung und Beendigung“",
+                            "href": "/docs/seller_policy#restrictions"
+                        },
+                        " beschrieben ist. Wird keine Einigung erzielt, entscheiden über die Streitigkeit die zuständigen Gerichte am Ort der Eintragung des Betreibers."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Betreiber der Website",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

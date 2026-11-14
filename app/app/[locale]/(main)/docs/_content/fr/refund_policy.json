@@ -1,0 +1,232 @@
+{
+    "title": "Politique de retour et de remboursement",
+    "lastUpdated": "2026-11-14",
+    "description": "Droit de rétractation de 14 jours, remboursement, garantie des produits, précommandes et modalités de règlement des litiges sur pointet.fr.",
+    "sections": [
+        {
+            "id": "seller",
+            "title": "Qui vend le produit",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "pointet.fr est une place de marché. Le vendeur de chaque produit est indiqué sur la page du produit et dans la confirmation de commande. Tous les vendeurs de la place de marché sont des vendeurs professionnels ; vos achats bénéficient donc des droits des consommateurs prévus par le droit de l'UE."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Vous concluez le contrat de vente avec le vendeur du produit, et c'est le vendeur qui est responsable du retour du produit et du remboursement. La place de marché vous aide à transmettre votre demande au vendeur et intervient si celui-ci ne répond pas."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Définitions",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "withdrawal",
+            "title": "Droit de rétractation — 14 jours",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Vous pouvez vous rétracter sans avoir à motiver votre décision dans un délai de 14 jours à compter de la réception du produit (ou du dernier produit, si la commande est livrée en plusieurs fois)."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Comment procéder :"
+                    ]
+                },
+                {
+                    "ordered": [
+                        [
+                            "Avant l'expiration du délai de 14 jours, notifiez votre décision : depuis la page de la commande dans votre compte ou par e-mail à ",
+                            {
+                                "text": "{{LEGAL_EMAIL}}",
+                                "href": "mailto:{{LEGAL_EMAIL}}"
+                            },
+                            " en indiquant le numéro de commande. Vous pouvez utiliser le ",
+                            {
+                                "text": "formulaire de rétractation",
+                                "href": "/docs/refund_policy#withdrawal-form"
+                            },
+                            " figurant ci-dessous."
+                        ],
+                        [
+                            "Renvoyez le produit dans les 14 jours suivant la notification de votre rétractation, à l'adresse que nous vous communiquerons (adresse du vendeur ou de l'entrepôt)."
+                        ],
+                        [
+                            "Retournez le produit non porté, non lavé et muni de ses étiquettes. Vous pouvez essayer le produit comme vous le feriez en magasin ; vous êtes responsable de la dépréciation du produit résultant de toute autre utilisation."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "refund",
+            "title": "Remboursement",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le vendeur rembourse le prix du produit et les frais de la livraison standard initiale au plus tard 14 jours à compter du moment où il a été informé de votre rétractation. Le vendeur peut différer le remboursement jusqu'à la réception du produit ou jusqu'à la preuve de son expédition. Le remboursement est effectué par le même moyen de paiement que celui utilisé pour la commande, sans frais."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Si vous avez choisi un mode de livraison plus coûteux que la livraison standard, la différence n'est pas remboursée."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "return-costs",
+            "title": "Frais de retour",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Les frais de retour sont à la charge de l'acheteur, sauf s'il est indiqué sur la page du produit que le vendeur les prend en charge. Si le produit est défectueux ou n'est pas conforme à la commande, tous les frais sont à la charge du vendeur."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "exceptions",
+            "title": "Cas où la rétractation est exclue",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le droit de rétractation ne s'applique pas :"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "aux produits confectionnés à vos mesures ou sur commande personnalisée ;"
+                        ],
+                        [
+                            "aux produits sous emballage scellé qui ne peuvent être renvoyés pour des raisons d'hygiène ou de protection de la santé, lorsque l'emballage a été descellé après la livraison (par exemple : sous-vêtements, maillots de bain, boucles d'oreilles)."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "warranty",
+            "title": "Produit défectueux ou non conforme",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Tous les produits bénéficient de la garantie légale de conformité pendant 2 ans à compter de leur réception. Si le produit est défectueux, endommagé ou différent de sa description, vous pouvez en demander gratuitement la réparation ou le remplacement et, si cela est impossible ou n'a pas été fait dans un délai de 30 jours, une réduction du prix ou le remboursement."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "La garantie des vices cachés s'applique également (articles 1641 à 1649 du Code civil)."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Pour mettre en œuvre la garantie, écrivez à ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        " en indiquant le numéro de commande et en joignant des photographies."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "preorders",
+            "title": "Précommandes et annulation avant expédition",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Une précommande peut être annulée sans frais à tout moment avant l'expédition du produit ; le paiement est intégralement remboursé. Après réception du produit, le droit de rétractation habituel de 14 jours s'applique."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Si le vendeur n'est pas en mesure de livrer le produit dans le délai annoncé, vous en serez informé et pourrez annuler la commande avec remboursement intégral."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "disputes",
+            "title": "Si le vendeur ne répond pas. Litiges",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Si le vendeur n'a pas répondu dans un délai de 2 jours ouvrés ou si vous n'êtes pas d'accord avec sa décision, écrivez à ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        " — nous examinerons votre demande et prendrons contact avec le vendeur."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Si le litige n'est pas résolu, vous pouvez recourir gratuitement au médiateur de la consommation : {{LEGAL_MEDIATOR_NAME}}, ",
+                        {
+                            "text": "{{LEGAL_MEDIATOR_URL}}",
+                            "href": "{{LEGAL_MEDIATOR_URL}}"
+                        },
+                        ". Vous conservez également le droit de saisir la justice."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "withdrawal-form",
+            "title": "Formulaire de rétractation",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Veuillez compléter et renvoyer le présent formulaire uniquement si vous souhaitez vous rétracter :"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "À l'attention de : {{LEGAL_TRADE_NAME}}, {{LEGAL_ADDRESS}}, {{LEGAL_EMAIL}}."
+                        ],
+                        [
+                            "Je vous notifie par la présente ma rétractation du contrat portant sur la vente du produit ci-dessous : …"
+                        ],
+                        [
+                            "Numéro de commande : …"
+                        ],
+                        [
+                            "Produit reçu le (date) : …"
+                        ],
+                        [
+                            "Nom de l'acheteur : …"
+                        ],
+                        [
+                            "Adresse de l'acheteur : …"
+                        ],
+                        [
+                            "Date : …"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Opérateur du site",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

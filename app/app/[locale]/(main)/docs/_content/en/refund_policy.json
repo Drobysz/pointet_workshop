@@ -1,0 +1,232 @@
+{
+    "title": "Returns and Refund Policy",
+    "lastUpdated": "2026-11-14",
+    "description": "The 14-day right of withdrawal, refunds, product guarantees, pre-orders and the dispute resolution procedure on pointet.fr.",
+    "sections": [
+        {
+            "id": "seller",
+            "title": "Who sells the product",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "pointet.fr is a marketplace. The seller of each product is identified on the product page and in the order confirmation. All sellers on the marketplace are professional sellers, so purchases are covered by the consumer rights laid down by EU law."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "You conclude the contract of sale with the seller of the product, and it is the seller who is responsible for the return of the product and for the refund. The marketplace helps to pass your request on to the seller and steps in if the seller does not respond."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Definitions",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "withdrawal",
+            "title": "Right of withdrawal — 14 days",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "You may withdraw from your purchase without giving any reason within 14 days of the day on which you receive the product (or the last product, if the order is delivered in several parts)."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "How to do so:"
+                    ]
+                },
+                {
+                    "ordered": [
+                        [
+                            "Before the 14 days expire, give notice of your decision: via the order page in your account or by email to ",
+                            {
+                                "text": "{{LEGAL_EMAIL}}",
+                                "href": "mailto:{{LEGAL_EMAIL}}"
+                            },
+                            ", quoting your order number. You may use the ",
+                            {
+                                "text": "withdrawal form",
+                                "href": "/docs/refund_policy#withdrawal-form"
+                            },
+                            " set out below."
+                        ],
+                        [
+                            "Send the product back within 14 days of giving notice of withdrawal, to the address that we will send you (the address of the seller or of the warehouse)."
+                        ],
+                        [
+                            "Return the product unworn, unwashed and with its tags attached. You may try the product on as you would in a shop; you are liable for any diminished value of the product resulting from any other use."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "refund",
+            "title": "Refunds",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The seller refunds the price of the product and the cost of standard delivery of the product to you no later than 14 days from the time at which the seller was informed of your withdrawal. The seller may withhold the refund until the product has been received or proof of its dispatch has been provided. The refund is made using the same means of payment as was used to pay for the order, without any fees."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "If you chose a delivery option more expensive than standard delivery, the difference is not refunded."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "return-costs",
+            "title": "Cost of return shipping",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The buyer bears the cost of return shipping, unless the product page states that the seller will bear it. If the product is defective or does not match the order, all costs are borne by the seller."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "exceptions",
+            "title": "When withdrawal is not possible",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The right of withdrawal does not apply to:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "products made to your measurements or to your individual order;"
+                        ],
+                        [
+                            "products in sealed packaging which cannot be returned for hygiene or health protection reasons, if the packaging has been opened after delivery (for example, underwear, swimwear, earrings)."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "warranty",
+            "title": "Defective or wrong product",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "All products are covered by the legal guarantee of conformity — 2 years from the day of receipt. If the product is defective, damaged or differs from its description, you are entitled to require its repair or replacement free of charge and, if that is impossible or has not been done within 30 days, a price reduction or a refund."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "The guarantee against hidden defects also applies (Articles 1641 to 1649 of the French Civil Code)."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "To make a claim under a guarantee, write to ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        ", stating your order number and attaching photographs."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "preorders",
+            "title": "Pre-orders and cancellation before dispatch",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "A pre-order may be cancelled free of charge at any time before the product is dispatched; the payment is refunded in full. Once you have received the product, the standard 14-day right of withdrawal applies."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "If the seller is unable to supply the product within the announced time, you will be informed and will be able to cancel the order with a full refund."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "disputes",
+            "title": "If the seller does not respond. Disputes",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "If the seller has not responded within 2 business days or you disagree with the seller's decision, write to ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        " — we will review your request and contact the seller."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "If the dispute is not resolved, you are entitled to refer it free of charge to the consumer mediator: {{LEGAL_MEDIATOR_NAME}}, ",
+                        {
+                            "text": "{{LEGAL_MEDIATOR_URL}}",
+                            "href": "{{LEGAL_MEDIATOR_URL}}"
+                        },
+                        ". You also retain the right to bring the matter before the courts."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "withdrawal-form",
+            "title": "Withdrawal form",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Complete and return this form only if you wish to withdraw from your purchase:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "To: {{LEGAL_TRADE_NAME}}, {{LEGAL_ADDRESS}}, {{LEGAL_EMAIL}}."
+                        ],
+                        [
+                            "I hereby give notice that I withdraw from the contract of sale of the following product: …"
+                        ],
+                        [
+                            "Order number: …"
+                        ],
+                        [
+                            "Product received on (date): …"
+                        ],
+                        [
+                            "Name of buyer: …"
+                        ],
+                        [
+                            "Address of buyer: …"
+                        ],
+                        [
+                            "Date: …"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Website operator",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

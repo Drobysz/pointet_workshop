@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { transition } from "./framer";
 import { Link } from "@/i18n/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { cutiveMono, monserrat_medium, tinyFive } from "@/fonts/fonts";
+import { cutiveMono, jersey10, monserrat_medium, tinyFive } from "@/fonts/fonts";
 
 export const DocCategory = ({
     children,
@@ -50,7 +50,7 @@ export const DocCategory = ({
         <motion.li 
             className={cn(
                 s.doc_category,
-                monserrat_medium.className,
+                jersey10.className,
                 isActive && s.chosen
             )}
             ref={ref}

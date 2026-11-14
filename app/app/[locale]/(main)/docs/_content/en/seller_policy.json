@@ -1,0 +1,368 @@
+{
+    "title": "Seller Terms",
+    "lastUpdated": "2026-11-14",
+    "description": "The terms on which sellers operate on the pointet.fr marketplace: platform services, registration, storage and dispatch of products, payouts, returns and the suspension procedure.",
+    "sections": [
+        {
+            "id": "parties",
+            "title": "Parties and subject matter",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "These terms govern the relationship between the operator of the pointet.fr marketplace — {{LEGAL_OPERATOR_NAME}}, {{LEGAL_TRADE_NAME}}, SIREN {{LEGAL_SIREN}} (hereinafter the “Operator”) — and the manufacturer or seller registered on the marketplace (hereinafter the “Seller”). The rights and obligations that these terms and the Platform Rules assign to the Platform are exercised and borne by the Operator."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "By registering, the Seller accepts these terms and the ",
+                        {
+                            "text": "Platform Rules for Sellers",
+                            "href": "/docs/seller_rules"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Definitions",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "services",
+            "title": "Platform services",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The Platform provides the Seller with:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "a marketplace for selling",
+                                "strong": true
+                            },
+                            " clothing and accessories to buyers;"
+                        ],
+                        [
+                            {
+                                "text": "storage and dispatch of products",
+                                "strong": true
+                            },
+                            " through the fulfilment centres of the Byrd group — at the Seller's option;"
+                        ],
+                        [
+                            {
+                                "text": "a seller console",
+                                "strong": true
+                            },
+                            " for managing the catalogue, stock, orders and returns; warehouse data is synchronised via the Byrd API."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "The Platform is an intermediary. The contract of sale is concluded directly between the Seller and the buyer; the Platform is not the seller of the Seller's products."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "eligibility",
+            "title": "Who can register",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Registration is open to professional sellers (companies and sole proprietors (entrepreneurs individuels)) established in one of the following countries:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "Member States of the European Union and States party to the Schengen Agreement (including Iceland, Liechtenstein, Norway and Switzerland);"
+                        ],
+                        [
+                            "Ukraine;"
+                        ],
+                        [
+                            "Turkey;"
+                        ],
+                        [
+                            "the countries of Central Asia: Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan, Uzbekistan."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "In order to register, the Seller provides information about itself and its business and undergoes verification by the payment provider Payoneer. The Seller warrants that the information is accurate and updates it whenever it changes. The Platform may refuse registration if the data is incomplete or inaccurate or if the verification has not been passed."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "A Seller established outside the EU must designate a responsible person established in the EU for its products (Article 16 of Regulation (EU) 2023/988 on general product safety)."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "fulfilment",
+            "title": "Storage and dispatch of products",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "For each product, the Seller chooses one of two options."
+                    ]
+                },
+                {
+                    "heading": "Byrd fulfilment"
+                },
+                {
+                    "paragraph": [
+                        "The product is stored in a warehouse of the Byrd group and is dispatched to the buyer from the warehouse. The cost of storage, handling and dispatch is paid by the Seller at the rates communicated to the Seller before the product is placed in the warehouse. The Seller is responsible for delivering the product to the warehouse, for its labelling and for ensuring that the information in the console matches actual stock levels."
+                    ]
+                },
+                {
+                    "heading": "Storage and dispatch by the Seller"
+                },
+                {
+                    "paragraph": [
+                        "The Seller stores the product on its own premises, dispatches it to the buyer itself within the time stated on the product page and provides the tracking number via the console. Where a product is dispatched from a country outside the EU, the Seller is responsible for customs clearance, duties and taxes, so that the buyer bears no costs that were not indicated at checkout."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "payments",
+            "title": "Prices, payment and payouts",
+            "blocks": [
+                {
+                    "list": [
+                        [
+                            "The Seller sets its own prices. The price for the buyer is stated in euros and includes all taxes."
+                        ],
+                        [
+                            "The buyer pays for the order through the Platform's payment provider. Payouts to the Seller are made to the Seller's Payoneer account."
+                        ],
+                        [
+                            "The amount of the Platform's fee and the frequency of payouts are communicated to the Seller before registration is completed and are displayed in the seller console. The fee is deducted from the payout amount."
+                        ],
+                        [
+                            "The Seller is solely responsible for fulfilling its own tax obligations. The Platform reports sellers' income to the tax authorities where this is required by law (DAC7) and sends the Seller an annual summary of the Seller's transactions."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "returns",
+            "title": "Returns and liability towards the buyer",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The Seller bears full liability towards the buyer for its products:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "it accepts withdrawal from a purchase within 14 days and makes the refund within the time limit laid down in the ",
+                            {
+                                "text": "Returns and Refund Policy",
+                                "href": "/docs/refund_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            "it is liable under the legal guarantee of conformity (2 years) and for hidden defects;"
+                        ],
+                        [
+                            "it bears the cost of refunds to buyers for its products; the Platform may deduct the amount of a refund from the Seller's future payouts if the refund was made at the Platform's expense;"
+                        ],
+                        [
+                            "it responds to buyers' enquiries within 2 business days."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "The Seller may not set return conditions that are less favourable than those provided for in the Platform's Returns and Refund Policy."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "seller-obligations",
+            "title": "Seller's obligations regarding products",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The Seller warrants that its products and listings are lawful, safe and compliant with EU and French requirements, and that the Seller holds all rights to the product, its name, images and descriptions. Detailed requirements are set out in the ",
+                        {
+                            "text": "Platform Rules for Sellers",
+                            "href": "/docs/seller_rules"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ranking",
+            "title": "Display and ranking of products",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "By default, the order of products in the catalogue is determined by the following main parameters: relevance to the search query and to the selected filters, product availability and the date on which the product was added. The Platform does not offer paid promotion and does not change a product's position in return for remuneration. If the Platform sells its own products, they are displayed according to the same rules as sellers' products."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "data-access",
+            "title": "Access to data",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "In the console, the Seller has access to data on its products, orders and returns and to buyers' data to the extent necessary to fulfil an order."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "The Seller uses buyers' data only to fulfil orders and process returns, does not use it for mailings, does not disclose it to third parties and deletes it once the Seller's obligations have been fulfilled. A Seller established outside the EEA accepts the European Commission's standard contractual clauses, which the Platform provides at registration."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "restrictions",
+            "title": "Restriction, suspension and termination",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The Platform may hide an individual product, suspend the display of all the Seller's products, freeze payouts or terminate the contract in the following cases:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "a breach of these terms or of the Platform Rules;"
+                        ],
+                        [
+                            "sanctions, an order or a request from the authorities of France or another EU Member State, including EU sanctions restrictions;"
+                        ],
+                        [
+                            "inaccurate registration data or a refusal to confirm it;"
+                        ],
+                        [
+                            "an illegal or unsafe product, or an infringement of third-party rights;"
+                        ],
+                        [
+                            "a reasonable suspicion of fraud."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Procedure:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "the Platform informs the Seller of the decision and of the reasons for it by email no later than the time at which the restriction takes effect;"
+                        ],
+                        [
+                            "the Platform gives at least 30 days' notice of full termination of the contract, except where immediate termination is required by law or results from a repeated breach;"
+                        ],
+                        [
+                            "a freeze on payouts lasts no longer than is necessary for verification, for the fulfilment of obligations towards buyers (returns, disputes) or for compliance with a decision of a public authority;"
+                        ],
+                        [
+                            "the Seller may contest the decision by writing to ",
+                            {
+                                "text": "{{LEGAL_EMAIL}}",
+                                "href": "mailto:{{LEGAL_EMAIL}}"
+                            },
+                            "; the Platform reviews the complaint and replies within 14 days. If the breach has been remedied or the decision was mistaken, the Seller's activity is reinstated without delay."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "The Seller may terminate the contract at any time, after fulfilling its obligations in respect of orders already placed and returns and removing its products from the Byrd warehouse at its own expense."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "notices",
+            "title": "Notices of illegal content",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Any person may report an illegal product or listing at ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        ". The Platform processes notices in a timely and objective manner and informs the person who submitted the notice and the Seller of the decision taken (Regulation (EU) 2022/2065, the Digital Services Act (DSA))."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "changes",
+            "title": "Changes to the terms",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The Platform notifies the Seller of changes to the terms by email at least 15 days before they take effect. A Seller who does not agree to the changes may terminate the contract before that date."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "liability",
+            "title": "Liability",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "The Platform is responsible for the operation of the marketplace and of the console, but not for the Seller's products or for their legality, quality or delivery. The Platform is not liable for interruptions in the services of Byrd, Payoneer or delivery carriers, but assists the Seller in resolving them. Nothing in these terms limits any liability that cannot be limited by law."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "law",
+            "title": "Governing law and disputes",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "These terms are governed by French law. The parties shall first attempt to settle a dispute through the complaint-handling procedure described in the section ",
+                        {
+                            "text": "“Restriction, suspension and termination”",
+                            "href": "/docs/seller_policy#restrictions"
+                        },
+                        ". If no agreement is reached, the dispute shall be heard by the competent courts of the place where the Operator is registered."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Website operator",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

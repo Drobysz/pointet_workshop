@@ -1,4 +1,4 @@
-export type language = "ru" | "en" | "it" | "de" | "fr";
+export type language = "ru" | "en" | "it" | "de" | "fr" | "uk";
 
 export type LoginForm = {
     email: string;

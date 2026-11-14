@@ -1,0 +1,177 @@
+{
+    "title": "Regole della piattaforma per i venditori",
+    "lastUpdated": "2026-11-14",
+    "description": "Regole del marketplace pointet.fr per i venditori: requisiti relativi al venditore, ai prodotti, alle inserzioni, all'esecuzione degli ordini e misure in caso di violazione.",
+    "sections": [
+        {
+            "id": "introduction",
+            "title": "Le presenti regole",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le presenti regole sono vincolanti per ogni Venditore e integrano le ",
+                        {
+                            "text": "Condizioni per i venditori",
+                            "href": "/docs/seller_policy"
+                        },
+                        ". Riuniscono i requisiti del diritto dell'UE e della Francia e i requisiti propri della Piattaforma in materia di qualità del servizio."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Definizioni",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "seller",
+            "title": "Il Venditore e i suoi dati",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Sulla Piattaforma possono vendere soltanto venditori professionali. Prima di pubblicare i prodotti il Venditore comunica denominazione, indirizzo, telefono, email, numero di registrazione e numero di identificazione fiscale e le coordinate per i versamenti, e conferma che offrirà soltanto prodotti conformi al diritto dell'UE."
+                        ],
+                        [
+                            "I dati devono essere veritieri e aggiornati; in caso di variazione il Venditore li aggiorna entro 14 giorni."
+                        ],
+                        [
+                            "Il Venditore di un paese al di fuori dell'UE indica, per i propri prodotti, una persona responsabile nell'UE; il nome e i recapiti di quest'ultima sono mostrati nella pagina del prodotto (Regolamento (UE) 2023/988)."
+                        ],
+                        [
+                            "Il Venditore che fornisce prodotti in Francia comunica l'identificativo unico di responsabilità estesa del produttore (EPR/REP) per i prodotti tessili, le calzature e gli imballaggi, oppure conferma che tale obbligo è adempiuto dal proprio fornitore (articolo L541-10-9 del Codice dell'ambiente francese). In mancanza di un identificativo valido il prodotto non è offerto agli acquirenti in Francia."
+                        ],
+                        [
+                            "Il Venditore non deve essere soggetto a sanzioni dell'UE o della Francia e non deve vendere prodotti la cui origine o fornitura violi le restrizioni sanzionatorie."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "products",
+            "title": "Prodotti",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Sulla Piattaforma sono venduti soltanto prodotti nuovi delle categorie «abbigliamento» e «accessori». Non sono ammessi i prodotti usati né la rivendita di prodotti altrui senza il diritto di venderli."
+                        ],
+                        [
+                            "Sono vietati le contraffazioni e i prodotti che violano i diritti sui marchi, sui disegni e modelli e i diritti d'autore, i prodotti vietati o non sicuri ai sensi del diritto dell'UE e i prodotti richiamati dal mercato."
+                        ],
+                        [
+                            "I prodotti devono essere sicuri (Regolamento (UE) 2023/988) e conformi alle restrizioni chimiche del Regolamento REACH (ad esempio in materia di coloranti azoici e di nichel nella minuteria metallica). L'abbigliamento per bambini è conforme ai requisiti relativi a cordoncini e piccole parti."
+                        ],
+                        [
+                            "Ogni prodotto tessile reca un'etichetta con la composizione fibrosa nella lingua del paese in cui il prodotto è venduto (Regolamento (UE) n. 1007/2011); per le calzature, l'etichettatura dei materiali."
+                        ],
+                        [
+                            "I prodotti in pelle e pelliccia di specie protette dalla convenzione CITES non sono ammessi senza i documenti autorizzativi. Le pellicce di gatto e di cane e i prodotti derivati dalla foca sono vietati."
+                        ],
+                        [
+                            "Il Venditore indica il paese di fabbricazione del prodotto."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "listings",
+            "title": "Inserzioni",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "La descrizione, le fotografie, la composizione, la taglia e il prezzo devono essere esatti e non ingannevoli. Nella pagina del prodotto sono indicati le caratteristiche principali, il prezzo finale comprensivo di tutte le imposte, il costo e il termine di consegna, le informazioni sul fabbricante e sulla sicurezza del prodotto."
+                        ],
+                        [
+                            "In caso di annuncio di uno sconto, si considera «prezzo precedente» il prezzo più basso del prodotto nei 30 giorni precedenti."
+                        ],
+                        [
+                            "Sono vietate le recensioni false e le manipolazioni delle valutazioni."
+                        ],
+                        [
+                            "Le asserzioni ambientali («eco», «sostenibile», «biologico») sono ammesse soltanto in presenza di una prova a sostegno, ad esempio un certificato."
+                        ],
+                        [
+                            "Le fotografie devono essere proprie o corredate dei diritti di utilizzo, prive di filigrane e di dati di contatto del Venditore."
+                        ],
+                        [
+                            "L'inserzione è compilata almeno in inglese o in francese; la Piattaforma traduce automaticamente le denominazioni dei prodotti nelle altre lingue."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "orders",
+            "title": "Ordini e acquirenti",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Il Venditore rispetta il diritto di recesso dell'acquirente entro 14 giorni, la garanzia legale di conformità (2 anni) e i termini di rimborso."
+                        ],
+                        [
+                            "Il prodotto è consegnato entro il termine annunciato e, se il termine non è indicato, entro 30 giorni dal giorno dell'ordine."
+                        ],
+                        [
+                            "In caso di spedizione in proprio, il Venditore affida l'ordine al vettore entro 3 giorni lavorativi e inserisce il numero di tracciamento nella console."
+                        ],
+                        [
+                            "Le giacenze indicate nella console devono essere aggiornate. L'annullamento di un ordine per indisponibilità del prodotto imputabile al Venditore è considerato una violazione."
+                        ],
+                        [
+                            "Il Venditore risponde all'acquirente entro 2 giorni lavorativi."
+                        ],
+                        [
+                            "I dati degli acquirenti sono utilizzati esclusivamente per l'esecuzione dell'ordine; l'invio di comunicazioni promozionali e la comunicazione a terzi sono vietati."
+                        ],
+                        [
+                            "È vietato dirottare l'acquirente fuori dalla Piattaforma: proporre un pagamento o una transazione al di fuori di pointet.fr oppure inserire nel pacco materiale pubblicitario contenente una simile proposta."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "violations",
+            "title": "Violazioni",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Di ogni limitazione il Venditore riceve una comunicazione con l'indicazione del motivo e può contestarla secondo la procedura descritta nelle ",
+                            {
+                                "text": "Condizioni per i venditori",
+                                "href": "/docs/seller_policy#restrictions"
+                            },
+                            "."
+                        ],
+                        [
+                            "La Piattaforma applica misure proporzionate alla violazione: avvertimento, occultamento di un singolo prodotto, sospensione di tutti i prodotti, congelamento dei versamenti, cessazione del contratto. Le contraffazioni, i prodotti non sicuri, la frode e le sanzioni comportano la sospensione immediata."
+                        ],
+                        [
+                            "In caso di richiamo di un prodotto o di un incidente connesso alla sicurezza, il Venditore ne informa immediatamente la Piattaforma e collabora con le autorità di vigilanza."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Gestore del sito",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

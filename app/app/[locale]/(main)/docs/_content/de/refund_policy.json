@@ -1,0 +1,232 @@
+{
+    "title": "Rückgabe- und Erstattungsrichtlinie",
+    "lastUpdated": "2026-11-14",
+    "description": "14-tägiges Widerrufsrecht, Erstattung, Gewährleistung für Waren, Vorbestellungen und Verfahren zur Beilegung von Streitigkeiten auf pointet.fr.",
+    "sections": [
+        {
+            "id": "seller",
+            "title": "Wer die Ware verkauft",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "pointet.fr ist ein Marktplatz. Der Verkäufer der jeweiligen Ware ist auf der Produktseite und in der Bestellbestätigung angegeben. Alle Verkäufer des Marktplatzes sind gewerbliche Verkäufer, daher gelten für Käufe die im EU-Recht festgelegten Verbraucherrechte."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Den Kaufvertrag schließen Sie mit dem Verkäufer der Ware, und es ist der Verkäufer, der für die Rücknahme der Ware und die Erstattung des Geldes verantwortlich ist. Der Marktplatz hilft dabei, Ihre Anfrage an den Verkäufer weiterzuleiten, und schaltet sich ein, wenn der Verkäufer nicht antwortet."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Begriffsbestimmungen",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "withdrawal",
+            "title": "Widerrufsrecht – 14 Tage",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Sie können Ihren Kauf ohne Angabe von Gründen innerhalb von 14 Tagen ab dem Tag des Erhalts der Ware widerrufen (bzw. der letzten Ware, wenn die Bestellung in Teilen geliefert wird)."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "So gehen Sie vor:"
+                    ]
+                },
+                {
+                    "ordered": [
+                        [
+                            "Teilen Sie Ihre Entscheidung vor Ablauf der 14 Tage mit: über die Bestellseite in Ihrem Konto oder per E-Mail an ",
+                            {
+                                "text": "{{LEGAL_EMAIL}}",
+                                "href": "mailto:{{LEGAL_EMAIL}}"
+                            },
+                            " unter Angabe der Bestellnummer. Sie können dafür das unten stehende ",
+                            {
+                                "text": "Widerrufsformular",
+                                "href": "/docs/refund_policy#withdrawal-form"
+                            },
+                            " verwenden."
+                        ],
+                        [
+                            "Senden Sie die Ware innerhalb von 14 Tagen nach der Mitteilung des Widerrufs an die Adresse zurück, die wir Ihnen zusenden (Adresse des Verkäufers oder des Lagers)."
+                        ],
+                        [
+                            "Geben Sie die Ware ungetragen, ungewaschen und mit Etiketten zurück. Sie dürfen die Ware so anprobieren, wie Sie es in einem Ladengeschäft tun würden; für einen Wertverlust der Ware infolge einer darüber hinausgehenden Nutzung haften Sie."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "refund",
+            "title": "Erstattung",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Der Verkäufer erstattet den Preis der Ware und die Kosten der Standardlieferung zu Ihnen spätestens 14 Tage ab dem Zeitpunkt, zu dem er von Ihrem Widerruf erfahren hat. Der Verkäufer darf die Erstattung zurückhalten, bis er die Ware erhalten hat oder ein Nachweis über deren Absendung vorliegt. Die Erstattung erfolgt über dasselbe Zahlungsmittel, mit dem die Bestellung bezahlt wurde, ohne Gebühren."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Wenn Sie eine teurere Lieferart als die Standardlieferung gewählt haben, wird die Differenz nicht erstattet."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "return-costs",
+            "title": "Kosten der Rücksendung",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Rücksendung bezahlt der Käufer, sofern auf der Produktseite nicht angegeben ist, dass der Verkäufer sie übernimmt. Ist die Ware mangelhaft oder entspricht sie nicht der Bestellung, trägt der Verkäufer sämtliche Kosten."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "exceptions",
+            "title": "Wann kein Widerruf möglich ist",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Das Widerrufsrecht besteht nicht bei:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "Waren, die nach Ihren Maßen oder nach individueller Bestellung angefertigt wurden;"
+                        ],
+                        [
+                            "Waren in versiegelter Verpackung, die aus Gründen der Hygiene oder des Gesundheitsschutzes nicht zurückgegeben werden können, wenn die Verpackung nach der Lieferung geöffnet wurde (zum Beispiel Unterwäsche, Bademode, Ohrringe)."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "warranty",
+            "title": "Mangelhafte oder falsche Ware",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Für alle Waren gilt die gesetzliche Gewährleistung (Konformitätsgarantie) – 2 Jahre ab dem Tag des Erhalts. Ist die Ware mangelhaft, beschädigt oder weicht sie von der Beschreibung ab, können Sie kostenlos Reparatur oder Ersatzlieferung verlangen und, wenn dies unmöglich ist oder nicht innerhalb von 30 Tagen erfolgt, eine Preisminderung oder die Erstattung des Geldes."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Außerdem gilt die Gewährleistung für versteckte Mängel (Artikel 1641–1649 des französischen Zivilgesetzbuchs)."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Um die Gewährleistung in Anspruch zu nehmen, schreiben Sie an ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        ", geben Sie die Bestellnummer an und fügen Sie Fotos bei."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "preorders",
+            "title": "Vorbestellungen und Stornierung vor dem Versand",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Eine Vorbestellung kann jederzeit vor dem Versand der Ware kostenlos storniert werden; die Zahlung wird vollständig erstattet. Nach Erhalt der Ware gilt das übliche 14-tägige Widerrufsrecht."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Kann der Verkäufer die Ware nicht innerhalb der angekündigten Frist liefern, werden Sie darüber informiert und können die Bestellung gegen vollständige Erstattung stornieren."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "disputes",
+            "title": "Wenn der Verkäufer nicht antwortet. Streitigkeiten",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Hat der Verkäufer nicht innerhalb von 2 Werktagen geantwortet oder sind Sie mit seiner Entscheidung nicht einverstanden, schreiben Sie an ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        " – wir prüfen Ihr Anliegen und setzen uns mit dem Verkäufer in Verbindung."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Wird die Streitigkeit nicht beigelegt, können Sie sich kostenlos an den Mediator für Verbraucherstreitigkeiten (Verbraucherschlichtungsstelle) wenden: {{LEGAL_MEDIATOR_NAME}}, ",
+                        {
+                            "text": "{{LEGAL_MEDIATOR_URL}}",
+                            "href": "{{LEGAL_MEDIATOR_URL}}"
+                        },
+                        ". Ihr Recht, ein Gericht anzurufen, bleibt Ihnen ebenfalls erhalten."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "withdrawal-form",
+            "title": "Widerrufsformular",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Füllen Sie dieses Formular nur dann aus und senden Sie es ab, wenn Sie Ihren Kauf widerrufen wollen:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "An: {{LEGAL_TRADE_NAME}}, {{LEGAL_ADDRESS}}, {{LEGAL_EMAIL}}."
+                        ],
+                        [
+                            "Hiermit widerrufe ich den Vertrag über den Kauf der folgenden Ware: …"
+                        ],
+                        [
+                            "Bestellnummer: …"
+                        ],
+                        [
+                            "Ware erhalten am (Datum): …"
+                        ],
+                        [
+                            "Name des Käufers: …"
+                        ],
+                        [
+                            "Anschrift des Käufers: …"
+                        ],
+                        [
+                            "Datum: …"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Betreiber der Website",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

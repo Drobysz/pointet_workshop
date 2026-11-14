@@ -25,13 +25,18 @@
 }
 
 .doc_list {
+    // The legal links wrap under the logo line instead of pushing the footer
+    // wider than the viewport.
     @apply flex
-        gap-8
+        min-w-0
+        flex-wrap
+        justify-end
+        gap-x-8
+        gap-y-2
         items-center
         text-sm
-        max-lg:flex-wrap
-        max-lg:gap-x-6
-        max-lg:gap-y-2;
+        max-lg:justify-start
+        max-lg:gap-x-6;
 }
 
 .developer_title {

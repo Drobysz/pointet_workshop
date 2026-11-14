@@ -1,0 +1,177 @@
+{
+    "title": "Règles de la plateforme pour les vendeurs",
+    "lastUpdated": "2026-11-14",
+    "description": "Règles de la place de marché pointet.fr pour les vendeurs : exigences relatives au vendeur, aux produits, aux annonces et à l'exécution des commandes, et mesures en cas de manquement.",
+    "sections": [
+        {
+            "id": "introduction",
+            "title": "À propos des règles",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Les présentes règles s'imposent à chaque Vendeur et complètent les ",
+                        {
+                            "text": "Conditions applicables aux vendeurs",
+                            "href": "/docs/seller_policy"
+                        },
+                        ". Elles regroupent les exigences du droit de l'UE et du droit français ainsi que les exigences propres de la Plateforme en matière de qualité de service."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Définitions",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "seller",
+            "title": "Le Vendeur et ses données",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Seuls des vendeurs professionnels peuvent vendre sur la Plateforme. Avant la mise en ligne de ses produits, le Vendeur communique sa dénomination, son adresse, son numéro de téléphone, son adresse e-mail, son numéro d'immatriculation et son numéro fiscal ainsi que les informations nécessaires aux versements, et certifie qu'il ne proposera que des produits conformes au droit de l'UE."
+                        ],
+                        [
+                            "Les données doivent être exactes et à jour ; en cas de changement, le Vendeur les met à jour dans un délai de 14 jours."
+                        ],
+                        [
+                            "Le Vendeur d'un pays situé en dehors de l'UE désigne, pour ses produits, une personne responsable dans l'UE ; le nom et les coordonnées de celle-ci sont affichés sur la page du produit (règlement (UE) 2023/988)."
+                        ],
+                        [
+                            "Le Vendeur qui fournit des produits en France communique son identifiant unique au titre de la responsabilité élargie du producteur (identifiant unique REP) pour les textiles, les chaussures et les emballages, ou confirme que cette obligation est remplie par son fournisseur (article L541-10-9 du Code de l'environnement). En l'absence d'identifiant en cours de validité, le produit n'est pas proposé aux acheteurs en France."
+                        ],
+                        [
+                            "Le Vendeur ne doit pas faire l'objet de sanctions de l'UE ou de la France et ne doit pas vendre de produits dont l'origine ou la fourniture enfreint les restrictions liées aux sanctions."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "products",
+            "title": "Produits",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Seuls des produits neufs des catégories « vêtements » et « accessoires » sont vendus sur la Plateforme. Les produits d'occasion et la revente de produits d'autrui sans droit de les vendre ne sont pas admis."
+                        ],
+                        [
+                            "Sont interdits les contrefaçons et les produits portant atteinte aux droits sur les marques, aux dessins et modèles et aux droits d'auteur, les produits interdits ou dangereux au regard du droit de l'UE, ainsi que les produits ayant fait l'objet d'un rappel."
+                        ],
+                        [
+                            "Les produits doivent être sûrs (règlement (UE) 2023/988) et respecter les restrictions chimiques du règlement REACH (par exemple concernant les colorants azoïques et le nickel dans les garnitures). Les vêtements pour enfants respectent les exigences relatives aux cordons et aux petites pièces."
+                        ],
+                        [
+                            "Chaque produit textile porte une étiquette indiquant sa composition en fibres dans la langue du pays dans lequel le produit est vendu (règlement (UE) n° 1007/2011) ; pour les chaussures, un étiquetage des matériaux."
+                        ],
+                        [
+                            "Les produits en cuir et en fourrure d'espèces protégées par la convention CITES ne sont pas admis sans les permis requis. La fourrure de chat et de chien ainsi que les produits dérivés du phoque sont interdits."
+                        ],
+                        [
+                            "Le Vendeur indique le pays de fabrication du produit."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "listings",
+            "title": "Annonces",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "La description, les photographies, la composition, la taille et le prix doivent être exacts et ne pas induire en erreur. La page du produit indique les caractéristiques essentielles, le prix total toutes taxes comprises, les frais et le délai de livraison, ainsi que les informations relatives au fabricant et à la sécurité du produit."
+                        ],
+                        [
+                            "En cas d'annonce d'une réduction de prix, le « prix antérieur » s'entend du prix le plus bas du produit au cours des 30 jours précédents."
+                        ],
+                        [
+                            "Les faux avis et la manipulation des notes sont interdits."
+                        ],
+                        [
+                            "Les allégations environnementales (« éco », « durable », « biologique ») ne sont admises que si elles sont étayées par un justificatif, par exemple un certificat."
+                        ],
+                        [
+                            "Les photographies sont celles du Vendeur ou font l'objet de droits d'utilisation ; elles ne comportent ni filigrane ni coordonnées du Vendeur."
+                        ],
+                        [
+                            "L'annonce est rédigée au minimum en anglais ou en français ; la Plateforme traduit automatiquement les noms des produits dans les autres langues."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "orders",
+            "title": "Commandes et acheteurs",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Le Vendeur respecte le droit de rétractation de l'acheteur pendant 14 jours, la garantie légale de conformité (2 ans) et les délais de remboursement."
+                        ],
+                        [
+                            "Le produit est livré dans le délai annoncé et, si aucun délai n'est indiqué, au plus tard 30 jours à compter de la commande."
+                        ],
+                        [
+                            "En cas d'expédition par ses soins, le Vendeur remet la commande au transporteur dans un délai de 3 jours ouvrés et saisit le numéro de suivi dans la console."
+                        ],
+                        [
+                            "Les stocks indiqués dans la console doivent être à jour. L'annulation d'une commande pour indisponibilité du produit imputable au Vendeur constitue un manquement."
+                        ],
+                        [
+                            "Le Vendeur répond à l'acheteur dans un délai de 2 jours ouvrés."
+                        ],
+                        [
+                            "Les données des acheteurs ne sont utilisées que pour l'exécution de la commande ; le publipostage et la transmission à des tiers sont interdits."
+                        ],
+                        [
+                            "Il est interdit de détourner l'acheteur de la Plateforme : proposer un paiement ou une transaction en dehors de pointet.fr, ou glisser dans le colis une publicité comportant une telle proposition."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "violations",
+            "title": "Manquements",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Toute restriction est notifiée au Vendeur avec l'indication de son motif ; le Vendeur peut la contester selon la procédure décrite dans les ",
+                            {
+                                "text": "Conditions applicables aux vendeurs",
+                                "href": "/docs/seller_policy#restrictions"
+                            },
+                            "."
+                        ],
+                        [
+                            "La Plateforme applique des mesures proportionnées au manquement : avertissement, masquage d'un produit donné, suspension de l'ensemble des produits, gel des versements, résiliation du contrat. Les contrefaçons, les produits dangereux, la fraude et les sanctions entraînent une suspension immédiate."
+                        ],
+                        [
+                            "En cas de rappel d'un produit ou d'incident lié à la sécurité, le Vendeur en informe immédiatement la Plateforme et coopère avec les autorités de surveillance."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Opérateur du site",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

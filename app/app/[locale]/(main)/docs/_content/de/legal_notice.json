@@ -1,0 +1,177 @@
+{
+    "title": "Impressum",
+    "lastUpdated": "2026-11-14",
+    "description": "Angaben zum Herausgeber und zum Hosting der Website pointet.fr, Kontaktdaten, Verfahren zur Meldung rechtswidriger Inhalte und zur Beilegung von Streitigkeiten.",
+    "sections": [
+        {
+            "id": "publisher",
+            "title": "Herausgeber der Website",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Website pointet.fr wird herausgegeben und betrieben von:"
+                    ]
+                },
+                {
+                    "shared": "operator"
+                },
+                {
+                    "paragraph": [
+                        "Verantwortlicher für die Veröffentlichung (directeur de la publication): {{LEGAL_OPERATOR_NAME}}."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "hosting",
+            "title": "Hosting",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Website wird gehostet beim Hosting-Anbieter {{LEGAL_HOSTING_NAME}}, {{LEGAL_HOSTING_ADDRESS}}, Telefon: {{LEGAL_HOSTING_PHONE}}."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "activity",
+            "title": "Tätigkeit der Website",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "pointet.fr ist ein Marktplatz für Kleidung und Accessoires. Der Betreiber stellt gewerblichen Verkäufern einen Marktplatz für den Verkauf von Waren zur Verfügung und tritt als Vermittler auf: Der Kaufvertrag wird unmittelbar zwischen Verkäufer und Käufer geschlossen. Der Verkäufer der jeweiligen Ware ist auf der Produktseite und in der Bestellbestätigung angegeben."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Die Bedingungen für die Nutzung der Website sind in den folgenden Dokumenten beschrieben:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "Datenschutzerklärung",
+                                "href": "/docs/privacy_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Cookie-Richtlinie",
+                                "href": "/docs/cookies_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Rückgabe- und Erstattungsrichtlinie",
+                                "href": "/docs/refund_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Bedingungen für Verkäufer",
+                                "href": "/docs/seller_policy"
+                            },
+                            ";"
+                        ],
+                        [
+                            {
+                                "text": "Plattformregeln für Verkäufer",
+                                "href": "/docs/seller_rules"
+                            },
+                            "."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "contact",
+            "title": "Kontakt und Meldung rechtswidriger Inhalte",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Zentrale Kontaktadresse für Nutzer und Behörden: ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        ". Wir nehmen Anfragen in französischer und englischer Sprache entgegen."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Unter derselben Adresse kann jede Person eine Ware oder ein Angebot melden, die bzw. das sie für rechtswidrig hält. Geben Sie den Link zur Seite, den Grund, aus dem Sie den Inhalt für rechtswidrig halten, sowie Ihren Namen und Ihre E-Mail-Adresse an. Wir bearbeiten Meldungen zeitnah und objektiv und teilen die getroffene Entscheidung mit."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "intellectual-property",
+            "title": "Geistiges Eigentum",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Name, Logo, Gestaltung, Texte und Programmcode der Website gehören dem Betreiber oder werden von ihm rechtmäßig genutzt. Fotos, Bezeichnungen und Beschreibungen der Waren gehören den Verkäufern oder deren Rechteinhabern. Jede Vervielfältigung oder Nutzung dieser Materialien ohne vorherige schriftliche Genehmigung ist untersagt, außer in den gesetzlich ausdrücklich zugelassenen Fällen."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "personal-data",
+            "title": "Personenbezogene Daten und Cookies",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Die Verarbeitung personenbezogener Daten und Ihre Rechte sind in der ",
+                        {
+                            "text": "Datenschutzerklärung",
+                            "href": "/docs/privacy_policy"
+                        },
+                        " beschrieben. Informationen zu Cookies finden Sie in der ",
+                        {
+                            "text": "Cookie-Richtlinie",
+                            "href": "/docs/cookies_policy"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "disputes",
+            "title": "Streitigkeiten und Mediation",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Für die Website und die darauf veröffentlichten Dokumente gilt französisches Recht. Dem Verbraucher bleibt der Schutz erhalten, den ihm die zwingenden Vorschriften seines Wohnsitzlandes gewähren."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Konnte eine Streitigkeit nicht unmittelbar beigelegt werden, kann sich der Verbraucher kostenlos an den Mediator für Verbraucherstreitigkeiten (Verbraucherschlichtungsstelle) wenden: {{LEGAL_MEDIATOR_NAME}}, ",
+                        {
+                            "text": "{{LEGAL_MEDIATOR_URL}}",
+                            "href": "{{LEGAL_MEDIATOR_URL}}"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "liability",
+            "title": "Haftung",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Der Betreiber unternimmt angemessene Anstrengungen, damit die Angaben auf der Website richtig sind und die Website verfügbar ist, gewährleistet jedoch nicht, dass sie frei von Fehlern und Betriebsunterbrechungen ist. Die Angaben zu den Waren stammen von den Verkäufern, die für deren Richtigkeit verantwortlich sind. Die Website kann Links zu Angeboten Dritter enthalten; der Betreiber haftet nicht für deren Inhalte."
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,152 @@
+{
+    "lastUpdatedLabel": "Dernière mise à jour",
+    "blocks": {
+        "operator": [
+            {
+                "paragraph": [
+                    {
+                        "text": "{{LEGAL_TRADE_NAME}}",
+                        "strong": true
+                    },
+                    " — {{LEGAL_OPERATOR_NAME}}, {{LEGAL_FORM}}. SIREN : {{LEGAL_SIREN}}. SIRET : {{LEGAL_SIRET}}. Immatriculation : {{LEGAL_REGISTRY}}. Adresse : {{LEGAL_ADDRESS}}. TVA : {{LEGAL_VAT}}."
+                ]
+            },
+            {
+                "paragraph": [
+                    "E-mail : ",
+                    {
+                        "text": "{{LEGAL_EMAIL}}",
+                        "href": "mailto:{{LEGAL_EMAIL}}"
+                    },
+                    ". Téléphone : {{LEGAL_PHONE}}."
+                ]
+            }
+        ],
+        "definitions": [
+            {
+                "paragraph": [
+                    "Dans les documents du site, les termes suivants ont la signification indiquée ci-dessous, qu'ils soient ou non écrits avec une majuscule :"
+                ]
+            },
+            {
+                "list": [
+                    [
+                        {
+                            "text": "Plateforme (place de marché)",
+                            "strong": true
+                        },
+                        " — l'espace de vente en ligne pointet.fr, sur lequel les Vendeurs proposent des Produits aux Acheteurs, y compris le site, les comptes et la Console vendeur."
+                    ],
+                    [
+                        {
+                            "text": "Opérateur",
+                            "strong": true
+                        },
+                        " — la personne qui exploite la Plateforme et en fournit les services : {{LEGAL_OPERATOR_NAME}}, exerçant sous le nom commercial {{LEGAL_TRADE_NAME}}. Ses informations d'identification figurent dans les ",
+                        {
+                            "text": "Mentions légales",
+                            "href": "/docs/legal_notice"
+                        },
+                        "."
+                    ],
+                    [
+                        {
+                            "text": "Utilisateur",
+                            "strong": true
+                        },
+                        " — toute personne qui visite la Plateforme ou l'utilise : Invité, Acheteur ou Vendeur."
+                    ],
+                    [
+                        {
+                            "text": "Invité",
+                            "strong": true
+                        },
+                        " — l'Utilisateur qui utilise la Plateforme sans être connecté à un Compte."
+                    ],
+                    [
+                        {
+                            "text": "Acheteur",
+                            "strong": true
+                        },
+                        " — la personne physique qui commande des Produits sur la Plateforme à des fins qui n'entrent pas dans le cadre de son activité professionnelle (consommateur)."
+                    ],
+                    [
+                        {
+                            "text": "Vendeur",
+                            "strong": true
+                        },
+                        " — le fabricant ou tout autre vendeur professionnel (société ou entrepreneur individuel) inscrit sur la Plateforme et y proposant ses Produits."
+                    ],
+                    [
+                        {
+                            "text": "Compte",
+                            "strong": true
+                        },
+                        " — l'espace personnel de l'Utilisateur sur la Plateforme, accessible après inscription et connexion."
+                    ],
+                    [
+                        {
+                            "text": "Console vendeur",
+                            "strong": true
+                        },
+                        " — la rubrique de la Plateforme dans laquelle le Vendeur gère son catalogue, ses stocks, ses Commandes et ses retours."
+                    ],
+                    [
+                        {
+                            "text": "Produit",
+                            "strong": true
+                        },
+                        " — le vêtement ou l'accessoire que le Vendeur propose sur la Plateforme."
+                    ],
+                    [
+                        {
+                            "text": "Commande",
+                            "strong": true
+                        },
+                        " — le contrat de vente d'un Produit conclu entre l'Acheteur et le Vendeur par l'intermédiaire de la Plateforme."
+                    ],
+                    [
+                        {
+                            "text": "Précommande",
+                            "strong": true
+                        },
+                        " — la Commande d'un Produit qui n'est pas encore disponible et qui sera fabriqué ou livré ultérieurement."
+                    ],
+                    [
+                        {
+                            "text": "Entrepôt Byrd (logistique)",
+                            "strong": true
+                        },
+                        " — les services de stockage, de préparation et d'expédition des Produits fournis par les centres logistiques du groupe Byrd."
+                    ],
+                    [
+                        {
+                            "text": "Prestataires de services de paiement",
+                            "strong": true
+                        },
+                        " — Stripe, par l'intermédiaire duquel les Acheteurs paient les Commandes, et Payoneer, par l'intermédiaire duquel les Vendeurs reçoivent leurs versements."
+                    ],
+                    [
+                        {
+                            "text": "Règles de la plateforme",
+                            "strong": true
+                        },
+                        " — les ",
+                        {
+                            "text": "Règles de la plateforme pour les vendeurs",
+                            "href": "/docs/seller_rules"
+                        },
+                        ", qui s'imposent à chaque Vendeur."
+                    ],
+                    [
+                        {
+                            "text": "Jour ouvré",
+                            "strong": true
+                        },
+                        " — tout jour autre que le samedi, le dimanche et les jours fériés légaux en France."
+                    ]
+                ]
+            }
+        ]
+    }
+}

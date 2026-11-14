@@ -1,0 +1,368 @@
+{
+    "title": "Conditions applicables aux vendeurs",
+    "lastUpdated": "2026-11-14",
+    "description": "Conditions d'activité des vendeurs sur la place de marché pointet.fr : services de la plateforme, inscription, stockage et expédition des produits, versements, retours et procédure de suspension.",
+    "sections": [
+        {
+            "id": "parties",
+            "title": "Parties et objet",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Les présentes conditions régissent les relations entre l'opérateur de la place de marché pointet.fr — {{LEGAL_OPERATOR_NAME}}, {{LEGAL_TRADE_NAME}}, SIREN {{LEGAL_SIREN}} (ci-après l'« Opérateur ») — et le fabricant ou le vendeur inscrit sur la place de marché (ci-après le « Vendeur »). Les droits et obligations que les présentes conditions et les Règles de la plateforme attribuent à la Plateforme sont exercés et assumés par l'Opérateur."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "En s'inscrivant, le Vendeur accepte les présentes conditions ainsi que les ",
+                        {
+                            "text": "Règles de la plateforme pour les vendeurs",
+                            "href": "/docs/seller_rules"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Définitions",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "services",
+            "title": "Services de la Plateforme",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "La Plateforme fournit au Vendeur :"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "un espace de vente",
+                                "strong": true
+                            },
+                            " de vêtements et d'accessoires auprès des acheteurs ;"
+                        ],
+                        [
+                            {
+                                "text": "le stockage et l'expédition des produits",
+                                "strong": true
+                            },
+                            " par l'intermédiaire des centres logistiques du groupe Byrd — si le Vendeur le souhaite ;"
+                        ],
+                        [
+                            {
+                                "text": "une console vendeur",
+                                "strong": true
+                            },
+                            " pour gérer le catalogue, les stocks, les commandes et les retours ; les données des entrepôts sont synchronisées via l'API Byrd."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "La Plateforme est un intermédiaire. Le contrat de vente est conclu directement entre le Vendeur et l'acheteur ; la Plateforme n'est pas le vendeur des produits du Vendeur."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "eligibility",
+            "title": "Qui peut s'inscrire",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "L'inscription est ouverte aux vendeurs professionnels (sociétés et entrepreneurs individuels) établis dans l'un des pays suivants :"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "États membres de l'Union européenne et États de l'espace Schengen (y compris l'Islande, le Liechtenstein, la Norvège et la Suisse) ;"
+                        ],
+                        [
+                            "Ukraine ;"
+                        ],
+                        [
+                            "Turquie ;"
+                        ],
+                        [
+                            "pays d'Asie centrale : Kazakhstan, Kirghizistan, Tadjikistan, Turkménistan, Ouzbékistan."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Pour s'inscrire, le Vendeur fournit des informations sur lui-même et sur son entreprise et se soumet à la vérification du prestataire de services de paiement Payoneer. Le Vendeur garantit l'exactitude de ces informations et les met à jour en cas de changement. La Plateforme peut refuser l'inscription si les données sont incomplètes ou inexactes, ou si la vérification n'a pas abouti."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Le Vendeur établi en dehors de l'UE est tenu de désigner, pour ses produits, une personne responsable établie dans l'UE (article 16 du règlement (UE) 2023/988 relatif à la sécurité générale des produits)."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "fulfilment",
+            "title": "Stockage et expédition des produits",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Pour chaque produit, le Vendeur choisit l'une des deux options suivantes."
+                    ]
+                },
+                {
+                    "heading": "Logistique Byrd"
+                },
+                {
+                    "paragraph": [
+                        "Le produit est stocké dans un entrepôt du groupe Byrd et expédié à l'acheteur depuis cet entrepôt. Les frais de stockage, de traitement et d'expédition sont à la charge du Vendeur, selon les tarifs qui lui sont communiqués avant le dépôt du produit en entrepôt. Le Vendeur est responsable de l'acheminement du produit jusqu'à l'entrepôt, de son étiquetage et de la concordance entre les informations de la console et les stocks réels."
+                    ]
+                },
+                {
+                    "heading": "Stockage et expédition par le Vendeur"
+                },
+                {
+                    "paragraph": [
+                        "Le Vendeur stocke le produit chez lui, l'expédie lui-même à l'acheteur dans le délai indiqué sur la page du produit et communique le numéro de suivi via la console. En cas d'expédition depuis un pays situé en dehors de l'UE, le Vendeur est responsable des formalités douanières, des droits et des taxes, de sorte que l'acheteur ne supporte aucun frais non indiqué lors de la passation de la commande."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "payments",
+            "title": "Prix, paiement et versements",
+            "blocks": [
+                {
+                    "list": [
+                        [
+                            "Le Vendeur fixe lui-même ses prix. Le prix affiché à l'acheteur est exprimé en euros, toutes taxes comprises."
+                        ],
+                        [
+                            "L'acheteur paie la commande par l'intermédiaire du prestataire de services de paiement de la Plateforme. Les versements au Vendeur sont effectués sur son compte Payoneer."
+                        ],
+                        [
+                            "Le montant de la rémunération de la Plateforme et la périodicité des versements sont communiqués au Vendeur avant la finalisation de l'inscription et sont affichés dans la console vendeur. La rémunération est prélevée sur le montant du versement."
+                        ],
+                        [
+                            "Le Vendeur s'acquitte lui-même de ses obligations fiscales. La Plateforme transmet les informations relatives aux revenus des vendeurs à l'administration fiscale lorsque la loi l'exige (DAC7) et adresse chaque année au Vendeur un récapitulatif de ses opérations."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "returns",
+            "title": "Retours et responsabilité envers l'acheteur",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le Vendeur assume l'entière responsabilité de ses produits envers l'acheteur :"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "il accepte la rétractation dans le délai de 14 jours et rembourse l'acheteur dans le délai fixé par la ",
+                            {
+                                "text": "Politique de retour et de remboursement",
+                                "href": "/docs/refund_policy"
+                            },
+                            " ;"
+                        ],
+                        [
+                            "il est tenu de la garantie légale de conformité (2 ans) et de la garantie des vices cachés ;"
+                        ],
+                        [
+                            "il prend en charge les remboursements dus aux acheteurs pour ses produits ; la Plateforme peut retenir le montant d'un remboursement sur les versements futurs du Vendeur si ce remboursement a été effectué aux frais de la Plateforme ;"
+                        ],
+                        [
+                            "il répond aux demandes des acheteurs dans un délai de 2 jours ouvrés."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Le Vendeur ne peut pas fixer des conditions de retour moins favorables que celles prévues par la Politique de retour et de remboursement de la Plateforme."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "seller-obligations",
+            "title": "Obligations du Vendeur relatives aux produits",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le Vendeur garantit que ses produits et ses annonces sont licites, sûrs et conformes aux exigences de l'UE et de la France, et qu'il détient tous les droits sur le produit, sa dénomination, ses images et ses descriptions. Les exigences détaillées figurent dans les ",
+                        {
+                            "text": "Règles de la plateforme pour les vendeurs",
+                            "href": "/docs/seller_rules"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ranking",
+            "title": "Affichage et classement des produits",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "L'ordre par défaut des produits dans le catalogue est déterminé par les principaux paramètres suivants : la pertinence par rapport à la requête de recherche et aux filtres sélectionnés, la disponibilité du produit et la date de son ajout. La Plateforme ne propose pas de mise en avant payante et ne modifie pas la position d'un produit contre rémunération. Si la Plateforme vend ses propres produits, ceux-ci sont affichés selon les mêmes règles que les produits des vendeurs."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "data-access",
+            "title": "Accès aux données",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le Vendeur a accès, dans la console, aux données relatives à ses produits, à ses commandes et à ses retours, ainsi qu'aux données des acheteurs dans la mesure nécessaire à l'exécution de la commande."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Le Vendeur n'utilise les données des acheteurs que pour l'exécution de la commande et du retour, ne les utilise pas à des fins de publipostage, ne les transmet pas à des tiers et les supprime une fois ses obligations exécutées. Le Vendeur établi en dehors de l'EEE accepte les clauses contractuelles types de la Commission européenne que la Plateforme lui fournit lors de l'inscription."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "restrictions",
+            "title": "Restriction, suspension et résiliation",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "La Plateforme peut masquer un produit donné, suspendre l'affichage de l'ensemble des produits du Vendeur, geler les versements ou résilier le contrat dans les cas suivants :"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "manquement aux présentes conditions ou aux Règles de la plateforme ;"
+                        ],
+                        [
+                            "sanctions, injonction ou demande des autorités françaises ou d'un autre État membre de l'UE, y compris les restrictions liées aux sanctions de l'UE ;"
+                        ],
+                        [
+                            "données d'inscription inexactes ou refus de les justifier ;"
+                        ],
+                        [
+                            "produit illicite ou dangereux, atteinte aux droits de tiers ;"
+                        ],
+                        [
+                            "soupçon fondé de fraude."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Procédure :"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "la Plateforme informe le Vendeur de la décision et de ses motifs par e-mail au plus tard au moment où la restriction prend effet ;"
+                        ],
+                        [
+                            "la Plateforme notifie la résiliation totale du contrat au moins 30 jours à l'avance, sauf lorsque la résiliation immédiate est exigée par la loi ou résulte d'un manquement répété ;"
+                        ],
+                        [
+                            "le gel des versements ne dure pas plus longtemps que nécessaire à la vérification, à l'exécution des obligations envers les acheteurs (retours, litiges) ou à l'exécution d'une décision d'une autorité ;"
+                        ],
+                        [
+                            "le Vendeur peut contester la décision en écrivant à ",
+                            {
+                                "text": "{{LEGAL_EMAIL}}",
+                                "href": "mailto:{{LEGAL_EMAIL}}"
+                            },
+                            " ; la Plateforme examine la réclamation et répond dans un délai de 14 jours. Si le manquement a été corrigé ou si la décision était erronée, l'activité est rétablie sans délai."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Le Vendeur peut résilier le contrat à tout moment, après avoir exécuté ses obligations au titre des commandes et des retours déjà enregistrés et retiré ses produits de l'entrepôt Byrd à ses frais."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "notices",
+            "title": "Signalement des contenus illicites",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Toute personne peut signaler un produit ou une annonce illicite à l'adresse ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        ". La Plateforme examine les signalements en temps opportun et de manière objective et informe de la décision prise l'auteur du signalement et le Vendeur (règlement (UE) 2022/2065, règlement sur les services numériques (DSA))."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "changes",
+            "title": "Modification des conditions",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "La Plateforme informe le Vendeur de toute modification des conditions par e-mail au moins 15 jours avant son entrée en vigueur. Le Vendeur qui n'accepte pas les modifications peut résilier le contrat avant cette date."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "liability",
+            "title": "Responsabilité",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "La Plateforme est responsable du fonctionnement de l'espace de vente et de la console, mais non des produits du Vendeur, de leur licéité, de leur qualité ni de leur livraison. La Plateforme n'est pas responsable des interruptions de service de Byrd, de Payoneer et des transporteurs, mais elle assiste le Vendeur pour y remédier. Aucune stipulation des présentes conditions ne limite une responsabilité qui ne peut être limitée en vertu de la loi."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "law",
+            "title": "Droit applicable et litiges",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Les présentes conditions sont soumises au droit français. Les parties tentent d'abord de régler leur différend par la procédure de traitement des réclamations décrite à la section ",
+                        {
+                            "text": "« Restriction, suspension et résiliation »",
+                            "href": "/docs/seller_policy#restrictions"
+                        },
+                        ". À défaut d'accord, le litige relève des tribunaux compétents du lieu d'immatriculation de l'Opérateur."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Opérateur du site",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

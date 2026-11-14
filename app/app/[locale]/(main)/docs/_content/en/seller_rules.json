@@ -1,0 +1,177 @@
+{
+    "title": "Platform Rules for Sellers",
+    "lastUpdated": "2026-11-14",
+    "description": "The rules of the pointet.fr marketplace for sellers: requirements for sellers, products, listings and order fulfilment, and the measures taken in the event of breaches.",
+    "sections": [
+        {
+            "id": "introduction",
+            "title": "About these rules",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "These rules are binding on every Seller and supplement the ",
+                        {
+                            "text": "Seller Terms",
+                            "href": "/docs/seller_policy"
+                        },
+                        ". They bring together the requirements of EU and French law and the Platform's own service quality requirements."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Definitions",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "seller",
+            "title": "The Seller and its details",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Only professional sellers may sell on the Platform. Before listing products, the Seller provides its name, address, telephone number, email address, registration number and tax number and its payout details, and confirms that it will offer only products that comply with EU law."
+                        ],
+                        [
+                            "The details must be accurate and up to date; if they change, the Seller updates them within 14 days."
+                        ],
+                        [
+                            "A Seller from a country outside the EU designates a responsible person in the EU for its products; that person's name and contact details are shown on the product page (Regulation (EU) 2023/988)."
+                        ],
+                        [
+                            "A Seller supplying products to France provides its extended producer responsibility (EPR) unique identifier for textiles, footwear and packaging, or confirms that this obligation is fulfilled by its supplier (Article L541-10-9 of the French Environmental Code). Without a valid identifier, the product is not offered to buyers in France."
+                        ],
+                        [
+                            "The Seller must not be subject to EU or French sanctions and must not sell products whose origin or supply breaches sanctions restrictions."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "products",
+            "title": "Products",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Only new products in the “clothing” and “accessories” categories are sold on the Platform. Second-hand products and the resale of other parties' products without the right to sell them are not permitted."
+                        ],
+                        [
+                            "Counterfeits and products that infringe trade mark, design or copyright rights, products that are prohibited or unsafe under EU law, and products that have been recalled from the market are prohibited."
+                        ],
+                        [
+                            "Products must be safe (Regulation (EU) 2023/988) and comply with the chemical restrictions of the REACH Regulation (for example, on azo dyes and on nickel in fastenings and trims). Children's clothing complies with the requirements on cords and small parts."
+                        ],
+                        [
+                            "Every textile product bears a label stating its fibre composition in the language of the country in which the product is sold (Regulation (EU) No 1007/2011); for footwear, a label indicating the materials."
+                        ],
+                        [
+                            "Products made of leather or fur from species protected by the CITES Convention are not permitted without the required permits. Cat and dog fur and seal products are prohibited."
+                        ],
+                        [
+                            "The Seller states the product's country of manufacture."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "listings",
+            "title": "Listings",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "The description, photographs, composition, size and price must be accurate and not misleading. The product page states the main characteristics, the total price inclusive of all taxes, the cost and time of delivery, and information about the manufacturer and about product safety."
+                        ],
+                        [
+                            "When a discount is announced, the “previous price” is the lowest price of the product during the preceding 30 days."
+                        ],
+                        [
+                            "Fake reviews and rating manipulation are prohibited."
+                        ],
+                        [
+                            "Environmental claims (“eco”, “sustainable”, “organic”) are permitted only where they are substantiated, for example by a certificate."
+                        ],
+                        [
+                            "Photographs must be the Seller's own or used with the right to use them, without watermarks and without the Seller's contact details."
+                        ],
+                        [
+                            "A listing must be completed in at least English or French; the Platform automatically translates product names into the other languages."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "orders",
+            "title": "Orders and buyers",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "The Seller respects the buyer's right of withdrawal within 14 days, the legal guarantee of conformity (2 years) and the time limits for refunds."
+                        ],
+                        [
+                            "The product is delivered within the announced time or, if no time is stated, no later than 30 days from the day of the order."
+                        ],
+                        [
+                            "Where the Seller dispatches the product itself, it hands the order over to the carrier within 3 business days and enters the tracking number in the console."
+                        ],
+                        [
+                            "Stock levels in the console must be up to date. Cancellation of an order because the product is out of stock through the Seller's fault constitutes a breach."
+                        ],
+                        [
+                            "The Seller replies to the buyer within 2 business days."
+                        ],
+                        [
+                            "Buyers' data is used only to fulfil the order; mailings and disclosure to third parties are prohibited."
+                        ],
+                        [
+                            "Diverting a buyer away from the Platform is prohibited: offering payment or a transaction outside pointet.fr, or enclosing advertising containing such an offer in the parcel."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "violations",
+            "title": "Breaches",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "The Seller is notified of every restriction, with a statement of the reason, and may contest it in accordance with the procedure described in the ",
+                            {
+                                "text": "Seller Terms",
+                                "href": "/docs/seller_policy#restrictions"
+                            },
+                            "."
+                        ],
+                        [
+                            "The Platform applies measures in proportion to the breach: a warning, hiding an individual product, suspension of all products, freezing of payouts, termination of the contract. Counterfeits, unsafe products, fraud and sanctions lead to immediate suspension."
+                        ],
+                        [
+                            "In the event of a product recall or a safety-related incident, the Seller informs the Platform immediately and cooperates with the supervisory authorities."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Website operator",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

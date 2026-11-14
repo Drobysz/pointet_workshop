@@ -1,0 +1,401 @@
+{
+    "title": "Politique de confidentialité",
+    "lastUpdated": "2026-11-14",
+    "description": "Quelles données personnelles des acheteurs et des vendeurs la place de marché pointet.fr traite, à quelles fins, à qui elles sont communiquées et quels sont vos droits.",
+    "sections": [
+        {
+            "id": "controller",
+            "title": "Qui est responsable de vos données",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le responsable du traitement des données personnelles est {{LEGAL_OPERATOR_NAME}}, {{LEGAL_FORM}}, exerçant sous le nom commercial {{LEGAL_TRADE_NAME}}, SIREN {{LEGAL_SIREN}}, adresse : {{LEGAL_ADDRESS}}, e-mail : ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "La présente politique s'applique aux acheteurs et aux vendeurs de la place de marché pointet.fr et a été établie conformément au règlement (UE) 2016/679 (RGPD) et à la loi française « Informatique et Libertés »."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Définitions",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "buyer-data",
+            "title": "Données des acheteurs",
+            "blocks": [
+                {
+                    "heading": "Quelles données nous conservons"
+                },
+                {
+                    "list": [
+                        [
+                            "nom complet ;"
+                        ],
+                        [
+                            "adresse e-mail ;"
+                        ],
+                        [
+                            "adresse de livraison et numéro de téléphone, si vous l'avez indiqué ;"
+                        ],
+                        [
+                            "vos commandes et précommandes (produits, quantités, prix, dates, statuts) ;"
+                        ],
+                        [
+                            "contenu du panier ;"
+                        ],
+                        [
+                            "pour le compte : l'empreinte (hash) du mot de passe (nous ne conservons pas le mot de passe lui-même) et les enregistrements techniques des sessions : identifiants, durée de validité, adresse IP et informations sur le navigateur."
+                        ]
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Nous ne recevons ni ne conservons les données de votre carte bancaire : elles sont traitées par le prestataire de services de paiement Stripe."
+                    ]
+                },
+                {
+                    "heading": "À quelles fins nous les utilisons"
+                },
+                {
+                    "paragraph": [
+                        "Ces données sont utilisées uniquement pour la passation de la commande, son paiement et sa livraison, pour la gestion de votre compte et de l'historique de vos commandes, pour communiquer avec vous au sujet de votre commande et pour respecter les obligations que la loi nous impose. Nous n'utilisons pas vos données à des fins publicitaires, nous ne les vendons pas et nous ne nous en servons pas pour établir des profils."
+                    ]
+                },
+                {
+                    "heading": "Bases légales"
+                },
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Finalité"
+                            ],
+                            [
+                                "Base légale (article 6 du RGPD)"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "Passation, paiement et livraison de la commande, compte, retours"
+                                ],
+                                [
+                                    "Exécution du contrat — article 6, paragraphe 1, point b)"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Conservation des factures et des documents comptables, réponses aux demandes des autorités"
+                                ],
+                                [
+                                    "Obligation légale — article 6, paragraphe 1, point c)"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Protection des sessions, prévention de la fraude et des abus"
+                                ],
+                                [
+                                    "Intérêt légitime — article 6, paragraphe 1, point f)"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "seller-data",
+            "title": "Données des vendeurs",
+            "blocks": [
+                {
+                    "heading": "Quelles données nous conservons"
+                },
+                {
+                    "list": [
+                        [
+                            "les données nécessaires à l'enregistrement du compte du vendeur auprès du prestataire de services de paiement Payoneer : informations sur l'identité du vendeur ou du représentant de la société, coordonnées, informations sur l'entreprise (dénomination, numéro d'immatriculation et numéro fiscal, adresse, pays), informations nécessaires aux versements et pièces justificatives exigées par Payoneer ;"
+                        ],
+                        [
+                            "les données du compte et de la console vendeur : catalogue de produits, stocks, commandes, retours ;"
+                        ],
+                        [
+                            "la correspondance échangée avec nous et l'historique des manquements aux règles de la plateforme, le cas échéant."
+                        ]
+                    ]
+                },
+                {
+                    "heading": "À quelles fins nous les utilisons"
+                },
+                {
+                    "paragraph": [
+                        "Les données des vendeurs sont utilisées pour la conclusion et l'exécution du contrat avec le vendeur, l'ouverture du compte Payoneer et les versements, la mise en ligne des produits, le stockage et l'expédition des produits par l'intermédiaire des entrepôts du groupe Byrd, le respect des obligations fiscales de l'opérateur de la plateforme (y compris la transmission annuelle à l'administration fiscale française des informations relatives aux revenus des vendeurs, en application des règles DAC7), ainsi que pour le contrôle du respect des règles de la plateforme et des restrictions liées aux sanctions."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Bases légales : exécution du contrat — article 6, paragraphe 1, point b), du RGPD ; obligation légale — article 6, paragraphe 1, point c) ; intérêt légitime tenant à la sécurité et à la loyauté de la plateforme — article 6, paragraphe 1, point f)."
+                    ]
+                },
+                {
+                    "heading": "Informations publiques sur le vendeur"
+                },
+                {
+                    "paragraph": [
+                        "La dénomination, le statut de vendeur professionnel, l'adresse et les coordonnées du vendeur sont affichés aux acheteurs sur la page du produit : la législation de l'UE relative à la protection des consommateurs et à la sécurité des produits l'exige."
+                    ]
+                },
+                {
+                    "heading": "Suspension de l'activité du vendeur"
+                },
+                {
+                    "paragraph": [
+                        "La place de marché se réserve le droit de suspendre l'activité d'un vendeur — masquer ses produits et geler les versements depuis son compte — en cas de manquement aux règles de la plateforme, ou en cas de sanctions ou d'injonction des autorités françaises ou d'un autre État membre de l'UE. Dans ces cas, nous traitons les données du vendeur dans la mesure nécessaire à la vérification et à l'exécution de la décision. La procédure de suspension est décrite dans les ",
+                        {
+                            "text": "Conditions applicables aux vendeurs",
+                            "href": "/docs/seller_policy#restrictions"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "recipients",
+            "title": "À qui nous communiquons les données",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Nous ne communiquons les données qu'à ceux qui en ont besoin pour l'exécution de la commande ou lorsque la loi l'exige :"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            {
+                                "text": "au vendeur du produit",
+                                "strong": true
+                            },
+                            " — nom, adresse de livraison et contenu de la commande, afin qu'il puisse expédier le produit et traiter le retour ;"
+                        ],
+                        [
+                            {
+                                "text": "au groupe Byrd (logistique)",
+                                "strong": true
+                            },
+                            " — nom, adresse de livraison et contenu de la commande, si le produit est stocké dans un entrepôt Byrd ;"
+                        ],
+                        [
+                            {
+                                "text": "aux transporteurs",
+                                "strong": true
+                            },
+                            " — nom, adresse et coordonnées de contact pour les notifications de livraison ;"
+                        ],
+                        [
+                            {
+                                "text": "à Stripe",
+                                "strong": true
+                            },
+                            " — les données nécessaires à l'encaissement du paiement de l'acheteur ;"
+                        ],
+                        [
+                            {
+                                "text": "à Payoneer",
+                                "strong": true
+                            },
+                            " — les données des vendeurs pour l'ouverture du compte et les versements ; Payoneer agit en qualité de responsable du traitement distinct pour ces données ;"
+                        ],
+                        [
+                            {
+                                "text": "à l'hébergeur",
+                                "strong": true
+                            },
+                            " {{LEGAL_HOSTING_NAME}} — en qualité de sous-traitant, agissant sur nos instructions ;"
+                        ],
+                        [
+                            {
+                                "text": "aux autorités",
+                                "strong": true
+                            },
+                            " — lorsque la loi l'exige."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "transfers",
+            "title": "Transferts hors de l'EEE",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Les vendeurs de la place de marché peuvent être établis en dehors de l'Espace économique européen (Ukraine, Turquie, pays d'Asie centrale). Si vous achetez un produit qu'un tel vendeur expédie lui-même, votre nom et votre adresse de livraison lui sont transmis pour l'exécution de la commande. Le pays du vendeur est indiqué sur la page du produit avant la validation de la commande."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Ce transfert est encadré par les clauses contractuelles types de la Commission européenne, intégrées au contrat conclu avec le vendeur, et, à défaut, repose sur la nécessité d'exécuter le contrat conclu avec vous (article 49, paragraphe 1, point b), du RGPD). Stripe et Payoneer peuvent traiter des données en dehors de l'EEE en recourant à leurs propres mécanismes de protection. Une copie des garanties applicables peut être demandée à l'adresse ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "retention",
+            "title": "Durées de conservation",
+            "blocks": [
+                {
+                    "table": {
+                        "head": [
+                            [
+                                "Données"
+                            ],
+                            [
+                                "Durée de conservation"
+                            ]
+                        ],
+                        "rows": [
+                            [
+                                [
+                                    "Compte acheteur et panier"
+                                ],
+                                [
+                                    "Tant que le compte existe ; un compte inactif est supprimé 3 ans après la dernière activité"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Commandes, factures et documents comptables"
+                                ],
+                                [
+                                    "10 ans (article L123-22 du Code de commerce)"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Inscription non finalisée"
+                                ],
+                                [
+                                    "24 heures"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Enregistrements de session"
+                                ],
+                                [
+                                    "Jusqu'à l'expiration ou la révocation du jeton de session"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Données du vendeur"
+                                ],
+                                [
+                                    "Pendant la durée du contrat et 5 ans après sa cessation ; documents comptables — 10 ans"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "rights",
+            "title": "Vos droits",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Vous pouvez demander l'accès à vos données, leur rectification, leur effacement, la limitation de leur traitement et leur portabilité, ainsi que vous opposer au traitement fondé sur l'intérêt légitime. Vous pouvez également définir des directives relatives au sort de vos données après votre décès."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Pour exercer vos droits, écrivez à ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        " ; nous vous répondrons dans un délai d'un mois. N'envoyez ni mots de passe ni jetons."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la CNIL (",
+                        {
+                            "text": "www.cnil.fr",
+                            "href": "https://www.cnil.fr"
+                        },
+                        ") ou de l'autorité de contrôle de votre pays."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "security",
+            "title": "Sécurité",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Les mots de passe sont conservés uniquement sous forme d'empreinte (hash), les jetons de session sont transmis dans des cookies sécurisés via HTTPS et l'accès aux données est restreint. Pour en savoir plus sur les cookies, consultez la ",
+                        {
+                            "text": "Politique relative aux cookies",
+                            "href": "/docs/cookies_policy"
+                        },
+                        "."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "children",
+            "title": "Enfants",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le service n'est pas destiné aux personnes de moins de 16 ans. Les achats sont effectués par des personnes ayant la capacité de contracter."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "changes",
+            "title": "Modifications",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Nous vous informerons des modifications substantielles de la présente politique sur le site ou par e-mail avant leur entrée en vigueur. La date de dernière mise à jour est indiquée au début du document."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Opérateur du site",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

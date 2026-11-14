@@ -3,7 +3,8 @@
 .doc_category {
     @apply cursor-pointer
         transition-all
-        text-lg;
+        text-2xl
+        leading-7;
 }
 
 .chosen,

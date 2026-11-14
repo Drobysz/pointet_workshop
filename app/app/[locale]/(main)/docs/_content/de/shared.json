@@ -1,0 +1,152 @@
+{
+    "lastUpdatedLabel": "Stand",
+    "blocks": {
+        "operator": [
+            {
+                "paragraph": [
+                    {
+                        "text": "{{LEGAL_TRADE_NAME}}",
+                        "strong": true
+                    },
+                    " – {{LEGAL_OPERATOR_NAME}}, {{LEGAL_FORM}}. SIREN: {{LEGAL_SIREN}}. SIRET: {{LEGAL_SIRET}}. Registereintragung: {{LEGAL_REGISTRY}}. Anschrift: {{LEGAL_ADDRESS}}. Mehrwertsteuer (USt.): {{LEGAL_VAT}}."
+                ]
+            },
+            {
+                "paragraph": [
+                    "E-Mail: ",
+                    {
+                        "text": "{{LEGAL_EMAIL}}",
+                        "href": "mailto:{{LEGAL_EMAIL}}"
+                    },
+                    ". Telefon: {{LEGAL_PHONE}}."
+                ]
+            }
+        ],
+        "definitions": [
+            {
+                "paragraph": [
+                    "In den Dokumenten der Website haben die folgenden Begriffe die angegebene Bedeutung, unabhängig davon, ob sie mit großem Anfangsbuchstaben geschrieben sind:"
+                ]
+            },
+            {
+                "list": [
+                    [
+                        {
+                            "text": "Plattform (Marktplatz)",
+                            "strong": true
+                        },
+                        " – der Online-Marktplatz pointet.fr, auf dem Verkäufer den Käufern Waren anbieten, einschließlich der Website, der Konten und der Verkäuferkonsole."
+                    ],
+                    [
+                        {
+                            "text": "Betreiber",
+                            "strong": true
+                        },
+                        " – die Person, die die Plattform betreibt und deren Dienste erbringt: {{LEGAL_OPERATOR_NAME}}, tätig unter der Bezeichnung {{LEGAL_TRADE_NAME}}. Seine Angaben sind im ",
+                        {
+                            "text": "Impressum",
+                            "href": "/docs/legal_notice"
+                        },
+                        " aufgeführt."
+                    ],
+                    [
+                        {
+                            "text": "Nutzer",
+                            "strong": true
+                        },
+                        " – jede Person, die die Plattform besucht oder nutzt: Gast, Käufer oder Verkäufer."
+                    ],
+                    [
+                        {
+                            "text": "Gast",
+                            "strong": true
+                        },
+                        " – ein Nutzer, der die Plattform nutzt, ohne in einem Konto angemeldet zu sein."
+                    ],
+                    [
+                        {
+                            "text": "Käufer",
+                            "strong": true
+                        },
+                        " – eine natürliche Person, die auf der Plattform Waren zu Zwecken bestellt, die nicht mit ihrer beruflichen Tätigkeit zusammenhängen (Verbraucher)."
+                    ],
+                    [
+                        {
+                            "text": "Verkäufer",
+                            "strong": true
+                        },
+                        " – ein Hersteller oder sonstiger gewerblicher Verkäufer (Unternehmen oder Einzelunternehmer – entrepreneur individuel), der auf der Plattform registriert ist und dort seine Waren anbietet."
+                    ],
+                    [
+                        {
+                            "text": "Konto",
+                            "strong": true
+                        },
+                        " – der persönliche Bereich des Nutzers auf der Plattform, der nach Registrierung und Anmeldung zugänglich ist."
+                    ],
+                    [
+                        {
+                            "text": "Verkäuferkonsole",
+                            "strong": true
+                        },
+                        " – der Bereich der Plattform, in dem der Verkäufer Katalog, Lagerbestände, Bestellungen und Retouren verwaltet."
+                    ],
+                    [
+                        {
+                            "text": "Ware",
+                            "strong": true
+                        },
+                        " – ein Kleidungsstück oder Accessoire, das der Verkäufer auf der Plattform anbietet."
+                    ],
+                    [
+                        {
+                            "text": "Bestellung",
+                            "strong": true
+                        },
+                        " – der Kaufvertrag über eine Ware, der über die Plattform zwischen Käufer und Verkäufer geschlossen wird."
+                    ],
+                    [
+                        {
+                            "text": "Vorbestellung",
+                            "strong": true
+                        },
+                        " – die Bestellung einer Ware, die noch nicht vorrätig ist und erst später hergestellt oder geliefert wird."
+                    ],
+                    [
+                        {
+                            "text": "Byrd-Lager (Fulfillment)",
+                            "strong": true
+                        },
+                        " – die Leistungen der Lagerung, Kommissionierung und des Versands von Waren, die von den Fulfillment-Zentren der Byrd-Gruppe erbracht werden."
+                    ],
+                    [
+                        {
+                            "text": "Zahlungsdienstleister",
+                            "strong": true
+                        },
+                        " – Stripe, über den Käufer ihre Bestellungen bezahlen, und Payoneer, über den Verkäufer ihre Auszahlungen erhalten."
+                    ],
+                    [
+                        {
+                            "text": "Plattformregeln",
+                            "strong": true
+                        },
+                        " – die ",
+                        {
+                            "text": "Plattformregeln für Verkäufer",
+                            "href": "/docs/seller_rules"
+                        },
+                        ", die für jeden Verkäufer verbindlich sind."
+                    ],
+                    [
+                        {
+                            "text": "Werktag",
+                            "strong": true
+                        },
+                        " – jeder Tag außer Samstag, Sonntag und den gesetzlichen Feiertagen in Frankreich."
+                    ]
+                ]
+            }
+        ]
+    }
+}

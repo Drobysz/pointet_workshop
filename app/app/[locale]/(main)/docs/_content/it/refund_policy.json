@@ -1,0 +1,232 @@
+{
+    "title": "Politica di reso e rimborso",
+    "lastUpdated": "2026-11-14",
+    "description": "Diritto di recesso dall'acquisto entro 14 giorni, rimborso, garanzia sui prodotti, preordini e modalità di risoluzione delle controversie su pointet.fr.",
+    "sections": [
+        {
+            "id": "seller",
+            "title": "Chi vende il prodotto",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "pointet.fr è un marketplace. Il venditore di ciascun prodotto è indicato nella pagina del prodotto e nella conferma dell'ordine. Tutti i venditori del marketplace sono venditori professionali, pertanto agli acquisti si applicano i diritti dei consumatori stabiliti dal diritto dell'UE."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Lei conclude il contratto di vendita con il venditore del prodotto, ed è il venditore a rispondere della restituzione del prodotto e del rimborso. Il marketplace aiuta a trasmettere la Sua richiesta al venditore e interviene se il venditore non risponde."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Definizioni",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "withdrawal",
+            "title": "Diritto di recesso — 14 giorni",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Lei può recedere dall'acquisto senza indicarne le ragioni entro 14 giorni dal giorno in cui ha ricevuto il prodotto (o l'ultimo prodotto, se l'ordine è stato consegnato in più parti)."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Come procedere:"
+                    ]
+                },
+                {
+                    "ordered": [
+                        [
+                            "Prima della scadenza dei 14 giorni comunichi la Sua decisione: tramite la pagina dell'ordine nell'account oppure con un messaggio a ",
+                            {
+                                "text": "{{LEGAL_EMAIL}}",
+                                "href": "mailto:{{LEGAL_EMAIL}}"
+                            },
+                            " indicando il numero dell'ordine. Può utilizzare il ",
+                            {
+                                "text": "modulo di recesso",
+                                "href": "/docs/refund_policy#withdrawal-form"
+                            },
+                            " riportato di seguito."
+                        ],
+                        [
+                            "Rispedisca il prodotto entro 14 giorni dalla comunicazione del recesso all'indirizzo che Le invieremo (indirizzo del venditore o del magazzino)."
+                        ],
+                        [
+                            "Restituisca il prodotto non indossato, non lavato e con i cartellini. Può provare il prodotto come farebbe in un negozio; della diminuzione del valore del prodotto derivante da un uso diverso risponde Lei."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "refund",
+            "title": "Rimborso",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il venditore rimborsa il prezzo del prodotto e le spese della consegna standard a Lei destinata entro 14 giorni dal momento in cui è venuto a conoscenza del Suo recesso. Il venditore ha il diritto di trattenere il rimborso finché non abbia ricevuto il prodotto o la conferma della sua spedizione. Il rimborso è effettuato con lo stesso mezzo di pagamento utilizzato per l'ordine, senza commissioni."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Se ha scelto una consegna più costosa di quella standard, la differenza non è rimborsata."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "return-costs",
+            "title": "Spese di restituzione",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Le spese di restituzione sono a carico dell'acquirente, salvo che nella pagina del prodotto sia indicato che il venditore le prende a proprio carico. Se il prodotto è difettoso o non è conforme all'ordine, tutte le spese sono a carico del venditore."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "exceptions",
+            "title": "Quando il recesso è escluso",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il diritto di recesso non si applica a:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "prodotti realizzati sulle Sue misure o su ordinazione personalizzata;"
+                        ],
+                        [
+                            "prodotti in confezione sigillata che non si prestano a essere restituiti per motivi igienici o connessi alla protezione della salute, se la confezione è stata aperta dopo la consegna (ad esempio biancheria intima, costumi da bagno, orecchini)."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "warranty",
+            "title": "Prodotto difettoso o diverso da quello ordinato",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Tutti i prodotti sono coperti dalla garanzia legale di conformità — 2 anni dal giorno del ricevimento. Se il prodotto è difettoso, danneggiato o diverso dalla descrizione, Lei ha il diritto di chiederne gratuitamente la riparazione o la sostituzione e, se ciò è impossibile o non è avvenuto entro 30 giorni, la riduzione del prezzo o il rimborso."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Si applica inoltre la garanzia per i vizi occulti (articoli da 1641 a 1649 del Codice civile francese)."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Per avvalersi della garanzia scriva a ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        ", indicando il numero dell'ordine e allegando fotografie."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "preorders",
+            "title": "Preordini e annullamento prima della spedizione",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Il preordine può essere annullato gratuitamente in qualsiasi momento prima della spedizione del prodotto; il pagamento è rimborsato integralmente. Dopo il ricevimento del prodotto si applica l'ordinario diritto di recesso di 14 giorni."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Se il venditore non è in grado di fornire il prodotto entro il termine annunciato, ne riceverà comunicazione e potrà annullare l'ordine con rimborso integrale."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "disputes",
+            "title": "Se il venditore non risponde. Controversie",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Se il venditore non ha risposto entro 2 giorni lavorativi o se Lei non è d'accordo con la sua decisione, scriva a ",
+                        {
+                            "text": "{{LEGAL_EMAIL}}",
+                            "href": "mailto:{{LEGAL_EMAIL}}"
+                        },
+                        " — esamineremo la richiesta e contatteremo il venditore."
+                    ]
+                },
+                {
+                    "paragraph": [
+                        "Se la controversia non è risolta, Lei ha il diritto di rivolgersi gratuitamente al mediatore dei consumatori: {{LEGAL_MEDIATOR_NAME}}, ",
+                        {
+                            "text": "{{LEGAL_MEDIATOR_URL}}",
+                            "href": "{{LEGAL_MEDIATOR_URL}}"
+                        },
+                        ". Conserva inoltre il diritto di adire l'autorità giudiziaria."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "withdrawal-form",
+            "title": "Modulo di recesso",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Compili e invii il presente modulo solo se desidera recedere dall'acquisto:"
+                    ]
+                },
+                {
+                    "list": [
+                        [
+                            "Destinatario: {{LEGAL_TRADE_NAME}}, {{LEGAL_ADDRESS}}, {{LEGAL_EMAIL}}."
+                        ],
+                        [
+                            "Con la presente comunico il recesso dal contratto di vendita del seguente prodotto: …"
+                        ],
+                        [
+                            "Numero dell'ordine: …"
+                        ],
+                        [
+                            "Prodotto ricevuto il (data): …"
+                        ],
+                        [
+                            "Nome dell'acquirente: …"
+                        ],
+                        [
+                            "Indirizzo dell'acquirente: …"
+                        ],
+                        [
+                            "Data: …"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Gestore del sito",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

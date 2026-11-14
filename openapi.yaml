@@ -3538,7 +3538,7 @@ components:
         Unsupported values are ignored.
       schema:
         type: string
-        enum: [en, fr, de, it, ru]
+        enum: [en, fr, de, it, ru, uk]
     AcceptLanguage:
       name: Accept-Language
       in: header
@@ -3693,6 +3693,7 @@ components:
             - fr
             - ru
             - de
+            - uk
         role:
           type: string
           enum:
@@ -3752,7 +3753,7 @@ components:
       properties:
         source_locale:
           type: string
-          enum: [en, fr, de, it, ru]
+          enum: [en, fr, de, it, ru, uk]
           description: Language the source label is written in.
         translatable_fields:
           type: array
@@ -3770,7 +3771,7 @@ components:
       properties:
         source_locale:
           type: string
-          enum: [en, fr, de, it, ru]
+          enum: [en, fr, de, it, ru, uk]
           description: Language the name is written in. Defaults to the Accept-Language of the request
             on create and to the stored value on update.
         translations:
@@ -4465,6 +4466,7 @@ components:
             - fr
             - ru
             - de
+            - uk
           default: en
         refer_id:
           anyOf:
@@ -4600,6 +4602,7 @@ components:
             - fr
             - ru
             - de
+            - uk
           default: en
         password:
           type: string
@@ -4639,6 +4642,7 @@ components:
             - fr
             - ru
             - de
+            - uk
       description: All fields are optional. Email and password are prohibited here;
         use their dedicated endpoints. Role and referral changes are not supported.
     EmailChangeRequest:

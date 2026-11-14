@@ -38,8 +38,25 @@
         @apply mb-4 list-disc pl-6;
     }
 
+    ol {
+        @apply mb-4 list-decimal pl-6;
+    }
+
     li + li {
         @apply mt-2;
+    }
+
+    table {
+        @apply w-full border-collapse text-left text-sm leading-6;
+    }
+
+    th,
+    td {
+        @apply border-b border-neutral-200 py-3 pr-4 align-top;
+    }
+
+    th {
+        @apply font-semibold text-neutral-900;
     }
 
     a {
@@ -52,6 +69,16 @@
         &:focus-visible {
             @apply outline-2 outline-offset-4 outline-amber-800;
         }
+    }
+}
+
+.table_wrap {
+    @apply mb-4 overflow-x-auto;
+
+    // Cookie names and similar identifiers must not break mid-word.
+    table {
+        min-width: 32rem;
+        overflow-wrap: normal;
     }
 }
 

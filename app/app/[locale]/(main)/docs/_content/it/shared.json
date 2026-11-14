@@ -1,0 +1,152 @@
+{
+    "lastUpdatedLabel": "Ultimo aggiornamento",
+    "blocks": {
+        "operator": [
+            {
+                "paragraph": [
+                    {
+                        "text": "{{LEGAL_TRADE_NAME}}",
+                        "strong": true
+                    },
+                    " — {{LEGAL_OPERATOR_NAME}}, {{LEGAL_FORM}}. SIREN: {{LEGAL_SIREN}}. SIRET: {{LEGAL_SIRET}}. Registrazione: {{LEGAL_REGISTRY}}. Indirizzo: {{LEGAL_ADDRESS}}. IVA: {{LEGAL_VAT}}."
+                ]
+            },
+            {
+                "paragraph": [
+                    "Email: ",
+                    {
+                        "text": "{{LEGAL_EMAIL}}",
+                        "href": "mailto:{{LEGAL_EMAIL}}"
+                    },
+                    ". Telefono: {{LEGAL_PHONE}}."
+                ]
+            }
+        ],
+        "definitions": [
+            {
+                "paragraph": [
+                    "Nei documenti del sito i seguenti termini hanno il significato indicato, indipendentemente dal fatto che siano scritti con l'iniziale maiuscola:"
+                ]
+            },
+            {
+                "list": [
+                    [
+                        {
+                            "text": "Piattaforma (marketplace)",
+                            "strong": true
+                        },
+                        " — lo spazio online pointet.fr, sul quale i Venditori offrono Prodotti agli Acquirenti, compresi il sito, gli account e la Console del venditore."
+                    ],
+                    [
+                        {
+                            "text": "Gestore",
+                            "strong": true
+                        },
+                        " — il soggetto che gestisce la Piattaforma e ne presta i servizi: {{LEGAL_OPERATOR_NAME}}, che opera con la denominazione {{LEGAL_TRADE_NAME}}. I suoi dati identificativi sono indicati nelle ",
+                        {
+                            "text": "Note legali",
+                            "href": "/docs/legal_notice"
+                        },
+                        "."
+                    ],
+                    [
+                        {
+                            "text": "Utente",
+                            "strong": true
+                        },
+                        " — qualsiasi persona che visita la Piattaforma o la utilizza: Ospite, Acquirente o Venditore."
+                    ],
+                    [
+                        {
+                            "text": "Ospite",
+                            "strong": true
+                        },
+                        " — l'Utente che utilizza la Piattaforma senza accedere a un Account."
+                    ],
+                    [
+                        {
+                            "text": "Acquirente",
+                            "strong": true
+                        },
+                        " — la persona fisica che ordina Prodotti sulla Piattaforma per fini estranei alla propria attività professionale (consumatore)."
+                    ],
+                    [
+                        {
+                            "text": "Venditore",
+                            "strong": true
+                        },
+                        " — il produttore o altro venditore professionale (società o imprenditore individuale) registrato sulla Piattaforma, che vi offre i propri Prodotti."
+                    ],
+                    [
+                        {
+                            "text": "Account",
+                            "strong": true
+                        },
+                        " — lo spazio personale dell'Utente sulla Piattaforma, accessibile dopo la registrazione e l'accesso."
+                    ],
+                    [
+                        {
+                            "text": "Console del venditore",
+                            "strong": true
+                        },
+                        " — la sezione della Piattaforma nella quale il Venditore gestisce il catalogo, le giacenze, gli Ordini e i resi."
+                    ],
+                    [
+                        {
+                            "text": "Prodotto",
+                            "strong": true
+                        },
+                        " — il capo di abbigliamento o l'accessorio che il Venditore offre sulla Piattaforma."
+                    ],
+                    [
+                        {
+                            "text": "Ordine",
+                            "strong": true
+                        },
+                        " — il contratto di vendita di un Prodotto concluso tra l'Acquirente e il Venditore tramite la Piattaforma."
+                    ],
+                    [
+                        {
+                            "text": "Preordine",
+                            "strong": true
+                        },
+                        " — l'Ordine di un Prodotto non ancora disponibile, che sarà realizzato o fornito in un momento successivo."
+                    ],
+                    [
+                        {
+                            "text": "Magazzino Byrd (fulfilment)",
+                            "strong": true
+                        },
+                        " — i servizi di stoccaggio, preparazione e spedizione dei Prodotti prestati dai centri di fulfilment del gruppo Byrd."
+                    ],
+                    [
+                        {
+                            "text": "Prestatori di servizi di pagamento",
+                            "strong": true
+                        },
+                        " — Stripe, tramite il quale gli Acquirenti pagano gli Ordini, e Payoneer, tramite il quale i Venditori ricevono i versamenti."
+                    ],
+                    [
+                        {
+                            "text": "Regole della piattaforma",
+                            "strong": true
+                        },
+                        " — le ",
+                        {
+                            "text": "Regole della piattaforma per i venditori",
+                            "href": "/docs/seller_rules"
+                        },
+                        ", vincolanti per ogni Venditore."
+                    ],
+                    [
+                        {
+                            "text": "Giorno lavorativo",
+                            "strong": true
+                        },
+                        " — qualsiasi giorno diverso dal sabato, dalla domenica e dai giorni festivi ufficiali in Francia."
+                    ]
+                ]
+            }
+        ]
+    }
+}

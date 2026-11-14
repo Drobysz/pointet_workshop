@@ -1,5 +1,18 @@
 # Legal documentation implementation
 
+## Update — 14 November 2026: six documents, six languages
+
+This section supersedes the routes, files and placeholders described below; the cookie and data findings further down are still the factual basis of the texts.
+
+- **Documents** (`/docs/{slug}`): `legal_notice` (mentions légales), `privacy_policy`, `cookies_policy`, `refund_policy`, `seller_policy`, `seller_rules`. The slug list lives in `app/[locale]/(main)/docs/_content/index.ts`; each slug has a thin `page.tsx` that renders the shared `LegalDocumentPage`.
+- **Content**: one JSON file per language and document in `docs/_content/{locale}/{slug}.json` for `en`, `fr`, `de`, `it`, `ru`, `uk`, plus `shared.json` with the operator details block and the definitions used by several documents. Section ids are identical in every language. Block types: `paragraph`, `heading`, `list`, `ordered`, `table`, `shared`.
+- **Operator identity**: the texts never hard-code the business. They reference `{{LEGAL_OPERATOR_NAME}}`, `{{LEGAL_SIREN}}`… and `fillLegalVariables` replaces them from the environment at request time (the pages call `connection()`), so the values can change without a rebuild. The variables are listed in `app/.env.example`; Docker Compose forwards them to the `app` container from the root `.env`. A variable without a value is rendered as `[LEGAL_…]`.
+- **Authoring**: the Russian text is the approved original; the other five languages are translations of it. When a clause changes, change it in all six files and bump `lastUpdated`.
+- **Cookies described**: `access_token` (15 min), `refresh_token` (30 days), `pointet-guest-basket` (30 days), `guest_token` (12 months, guest orders and pre-orders), `NEXT_LOCALE` (up to 12 months).
+- **Still to be supplied by the operator**: real `LEGAL_*` values, including the consumer mediator and the hosting provider. The platform fee, payout frequency and Byrd tariffs are deliberately not stated in the texts: the Seller Terms say they are communicated before registration and shown in the seller console.
+
+## Original implementation notes (September 2026)
+
 Implementation notes updated: 17 September 2026. Policy text revision remains 16 September 2026; the JSON refactor did not change the legal wording.
 
 ## Routes and presentation

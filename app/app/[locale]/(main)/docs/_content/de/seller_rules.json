@@ -1,0 +1,177 @@
+{
+    "title": "Plattformregeln für Verkäufer",
+    "lastUpdated": "2026-11-14",
+    "description": "Regeln des Marktplatzes pointet.fr für Verkäufer: Anforderungen an den Verkäufer, die Waren, die Angebote und die Ausführung von Bestellungen sowie Maßnahmen bei Verstößen.",
+    "sections": [
+        {
+            "id": "introduction",
+            "title": "Über diese Regeln",
+            "blocks": [
+                {
+                    "paragraph": [
+                        "Diese Regeln sind für jeden Verkäufer verbindlich und ergänzen die ",
+                        {
+                            "text": "Bedingungen für Verkäufer",
+                            "href": "/docs/seller_policy"
+                        },
+                        ". Sie fassen die Anforderungen des Rechts der EU und Frankreichs sowie die eigenen Anforderungen der Plattform an die Servicequalität zusammen."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "definitions",
+            "title": "Begriffsbestimmungen",
+            "blocks": [
+                {
+                    "shared": "definitions"
+                }
+            ]
+        },
+        {
+            "id": "seller",
+            "title": "Der Verkäufer und seine Daten",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Auf der Plattform dürfen nur gewerbliche Verkäufer verkaufen. Bevor er Waren einstellt, teilt der Verkäufer Name, Anschrift, Telefonnummer, E-Mail-Adresse, Register- und Steuernummer sowie die Auszahlungsdaten mit und bestätigt, dass er nur Waren anbieten wird, die dem EU-Recht entsprechen."
+                        ],
+                        [
+                            "Die Angaben müssen zutreffend und aktuell sein; bei Änderungen aktualisiert der Verkäufer sie innerhalb von 14 Tagen."
+                        ],
+                        [
+                            "Ein Verkäufer aus einem Land außerhalb der EU benennt für seine Waren eine verantwortliche Person in der EU; deren Name und Kontaktdaten werden auf der Produktseite angezeigt (Verordnung (EU) 2023/988)."
+                        ],
+                        [
+                            "Ein Verkäufer, der Waren nach Frankreich liefert, teilt die eindeutige Kennung der erweiterten Herstellerverantwortung (EPR/REP) für Textilien, Schuhe und Verpackungen mit oder bestätigt, dass sein Lieferant diese Pflicht erfüllt (Artikel L541-10-9 des französischen Umweltgesetzbuchs). Ohne gültige Kennung wird die Ware Käufern in Frankreich nicht angeboten."
+                        ],
+                        [
+                            "Der Verkäufer darf nicht Sanktionen der EU oder Frankreichs unterliegen und darf keine Waren verkaufen, deren Herkunft oder Lieferung gegen Sanktionsbeschränkungen verstößt."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "products",
+            "title": "Waren",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Auf der Plattform werden ausschließlich neue Waren der Kategorien „Kleidung“ und „Accessoires“ verkauft. Gebrauchte Waren sowie der Weiterverkauf fremder Waren ohne Berechtigung zu deren Verkauf sind nicht zulässig."
+                        ],
+                        [
+                            "Verboten sind Fälschungen und Waren, die Markenrechte, Designrechte und Urheberrechte verletzen, nach EU-Recht verbotene oder unsichere Waren sowie vom Markt zurückgerufene Waren."
+                        ],
+                        [
+                            "Die Waren müssen sicher sein (Verordnung (EU) 2023/988) und den chemikalienrechtlichen Beschränkungen der REACH-Verordnung entsprechen (zum Beispiel für Azofarbstoffe und Nickel in Zubehörteilen). Kinderbekleidung entspricht den Anforderungen an Kordeln und Kleinteile."
+                        ],
+                        [
+                            "Jedes Textilerzeugnis trägt ein Etikett mit der Faserzusammensetzung in der Sprache des Landes, in das die Ware verkauft wird (Verordnung (EU) Nr. 1007/2011); bei Schuhen – eine Kennzeichnung der Materialien."
+                        ],
+                        [
+                            "Waren aus Leder und Pelz von Arten, die durch das CITES-Übereinkommen geschützt sind, sind ohne Genehmigungsdokumente nicht zulässig. Katzen- und Hundefell sowie Robbenerzeugnisse sind verboten."
+                        ],
+                        [
+                            "Der Verkäufer gibt das Herstellungsland der Ware an."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "listings",
+            "title": "Angebote",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Beschreibung, Fotos, Zusammensetzung, Größe und Preis müssen zutreffend sein und dürfen nicht irreführen. Auf der Produktseite werden die wesentlichen Eigenschaften, der Gesamtpreis einschließlich aller Steuern, Kosten und Frist der Lieferung sowie Angaben zum Hersteller und zur Sicherheit der Ware angegeben."
+                        ],
+                        [
+                            "Bei der Bekanntgabe einer Preisermäßigung gilt als „alter Preis“ der niedrigste Preis der Ware in den vorangegangenen 30 Tagen."
+                        ],
+                        [
+                            "Gefälschte Bewertungen und Manipulationen des Ratings sind verboten."
+                        ],
+                        [
+                            "Umweltaussagen („öko“, „nachhaltig“, „bio“) sind nur zulässig, wenn ein Nachweis vorliegt, zum Beispiel ein Zertifikat."
+                        ],
+                        [
+                            "Fotos – eigene oder mit Nutzungsrechten, ohne Wasserzeichen und ohne Kontaktdaten des Verkäufers."
+                        ],
+                        [
+                            "Das Angebot wird mindestens in englischer oder französischer Sprache ausgefüllt; die Warenbezeichnungen übersetzt die Plattform automatisch in die übrigen Sprachen."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "orders",
+            "title": "Bestellungen und Käufer",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Der Verkäufer beachtet das 14-tägige Widerrufsrecht des Käufers, die gesetzliche Gewährleistung (Konformitätsgarantie, 2 Jahre) und die Erstattungsfristen."
+                        ],
+                        [
+                            "Die Ware wird innerhalb der angekündigten Frist geliefert und, wenn keine Frist angegeben ist, spätestens 30 Tage nach dem Tag der Bestellung."
+                        ],
+                        [
+                            "Bei eigenem Versand übergibt der Verkäufer die Bestellung innerhalb von 3 Werktagen an den Beförderer und trägt die Sendungsverfolgungsnummer in die Konsole ein."
+                        ],
+                        [
+                            "Die Bestände in der Konsole müssen aktuell sein. Die Stornierung einer Bestellung, weil die Ware aus vom Verkäufer zu vertretenden Gründen nicht vorrätig ist, gilt als Verstoß."
+                        ],
+                        [
+                            "Der Verkäufer antwortet dem Käufer innerhalb von 2 Werktagen."
+                        ],
+                        [
+                            "Die Daten der Käufer werden ausschließlich für die Ausführung der Bestellung verwendet; Mailings und die Weitergabe an Dritte sind verboten."
+                        ],
+                        [
+                            "Es ist verboten, den Käufer von der Plattform wegzulenken: ihm eine Zahlung oder ein Geschäft außerhalb von pointet.fr anzubieten oder dem Paket Werbung mit einem solchen Angebot beizulegen."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "violations",
+            "title": "Verstöße",
+            "blocks": [
+                {
+                    "ordered": [
+                        [
+                            "Über jede Beschränkung erhält der Verkäufer eine Mitteilung unter Angabe des Grundes und kann sie nach dem in den ",
+                            {
+                                "text": "Bedingungen für Verkäufer",
+                                "href": "/docs/seller_policy#restrictions"
+                            },
+                            " beschriebenen Verfahren anfechten."
+                        ],
+                        [
+                            "Die Plattform ergreift Maßnahmen, die dem Verstoß angemessen sind: Verwarnung, Ausblenden einer einzelnen Ware, Aussetzung aller Waren, Einfrieren der Auszahlungen, Beendigung des Vertrags. Fälschungen, unsichere Waren, Betrug und Sanktionen führen zur sofortigen Aussetzung."
+                        ],
+                        [
+                            "Bei einem Rückruf einer Ware oder einem sicherheitsrelevanten Vorfall informiert der Verkäufer die Plattform unverzüglich und arbeitet mit den Aufsichtsbehörden zusammen."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "operator",
+            "title": "Betreiber der Website",
+            "blocks": [
+                {
+                    "shared": "operator"
+                }
+            ]
+        }
+    ]
+}

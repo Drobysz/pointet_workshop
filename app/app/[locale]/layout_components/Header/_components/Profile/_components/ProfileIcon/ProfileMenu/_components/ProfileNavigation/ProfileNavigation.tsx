@@ -25,7 +25,7 @@ export const ProfileNavigation = ({
 
     const profilePages = [
         { label: t("profile"), href: "/profile" },
-        { label: t("preorders"), href: "/profile/preorders", qntty: preOrderQuantity },
+        { label: t("orders"), href: "/profile/orders", qntty: preOrderQuantity },
         { label: t("basket"), href: "/profile/basket", qntty: basketQuantity },
     ];
 

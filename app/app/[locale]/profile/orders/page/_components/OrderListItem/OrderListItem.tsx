@@ -1,6 +1,5 @@
 "use client";
 
-import { Preorder } from "@/api/types/preorder"
 import { jersey10 } from "@/fonts/fonts"
 import { cn } from "@/helpers"
 import s from "./style.module.scss";
@@ -8,30 +7,22 @@ import s from "./style.module.scss";
 import {
     OrderNumber,
     OrderDate,
-    PaymentStatus,
 } from "./_components";
 import { useRouter } from "@/i18n/navigation";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import { Order } from "@/api/types/orders";
+import { PaymentStatus } from "@/components";
 
-export const PreorderListItem = ({
-    preorder
+export const OrderListItem = ({
+    order
 }: {
-    preorder: Preorder
+    order: Order
 })=> {
     const t = useTranslations("preorders.list");
-    const format = useFormatter();
     const router = useRouter();
 
-    const quantity = 
-        (preorder.registers ?? [])
-            .reduce((acc, val)=> 
-                acc + val.quantity, 0
-            );
-    const formattedPrice 
-        = preorder.payment_amount_cents / 100;
-
     const handleClick = ()=> {
-        router.push(`/profile/preorders/${preorder.id}`);
+        router.push(`/profile/orders/${order.id}`);
     }
 
     return (
@@ -40,12 +31,12 @@ export const PreorderListItem = ({
             onClick={handleClick}
         >
             <div className={s.first_half}>
-                <OrderNumber 
-                    preorderId={preorder.id}
+                <OrderNumber
+                    preorderId={order.id}
                 />
-                {preorder.created_at &&
+                {order.placed_at &&
                     <OrderDate 
-                        created_at={preorder.created_at}
+                        created_at={order.placed_at}
                     />
                 }
                 
@@ -56,20 +47,17 @@ export const PreorderListItem = ({
                 jersey10.className
             )}>
                 <span className="text-2xl text-zinc-600">
-                    {t("quantity", { count: quantity })}
+                    {t("quantity", { count: order.quantity })}
                 </span>
 
                 <span className="text-2xl text-zinc-600">
                     {t("total", {
-                        price: format.number(formattedPrice, {
-                            style: "currency",
-                            currency: "EUR",
-                        }),
+                        price: `${order.total}€`,
                     })}
                 </span>
 
-                <PaymentStatus 
-                    payment_status={preorder.payment_status}
+                <PaymentStatus
+                    payment_status={order.status}
                 />
             </div>
         </li>

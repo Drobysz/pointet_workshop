@@ -22,7 +22,7 @@ export const Profile = ()=> {
         userError,
         isUserLoading,
         basketList,
-        preOrdersList,
+        ordersList,
         setPopUpWindow
     } = useContext(GlobalContext);
     const t = useTranslations("navigation");
@@ -34,7 +34,7 @@ export const Profile = ()=> {
     const basketQuantity = (basketList ?? [])
         .reduce((acc, val) => acc + val.quantity, 0);
 
-    const preOrderQuantity = preOrdersList?.length ?? 0;
+    const orderQuantity = ordersList?.length ?? 0;
 
     return (
         <div
@@ -46,9 +46,9 @@ export const Profile = ()=> {
                 />
                 <ProfileNavOption 
                     className={s.desktop_only}
-                    href="/profile/preorders"
-                    label={t("header.preordersLabel", { count: preOrderQuantity })}
-                    quantity={preOrderQuantity}
+                    href="/profile/orders"
+                    label={t("header.ordersLabel", { count: orderQuantity })}
+                    quantity={orderQuantity}
                 >
                     <Package />
                 </ProfileNavOption>

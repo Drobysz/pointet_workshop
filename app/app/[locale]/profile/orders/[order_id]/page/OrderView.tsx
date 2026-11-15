@@ -1,6 +1,6 @@
 "use client";
 
-import { preorderApi } from "@/api/api";
+import { ordersApi } from "@/api/api";
 import { Id } from "@/api/types/api";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 import { useContext } from "react";
@@ -14,10 +14,10 @@ import { cn } from "@/helpers";
 import { jersey10 } from "@/fonts/fonts";
 import { useTranslations } from "next-intl";
 
-export const PreorderView = ({
-    preorderId
+export const OrderView = ({
+    orderId
 }: {
-    preorderId: Id;
+    orderId: Id;
 })=> {
     const t = useTranslations("common.states");
     const { authStatus } = useContext(GlobalContext);
@@ -31,14 +31,14 @@ export const PreorderView = ({
             ? "user-preorder"
             : "guest-preorder",
         ()=> authStatus === "authenficated"
-            ? preorderApi.getPreorder(preorderId)
-            : preorderApi.getGuestPreorder(preorderId)
+            ? ordersApi.getOrder(orderId)
+            : ordersApi.getGuestOrder(orderId)
     );
 
-    const preorder = data?.data;
+    const order = data?.data;
 
-    console.log(preorder)
-    if (!preorder) {
+    console.log(order)
+    if (!order) {
         return;
     }
 
@@ -64,15 +64,15 @@ export const PreorderView = ({
                     }
                 </div>
             }
-            {preorder &&
+            {order &&
                 <div>
                     <div className="max-h-[70vh] overflow-y-auto">
                         <RegisterItemList 
-                            registerItems={preorder.registers ?? []}
+                            registerItems={order.items ?? []}
                         />
                     </div>
                     <Footer 
-                        preorder={preorder}
+                        order={order}
                     />
                 </div>
             }

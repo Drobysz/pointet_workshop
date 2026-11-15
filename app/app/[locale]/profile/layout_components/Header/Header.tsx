@@ -10,7 +10,7 @@ import { Navbar } from "@/components";
 import { useContext } from "react";
 import { GlobalContext } from "@/app/[locale]/context/global.context";
 
-const profileSections = ["profile", "preorders", "basket"] as const;
+const profileSections = ["profile", "orders", "basket"] as const;
 
 export const ProfileHeader = ()=> {
     const t = useTranslations("profile.navigation");
@@ -31,7 +31,7 @@ export const ProfileHeader = ()=> {
     ];
 
     const defaultTablist = [
-        { href: '/profile/preorders', label: t("preorders") },
+        { href: '/profile/orders', label: t("orders") },
         { href: '/profile/basket', label: t("basket") }
     ];
 

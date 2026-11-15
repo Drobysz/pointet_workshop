@@ -1,22 +1,22 @@
-import { Preorder } from "@/api/types/preorder"
 import { Fragment } from "react/jsx-runtime"
-import { PreorderListItem } from "../../_components"
+import { OrderListItem } from "../../_components"
+import { Order } from "@/api/types/orders"
 
-export const PreorderList = ({
-    preOrdersList
+export const OrderList = ({
+    ordersList
 }: {
-    preOrdersList: Preorder[]
+    ordersList: Order[]
 })=> {
     return (
-        preOrdersList.map((preorder, idx)=>
+        ordersList.map((order, idx)=>
             <Fragment
-                key={`preorder-list-el-${preorder.id}`}
+                key={`preorder-list-el-${order.id}`}
             >
-                <PreorderListItem
-                    preorder={preorder}
+                <OrderListItem
+                    order={order}
                 />
 
-                {idx < preOrdersList.length - 1 &&
+                {idx < ordersList.length - 1 &&
                     <div 
                         className="
                             w-full 

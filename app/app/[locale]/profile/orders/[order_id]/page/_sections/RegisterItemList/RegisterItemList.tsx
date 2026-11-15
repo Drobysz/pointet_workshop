@@ -1,4 +1,3 @@
-import { PreorderRegister } from "@/api/types/preorder"
 import s from "./style.module.scss";
 import {
     OrderItemImage,
@@ -7,11 +6,12 @@ import {
 import { cn } from "@/helpers";
 import { jersey10, tinyFive } from "@/fonts/fonts";
 import { useFormatter, useTranslations } from "next-intl";
+import { OrderItem } from "@/api/types/orders";
 
 export const RegisterItemList = ({
     registerItems
 }: {
-    registerItems: PreorderRegister[]
+    registerItems: OrderItem[]
 })=> {
     const t = useTranslations("preorders.fields");
     const format = useFormatter();
@@ -69,7 +69,7 @@ export const RegisterItemList = ({
                                     s.reg_el__value
                                 )}>
                                     {format.number(
-                                        Number(reg.original_unit_price) * reg.quantity,
+                                        Number(reg.unit_price) * reg.quantity,
                                         { style: "currency", currency: "EUR" }
                                     )}
                                 </span>

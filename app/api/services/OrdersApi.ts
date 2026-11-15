@@ -1,7 +1,7 @@
 import { PrivateApiClient } from "../core/PrivateApiClient";
 import { PublicApiClient } from "../core/PublicApiClient";
 import { Id } from "../types/api";
-import { OrderCreateRequest, OrderDetailResponse, OrderResponse, OrderListResponse } from "../types/orders";
+import { OrderCheckoutSessionResponse, OrderCreateRequest, OrderDetailResponse, OrderListResponse } from "../types/orders";
 
 export class OrdersApi {
     constructor (
@@ -33,10 +33,14 @@ export class OrdersApi {
         );
     }
 
+    /**
+     * Creates a Stripe checkout session for the basket and returns the payment
+     * page URL. Works for guests and authenticated users.
+     */
     public createOrder(
         data: OrderCreateRequest,
-    ): Promise<OrderResponse> {
-        return this.api.post<OrderResponse>(
+    ): Promise<OrderCheckoutSessionResponse> {
+        return this.publicApi.post<OrderCheckoutSessionResponse>(
             "/orders",
             data,
         );

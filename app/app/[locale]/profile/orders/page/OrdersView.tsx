@@ -6,37 +6,37 @@ import s from "./style.module.scss";
 import { Loading } from "./_components";
 
 import { 
-    PreorderList,
+    OrderList,
     ErrorTitle,
 } from "./_sections";
 
 export function OrdersView() {
     const { 
-        preOrdersList, 
-        isPreOrdersLoading, 
-        preOrdersError 
+        ordersList, 
+        isOrdersLoading, 
+        ordersError 
     } = useContext(GlobalContext);
 
     const isEmpty = 
-        (preOrdersList ?? false) &&
-        (preOrdersList ?? []).length < 1;
+        (ordersList ?? false) &&
+        (ordersList ?? []).length < 1;
 
     return (
         <div className={s.orders_page}>
-            {(isPreOrdersLoading || preOrdersError || isEmpty) &&
+            {(isOrdersLoading || ordersError || isEmpty) &&
                 <ErrorTitle 
-                    isLoading={isPreOrdersLoading}
-                    error={preOrdersError}
+                    isLoading={isOrdersLoading}
+                    error={ordersError}
                     isEmpty={isEmpty}
                 />
             }
             <ul className={s.orders_list}>
-                {preOrdersList && 
-                    <PreorderList 
-                        preOrdersList={preOrdersList}
+                {ordersList && 
+                    <OrderList 
+                        ordersList={ordersList}
                     />
                 }
-                {isPreOrdersLoading && <Loading />}
+                {isOrdersLoading && <Loading />}
             </ul>
         </div>
     );

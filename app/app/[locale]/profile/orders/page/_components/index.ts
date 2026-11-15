@@ -1,3 +1,3 @@
 export * from "./FailedToLoad/FailedToLoad";
 export * from "./Loading/Loading";
-export * from "./PreorderListItem/PreorderListItem";
+export * from "./OrderListItem/OrderListItem";

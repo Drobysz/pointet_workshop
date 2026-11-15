@@ -3,7 +3,7 @@ import { Id } from "@/api/types/api";
 import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SeoService } from "@/helpers";
-import { PreorderView } from "./page/PreorderView";
+import { OrderView } from "./page/OrderView";
 import { CircularProgress } from "@mui/material";
 
 export async function generateMetadata({
@@ -27,9 +27,9 @@ export async function generateMetadata({
 export default async function OrderPage({
     params
 }: {
-    params: Promise<{ locale: string; preorder_id: Id }>
+    params: Promise<{ locale: string; order_id: Id }>
 }) {
-    const { locale, preorder_id } = await params;
+    const { locale, order_id } = await params;
     setRequestLocale(SeoService.resolveLocale(locale));
 
     return (
@@ -48,8 +48,8 @@ export default async function OrderPage({
                 />
             </div>
         }>
-            <PreorderView
-                preorderId={Number(preorder_id)}
+            <OrderView
+                orderId={Number(order_id)}
             />
         </Suspense>
     )

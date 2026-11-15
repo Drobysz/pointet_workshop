@@ -8,7 +8,7 @@ export const OrderNumber = ({
 }: {
     preorderId: Id;
 })=> {
-    const t = useTranslations("preorders.fields");
+    const t = useTranslations("orders.fields");
 
     return (
         <div className="text-xl flex gap-2 items-center">

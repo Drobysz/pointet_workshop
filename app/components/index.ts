@@ -25,3 +25,4 @@ export * from "./buttons/BtnPending/BtnPending";
 export * from "./navigation/NavBar/NavBar";
 export * from "./seo/JsonLd/JsonLd";
 export * from "./windows/SlideSheet/SlideSheet";
+export * from "./tags/PaymentStatus/PaymentStatus";

@@ -25,16 +25,22 @@ export const PageView = ()=> {
         setNotification
     } = useContext(GlobalContext);
 
-    const isDataLoaded = basketList && !basketError;
+    // SWR keeps the last good basket while a refresh fails. Do not tear the list and
+    // the checkout form down (and lose the typed contact details) because of that.
+    const isDataLoaded = basketList !== undefined;
     const basketLength = basketList?.length ?? 0;
 
     const searchParams = useSearchParams();
 
-    const preorder = searchParams.get("preorder");
-    const isPaymentFailed = preorder == "cancelled";
+    // Pre-order checkouts return with ?preorder=cancelled, order checkouts with ?order=cancelled.
+    const cancelledParam = searchParams.get("order") === "cancelled"
+        ? "order"
+        : searchParams.get("preorder") === "cancelled"
+            ? "preorder"
+            : null;
 
     useEffect(() => {
-        if (!isPaymentFailed) return;
+        if (!cancelledParam) return;
 
         setNotification({
             status: "error",
@@ -42,7 +48,7 @@ export const PageView = ()=> {
         });
 
         const params = new URLSearchParams(searchParams);
-        params.delete("preorder");
+        params.delete(cancelledParam);
 
         // cleaning of url search params
         const query = params.toString();
@@ -51,7 +57,7 @@ export const PageView = ()=> {
             "",
             window.location.pathname + (query ? `?${query}` : "")
         );
-    }, [isPaymentFailed, searchParams, setNotification, t]);
+    }, [cancelledParam, searchParams, setNotification, t]);
 
     return (
         <div className="px-5 max-md:px-3 flex flex-col gap-5">
@@ -71,15 +77,14 @@ export const PageView = ()=> {
                                 basketList={basketList}
                             />
                         }
-                        
-                        {(!isDataLoaded || basketLength < 1) &&
-                            <ErrorTitle 
-                                basketError={basketError}
-                                basketLength={basketLength}
-                            />
-                        }
                     </>
                 )}
+                {((!isDataLoaded && basketError) || (isDataLoaded && basketLength < 1)) &&
+                    <ErrorTitle 
+                        basketError={basketError}
+                        basketLength={basketLength}
+                    />
+                }
             </div>
         </div>
     )

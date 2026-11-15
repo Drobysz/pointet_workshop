@@ -45,22 +45,24 @@ export const UserBasketItem = ({
                         { quantity: nextQuantity }
                     );
                 }
+
+                setQuantity(nextQuantity);
+                await mutateBasket();
             } else {
-                if (nextQuantity === 0) {
-                    await guestBasketApi.deleteItem(
+                // The guest API already re-validates the basket on the server,
+                // so reuse that response instead of fetching it a second time.
+                const response = nextQuantity === 0
+                    ? await guestBasketApi.deleteItem(
                         basketItem.good_register_id
-                    );
-                }
-                else {
-                    await guestBasketApi.updateItem(
+                    )
+                    : await guestBasketApi.updateItem(
                         basketItem.good_register_id, 
                         { quantity: nextQuantity }
                     );
-                }
-            }
 
-            setQuantity(nextQuantity);
-            await mutateBasket();
+                setQuantity(nextQuantity);
+                await mutateBasket(response.data, { revalidate: false });
+            }
         } catch (error) {
             setNotification({ 
                 status: "error", 

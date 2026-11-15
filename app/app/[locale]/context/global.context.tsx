@@ -143,10 +143,11 @@ export const GlobalContextProvider = ({
             setAuthStatus(status);
         }
 
-        if (isUserLoading) {
-            updateStatus("loading");
-            return;
-        }
+        // SWR also reports isLoading while it *revalidates* a key that holds no data,
+        // and a guest's 401 is stored as an error, not as data. Only the very first
+        // load is "loading": switching back to it nulls the basket key (see useUserData)
+        // and unmounts the checkout form together with what was typed into it.
+        if (isUserLoading) return;
 
         if (user && !userError) {
             updateStatus("authenficated");
@@ -171,17 +172,21 @@ export const GlobalContextProvider = ({
         const mergeGuestBasket = async () => {
             try {
                 const guestBasket = await guestBasketApi.getBasket();
+                let merged = false;
                 for (const item of guestBasket.data) {
                     if (!item.good_register_id) continue;
                     try {
                         await basketApi.addItem({ good_register_id: item.good_register_id, quantity: item.quantity });
                         LocalBasketService.remove(item.good_register_id);
+                        merged = true;
                     } catch {
                         // Keep only the unavailable line in the guest cookie so a
                         // later retry cannot duplicate already-merged items.
                     }
                 }
-                await mutateBasket();
+                // Refetch only when lines were moved; otherwise it just
+                // repeats the basket request that has just completed.
+                if (merged) await mutateBasket();
             } catch {
                 // A transient validation failure must not discard the guest basket.
             }

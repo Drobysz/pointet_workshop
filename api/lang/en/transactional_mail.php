@@ -24,6 +24,20 @@ return [
         'total' => 'Total paid',
         'details' => 'View your preorder',
     ],
+    'order' => [
+        'subject' => 'Your Order Is Confirmed — Pointet',
+        'paragraphs' => [
+            'Your payment was successful and your order is confirmed. We’ll email you when it ships.',
+            'We’ll use the delivery details below to deliver your order and to contact you if needed.',
+        ],
+        'reference' => 'Order #:reference',
+        'product' => 'Product',
+        'quantity' => 'Quantity',
+        'total' => 'Total paid',
+        'details' => 'View your order',
+        'delivery_fee' => 'Delivery',
+        'delivery' => 'Delivery details',
+    ],
     'device' => [
         'subject' => 'New Device Sign-In — Pointet',
         'paragraphs' => [

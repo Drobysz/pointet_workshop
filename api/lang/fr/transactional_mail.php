@@ -17,6 +17,20 @@ return [
         'total' => 'Total payé',
         'details' => 'Voir votre précommande',
     ],
+    'order' => [
+        'subject' => 'Votre commande est confirmée — Pointet',
+        'paragraphs' => [
+            'Votre paiement a bien été reçu et votre commande est confirmée. Nous vous écrirons lors de son expédition.',
+            'Nous utiliserons les informations de livraison ci-dessous pour vous livrer et vous contacter si nécessaire.',
+        ],
+        'reference' => 'Commande nº :reference',
+        'product' => 'Produit',
+        'quantity' => 'Quantité',
+        'total' => 'Total payé',
+        'details' => 'Voir votre commande',
+        'delivery_fee' => 'Livraison',
+        'delivery' => 'Informations de livraison',
+    ],
     'device' => [
         'subject' => 'Connexion depuis un nouvel appareil — Pointet',
         'paragraphs' => [

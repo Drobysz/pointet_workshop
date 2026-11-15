@@ -186,6 +186,52 @@ class CatalogAndAuthorizationTest extends TestCase
         $this->assertArrayNotHasKey('meta', $adminResponse->json());
     }
 
+    public function test_order_list_reports_total_item_quantity_per_order(): void
+    {
+        [$category, $subcategory] = $this->catalogMarkers();
+        $good = $this->createGood($category, $subcategory, 'Quantity chair', 40);
+        $admin = User::factory()->create(['role' => 'admin']);
+        $customer = User::factory()->create();
+
+        $filled = Order::create([
+            'user_id' => $customer->id,
+            'customer_name' => $customer->full_name,
+            'customer_email' => $customer->email,
+            'status' => 'processing',
+            'placed_at' => now(),
+        ]);
+        foreach ([2, 3] as $quantity) {
+            $filled->items()->create([
+                'good_id' => $good->id,
+                'product_name' => $good->name,
+                'unit_price' => 40,
+                'quantity' => $quantity,
+                'status' => 'processing',
+            ]);
+        }
+        $empty = Order::create([
+            'user_id' => $customer->id,
+            'customer_name' => $customer->full_name,
+            'customer_email' => $customer->email,
+            'status' => 'processing',
+            'placed_at' => now()->subMinute(),
+        ]);
+
+        $response = $this->withToken($this->accessToken($admin))
+            ->getJson('/api/orders')
+            ->assertOk()
+            ->assertJsonPath('data.0.id', $filled->id)
+            ->assertJsonPath('data.0.quantity', 5)
+            ->assertJsonPath('data.0.total', '200.00')
+            ->assertJsonPath('data.1.id', $empty->id)
+            ->assertJsonPath('data.1.quantity', 0);
+
+        $this->withToken($this->accessToken($customer))
+            ->getJson("/api/orders/{$filled->id}")
+            ->assertOk()
+            ->assertJsonPath('data.quantity', 5);
+    }
+
     public function test_only_an_admin_can_create_a_verified_customer(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);

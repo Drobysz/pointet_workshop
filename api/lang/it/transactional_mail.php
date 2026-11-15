@@ -17,6 +17,20 @@ return [
         'total' => 'Totale pagato',
         'details' => 'Visualizza il tuo preordine',
     ],
+    'order' => [
+        'subject' => 'Il tuo ordine è confermato — Pointet',
+        'paragraphs' => [
+            'Il pagamento è andato a buon fine e il tuo ordine è confermato. Ti scriveremo via e-mail quando verrà spedito.',
+            'Useremo i dati di consegna qui sotto per consegnare l’ordine e contattarti, se necessario.',
+        ],
+        'reference' => 'Ordine n. :reference',
+        'product' => 'Prodotto',
+        'quantity' => 'Quantità',
+        'total' => 'Totale pagato',
+        'details' => 'Visualizza il tuo ordine',
+        'delivery_fee' => 'Spedizione',
+        'delivery' => 'Dati di consegna',
+    ],
     'device' => [
         'subject' => 'Accesso da un nuovo dispositivo — Pointet',
         'paragraphs' => [

@@ -5,11 +5,15 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Good;
+use App\Models\GoodRegister;
+use App\Models\OrderCheckoutSession;
 use App\Models\ProductImage;
 use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class VariantInventoryTest extends TestCase
@@ -120,16 +124,43 @@ class VariantInventoryTest extends TestCase
         $this->assertArrayNotHasKey('links', $basketResponse->json());
         $this->assertArrayNotHasKey('meta', $basketResponse->json());
         $this->putJson('/api/basket/'.$basket->json('data.id'), ['quantity' => 4])->assertUnprocessable();
-        $this->postJson('/api/orders', ['items' => [['good_register_id' => $small, 'quantity' => 2]]])
+        config()->set('checkout.mode', 'standard');
+        config()->set('services.stripe.secret', 'sk_test_variants');
+        config()->set('services.stripe.webhook_secret', 'whsec_variants');
+        Http::fake(['https://api.stripe.com/v1/checkout/sessions' => Http::response([
+            'id' => 'cs_test_variants', 'url' => 'https://checkout.stripe.test/cs_test_variants',
+        ])]);
+        $checkoutId = $this->postJson('/api/orders', ['idempotency_key' => (string) Str::uuid()])
             ->assertCreated()
+            ->assertJsonPath('data.payment_amount_cents', 9150)
+            ->json('data.id');
+        // Nothing is ordered or deducted until Stripe confirms the payment.
+        $this->assertDatabaseCount('orders', 0);
+        $this->assertDatabaseHas('good_register', ['id' => $small, 'quantity' => 3]);
+        $this->assertDatabaseCount('baskets', 2);
+
+        $event = ['id' => 'evt_variants', 'type' => 'checkout.session.completed', 'data' => ['object' => [
+            'id' => 'cs_test_variants',
+            'metadata' => ['order_checkout_session_id' => (string) $checkoutId],
+            'payment_status' => 'paid', 'amount_total' => 9150, 'currency' => 'eur',
+        ]]];
+        $timestamp = time();
+        $signature = hash_hmac('sha256', $timestamp.'.'.json_encode($event), 'whsec_variants');
+        $this->postJson('/api/webhooks/stripe', $event, ['Stripe-Signature' => "t={$timestamp},v1={$signature}"])->assertOk();
+
+        $orderId = OrderCheckoutSession::findOrFail($checkoutId)->order_id;
+        $this->getJson("/api/orders/{$orderId}")
+            ->assertOk()
+            ->assertJsonCount(2, 'data.items')
             ->assertJsonPath('data.items.0.size', 'XL')
             ->assertJsonPath('data.items.0.color_name', 'Red')
-            ->assertJsonPath('data.items.0.images.0.id', $selectedImage->id);
+            ->assertJsonPath('data.items.0.quantity', 2)
+            ->assertJsonPath('data.items.0.images.0.id', $selectedImage->id)
+            ->assertJsonPath('data.items.1.size', '43.5');
         $this->assertDatabaseHas('good_register', ['id' => $small, 'quantity' => 1]);
-        $this->assertDatabaseHas('good_register', ['id' => $large, 'quantity' => 2]);
-        $this->assertDatabaseHas('goods', ['id' => $created->json('data.id'), 'current_quantity' => 7]);
+        $this->assertDatabaseHas('good_register', ['id' => $large, 'quantity' => 1]);
+        $this->assertDatabaseHas('goods', ['id' => $created->json('data.id'), 'current_quantity' => 6]);
         $this->assertDatabaseCount('baskets', 0);
-        $this->postJson('/api/orders', ['items' => [['good_register_id' => $small, 'quantity' => 2]]])->assertUnprocessable();
         $this->assertDatabaseCount('orders', 1);
     }
 
@@ -189,12 +220,23 @@ class VariantInventoryTest extends TestCase
         $this->assertDatabaseHas('baskets', ['good_register_id' => $variant, 'quantity' => 3]);
     }
 
-    public function test_duplicate_order_lines_cannot_oversell_and_roll_back_the_whole_order(): void
+    public function test_order_checkout_rejects_a_basket_that_exceeds_stock_before_creating_a_payment(): void
     {
         $created = $this->postJson('/api/goods', $this->payload())->assertCreated();
         $row = $created->json('data.inventory.0.id');
-        $this->postJson('/api/orders', ['items' => [['good_register_id' => $row, 'quantity' => 2], ['good_register_id' => $row, 'quantity' => 2]]])->assertUnprocessable();
-        $this->assertDatabaseHas('good_register', ['id' => $row, 'quantity' => 3]);
+        $user = User::factory()->create();
+        $this->withToken($this->accessToken($user));
+        $this->postJson('/api/basket', ['good_register_id' => $row, 'quantity' => 3])->assertCreated();
+        GoodRegister::whereKey($row)->update(['quantity' => 2]);
+        config()->set('checkout.mode', 'standard');
+        config()->set('services.stripe.secret', 'sk_test_variants');
+        Http::fake();
+
+        $this->postJson('/api/orders', ['idempotency_key' => (string) Str::uuid()])->assertUnprocessable();
+
+        Http::assertNothingSent();
+        $this->assertDatabaseHas('good_register', ['id' => $row, 'quantity' => 2]);
+        $this->assertDatabaseCount('order_checkout_sessions', 0);
         $this->assertDatabaseCount('orders', 0);
         $this->assertDatabaseCount('order_items', 0);
     }

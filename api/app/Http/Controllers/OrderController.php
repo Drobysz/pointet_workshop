@@ -4,20 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Enums\OrderStatus;
 use App\Http\Requests\OrderRequest;
+use App\Http\Resources\OrderCheckoutSessionResource;
 use App\Http\Resources\OrderDetailResource;
 use App\Http\Resources\OrderResource;
-use App\Models\Good;
-use App\Models\GoodRegister;
 use App\Models\Order;
 use App\Services\Checkout\GuestSessionService;
+use App\Services\Checkout\OrderCheckoutService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     private const ITEM_RELATIONS = ['items.good.images', 'items.inventory'];
+
+    public function __construct(private readonly OrderCheckoutService $checkouts) {}
 
     public function guestIndex(Request $request, GuestSessionService $guests): AnonymousResourceCollection
     {
@@ -88,33 +90,25 @@ class OrderController extends Controller
         return new OrderDetailResource($order->load(['user' => fn ($query) => $query->withResourceCounts(), ...self::ITEM_RELATIONS]));
     }
 
-    public function store(OrderRequest $request): OrderDetailResource
+    public function store(OrderRequest $request): JsonResponse
     {
         $user = $request->user();
-        $data = $request->validated();
-        $order = DB::transaction(function () use ($data, $user): Order {
-            $ids = array_column($data['items'], 'good_register_id');
-            $goodIds = GoodRegister::whereIn('id', $ids)->pluck('good_id')->unique()->sort()->values();
-            // Every stock writer locks products first in ID order, then inventory rows.
-            $goods = Good::whereIn('id', $goodIds)->orderBy('id')->lockForUpdate()->get()->keyBy('id');
-            $order = Order::create(['user_id' => $user->id, 'customer_name' => $user->full_name, 'customer_email' => $user->email, 'status' => OrderStatus::Processing, 'placed_at' => now()]);
-            foreach ($data['items'] as $line) {
-                $variant = GoodRegister::with('color')->lockForUpdate()->findOrFail($line['good_register_id']);
-                $good = $goods->get($variant->good_id);
-                abort_unless($good, 422, 'This inventory selection is no longer available.');
-                abort_if($line['quantity'] > $variant->quantity, 422, "Insufficient inventory for {$good->name} in the selected color and size.");
-                $order->items()->create(['good_id' => $good->id, 'good_register_id' => $variant->id, 'product_name' => $good->name, 'color_name' => $variant->color->name, 'size' => $variant->size, 'unit_price' => $good->price, 'quantity' => $line['quantity'], 'status' => OrderStatus::Processing]);
-                $variant->decrement('quantity', $line['quantity']);
-            }
-            foreach ($goods as $good) {
-                $good->forceFill(['current_quantity' => $good->inventory()->sum('quantity'), 'inventory_version' => $good->inventory_version + 1])->save();
-            }
-            $user->basketItems()->delete();
+        $guest = $user ? null : app(GuestSessionService::class)->resolveOrCreate($request);
+        $checkout = $this->checkouts->startCheckoutFromBasket(
+            $user,
+            $guest['session'] ?? null,
+            $request->validated('idempotency_key'),
+            $request->validated('items', []),
+            $request->validated('email'),
+            $request->validated('full_name'),
+            $request->validated('address'),
+        );
+        $response = (new OrderCheckoutSessionResource($checkout))->response($request);
+        if (isset($guest['cookie']) && $guest['cookie']) {
+            $response->withCookie($guest['cookie']);
+        }
 
-            return $order;
-        }, 3);
-
-        return new OrderDetailResource($order->load(['user' => fn ($query) => $query->withResourceCounts(), ...self::ITEM_RELATIONS]));
+        return $response;
     }
 
     public function update(OrderRequest $request, Order $order): OrderDetailResource

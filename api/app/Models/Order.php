@@ -12,7 +12,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'guest_session_id', 'customer_name', 'customer_email', 'status', 'placed_at'];
+    protected $fillable = ['user_id', 'guest_session_id', 'customer_name', 'customer_email', 'customer_address', 'status', 'placed_at'];
 
     protected function casts(): array
     {
@@ -33,4 +33,5 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
 }

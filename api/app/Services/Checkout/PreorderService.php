@@ -5,7 +5,6 @@ namespace App\Services\Checkout;
 use App\Enums\PreorderPaymentStatus;
 use App\Models\Basket;
 use App\Models\Good;
-use App\Models\GoodRegister;
 use App\Models\GuestSession;
 use App\Models\Preorder;
 use App\Models\PreorderCheckoutSession;
@@ -22,6 +21,7 @@ class PreorderService
     public function __construct(
         private readonly GuestBasketService $guestBaskets,
         private readonly TransactionalEmails $emails,
+        private readonly InventoryDeduction $inventory,
     ) {}
 
     /** @param array<int, array{inventory_id: int, quantity: int}> $guestItems */
@@ -162,7 +162,7 @@ class PreorderService
                     return;
                 }
 
-                $this->deductInventory($checkout->basket_snapshot);
+                $this->inventory->deduct($checkout->basket_snapshot);
 
                 $customerDetails = is_array($session['customer_details'] ?? null) ? $session['customer_details'] : [];
                 $customerEmail = $checkout->customer_email;
@@ -204,34 +204,6 @@ class PreorderService
                 $checkout->update(['payment_status' => PreorderPaymentStatus::Failed]);
             }
         }, 3);
-    }
-
-    /** @param array<int, array{good_id: int, good_register_id: int, quantity: int}> $items */
-    private function deductInventory(array $items): void
-    {
-        // Match all other stock writers: lock products first, then inventory rows.
-        $goods = Good::query()
-            ->whereIn('id', array_column($items, 'good_id'))
-            ->orderBy('id')->lockForUpdate()->get()->keyBy('id');
-        $variants = GoodRegister::query()
-            ->whereIn('id', array_column($items, 'good_register_id'))
-            ->orderBy('id')->lockForUpdate()->get()->keyBy('id');
-
-        foreach ($items as $item) {
-            $good = $goods->get($item['good_id']);
-            $variant = $variants->get($item['good_register_id']);
-            $quantity = (int) $item['quantity'];
-            abort_unless($good && $variant && $variant->good_id === $good->id && $quantity > 0, 422, 'This inventory selection is no longer available.');
-            abort_if($quantity > $variant->quantity, 422, "Insufficient inventory for {$good->name} in the selected color and size.");
-            $variant->decrement('quantity', $quantity);
-        }
-
-        foreach ($goods as $good) {
-            $good->forceFill([
-                'current_quantity' => $good->inventory()->sum('quantity'),
-                'inventory_version' => $good->inventory_version + 1,
-            ])->save();
-        }
     }
 
     private function createStripeSession(PreorderCheckoutSession $checkout): array

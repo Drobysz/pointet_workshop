@@ -23,8 +23,8 @@
         <table width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;font-size:14px">
             <thead>
                 <tr style="background-color:#f4f4f5">
-                    <th scope="col" align="left" style="padding:8px">{{ __('transactional_mail.preorder.product') }}</th>
-                    <th scope="col" align="right" style="padding:8px">{{ __('transactional_mail.preorder.quantity') }}</th>
+                    <th scope="col" align="left" style="padding:8px">{{ $labels['product'] }}</th>
+                    <th scope="col" align="right" style="padding:8px">{{ $labels['quantity'] }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,15 +41,31 @@
                 @endforeach
             </tbody>
             <tfoot>
+                @if ($deliveryFee)
+                    <tr>
+                        <th scope="row" align="left" style="padding:8px;font-weight:normal">{{ $labels['delivery_fee'] }}</th>
+                        <td align="right" style="padding:8px;white-space:nowrap">{{ $deliveryFee }}</td>
+                    </tr>
+                @endif
                 <tr>
-                    <th scope="row" align="left" style="padding:8px">{{ __('transactional_mail.preorder.total') }}</th>
+                    <th scope="row" align="left" style="padding:8px">{{ $labels['total'] }}</th>
                     <td align="right" style="padding:8px;white-space:nowrap"><strong>{{ $amount }}</strong></td>
                 </tr>
             </tfoot>
         </table>
     @endif
 
+    @if ($delivery)
+        <p style="margin:16px 0 4px"><strong>{{ $labels['delivery'] }}</strong></p>
+        @if (! empty($delivery['name']))
+            <p style="margin:0 0 2px">{{ $delivery['name'] }}</p>
+        @endif
+        @if (! empty($delivery['address']))
+            <p style="margin:0 0 2px;white-space:pre-line;overflow-wrap:anywhere">{{ $delivery['address'] }}</p>
+        @endif
+    @endif
+
     @if ($detailsUrl)
-        <p style="margin:16px 0 0"><a href="{{ $detailsUrl }}" style="color:#27272a;font-weight:bold">{{ __('transactional_mail.preorder.details') }}</a></p>
+        <p style="margin:16px 0 0"><a href="{{ $detailsUrl }}" style="color:#27272a;font-weight:bold">{{ $labels['details'] }}</a></p>
     @endif
 @endsection

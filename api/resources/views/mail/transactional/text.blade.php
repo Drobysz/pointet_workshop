@@ -16,16 +16,29 @@
 @endif
 @if ($amount !== null)
 
-{!! __('transactional_mail.preorder.product') !!} | {!! __('transactional_mail.preorder.quantity') !!}
+{!! $labels['product'] !!} | {!! $labels['quantity'] !!}
 @foreach ($items as $item)
 {!! implode(' · ', array_filter([$item['product_name'], $item['color_name'], $item['size']])) !!} | {{ $item['quantity'] }}
 @endforeach
 
-{!! __('transactional_mail.preorder.total') !!} {{ $amount }}
+@if ($deliveryFee)
+{!! $labels['delivery_fee'] !!} {{ $deliveryFee }}
+@endif
+{!! $labels['total'] !!} {{ $amount }}
+@endif
+@if ($delivery)
+
+{!! $labels['delivery'] !!}
+@if (! empty($delivery['name']))
+{!! $delivery['name'] !!}
+@endif
+@if (! empty($delivery['address']))
+{!! $delivery['address'] !!}
+@endif
 @endif
 @if ($detailsUrl)
 
-{!! __('transactional_mail.preorder.details') !!}
+{!! $labels['details'] !!}
 {!! $detailsUrl !!}
 @endif
 

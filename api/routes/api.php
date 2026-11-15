@@ -29,6 +29,7 @@ Route::post('/webhooks/sendcloud', SendcloudWebhookController::class);
 Route::post('/webhooks/stripe', [StripeController::class, 'webhook']);
 Route::post('/seller/requests', [SellerApplicationController::class, 'store'])->middleware('throttle:seller-application');
 Route::post('/basket/validate', [BasketController::class, 'validateGuest'])->middleware('throttle:api-write');
+Route::post('/orders', [OrderController::class, 'store'])->middleware(['auth.optional', 'throttle:api-write']);
 Route::post('/preorders', [PreorderController::class, 'store'])->middleware(['auth.optional', 'throttle:api-write']);
 Route::get('/stripe/checkout-sessions/{sessionId}', [StripeController::class, 'checkoutSession'])
     ->where('sessionId', 'cs_[A-Za-z0-9_]+')
@@ -69,7 +70,7 @@ Route::middleware('auth.jwt')->group(function (): void {
         Route::apiResource('basket', BasketController::class)
             ->only(['store', 'update', 'destroy'])
             ->parameters(['basket' => 'basket']);
-        Route::apiResource('orders', OrderController::class)->only(['store', 'update', 'destroy']);
+        Route::apiResource('orders', OrderController::class)->only(['update', 'destroy']);
         Route::apiResource('preorders', PreorderController::class)->only(['update', 'destroy']);
     });
 

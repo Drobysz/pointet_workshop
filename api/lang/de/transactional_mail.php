@@ -17,6 +17,20 @@ return [
         'total' => 'Gesamtbetrag bezahlt',
         'details' => 'Vorbestellung ansehen',
     ],
+    'order' => [
+        'subject' => 'Deine Bestellung ist bestätigt — Pointet',
+        'paragraphs' => [
+            'Deine Zahlung war erfolgreich und deine Bestellung ist bestätigt. Wir melden uns per E-Mail, sobald sie versandt wird.',
+            'Mit den unten stehenden Lieferdaten liefern wir deine Bestellung aus und kontaktieren dich bei Bedarf.',
+        ],
+        'reference' => 'Bestellung Nr. :reference',
+        'product' => 'Produkt',
+        'quantity' => 'Menge',
+        'total' => 'Gesamtbetrag bezahlt',
+        'details' => 'Bestellung ansehen',
+        'delivery_fee' => 'Versand',
+        'delivery' => 'Lieferdaten',
+    ],
     'device' => [
         'subject' => 'Anmeldung von einem neuen Gerät — Pointet',
         'paragraphs' => [

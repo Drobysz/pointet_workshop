@@ -3,10 +3,13 @@
 namespace App\Services;
 
 use App\Models\AuthRefreshToken;
+use App\Models\Order;
+use App\Models\OrderCheckoutSession;
 use App\Models\Preorder;
 use App\Models\SellerApplication;
 use App\Models\TransactionalEmail;
 use App\Models\User;
+use App\Services\Checkout\OrderCheckoutService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -74,6 +77,44 @@ class TransactionalEmails
                 'details_url' => $detailsUrl,
             ],
         );
+    }
+
+    public function paidOrder(Order $order, OrderCheckoutSession $checkout): void
+    {
+        $user = $order->user;
+        $locale = $this->locale($user?->language);
+        $detailsUrl = $this->orderDetailsUrl($order, $locale);
+        $name = $order->customer_name !== OrderCheckoutService::GUEST_NAME ? $order->customer_name : null;
+
+        $this->record(
+            'order',
+            (string) $order->id,
+            $order->user_id ? $user?->email : $order->customer_email,
+            $locale,
+            [
+                'name' => $name,
+                'reference' => $order->id,
+                'date' => $order->placed_at?->toISOString() ?? $order->created_at->toISOString(),
+                'amount_cents' => $checkout->payment_amount_cents,
+                'delivery_cents' => $checkout->delivery_cents,
+                'currency' => $checkout->currency,
+                'items' => $order->items()->get(['product_name', 'color_name', 'size', 'quantity'])->toArray(),
+                'delivery' => array_filter(['name' => $name, 'address' => $order->customer_address]) ?: null,
+                'details_url' => $detailsUrl,
+            ],
+        );
+    }
+
+    /** Storefront link to the order; only accounts can open it, and only for a well-formed frontend URL. */
+    private function orderDetailsUrl(Order $order, string $locale): ?string
+    {
+        $frontend = rtrim((string) config('services.frontend.url'), '/');
+        $url = filter_var($frontend, FILTER_VALIDATE_URL) ? parse_url($frontend) : [];
+
+        return $order->user_id && in_array($url['scheme'] ?? null, ['http', 'https'], true)
+            && ! isset($url['user']) && ! isset($url['query']) && ! isset($url['fragment'])
+            ? "{$frontend}/{$locale}/profile/orders/{$order->id}"
+            : null;
     }
 
     private function locale(?string $locale): string

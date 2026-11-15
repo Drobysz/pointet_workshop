@@ -11,4 +11,5 @@ extends React.InputHTMLAttributes<HTMLInputElement> {
     name: string;
     error?: string;
     className?: string;
+    setAddress?: (address: string)=> void;
 }

@@ -2,23 +2,38 @@
 
 import cn from "classnames";
 import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { InputProps } from "./Input.props";
 import s from "./input.module.scss";
 import { jersey10 } from "@/fonts/fonts";
+import { usePhotonSuggestions } from "@/hooks";
+import { SuggestionList } from "./components";
 
 export const Input = ({
     placeholder,
-    value,
     type,
     label,
     error,
+    value,
     className,
     ...props
 }: InputProps) => {
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const { suggestions } = usePhotonSuggestions({
+        isActive: props.name == "address",
+        value: String(value ?? ""),
+    });
+
     const [conceal, setConceal] = useState(true);
+    const [isFocused, setIsFocused] = useState(false);
     const t = useTranslations("common.password");
+
+    const showSusggestions 
+        = props.name == "address" 
+            && suggestions.length > 2
+            && isFocused;
     
     let inputType = type;
     if (type === "password") {
@@ -27,6 +42,22 @@ export const Input = ({
 
     const errorId = error && props.name 
         ? `${props.name}-error` : undefined;
+
+    const handleSuggestionClick = (value: string)=> {
+        const el = inputRef.current;
+        if (!el) return;
+
+
+        const nativeSetter = Object.getOwnPropertyDescriptor(
+            HTMLInputElement.prototype,
+            "value"
+        )?.set;
+
+        nativeSetter?.call(el, value);
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+
+        el.blur();
+    }
 
     return (
         <label className={s.form_content_container}>
@@ -49,12 +80,16 @@ export const Input = ({
             <div className="relative">
                 <input
                     {...props}
+                    ref={inputRef}
                     type={inputType}
-                    placeholder={placeholder}
                     value={value}
+                    placeholder={placeholder}
                     aria-invalid={Boolean(error)}
                     aria-describedby={errorId}
                     className={cn(s.input_container, className)}
+
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}   
                 />
                 {type === "password" && (
                     <button
@@ -65,6 +100,13 @@ export const Input = ({
                     >
                         {conceal ? <Eye size={20} /> : <EyeOff size={20} />}
                     </button>
+                )}
+
+                {showSusggestions && (
+                    <SuggestionList 
+                        suggestions={suggestions}
+                        handleSuggestionClick={handleSuggestionClick}
+                    />
                 )}
             </div>
         </label>

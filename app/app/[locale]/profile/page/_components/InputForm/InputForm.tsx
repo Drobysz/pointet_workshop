@@ -103,6 +103,10 @@ export const InputForm = ({
         setSuggestionSelected(false);
     }
 
+    const handleBlur = ()=> {
+        setSuggestionSelected(false);
+    }
+
     return (
         <form 
             className={s.form_container}
@@ -125,6 +129,7 @@ export const InputForm = ({
                         type={inputType}
                         placeholder={placeholder ?? ""}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                     />
 
                     {showSusggestions &&

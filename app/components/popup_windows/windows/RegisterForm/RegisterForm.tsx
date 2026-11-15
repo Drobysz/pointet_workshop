@@ -2,7 +2,13 @@
 
 import { ShadowBorderWindow } from "@/components/windows/ShadowBorderWindow/ShadowBorderWindow"
 import s from "./style.module.scss";
-import { ChangeEvent, useActionState, useContext, useEffect, useState } from "react";
+import { 
+    ChangeEvent, 
+    useActionState, 
+    useContext, 
+    useEffect, 
+    useState 
+} from "react";
 import { 
     Terms,
     Submit,
@@ -15,6 +21,7 @@ import { inputType } from "@/components/inputs/Input/Input.props";
 import { FormError, FormState } from "@/auth/FormSchemes";
 import { registerAction } from "@/auth/actions/registerAction";
 import { useTranslations } from "next-intl";
+import { RegisterForm as RegisterFormType } from "@/types";
 
 export const RegisterForm = ()=> {
     const t = useTranslations();
@@ -86,6 +93,7 @@ export const RegisterForm = ()=> {
                             placeholder={form.placeholder}
                             label={form.label}
                             name={form.name}
+                            value={regFormData[form.name as keyof RegisterFormType] ?? ""}
                             onChange={handleForm}
                             error={
                                 state.errors && state.errors[form.name as keyof FormError]

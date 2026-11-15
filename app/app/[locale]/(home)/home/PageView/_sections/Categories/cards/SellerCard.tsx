@@ -9,7 +9,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
-export const CustomOrderCard = ()=> {
+export const SellerCard = ()=> {
     const t = useTranslations("home.categories.sellers");
     const [hover, setHover] = useState(false);
 

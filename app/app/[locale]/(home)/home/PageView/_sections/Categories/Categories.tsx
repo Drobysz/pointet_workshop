@@ -4,9 +4,9 @@ import { cn } from "@/helpers";
 import { sixCaps } from "@/fonts/fonts";
 import { useTranslations } from "next-intl";
 import {
-    BagCard,
-    FurnitureCard,
-    CustomOrderCard
+    ShopCard,
+    NewsChanelCard,
+    SellerCard
 } from "./cards";
 
 export const Categories = ()=> {
@@ -27,9 +27,9 @@ export const Categories = ()=> {
             <nav
                 className={s.card_list}
             >
-                <BagCard />
-                <FurnitureCard />
-                <CustomOrderCard />
+                <ShopCard />
+                <NewsChanelCard />
+                <SellerCard />
             </nav>
         </GridContainer>
     )

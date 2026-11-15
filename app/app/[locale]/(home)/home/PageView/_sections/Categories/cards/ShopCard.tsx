@@ -9,7 +9,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
-export const BagCard = ()=> {
+export const ShopCard = ()=> {
     const t = useTranslations("home.categories.shop");
     const [hover, setHover] = useState(false);
 
@@ -43,14 +43,14 @@ export const BagCard = ()=> {
                     ? {
                         rotate: -10,
                         right: -42,
-                        bottom: -15,
-                        scale: 1.3
+                        bottom: -45,
+                        scale: 1.15
                     }
                     : {
                         rotate: -15,
                         right: -52,
                         bottom: -57,
-                        scale: 1.15
+                        scale: 1.05
                     }
                 }
             >
@@ -69,9 +69,9 @@ export const BagCard = ()=> {
                 animate={
                     hover 
                     ? {
-                        rotate: -15,
-                        right: 30,
-                        bottom: -18,
+                        rotate: -14,
+                        right: 25,
+                        bottom: -34,
                         scale: 1.2
                     }
                     : {

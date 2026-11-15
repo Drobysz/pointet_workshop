@@ -9,7 +9,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
-export const FurnitureCard = ()=> {
+export const NewsChanelCard = ()=> {
     const t = useTranslations("home.categories.telegram");
     const [hover, setHover] = useState(false);
 
@@ -88,38 +88,6 @@ export const FurnitureCard = ()=> {
                     width={200}
                     height={100}
                     alt={t("megaphoneAlt")}
-                />
-            </motion.div>
-            <motion.div
-                className="
-                    absolute 
-                    drop-shadow-2xl
-                    origin-top-left
-                    z-10
-                "
-                animate={
-                    hover 
-                    ? {
-                        rotate: 15,
-                        left: -20,
-                        bottom: 30,
-                        scale: 1.2,
-                        opacity: 1,
-                    }
-                    : {
-                        rotate: 15,
-                        left: -20,
-                        bottom: -20,
-                        scale: 1.1,
-                        opacity: 0,
-                    }
-                }
-             >
-                <Image
-                    src="/category/news.png"
-                    width={200}
-                    height={100}
-                    alt={t("newspaperAlt")}
                 />
             </motion.div>
         </InteractionCard>

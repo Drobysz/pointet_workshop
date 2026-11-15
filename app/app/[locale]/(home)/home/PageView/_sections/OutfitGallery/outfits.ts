@@ -4,7 +4,7 @@ export interface Outfit {
     number: number;
 }
 
-export const OUTFITS: Outfit[] = Array.from({ length: 12 }, (_, index) => ({
+export const OUTFITS: Outfit[] = Array.from({ length: 10 }, (_, index) => ({
     src: `/outfit/example${index + 1}.jpg`,
     number: index + 1,
 }));

@@ -1,3 +1,3 @@
-export * from "./BagCard";
-export * from "./CustomOrderCard";
-export * from "./FurnitureCard";
+export * from "./ShopCard";
+export * from "./SellerCard";
+export * from "./NewsChanelCard";

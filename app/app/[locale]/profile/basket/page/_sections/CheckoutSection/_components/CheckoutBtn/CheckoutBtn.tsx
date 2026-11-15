@@ -31,8 +31,8 @@ export const CheckoutBtn = ({
             )}
 
             {!isPending && (disabled 
-                ? t("emailRequired")
-                : t("preorder")
+                ? t("fillForms")
+                : t("buy")
             )}
         </button>
     )

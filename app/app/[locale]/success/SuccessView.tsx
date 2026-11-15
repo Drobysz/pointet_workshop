@@ -37,6 +37,9 @@ export function SuccessView() {
         },
     );
     const paymentStatus = data?.data.payment_status;
+    // Standard checkouts carry `order_id`; €1 pre-order checkouts carry `preorder_id`.
+    const isOrder = data !== undefined && "order_id" in data.data;
+    const ordersHref = isOrder ? "/profile/orders" : "/profile/preorders";
     const {
         authStatus,
 
@@ -95,11 +98,11 @@ export function SuccessView() {
         ) return;
 
         const timeout = setTimeout(() => {
-            router.push("/profile/preorders");
+            router.push(ordersHref);
         }, 3000);
 
         return () => clearTimeout(timeout);
-    }, [sessionId, paymentStatus, clearedSessionId, router]);
+    }, [sessionId, paymentStatus, clearedSessionId, router, ordersHref]);
 
     if (sessionId && !isLoading && (error || !paymentStatus)) {
         return (
@@ -147,13 +150,13 @@ export function SuccessView() {
                         "text-5xl font-bold text-green-600",
                         jersey10.className
                     )}>
-                        {t(message.title)}
+                        {t(isOrder && paymentStatus === "paid" ? "status.paidOrder.title" : message.title)}
                     </h1>
                     <Link
-                        href="/profile/preorders"
+                        href={ordersHref}
                         className="hover:underline text-green-600"
                     >
-                        {t("result.viewPreorders")}
+                        {t(isOrder ? "result.viewOrders" : "result.viewPreorders")}
                     </Link>
                 </>
             )}

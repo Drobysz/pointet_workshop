@@ -1,7 +1,7 @@
 "use client";
 
 import { BasketItem } from "@/api/types/basket";
-import { preorderApi } from "@/api/api";
+import { ordersApi } from "@/api/api";
 import { useContext, useState } from "react";
 import type { SubmitEventHandler } from "react";
 import s from "./style.module.scss";
@@ -13,9 +13,19 @@ import {
     CheckoutBtn,
 } from "./_components";
 import { getApiErrorMessage } from "@/api/core/apiErrorMessage";
-import { createEmailFormScheme } from "./formScheme/EmailFormScheme";
+import { 
+    BasketFormError, 
+    BasketRequestData, 
+    createBasketFormScheme 
+} from "./formScheme/BasketFormScheme";
 import z from "zod";
 import { useTranslations } from "next-intl";
+
+const emptyBasketForm = {
+    email: "",
+    full_name: "",
+    address: "",
+}
 
 export const CheckoutSection = ({
     basketList
@@ -28,40 +38,46 @@ export const CheckoutSection = ({
     const router = useRouter();
 
     const [idempotencyKey, setIdempotencyKey] = useState<string | null>(null);
-    const [email, setEmail] = useState("");
-    const [error, setError] = useState<string | null>(null);
+    const [basketRequestData, setBasketRequestData] = useState<BasketRequestData>(emptyBasketForm);
+    const [errors, setErrors] = useState<BasketFormError | null>(null);
     const [pending, setPending] = useState(false);
 
     const createOrder: SubmitEventHandler<HTMLFormElement>  = async (e)=> {
         e.preventDefault();
 
-        setError(null);
+        setErrors(null);
         setPending(true);
 
         try {
             const key = idempotencyKey ?? crypto.randomUUID();
             setIdempotencyKey(key);
+            const {email, full_name, address} = basketRequestData;
 
             if (authStatus === "unauthenficated") {
-                const parsed = createEmailFormScheme(t).safeParse({
-                    email: email
+
+                const parsed = createBasketFormScheme(t).safeParse({
+                    email: email,
+                    full_name: full_name,
+                    address: address,
                 });
 
                 if (!parsed.success) {
-                    const errors = z.flattenError(parsed.error).fieldErrors;
+                    const formatErrors = z.flattenError(parsed.error).fieldErrors;
 
                     setPending(false);
-                    setError(errors.email?.[0] ?? "");
+                    setErrors(formatErrors);
                     return;
                 }
             }
 
-            const res = await preorderApi.createPreorder({
+            const res = await ordersApi.createOrder({
                 idempotency_key: key,
                 ...(authStatus === "unauthenficated" 
                         ? { 
                             items: LocalBasketService.get(),
-                            email: email
+                            email: email,
+                            full_name: full_name,
+                            address: address,
                         } 
                         : {}
                 ),
@@ -74,12 +90,12 @@ export const CheckoutSection = ({
                 })
 
                 setPending(false);
-                setEmail("");
+                setBasketRequestData(emptyBasketForm);
                 return;
             }
 
             setPending(false);
-            setEmail("");
+            setBasketRequestData(emptyBasketForm);
             router.push(res.data.checkout_url);
         } catch (error) {
             getApiErrorMessage(error, t);
@@ -87,10 +103,12 @@ export const CheckoutSection = ({
     }
 
     const isGuest = authStatus === "unauthenficated";
-    const isEmailEntered = 
-        email.length < 3 && isGuest;
+    const isBasketFormFilled = 
+        isGuest && !Object
+            .values(basketRequestData)
+            .every(value => value.trim() !== "");
     const isBtnDisabled = pending ||
-        isEmailEntered ||
+        isBasketFormFilled ||
         !basketList.length || 
         authStatus === "loading";
 
@@ -101,9 +119,10 @@ export const CheckoutSection = ({
                 onSubmit={createOrder}
             >
                 <div className={s.checkout_sect__contact}>
-                    <CheckoutInfo 
-                        setEmail={setEmail}
-                        error={error}
+                    <CheckoutInfo
+                        errors={errors}
+                        basketRequestData={basketRequestData}
+                        setBasketRequestData={setBasketRequestData}
                         isGuest={isGuest}
                     />
                 </div>

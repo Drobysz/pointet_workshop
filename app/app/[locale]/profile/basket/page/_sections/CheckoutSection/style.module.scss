@@ -27,11 +27,19 @@
     &__disclosure { 
         @apply text-[#52525b]
             text-sm
-            leading-normal;
+            leading-4
+            pl-3;
     }
 
     &__contact {
         @apply flex flex-col gap-2 min-w-0;
+    }
+
+    &__form_grid {
+        @apply grid 
+            grid-cols-3 
+            max-[940px]:grid-cols-1 
+            gap-4 px-2 pb-3;
     }
 
     .checkout_sect__emailInput {
@@ -40,7 +48,7 @@
 
     &__preorderButton { 
         @apply bg-zinc-800
-            rounded-lg
+            rounded-2xl
             text-white
             font-bold
             p-2 pt-2.5

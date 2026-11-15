@@ -95,6 +95,12 @@ export type FormState = {
     success?: boolean;
 };
 
+export type GlobalFormState<T> = {
+    errors?: T;
+    message?: string;
+    success?: boolean;
+};
+
 export type UpdatePasswordFormState = {
     errors?: UpdatePasswordFormError;
     message?: string;

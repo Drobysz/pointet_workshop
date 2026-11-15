@@ -10,11 +10,11 @@
         flex 
         gap-2
         items-center
-        text-sm
-        w-fit;
+        w-fit
+        text-lg;
     
     &__sel_btn {
-        @apply text-xl 
+        @apply text-2xl
             h-fit
             leading-4.5;
     }

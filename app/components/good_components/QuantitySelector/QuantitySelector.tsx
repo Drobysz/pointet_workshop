@@ -35,7 +35,10 @@ export const QuantitySelector = ({
             >
                 -
             </button>
-            <span className={after.className}>
+            <span className={cn(
+                after.className,
+                s.qntty_selector__qnnty
+            )}>
                 <SlidingNumber
                     value={currentQuantity}
                 />

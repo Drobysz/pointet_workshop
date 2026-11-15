@@ -40,9 +40,6 @@ export default async function GlobalNotFound() {
                     <h1 className="text-2xl font-semibold text-zinc-700">
                         {t("title")}
                     </h1>
-                    <p className="max-w-md text-zinc-500">
-                        {t("globalDescription")}
-                    </p>
                     <a
                         className={cn(
                             tinyFive.className,

@@ -32,9 +32,6 @@ export default async function NotFound() {
                 <h1 className={cn(s.title, climate_crisis.className)}>
                     {t("title")}
                 </h1>
-                <p className={s.description}>
-                    {t("description")}
-                </p>
                 <nav
                     className={cn(s.links, tinyFive.className)}
                     aria-label={t("linksLabel")}

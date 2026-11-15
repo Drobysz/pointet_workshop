@@ -38,6 +38,60 @@ return [
         'delivery_fee' => 'Delivery',
         'delivery' => 'Delivery details',
     ],
+    'tracking' => [
+        'subject' => 'Your Order Has Been Shipped — Pointet',
+        'paragraphs' => [
+            'Good news: your order is on its way. You can follow the parcel with the tracking link below.',
+            'Tracking details can take a little while to appear after dispatch.',
+        ],
+        'reference' => 'Order #:reference',
+        'details' => 'Track your order',
+    ],
+    'status_processing' => [
+        'subject' => 'Your Order Is Being Prepared — Pointet',
+        'paragraphs' => [
+            'Your order is back in processing and is being prepared.',
+            'We’ll email you again as soon as it ships.',
+        ],
+        'reference' => 'Order #:reference',
+        'details' => 'View your order',
+    ],
+    'status_sent' => [
+        'subject' => 'Your Order Has Been Shipped — Pointet',
+        'paragraphs' => [
+            'Good news: your order has been handed over for delivery.',
+            'If a tracking link is available, we’ll email it to you.',
+        ],
+        'reference' => 'Order #:reference',
+        'details' => 'View your order',
+    ],
+    'status_delivered' => [
+        'subject' => 'Your Order Was Delivered — Pointet',
+        'paragraphs' => [
+            'Our records show that your order has been delivered.',
+            'We hope you enjoy it. If something isn’t right, please contact us.',
+        ],
+        'reference' => 'Order #:reference',
+        'details' => 'View your order',
+    ],
+    'status_reported' => [
+        'subject' => 'An Issue Was Reported With Your Order — Pointet',
+        'paragraphs' => [
+            'An issue has been reported with your order and we are looking into it.',
+            'We’ll contact you as soon as we have an update.',
+        ],
+        'reference' => 'Order #:reference',
+        'details' => 'View your order',
+    ],
+    'status_cancelled' => [
+        'subject' => 'Your Order Was Cancelled — Pointet',
+        'paragraphs' => [
+            'Your order has been cancelled.',
+            'If you have any questions about it, please contact us.',
+        ],
+        'reference' => 'Order #:reference',
+        'details' => 'View your order',
+    ],
     'device' => [
         'subject' => 'New Device Sign-In — Pointet',
         'paragraphs' => [

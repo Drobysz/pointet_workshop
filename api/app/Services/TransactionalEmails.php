@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Enums\OrderStatus;
 use App\Models\AuthRefreshToken;
 use App\Models\Order;
 use App\Models\OrderCheckoutSession;
+use App\Models\OrderTrackingLink;
 use App\Models\Preorder;
 use App\Models\SellerApplication;
 use App\Models\TransactionalEmail;
@@ -12,6 +14,7 @@ use App\Models\User;
 use App\Services\Checkout\OrderCheckoutService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class TransactionalEmails
 {
@@ -105,6 +108,28 @@ class TransactionalEmails
         );
     }
 
+    /** Tells the order's initiator that an administrator moved the order to a new status. */
+    public function orderStatusChanged(Order $order, OrderStatus $status): void
+    {
+        $user = $order->user;
+        $locale = $this->locale($user?->language);
+        $name = $order->customer_name !== OrderCheckoutService::GUEST_NAME ? $order->customer_name : null;
+
+        $this->record(
+            'status_'.$status->value,
+            // A status can change many times, so every change is its own event.
+            $order->id.':'.Str::uuid(),
+            $order->user_id ? $user?->email : $order->customer_email,
+            $locale,
+            [
+                'name' => $name,
+                'reference' => $order->id,
+                'date' => now()->toISOString(),
+                'details_url' => $this->orderDetailsUrl($order, $locale),
+            ],
+        );
+    }
+
     /** Storefront link to the order; only accounts can open it, and only for a well-formed frontend URL. */
     private function orderDetailsUrl(Order $order, string $locale): ?string
     {
@@ -115,6 +140,27 @@ class TransactionalEmails
             && ! isset($url['user']) && ! isset($url['query']) && ! isset($url['fragment'])
             ? "{$frontend}/{$locale}/profile/orders/{$order->id}"
             : null;
+    }
+
+    /** Tells the order's initiator (account holder or guest checkout email) that a tracking link was added. */
+    public function orderTracking(Order $order, OrderTrackingLink $link): void
+    {
+        $user = $order->user;
+        $locale = $this->locale($user?->language);
+        $name = $order->customer_name !== OrderCheckoutService::GUEST_NAME ? $order->customer_name : null;
+
+        $this->record(
+            'tracking',
+            (string) $link->id,
+            $order->user_id ? $user?->email : $order->customer_email,
+            $locale,
+            [
+                'name' => $name,
+                'reference' => $order->id,
+                'date' => $link->created_at->toISOString(),
+                'details_url' => $link->tracking_url,
+            ],
+        );
     }
 
     private function locale(?string $locale): string

@@ -31,6 +31,60 @@ return [
         'delivery_fee' => 'Versand',
         'delivery' => 'Lieferdaten',
     ],
+    'tracking' => [
+        'subject' => 'Deine Bestellung wurde versandt — Pointet',
+        'paragraphs' => [
+            'Gute Nachrichten: Deine Bestellung ist unterwegs. Mit dem Tracking-Link unten kannst du das Paket verfolgen.',
+            'Es kann etwas dauern, bis die Sendungsdaten nach dem Versand sichtbar sind.',
+        ],
+        'reference' => 'Bestellung Nr. :reference',
+        'details' => 'Bestellung verfolgen',
+    ],
+    'status_processing' => [
+        'subject' => 'Deine Bestellung wird vorbereitet — Pointet',
+        'paragraphs' => [
+            'Deine Bestellung ist wieder in Bearbeitung und wird vorbereitet.',
+            'Wir schreiben dir erneut, sobald sie versandt wird.',
+        ],
+        'reference' => 'Bestellung Nr. :reference',
+        'details' => 'Bestellung ansehen',
+    ],
+    'status_sent' => [
+        'subject' => 'Deine Bestellung wurde versandt — Pointet',
+        'paragraphs' => [
+            'Gute Nachrichten: Deine Bestellung wurde an den Versand übergeben.',
+            'Falls ein Tracking-Link verfügbar ist, senden wir ihn dir per E-Mail.',
+        ],
+        'reference' => 'Bestellung Nr. :reference',
+        'details' => 'Bestellung ansehen',
+    ],
+    'status_delivered' => [
+        'subject' => 'Deine Bestellung wurde zugestellt — Pointet',
+        'paragraphs' => [
+            'Laut unseren Daten wurde deine Bestellung zugestellt.',
+            'Wir hoffen, sie gefällt dir. Falls etwas nicht stimmt, melde dich bitte bei uns.',
+        ],
+        'reference' => 'Bestellung Nr. :reference',
+        'details' => 'Bestellung ansehen',
+    ],
+    'status_reported' => [
+        'subject' => 'Zu deiner Bestellung wurde ein Problem gemeldet — Pointet',
+        'paragraphs' => [
+            'Zu deiner Bestellung wurde ein Problem gemeldet und wir prüfen es.',
+            'Wir melden uns, sobald es Neuigkeiten gibt.',
+        ],
+        'reference' => 'Bestellung Nr. :reference',
+        'details' => 'Bestellung ansehen',
+    ],
+    'status_cancelled' => [
+        'subject' => 'Deine Bestellung wurde storniert — Pointet',
+        'paragraphs' => [
+            'Deine Bestellung wurde storniert.',
+            'Bei Fragen melde dich bitte bei uns.',
+        ],
+        'reference' => 'Bestellung Nr. :reference',
+        'details' => 'Bestellung ansehen',
+    ],
     'device' => [
         'subject' => 'Anmeldung von einem neuen Gerät — Pointet',
         'paragraphs' => [

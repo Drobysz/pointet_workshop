@@ -31,6 +31,60 @@ return [
         'delivery_fee' => 'Livraison',
         'delivery' => 'Informations de livraison',
     ],
+    'tracking' => [
+        'subject' => 'Votre commande a été expédiée — Pointet',
+        'paragraphs' => [
+            'Bonne nouvelle : votre commande est en route. Vous pouvez suivre le colis grâce au lien de suivi ci-dessous.',
+            'Les informations de suivi peuvent mettre un peu de temps à apparaître après l’expédition.',
+        ],
+        'reference' => 'Commande n° :reference',
+        'details' => 'Suivre ma commande',
+    ],
+    'status_processing' => [
+        'subject' => 'Votre commande est en préparation — Pointet',
+        'paragraphs' => [
+            'Votre commande est de nouveau en cours de traitement et en préparation.',
+            'Nous vous écrirons dès son expédition.',
+        ],
+        'reference' => 'Commande n° :reference',
+        'details' => 'Voir votre commande',
+    ],
+    'status_sent' => [
+        'subject' => 'Votre commande a été expédiée — Pointet',
+        'paragraphs' => [
+            'Bonne nouvelle : votre commande a été confiée au transporteur.',
+            'Si un lien de suivi est disponible, nous vous l’enverrons par e-mail.',
+        ],
+        'reference' => 'Commande n° :reference',
+        'details' => 'Voir votre commande',
+    ],
+    'status_delivered' => [
+        'subject' => 'Votre commande a été livrée — Pointet',
+        'paragraphs' => [
+            'Selon nos informations, votre commande a été livrée.',
+            'Nous espérons qu’elle vous plaira. Si quelque chose ne va pas, contactez-nous.',
+        ],
+        'reference' => 'Commande n° :reference',
+        'details' => 'Voir votre commande',
+    ],
+    'status_reported' => [
+        'subject' => 'Un problème a été signalé sur votre commande — Pointet',
+        'paragraphs' => [
+            'Un problème a été signalé sur votre commande et nous l’examinons.',
+            'Nous vous contacterons dès que nous aurons du nouveau.',
+        ],
+        'reference' => 'Commande n° :reference',
+        'details' => 'Voir votre commande',
+    ],
+    'status_cancelled' => [
+        'subject' => 'Votre commande a été annulée — Pointet',
+        'paragraphs' => [
+            'Votre commande a été annulée.',
+            'Si vous avez des questions, n’hésitez pas à nous contacter.',
+        ],
+        'reference' => 'Commande n° :reference',
+        'details' => 'Voir votre commande',
+    ],
     'device' => [
         'subject' => 'Connexion depuis un nouvel appareil — Pointet',
         'paragraphs' => [

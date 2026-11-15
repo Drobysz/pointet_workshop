@@ -31,6 +31,60 @@ return [
         'delivery_fee' => 'Spedizione',
         'delivery' => 'Dati di consegna',
     ],
+    'tracking' => [
+        'subject' => 'Il tuo ordine è stato spedito — Pointet',
+        'paragraphs' => [
+            'Buone notizie: il tuo ordine è in viaggio. Puoi seguire il pacco con il link di tracciamento qui sotto.',
+            'Le informazioni di tracciamento possono impiegare un po’ di tempo ad apparire dopo la spedizione.',
+        ],
+        'reference' => 'Ordine n. :reference',
+        'details' => 'Traccia il tuo ordine',
+    ],
+    'status_processing' => [
+        'subject' => 'Il tuo ordine è in preparazione — Pointet',
+        'paragraphs' => [
+            'Il tuo ordine è di nuovo in lavorazione e viene preparato.',
+            'Ti scriveremo non appena sarà spedito.',
+        ],
+        'reference' => 'Ordine n. :reference',
+        'details' => 'Vedi il tuo ordine',
+    ],
+    'status_sent' => [
+        'subject' => 'Il tuo ordine è stato spedito — Pointet',
+        'paragraphs' => [
+            'Buone notizie: il tuo ordine è stato affidato al corriere.',
+            'Se è disponibile un link di tracciamento, te lo invieremo via e-mail.',
+        ],
+        'reference' => 'Ordine n. :reference',
+        'details' => 'Vedi il tuo ordine',
+    ],
+    'status_delivered' => [
+        'subject' => 'Il tuo ordine è stato consegnato — Pointet',
+        'paragraphs' => [
+            'Secondo i nostri dati, il tuo ordine è stato consegnato.',
+            'Speriamo che ti piaccia. Se qualcosa non va, contattaci.',
+        ],
+        'reference' => 'Ordine n. :reference',
+        'details' => 'Vedi il tuo ordine',
+    ],
+    'status_reported' => [
+        'subject' => 'È stato segnalato un problema con il tuo ordine — Pointet',
+        'paragraphs' => [
+            'È stato segnalato un problema con il tuo ordine e lo stiamo verificando.',
+            'Ti contatteremo non appena avremo novità.',
+        ],
+        'reference' => 'Ordine n. :reference',
+        'details' => 'Vedi il tuo ordine',
+    ],
+    'status_cancelled' => [
+        'subject' => 'Il tuo ordine è stato annullato — Pointet',
+        'paragraphs' => [
+            'Il tuo ordine è stato annullato.',
+            'Per qualsiasi domanda, contattaci.',
+        ],
+        'reference' => 'Ordine n. :reference',
+        'details' => 'Vedi il tuo ordine',
+    ],
     'device' => [
         'subject' => 'Accesso da un nuovo dispositivo — Pointet',
         'paragraphs' => [

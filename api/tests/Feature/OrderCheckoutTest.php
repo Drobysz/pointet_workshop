@@ -485,6 +485,188 @@ class OrderCheckoutTest extends TestCase
             ->assertOk()->assertJsonPath('data.payment_status', 'pending');
     }
 
+    public function test_an_admin_adds_a_tracking_link_and_the_customer_is_emailed(): void
+    {
+        config()->set('services.frontend.url', 'https://workshop.example.test');
+        [, $small] = $this->inventory();
+        $customer = User::factory()->create(['language' => 'de', 'full_name' => 'Jonas']);
+        $admin = User::factory()->create(['role' => 'admin']);
+        $this->basket($customer, $small, 1);
+        $response = $this->withToken($this->accessToken($customer))
+            ->postJson('/api/orders', ['idempotency_key' => (string) Str::uuid()])->assertCreated();
+        $checkout = OrderCheckoutSession::findOrFail($response->json('data.id'));
+        $this->stripeEvent($checkout)->assertOk();
+        $orderId = $checkout->fresh()->order_id;
+        $url = 'https://tracking.example.test/track?code=AB123';
+
+        $this->withToken($this->accessToken($customer))
+            ->postJson("/api/orders/{$orderId}/tracking-links", ['tracking_url' => $url])->assertForbidden();
+        foreach (['javascript:alert(1)', 'ftp://example.test/x', 'not a url', '', str_repeat('a', 2050)] as $invalid) {
+            $this->withToken($this->accessToken($admin))
+                ->postJson("/api/orders/{$orderId}/tracking-links", ['tracking_url' => $invalid])
+                ->assertUnprocessable()->assertJsonValidationErrors('tracking_url');
+        }
+        $this->assertDatabaseCount('order_tracking_links', 0);
+
+        $this->withToken($this->accessToken($admin))
+            ->postJson("/api/orders/{$orderId}/tracking-links", ['tracking_url' => "  {$url}  "])
+            ->assertCreated()
+            ->assertJsonPath('data.tracking_url', $url)
+            ->assertJsonPath('data.order_id', $orderId)
+            ->assertJsonPath('data.user_id', $admin->id);
+        $this->assertDatabaseHas('order_tracking_links', ['order_id' => $orderId, 'user_id' => $admin->id, 'tracking_url' => $url]);
+        // The first link moves a processing order (and its lines) to "sent".
+        $this->assertDatabaseHas('orders', ['id' => $orderId, 'status' => 'sent']);
+        $this->assertDatabaseHas('order_items', ['order_id' => $orderId, 'status' => 'sent']);
+
+        // Admins see the link on the order; the owner sees it too, without who added it.
+        $this->withToken($this->accessToken($admin))->getJson("/api/orders/{$orderId}")
+            ->assertOk()->assertJsonPath('data.tracking_links.0.tracking_url', $url)->assertJsonPath('data.tracking_links.0.user_id', $admin->id);
+        $this->withToken($this->accessToken($customer))->getJson("/api/orders/{$orderId}")
+            ->assertOk()->assertJsonPath('data.tracking_links.0.tracking_url', $url)->assertJsonMissingPath('data.tracking_links.0.user_id');
+        $this->withToken($this->accessToken($customer))->getJson('/api/orders')->assertOk()->assertJsonMissingPath('data.0.tracking_links');
+
+        $email = TransactionalEmail::where('template', 'tracking')->firstOrFail();
+        $this->assertSame('de', $email->locale);
+        Mail::fake();
+        (new DeliverTransactionalEmail($email->id))->handle();
+        Mail::assertSent(TransactionalMail::class, function (TransactionalMail $mail) use ($customer, $url): bool {
+            $mail->assertHasSubject('Deine Bestellung wurde versandt — Pointet');
+            $mail->assertSeeInHtml('Hallo Jonas');
+            $mail->assertSeeInHtml($url);
+            $mail->assertSeeInHtml('Bestellung verfolgen');
+            $mail->assertSeeInText($url);
+
+            return $mail->hasTo($customer->email);
+        });
+        Mail::assertSentCount(1);
+
+        // A second link is a new shipment notice, not a duplicate of the first.
+        $this->withToken($this->accessToken($admin))
+            ->postJson("/api/orders/{$orderId}/tracking-links", ['tracking_url' => 'https://tracking.example.test/second'])->assertCreated();
+        $this->assertSame(2, TransactionalEmail::where('template', 'tracking')->count());
+    }
+
+    public function test_a_guest_orders_tracking_email_goes_to_the_checkout_email(): void
+    {
+        [, $small] = $this->inventory();
+        $checkout = $this->guestCheckout([['inventory_id' => $small->id, 'quantity' => 1]], $cookie);
+        $this->stripeEvent($checkout)->assertOk();
+        $orderId = $checkout->fresh()->order_id;
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $this->withToken($this->accessToken($admin))
+            ->postJson("/api/orders/{$orderId}/tracking-links", ['tracking_url' => 'https://tracking.example.test/guest'])->assertCreated();
+
+        $email = TransactionalEmail::where('template', 'tracking')->firstOrFail();
+        $this->assertSame('guest@example.test', $email->payload['recipient']);
+        $this->assertSame('en', $email->locale);
+    }
+
+    public function test_only_the_first_tracking_link_advances_a_processing_order_to_sent_and_every_link_is_listed(): void
+    {
+        [, $small] = $this->inventory();
+        $customer = User::factory()->create();
+        $admin = User::factory()->create(['role' => 'admin']);
+        $this->basket($customer, $small, 1);
+        $response = $this->withToken($this->accessToken($customer))
+            ->postJson('/api/orders', ['idempotency_key' => (string) Str::uuid()])->assertCreated();
+        $checkout = OrderCheckoutSession::findOrFail($response->json('data.id'));
+        $this->stripeEvent($checkout)->assertOk();
+        $orderId = $checkout->fresh()->order_id;
+        $add = fn (string $url) => $this->withToken($this->accessToken($admin))
+            ->postJson("/api/orders/{$orderId}/tracking-links", ['tracking_url' => $url])->assertCreated();
+
+        $add('https://tracking.example.test/1');
+        $this->assertDatabaseHas('orders', ['id' => $orderId, 'status' => 'sent']);
+
+        // An admin rolls the order back; a further link must not push it to "sent" again.
+        $this->withToken($this->accessToken($admin))
+            ->patchJson("/api/orders/{$orderId}", ['status' => 'processing'])->assertOk();
+        $add('https://tracking.example.test/2');
+        $add('https://tracking.example.test/3');
+        $this->assertDatabaseHas('orders', ['id' => $orderId, 'status' => 'processing']);
+        $this->assertDatabaseHas('order_items', ['order_id' => $orderId, 'status' => 'processing']);
+
+        foreach ([$admin, $customer] as $viewer) {
+            $this->withToken($this->accessToken($viewer))->getJson("/api/orders/{$orderId}")
+                ->assertOk()
+                ->assertJsonCount(3, 'data.tracking_links')
+                ->assertJsonPath('data.tracking_links.0.tracking_url', 'https://tracking.example.test/1')
+                ->assertJsonPath('data.tracking_links.2.tracking_url', 'https://tracking.example.test/3');
+        }
+        // Three links, three shipment emails (+ one status email for the manual change).
+        $this->assertSame(3, TransactionalEmail::where('template', 'tracking')->count());
+    }
+
+    public function test_a_tracking_link_never_reopens_a_cancelled_or_delivered_order(): void
+    {
+        [, $small] = $this->inventory();
+        $admin = User::factory()->create(['role' => 'admin']);
+        // Guest checkouts first: the test client keeps the bearer token once an admin request is made.
+        $orders = [];
+        foreach (['cancelled', 'delivered'] as $status) {
+            $checkout = $this->guestCheckout([['inventory_id' => $small->id, 'quantity' => 1]], $cookie);
+            $this->stripeEvent($checkout)->assertOk();
+            $orders[$status] = $checkout->fresh()->order_id;
+        }
+        foreach (['cancelled', 'delivered'] as $index => $status) {
+            $orderId = $orders[$status];
+            $this->withToken($this->accessToken($admin))->patchJson("/api/orders/{$orderId}", ['status' => $status])->assertOk();
+
+            $this->withToken($this->accessToken($admin))
+                ->postJson("/api/orders/{$orderId}/tracking-links", ['tracking_url' => 'https://tracking.example.test/'.$index])->assertCreated();
+            $this->assertDatabaseHas('orders', ['id' => $orderId, 'status' => $status]);
+        }
+    }
+
+    public function test_changing_the_status_emails_the_customer_once_per_real_change(): void
+    {
+        config()->set('services.frontend.url', 'https://workshop.example.test');
+        [, $small] = $this->inventory();
+        // Guest first: the test client keeps the bearer token once an account request is made.
+        $guestCheckout = $this->guestCheckout([['inventory_id' => $small->id, 'quantity' => 1]], $cookie);
+        $customer = User::factory()->create(['language' => 'de', 'full_name' => 'Jonas']);
+        $admin = User::factory()->create(['role' => 'admin']);
+        $this->basket($customer, $small, 1);
+        $response = $this->withToken($this->accessToken($customer))
+            ->postJson('/api/orders', ['idempotency_key' => (string) Str::uuid()])->assertCreated();
+        $checkout = OrderCheckoutSession::findOrFail($response->json('data.id'));
+        $this->stripeEvent($checkout)->assertOk();
+        $this->stripeEvent($guestCheckout)->assertOk();
+        $orderId = $checkout->fresh()->order_id;
+        $guestOrderId = $guestCheckout->fresh()->order_id;
+        $patch = fn (int $id, string $status, ?User $as = null) => $this->withToken($this->accessToken($as ?? $admin))
+            ->patchJson("/api/orders/{$id}", ['status' => $status]);
+
+        $patch($orderId, 'sent', $customer)->assertForbidden();
+        $patch($orderId, 'bogus')->assertUnprocessable();
+        $this->assertDatabaseCount('transactional_emails', 2); // only the two paid-order emails so far
+
+        $patch($orderId, 'sent')->assertOk()->assertJsonPath('data.status', 'sent');
+        $patch($orderId, 'sent')->assertOk(); // unchanged: no second email
+        $patch($orderId, 'delivered')->assertOk();
+        $patch($guestOrderId, 'cancelled')->assertOk();
+
+        $this->assertSame(['status_delivered', 'status_sent'], TransactionalEmail::where('event_key', 'like', 'status_%:'.$orderId.':%')->orderBy('template')->pluck('template')->all());
+        $this->assertSame(3, TransactionalEmail::where('template', 'like', 'status_%')->count());
+        $guestEmail = TransactionalEmail::where('template', 'status_cancelled')->firstOrFail();
+        $this->assertSame('guest@example.test', $guestEmail->payload['recipient']);
+        $this->assertSame('en', $guestEmail->locale);
+
+        $email = TransactionalEmail::where('template', 'status_sent')->firstOrFail();
+        $this->assertSame('de', $email->locale);
+        Mail::fake();
+        (new DeliverTransactionalEmail($email->id))->handle();
+        Mail::assertSent(TransactionalMail::class, function (TransactionalMail $mail) use ($customer, $orderId): bool {
+            $mail->assertHasSubject('Deine Bestellung wurde versandt — Pointet');
+            $mail->assertSeeInHtml('Hallo Jonas');
+            $mail->assertSeeInHtml('https://workshop.example.test/de/profile/orders/'.$orderId);
+
+            return $mail->hasTo($customer->email);
+        });
+    }
+
     public function test_delivery_is_charged_once_per_distinct_brand_in_the_basket(): void
     {
         $category = Category::create(['name' => 'Brand category']);

@@ -34,4 +34,8 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function trackingLinks(): HasMany
+    {
+        return $this->hasMany(OrderTrackingLink::class)->oldest()->orderBy('id');
+    }
 }

@@ -92,6 +92,7 @@ Route::middleware('auth.jwt')->group(function (): void {
 
         Route::middleware('throttle:api-write')->group(function (): void {
             Route::post('/users', [UserController::class, 'store']);
+            Route::post('/orders/{order}/tracking-links', [OrderController::class, 'storeTrackingLink'])->whereNumber('order');
 
             Route::post('/goods', [GoodController::class, 'store']);
             Route::post('/goods/{good}/inventory/{register}/restock', [InventoryController::class, 'restock']);

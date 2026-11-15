@@ -8,6 +8,6 @@ class OrderDetailResource extends OrderResource
 {
     public function toArray(Request $request): array
     {
-        return parent::toArray($request) + ['customer' => new UserResource($this->whenLoaded('user')), 'items' => OrderItemResource::collection($this->whenLoaded('items'))];
+        return parent::toArray($request) + ['customer' => new UserResource($this->whenLoaded('user')), 'items' => OrderItemResource::collection($this->whenLoaded('items')), 'tracking_links' => OrderTrackingLinkResource::collection($this->whenLoaded('trackingLinks'))];
     }
 }

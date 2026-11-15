@@ -36,7 +36,7 @@
         "header": {
             "mainLabel": "Principale",
             "logoLabel": "Pointet — pagina iniziale",
-            "preordersLabel": "Preordini ({count})",
+            "ordersLabel": "Ordini ({count})",
             "basketLabel": "Carrello ({count})"
         },
         "mobileMenu": {
@@ -51,7 +51,8 @@
             "preorders": "I miei preordini",
             "basket": "Il mio carrello",
             "signIn": "accedi",
-            "logOut": "Esci"
+            "logOut": "Esci",
+            "orders": "I miei ordini"
         },
         "footer": {
             "columns": {
@@ -80,9 +81,9 @@
             "imageAlt": "Immagine in movimento"
         },
         "objectGallery": {
-            "curatedTitle": "Scopri l’inaspettato.",
-            "bagsTitle": "Borse",
-            "clothingTitle": "Abbigliamento"
+            "curatedTitle": "Scopri l’inaspettato",
+            "bagsTitle": "L’innovativo",
+            "clothingTitle": "L’attraente"
         },
         "objects": {
             "labels": {
@@ -181,7 +182,8 @@
             "increaseQuantity": "Aumenta quantità"
         },
         "summary": {
-            "total": "Totale:"
+            "total": "Totale:",
+            "unknown": "Sconosciuto"
         },
         "states": {
             "empty": "Il tuo carrello è vuoto"
@@ -189,10 +191,10 @@
     },
     "checkout": {
         "button": {
-            "preorder": "Preordina a 1 €",
-            "emailRequired": "Inserisci l’e-mail per preordinare a 1 €"
+            "fillForms": "Compila tutti i campi",
+            "buy": "Acquista"
         },
-        "disclosure": "Questo è solo un preordine da 1 €. Al momento stiamo raccogliendo i preordini. Abbiamo fissato un prezzo simbolico di 1 euro per riunire le persone davvero pronte a effettuare un ordine. Ti avviseremo non appena gli articoli arriveranno in magazzino.",
+        "disclosure": "Avviso: poiché la merce è conservata presso i venditori, potrebbero esserti addebitate più spedizioni.",
         "email": {
             "label": "E-mail"
         },
@@ -221,6 +223,10 @@
             "refunded": {
                 "title": "Questo preordine è stato rimborsato",
                 "body": "Il pagamento non è più attivo."
+            },
+            "paidOrder": {
+                "title": "Pagamento confermato — il tuo ordine è stato effettuato",
+                "body": "Grazie. Ti scriveremo quando l'ordine sarà spedito."
             }
         },
         "result": {
@@ -232,8 +238,15 @@
                 "title": "Sessione di pagamento mancante",
                 "body": "Torna al carrello e ricomincia il preordine."
             },
-            "viewPreorders": "Vedi i tuoi preordini"
-        }
+            "viewPreorders": "Vedi i tuoi preordini",
+            "viewOrders": "Vedi i tuoi ordini"
+        },
+        "form": {
+            "email": "E-mail",
+            "fullName": "Nome e cognome",
+            "address": "Indirizzo"
+        },
+        "delivery": "Spese di spedizione incluse nel prezzo totale: {cost} euro"
     },
     "preorders": {
         "list": {
@@ -247,7 +260,7 @@
             "number": "N. preordine:",
             "quantity": "Quantità:",
             "price": "Prezzo:",
-            "preorderPrice": "Prezzo del preordine:"
+            "preorderPrice": "Prezzo totale:"
         },
         "item": {
             "imageAlt": "Icona di {name}"
@@ -263,7 +276,7 @@
     "profile": {
         "navigation": {
             "profile": "Profilo",
-            "preorders": "Preordini",
+            "orders": "Ordini",
             "basket": "Carrello"
         },
         "page": {
@@ -560,6 +573,19 @@
         "sellers": {
             "title": "Vendi su Pointet",
             "description": "Candidati per vendere su Pointet Workshop, un marketplace per brand europei indipendenti di moda, accessori e design. Parlaci del tuo brand e ti ricontatteremo."
+        }
+    },
+    "orders": {
+        "fields": {
+            "number": "N. ordine:"
+        },
+        "trackingLink": "Link di tracciamento n. {number}",
+        "status": {
+            "processing": "In elaborazione",
+            "sent": "Spedito",
+            "delivered": "Consegnato",
+            "reported": "Segnalato",
+            "cancelled": "Annullato"
         }
     }
 }

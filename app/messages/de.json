@@ -36,7 +36,7 @@
         "header": {
             "mainLabel": "Hauptnavigation",
             "logoLabel": "Pointet – Startseite",
-            "preordersLabel": "Vorbestellungen ({count})",
+            "ordersLabel": "Bestellungen ({count})",
             "basketLabel": "Warenkorb ({count})"
         },
         "mobileMenu": {
@@ -51,7 +51,8 @@
             "preorders": "Meine Vorbestellungen",
             "basket": "Mein Warenkorb",
             "signIn": "anmelden",
-            "logOut": "Abmelden"
+            "logOut": "Abmelden",
+            "orders": "Meine Bestellungen"
         },
         "footer": {
             "columns": {
@@ -80,9 +81,9 @@
             "imageAlt": "Bewegtes Bild"
         },
         "objectGallery": {
-            "curatedTitle": "Entdecke das Unerwartete.",
-            "bagsTitle": "Taschen",
-            "clothingTitle": "Kleidung"
+            "curatedTitle": "Entdecke das Unerwartete",
+            "bagsTitle": "Das Innovative",
+            "clothingTitle": "Das Attraktive"
         },
         "objects": {
             "labels": {
@@ -181,7 +182,8 @@
             "increaseQuantity": "Menge erhöhen"
         },
         "summary": {
-            "total": "Gesamt:"
+            "total": "Gesamt:",
+            "unknown": "Unbekannt"
         },
         "states": {
             "empty": "Dein Warenkorb ist leer"
@@ -189,10 +191,10 @@
     },
     "checkout": {
         "button": {
-            "preorder": "Für 1 € vorbestellen",
-            "emailRequired": "E-Mail eingeben, um für 1 € vorzubestellen"
+            "fillForms": "Alle Felder ausfüllen",
+            "buy": "Kaufen"
         },
-        "disclosure": "Dies ist lediglich eine Vorbestellung für 1 €. Aktuell sammeln wir Vorbestellungen. Den symbolischen Preis von 1 Euro haben wir festgelegt, um Interessierte zu finden, die später auch wirklich bestellen möchten. Sobald die Artikel im Lager eintreffen, benachrichtigen wir dich.",
+        "disclosure": "Hinweis: Da die Waren bei den Verkäufern gelagert werden, können dir mehrere Lieferungen berechnet werden.",
         "email": {
             "label": "E-Mail"
         },
@@ -221,6 +223,10 @@
             "refunded": {
                 "title": "Diese Vorbestellung wurde erstattet",
                 "body": "Die Zahlung ist nicht mehr aktiv."
+            },
+            "paidOrder": {
+                "title": "Zahlung bestätigt — deine Bestellung ist aufgegeben",
+                "body": "Danke. Wir senden dir eine E-Mail, sobald deine Bestellung versandt wird."
             }
         },
         "result": {
@@ -232,8 +238,15 @@
                 "title": "Zahlungssitzung fehlt",
                 "body": "Kehre zum Warenkorb zurück und starte die Vorbestellung erneut."
             },
-            "viewPreorders": "Zu deinen Vorbestellungen"
-        }
+            "viewPreorders": "Zu deinen Vorbestellungen",
+            "viewOrders": "Zu deinen Bestellungen"
+        },
+        "form": {
+            "email": "E-Mail",
+            "fullName": "Vollständiger Name",
+            "address": "Adresse"
+        },
+        "delivery": "Lieferkosten im Gesamtpreis enthalten: {cost} Euro"
     },
     "preorders": {
         "list": {
@@ -247,7 +260,7 @@
             "number": "Vorbestellung Nr.:",
             "quantity": "Menge:",
             "price": "Preis:",
-            "preorderPrice": "Vorbestellpreis:"
+            "preorderPrice": "Gesamtpreis:"
         },
         "item": {
             "imageAlt": "Bild von {name}"
@@ -263,7 +276,7 @@
     "profile": {
         "navigation": {
             "profile": "Profil",
-            "preorders": "Vorbestellungen",
+            "orders": "Bestellungen",
             "basket": "Warenkorb"
         },
         "page": {
@@ -560,6 +573,19 @@
         "sellers": {
             "title": "Auf Pointet verkaufen",
             "description": "Bewirb dich als Verkäufer bei Pointet Workshop, einem Marktplatz für unabhängige europäische Mode-, Accessoire- und Designmarken. Stell uns deine Marke vor – wir melden uns."
+        }
+    },
+    "orders": {
+        "fields": {
+            "number": "Bestellung Nr.:"
+        },
+        "trackingLink": "Tracking-Link Nr. {number}",
+        "status": {
+            "processing": "In Bearbeitung",
+            "sent": "Versendet",
+            "delivered": "Geliefert",
+            "reported": "Gemeldet",
+            "cancelled": "Storniert"
         }
     }
 }

@@ -36,7 +36,7 @@
         "header": {
             "mainLabel": "Main",
             "logoLabel": "Pointet — home page",
-            "preordersLabel": "Pre-orders ({count})",
+            "ordersLabel": "Orders ({count})",
             "basketLabel": "Basket ({count})"
         },
         "mobileMenu": {
@@ -51,7 +51,8 @@
             "preorders": "My pre-orders",
             "basket": "My basket",
             "signIn": "Sign In",
-            "logOut": "Exit"
+            "logOut": "Exit",
+            "orders": "My orders"
         },
         "footer": {
             "columns": {
@@ -80,9 +81,9 @@
             "imageAlt": "Moving image"
         },
         "objectGallery": {
-            "curatedTitle": "Discover the unexpected.",
-            "bagsTitle": "Bags",
-            "clothingTitle": "Clothing"
+            "curatedTitle": "Discover the unexpected",
+            "bagsTitle": "The innovative",
+            "clothingTitle": "The attractive"
         },
         "objects": {
             "labels": {
@@ -181,7 +182,8 @@
             "increaseQuantity": "Increase quantity"
         },
         "summary": {
-            "total": "Total :"
+            "total": "Total :",
+            "unknown": "Unknown"
         },
         "states": {
             "empty": "Your basket is empty"
@@ -189,10 +191,10 @@
     },
     "checkout": {
         "button": {
-            "preorder": "Pre-order for €1",
-            "emailRequired": "Enter email to continue €1 pre-order"
+            "fillForms": "Enter all forms",
+            "buy": "Buy"
         },
-        "disclosure": "This is a €1 pre-order only. We are currently collecting pre-orders. We set a conditional price of 1 euro in order to gather people who will definitely be ready to place an order. As soon as the goods arrive at the warehouse, we will notify you.",
+        "disclosure": "Disclaimer: since goods are stored at sellers, you may be charged for several deliveries.",
         "email": {
             "label": "Email"
         },
@@ -221,6 +223,10 @@
             "refunded": {
                 "title": "This pre-order was refunded",
                 "body": "The payment is no longer active."
+            },
+            "paidOrder": {
+                "title": "Payment confirmed — your order is placed",
+                "body": "Thank you. We will email you when your order ships."
             }
         },
         "result": {
@@ -232,8 +238,15 @@
                 "title": "Payment session is missing",
                 "body": "Return to your basket and start the pre-order again."
             },
-            "viewPreorders": "See your pre-orders"
-        }
+            "viewPreorders": "See your pre-orders",
+            "viewOrders": "See your orders"
+        },
+        "form": {
+            "email": "Email",
+            "fullName": "Full name",
+            "address": "Address"
+        },
+        "delivery": "Delivery cost included in total price: {cost} euro"
     },
     "preorders": {
         "list": {
@@ -247,7 +260,7 @@
             "number": "Pre-order No:",
             "quantity": "Quantity:",
             "price": "Price:",
-            "preorderPrice": "Pre-order price:"
+            "preorderPrice": "Total price:"
         },
         "item": {
             "imageAlt": "{name} icon"
@@ -263,7 +276,7 @@
     "profile": {
         "navigation": {
             "profile": "Profile",
-            "preorders": "Pre-orders",
+            "orders": "Orders",
             "basket": "Basket"
         },
         "page": {
@@ -560,6 +573,19 @@
         "sellers": {
             "title": "Sell on Pointet",
             "description": "Apply to sell on Pointet Workshop, a marketplace for independent European fashion, accessories and design brands. Tell us about your brand and we will get back to you."
+        }
+    },
+    "orders": {
+        "fields": {
+            "number": "Order No:"
+        },
+        "trackingLink": "Tracking link No {number}",
+        "status": {
+            "processing": "Processing",
+            "sent": "Shipped",
+            "delivered": "Delivered",
+            "reported": "Reported",
+            "cancelled": "Cancelled"
         }
     }
 }

@@ -36,7 +36,7 @@
         "header": {
             "mainLabel": "Menu principal",
             "logoLabel": "Pointet — page d’accueil",
-            "preordersLabel": "Précommandes ({count})",
+            "ordersLabel": "Commandes ({count})",
             "basketLabel": "Panier ({count})"
         },
         "mobileMenu": {
@@ -51,7 +51,8 @@
             "preorders": "Mes précommandes",
             "basket": "Mon panier",
             "signIn": "se connecter",
-            "logOut": "Se déconnecter"
+            "logOut": "Se déconnecter",
+            "orders": "Mes commandes"
         },
         "footer": {
             "columns": {
@@ -80,9 +81,9 @@
             "imageAlt": "Image en mouvement"
         },
         "objectGallery": {
-            "curatedTitle": "Découvrez l’inattendu.",
-            "bagsTitle": "Sacs",
-            "clothingTitle": "Vêtements"
+            "curatedTitle": "Découvrez l’inattendu",
+            "bagsTitle": "L’innovant",
+            "clothingTitle": "L’attrayant"
         },
         "objects": {
             "labels": {
@@ -181,7 +182,8 @@
             "increaseQuantity": "Augmenter la quantité"
         },
         "summary": {
-            "total": "Total :"
+            "total": "Total :",
+            "unknown": "Inconnu"
         },
         "states": {
             "empty": "Votre panier est vide"
@@ -189,10 +191,10 @@
     },
     "checkout": {
         "button": {
-            "preorder": "Précommander pour 1 €",
-            "emailRequired": "Saisissez votre e-mail pour précommander à 1 €"
+            "fillForms": "Remplissez tous les champs",
+            "buy": "Acheter"
         },
-        "disclosure": "Il s’agit uniquement d’une précommande à 1 €. Nous recueillons actuellement les précommandes. Nous avons fixé un prix symbolique de 1 euro afin de réunir les personnes réellement prêtes à passer commande. Dès que les articles arriveront à l’entrepôt, nous vous préviendrons.",
+        "disclosure": "Avertissement : les produits étant stockés chez les vendeurs, plusieurs livraisons peuvent vous être facturées.",
         "email": {
             "label": "E-mail"
         },
@@ -221,6 +223,10 @@
             "refunded": {
                 "title": "Cette précommande a été remboursée",
                 "body": "Le paiement n’est plus actif."
+            },
+            "paidOrder": {
+                "title": "Paiement confirmé — votre commande est enregistrée",
+                "body": "Merci. Nous vous écrirons lorsque votre commande sera expédiée."
             }
         },
         "result": {
@@ -232,8 +238,15 @@
                 "title": "Session de paiement introuvable",
                 "body": "Retournez à votre panier et recommencez la précommande."
             },
-            "viewPreorders": "Voir vos précommandes"
-        }
+            "viewPreorders": "Voir vos précommandes",
+            "viewOrders": "Voir vos commandes"
+        },
+        "form": {
+            "email": "E-mail",
+            "fullName": "Nom complet",
+            "address": "Adresse"
+        },
+        "delivery": "Frais de livraison inclus dans le prix total : {cost} euros"
     },
     "preorders": {
         "list": {
@@ -247,7 +260,7 @@
             "number": "Précommande n° :",
             "quantity": "Quantité :",
             "price": "Prix :",
-            "preorderPrice": "Prix de précommande :"
+            "preorderPrice": "Prix total :"
         },
         "item": {
             "imageAlt": "Icône de l’article {name}"
@@ -263,7 +276,7 @@
     "profile": {
         "navigation": {
             "profile": "Profil",
-            "preorders": "Précommandes",
+            "orders": "Commandes",
             "basket": "Panier"
         },
         "page": {
@@ -560,6 +573,19 @@
         "sellers": {
             "title": "Vendre sur Pointet",
             "description": "Postulez pour vendre sur Pointet Workshop, marketplace de marques européennes indépendantes de mode, accessoires et design. Présentez votre marque, nous vous répondrons."
+        }
+    },
+    "orders": {
+        "fields": {
+            "number": "Commande n° :"
+        },
+        "trackingLink": "Lien de suivi n° {number}",
+        "status": {
+            "processing": "En traitement",
+            "sent": "Expédiée",
+            "delivered": "Livrée",
+            "reported": "Signalée",
+            "cancelled": "Annulée"
         }
     }
 }

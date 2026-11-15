@@ -2158,36 +2158,87 @@ paths:
     post:
       tags:
         - Orders
-      summary: Place an order
+      summary: Start an order checkout
       operationId: postOrders
-      description: Creates an order for the authenticated user, snapshots current
-        product prices and customer details, checks exact color/size row availability and stock
-        under row locks, decrements stock, and clears the entire user basket
-        within a transaction. Initial order/item status is processing.
+      description: Creates a private checkout session with an immutable basket
+        snapshot (current product prices) and a Stripe Checkout session for the
+        full basket total, then returns the Stripe URL to redirect the customer
+        to. No order exists yet. Once Stripe confirms payment the webhook
+        verifies the amount, takes stock under row locks, creates the order
+        (status processing) with its items and clears the account basket;
+        poll GET /stripe/checkout-sessions/{sessionId} for order_id.
+        Authenticated callers (access cookie or bearer token; an invalid
+        token is treated as a guest) check out their stored basket and their
+        account email; items and email are ignored. Guests submit items plus a
+        contact email, and the response sets the guest_token cookie when the
+        browser has none. The idempotency_key scopes retries per account or
+        guest session; a retry returns the existing session with 200. Every
+        line must reference a visible product with enough stock, but stock is
+        not reserved until payment. Requires CHECKOUT_MODE=standard (otherwise
+        409) and a configured Stripe secret (otherwise 503). Limited to 120
+        requests per minute.
       security:
         - accessCookie: []
         - bearerAuth: []
+        - guestCookie: []
+        - {}
       responses:
         "201":
-          description: Created.
+          description: Checkout session created.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/OrderDetail"
+                    $ref: "#/components/schemas/OrderCheckoutSession"
                 required:
                   - data
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "403":
-          $ref: "#/components/responses/Forbidden"
+          headers:
+            Set-Cookie:
+              description: Set for anonymous callers without a valid guest session; the
+                HttpOnly guest_token cookie identifies the guest for history
+                and checkout-status lookups.
+              schema:
+                type: string
+        "200":
+          description: Idempotent retry; the existing checkout session for this
+            idempotency_key is returned unchanged.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/OrderCheckoutSession"
+                required:
+                  - data
+        "409":
+          description: Checkout mode is not standard, or a guest retried an
+            idempotency_key with a different contact email.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "422":
-          $ref: "#/components/responses/ValidationFailed"
+          description: Validation failed, the basket is empty, a product is no longer
+            available, the requested quantity exceeds stock, or a guest omitted
+            the email.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ValidationError"
+                  - $ref: "#/components/schemas/Error"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "502":
+          $ref: "#/components/responses/BadGateway"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
         "500":
           $ref: "#/components/responses/ServerError"
-      x-access: authenticated
+      x-access: optional
       requestBody:
         required: true
         content:
@@ -2404,6 +2455,57 @@ paths:
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+      x-access: admin
+  "/orders/{order}/tracking-links":
+    parameters:
+      - name: order
+        in: path
+        required: true
+        description: Resource identifier.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    post:
+      tags:
+        - Orders
+      summary: Add a tracking link to an order
+      operationId: postOrdersOrderTrackingLinks
+      description: Administrator access required. Stores the link (with the administrator
+        who added it) and queues a localized email to the order's initiator - the
+        account email, or the checkout email for guest orders. Every link sends its
+        own notification.
+      security:
+        - accessCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderTrackingLinkRequest"
+      responses:
+        "201":
+          description: Tracking link created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/OrderTrackingLink"
+                required:
+                  - data
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationFailed"
         "500":
           $ref: "#/components/responses/ServerError"
       x-access: admin
@@ -2767,14 +2869,17 @@ paths:
     get:
       tags:
         - Pre-orders
-      summary: Get pre-order checkout status
+        - Orders
+      summary: Get checkout status
       operationId: getStripeCheckoutSessionsSessionId
-      description: Lets the success page poll the private checkout session after
+      description: Lets the success page poll the private pre-order or order checkout
+        session after
         returning from Stripe. The session owner (access cookie or bearer
         token), an administrator, or the guest session that started it (via
         the guest_token cookie) may read it; anyone else receives 403.
-        payment_status becomes paid and preorder_id is filled once the Stripe
-        webhook has been processed. Limited to 300 requests per minute.
+        payment_status becomes paid and preorder_id (pre-order checkouts) or
+        order_id (order checkouts) is filled once the Stripe webhook has been
+        processed. Limited to 300 requests per minute.
       security:
         - accessCookie: []
         - bearerAuth: []
@@ -2788,7 +2893,9 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/PreorderCheckoutSession"
+                    oneOf:
+                      - $ref: "#/components/schemas/PreorderCheckoutSession"
+                      - $ref: "#/components/schemas/OrderCheckoutSession"
                 required:
                   - data
         "403":
@@ -3012,9 +3119,10 @@ paths:
         400. Events are deduplicated by Stripe event id. For
         checkout.session.completed and checkout.session.async_payment_succeeded
         with payment_status paid, the matching checkout session (via
-        metadata.preorder_checkout_session_id) is marked paid, a Preorder with
-        line snapshots is created, inventory is decremented, the account basket
-        is cleared, and a confirmation email is queued. An amount or currency
+        metadata.preorder_checkout_session_id or
+        metadata.order_checkout_session_id) is marked paid, a Preorder or Order
+        with line snapshots is created, inventory is decremented, the account
+        basket is cleared, and a confirmation email is queued. An amount or currency
         mismatch returns 422. checkout.session.expired marks the session
         canceled; checkout.session.async_payment_failed marks it failed. Other
         or unmatched events are acknowledged without changes. Not rate limited;
@@ -4138,12 +4246,23 @@ components:
               format: int64
               minimum: 1
             - type: "null"
+        quantity:
+          type: integer
+          minimum: 0
+          description: Total number of units across all items in the order.
         customer_name:
           type: string
         customer_email:
           type: string
           format: email
           maxLength: 255
+        customer_address:
+          anyOf:
+            - type: string
+              maxLength: 500
+            - type: "null"
+          description: Delivery address snapshot. Guests supply it at checkout; accounts
+            use their stored address. Null when none was provided.
         status:
           $ref: "#/components/schemas/OrderStatus"
         placed_at:
@@ -4160,8 +4279,10 @@ components:
       required:
         - id
         - user_id
+        - quantity
         - customer_name
         - customer_email
+        - customer_address
         - status
         - placed_at
         - total
@@ -4230,6 +4351,42 @@ components:
         - line_total
         - status
         - images
+    OrderTrackingLinkRequest:
+      type: object
+      properties:
+        tracking_url:
+          type: string
+          format: uri
+          maxLength: 2048
+          pattern: "^https?://"
+      required:
+        - tracking_url
+    OrderTrackingLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        order_id:
+          type: integer
+          format: int64
+        user_id:
+          description: Administrator who added the link. Only returned to administrators.
+          type:
+            - integer
+            - "null"
+          format: int64
+        tracking_url:
+          type: string
+          format: uri
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - order_id
+        - tracking_url
+        - created_at
     OrderDetail:
       allOf:
         - $ref: "#/components/schemas/Order"
@@ -4243,9 +4400,14 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/OrderItem"
+            tracking_links:
+              type: array
+              items:
+                $ref: "#/components/schemas/OrderTrackingLink"
           required:
             - customer
             - items
+            - tracking_links
     PaginationLinks:
       type: object
       properties:
@@ -4949,32 +5111,90 @@ components:
       description: Only quantity changes. It must not exceed the selected row's current stock.
       required:
         - quantity
-    OrderLineRequest:
-      type: object
-      properties:
-        good_register_id:
-          type: integer
-          format: int64
-          minimum: 1
-        quantity:
-          type: integer
-          minimum: 1
-          maximum: 1000
-      required:
-        - good_register_id
-        - quantity
     OrderCreateRequest:
       type: object
       properties:
+        idempotency_key:
+          type: string
+          format: uuid
+          description: Client-generated key scoped to the account or guest session.
+            Reusing it returns the existing checkout session.
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Required for guests; lower-cased and trimmed. Ignored for
+            authenticated callers, whose account email is used.
         items:
           type: array
           items:
-            $ref: "#/components/schemas/OrderLineRequest"
-          minItems: 1
-      description: Supply exact inventory rows to create an order. New orders are always
-        processing and stock is decremented atomically.
+            $ref: "#/components/schemas/GuestBasketLineRequest"
+          maxItems: 20
+          description: Guest basket lines. Ignored for authenticated callers, whose
+            stored basket is used.
+        full_name:
+          type: string
+          maxLength: 255
+          description: Optional recipient name for guests, stored on the order. Ignored
+            for authenticated callers, whose account name is used.
+        address:
+          type: string
+          maxLength: 500
+          description: Optional delivery address for guests, stored on the order. Ignored
+            for authenticated callers, whose account address is used.
+      description: Authenticated callers only need idempotency_key. Guests must supply
+        email and items, and may add full_name and address for delivery. The order is
+        created only after Stripe confirms payment.
       required:
-        - items
+        - idempotency_key
+    OrderCheckoutSession:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Private checkout session id (also Stripe client_reference_id).
+        payment_status:
+          $ref: "#/components/schemas/PreorderPaymentStatus"
+        payment_amount_cents:
+          type: integer
+          minimum: 1
+          example: 9150
+          description: Full amount charged in minor units, fixed when the session starts.
+            Goods plus delivery (delivery_cents).
+        delivery_cents:
+          type: integer
+          minimum: 0
+          example: 1500
+          description: Delivery part of payment_amount_cents. One EUR 15 fee for each
+            distinct product brand in the basket (products without a brand count as one
+            brand). Sent to Stripe as a separate "Delivery" line item.
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: eur
+          description: Lower-case ISO 4217 code; currently always eur.
+        paid_at:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+        checkout_url:
+          type: string
+          format: uri
+          description: Stripe-hosted payment page. Omitted only when Stripe has not
+            returned a URL for this session.
+        order_id:
+          anyOf:
+            - type: integer
+              format: int64
+              minimum: 1
+            - type: "null"
+          description: Set once the webhook has created the Order.
+      required:
+        - id
     OrderUpdateRequest:
       type: object
       properties:

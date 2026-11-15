@@ -263,7 +263,29 @@
     "orderTitle": "Bestellung #{id}",
     "unitPrice": "{price} pro Stück",
     "itemsCount": "{count, plural, one {# Artikel} other {# Artikel}}",
-    "back": "Alle Bestellungen"
+    "back": "Alle Bestellungen",
+    "tracking": {
+      "title": "Tracking-Links",
+      "description": "Der erste Link setzt die Bestellung außerdem auf „Versandt“. Der Kunde erhält jeden Link per E-Mail, sobald du ihn hinzufügst.",
+      "label": "Tracking-Link",
+      "placeholder": "https://carrier.example/track/…",
+      "hint": "Füge den vollständigen Link des Versanddienstleisters ein, beginnend mit https://.",
+      "add": "Hinzufügen und Kunden benachrichtigen",
+      "adding": "Wird gesendet…",
+      "empty": "Es wurde noch kein Tracking-Link hinzugefügt.",
+      "added": "Hinzugefügt am {date}",
+      "open": "Tracking-Link öffnen",
+      "success": "Link hinzugefügt. Der Kunde wurde per E-Mail benachrichtigt.",
+      "invalid": "Gib einen gültigen Link ein, der mit http:// oder https:// beginnt.",
+      "saveError": "Der Tracking-Link konnte nicht gespeichert werden. Versuche es erneut."
+    },
+    "statusPanel": {
+      "title": "Bestellstatus",
+      "description": "Der Kunde erhält bei jeder Statusänderung eine E-Mail.",
+      "label": "Status",
+      "success": "Status aktualisiert. Der Kunde wurde per E-Mail benachrichtigt.",
+      "error": "Der Status konnte nicht geändert werden. Versuche es erneut."
+    }
   },
   "preorders": {
     "title": "Vorbestellungen",

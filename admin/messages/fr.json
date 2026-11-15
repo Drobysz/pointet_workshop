@@ -263,7 +263,29 @@
     "orderTitle": "Commande #{id}",
     "unitPrice": "{price} l’unité",
     "itemsCount": "{count, plural, one {# article} other {# articles}}",
-    "back": "Toutes les commandes"
+    "back": "Toutes les commandes",
+    "tracking": {
+      "title": "Liens de suivi",
+      "description": "Le premier lien passe aussi la commande en « expédiée ». Le client reçoit chaque lien par e-mail dès son ajout.",
+      "label": "Lien de suivi",
+      "placeholder": "https://carrier.example/track/…",
+      "hint": "Collez le lien complet du transporteur, commençant par https://.",
+      "add": "Ajouter et prévenir le client",
+      "adding": "Envoi…",
+      "empty": "Aucun lien de suivi n’a encore été ajouté.",
+      "added": "Ajouté le {date}",
+      "open": "Ouvrir le lien de suivi",
+      "success": "Lien ajouté. Le client a été prévenu par e-mail.",
+      "invalid": "Saisissez un lien valide commençant par http:// ou https://.",
+      "saveError": "Impossible d’enregistrer le lien de suivi. Réessayez."
+    },
+    "statusPanel": {
+      "title": "Statut de la commande",
+      "description": "Le client reçoit un e-mail à chaque changement de statut.",
+      "label": "Statut",
+      "success": "Statut mis à jour. Le client a été prévenu par e-mail.",
+      "error": "Impossible de modifier le statut. Réessayez."
+    }
   },
   "preorders": {
     "title": "Précommandes",

@@ -174,16 +174,32 @@ export interface OrderItem {
   status: string;
 }
 
+export const orderStatuses = ["processing", "sent", "delivered", "reported", "cancelled"] as const;
+
+export type OrderStatus = (typeof orderStatuses)[number];
+
+export interface OrderTrackingLink {
+  id: number;
+  order_id: number;
+  /** The admin who added the link. */
+  user_id: number | null;
+  tracking_url: string;
+  created_at: string;
+}
+
 export interface Order {
   id: number;
   user_id: number | null;
+  quantity: number;
   customer_name: string;
   customer_email: string;
+  customer_address: string | null;
   status: string;
   placed_at: string;
   total: string;
   customer?: User;
   items?: OrderItem[];
+  tracking_links?: OrderTrackingLink[];
 }
 
 export type PreorderPaymentStatus = "pending" | "paid" | "failed" | "canceled" | "refunded";

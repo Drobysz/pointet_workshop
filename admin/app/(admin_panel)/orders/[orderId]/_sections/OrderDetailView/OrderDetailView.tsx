@@ -13,6 +13,8 @@ import {
 } from "@/components";
 import { useAppFormatters } from "@/hooks";
 import { getOrder } from "@/queries";
+import { OrderStatusPanel } from "./OrderStatusPanel";
+import { OrderTrackingPanel } from "./OrderTrackingPanel";
 import styles from "./order-detail-view.module.scss";
 
 export function OrderDetailView({ orderId }: { orderId: string }) {
@@ -92,6 +94,18 @@ export function OrderDetailView({ orderId }: { orderId: string }) {
               <span className={styles.meta}>{order.customer_email}</span>
             </div>
           </Panel>
+
+          <OrderStatusPanel
+            orderId={order.id}
+            status={order.status}
+            onChanged={() => void orderState.mutate()}
+          />
+
+          <OrderTrackingPanel
+            orderId={order.id}
+            links={order.tracking_links ?? []}
+            onAdded={() => void orderState.mutate()}
+          />
 
           <Panel>
             <PanelHeader title={t("summary")} />

@@ -263,7 +263,29 @@
     "orderTitle": "Ordine #{id}",
     "unitPrice": "{price} cad.",
     "itemsCount": "{count, plural, one {# articolo} other {# articoli}}",
-    "back": "Tutti gli ordini"
+    "back": "Tutti gli ordini",
+    "tracking": {
+      "title": "Link di tracciamento",
+      "description": "Il primo link imposta anche l’ordine come spedito. Il cliente riceve ogni link via e-mail non appena lo aggiungi.",
+      "label": "Link di tracciamento",
+      "placeholder": "https://carrier.example/track/…",
+      "hint": "Incolla il link completo del corriere, che inizia con https://.",
+      "add": "Aggiungi e avvisa il cliente",
+      "adding": "Invio…",
+      "empty": "Nessun link di tracciamento è stato ancora aggiunto.",
+      "added": "Aggiunto il {date}",
+      "open": "Apri il link di tracciamento",
+      "success": "Link aggiunto. Il cliente è stato avvisato via e-mail.",
+      "invalid": "Inserisci un link valido che inizi con http:// o https://.",
+      "saveError": "Impossibile salvare il link di tracciamento. Riprova."
+    },
+    "statusPanel": {
+      "title": "Stato dell’ordine",
+      "description": "Il cliente riceve un’e-mail a ogni cambio di stato.",
+      "label": "Stato",
+      "success": "Stato aggiornato. Il cliente è stato avvisato via e-mail.",
+      "error": "Impossibile modificare lo stato. Riprova."
+    }
   },
   "preorders": {
     "title": "Preordini",

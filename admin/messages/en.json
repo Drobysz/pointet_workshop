@@ -263,7 +263,29 @@
     "orderTitle": "Order #{id}",
     "unitPrice": "{price} each",
     "itemsCount": "{count, plural, one {# item} other {# items}}",
-    "back": "All orders"
+    "back": "All orders",
+    "tracking": {
+      "title": "Tracking links",
+      "description": "The first link also marks the order as shipped. The customer is emailed each link as soon as you add it.",
+      "label": "Tracking link",
+      "placeholder": "https://carrier.example/track/…",
+      "hint": "Paste the full link from the carrier, starting with https://.",
+      "add": "Add and notify customer",
+      "adding": "Sending…",
+      "empty": "No tracking link has been added yet.",
+      "added": "Added on {date}",
+      "open": "Open tracking link",
+      "success": "Link added. The customer has been notified by email.",
+      "invalid": "Enter a valid link starting with http:// or https://.",
+      "saveError": "Unable to save the tracking link. Try again."
+    },
+    "statusPanel": {
+      "title": "Order status",
+      "description": "The customer is emailed whenever the status changes.",
+      "label": "Status",
+      "success": "Status updated. The customer has been notified by email.",
+      "error": "Unable to change the status. Try again."
+    }
   },
   "preorders": {
     "title": "Pre-orders",

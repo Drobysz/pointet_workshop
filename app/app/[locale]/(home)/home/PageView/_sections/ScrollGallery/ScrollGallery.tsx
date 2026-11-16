@@ -127,7 +127,7 @@ export const ScrollGallery = ()=> {
 
     const { scrollYProgress } = useScroll({
         target: refTunnel,
-        offset: ["start start", "end end"]
+        offset: ["start center", "end end"]
     });
     const clipPath = useTransform(
         scrollYProgress,

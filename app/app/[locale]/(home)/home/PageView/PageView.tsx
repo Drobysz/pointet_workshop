@@ -14,7 +14,7 @@ export const PageView = ()=> {
             <ThreeDGlassGallery />
             <OutfitGallery />
             <Categories />
-            {/* <div className="h-[50vh]"/> */}
+            <div className="h-[20vh]"/>
         </div>
     )
 }

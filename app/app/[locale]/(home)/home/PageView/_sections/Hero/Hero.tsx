@@ -135,6 +135,7 @@ export const Hero = ()=> {
                         {taglineRows.map((row, index) =>
                             <SplitByRowsText
                                 key={`tagline-row-${index}`}
+                                className="whitespace-nowrap"
                                 tag="span"
                             >
                                 {row}

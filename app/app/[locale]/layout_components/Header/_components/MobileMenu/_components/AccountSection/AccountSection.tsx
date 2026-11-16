@@ -34,7 +34,7 @@ export const AccountSection = ({
         user,
         userError,
         basketList,
-        preOrdersList,
+        ordersList,
         setPopUpWindow,
     } = useContext(GlobalContext);
     const t = useTranslations("navigation");
@@ -42,11 +42,11 @@ export const AccountSection = ({
     const isAuth = Boolean(user && !userError);
     const basketQuantity = (basketList ?? [])
         .reduce((acc, val) => acc + val.quantity, 0);
-    const preOrderQuantity = preOrdersList?.length ?? 0;
+    const orderQuantity = ordersList?.length ?? 0;
 
     const accountPages = [
         ...(isAuth ? [{ label: t("account.profile"), href: "/profile", quantity: 0 }] : []),
-        { label: t("account.preorders"), href: "/profile/preorders", quantity: preOrderQuantity },
+        { label: t("account.orders"), href: "/profile/orders", quantity: orderQuantity },
         { label: t("account.basket"), href: "/profile/basket", quantity: basketQuantity },
     ];
 

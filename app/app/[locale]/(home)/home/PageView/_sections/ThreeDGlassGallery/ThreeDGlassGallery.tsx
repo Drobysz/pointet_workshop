@@ -43,6 +43,7 @@ export const ThreeDGlassGallery = ()=> {
                 <SilverBag3D />
                 <h2 className={cn(
                     s.title, "text-blue-800",
+                    "max-sm:text-4xl! max-sm:leading-14!",
                     after.className
                 )}>
                     {t("bagsTitle")}
@@ -58,6 +59,7 @@ export const ThreeDGlassGallery = ()=> {
                 <SatinDress3D />
                 <h2 className={cn(
                     s.title, "text-lilac-800",
+                    "max-sm:text-4xl! max-sm:leading-14!",
                     after.className
                 )}>
                     {t("clothingTitle")}

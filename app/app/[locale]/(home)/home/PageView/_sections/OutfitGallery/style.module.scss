@@ -44,8 +44,10 @@ section.section {
         max-[490px]:text-lg
         max-[490px]:text-center
         max-[440px]:text-base
-        max-[400px]:text-sm
-        max-[355px]:text-xs
+
+        max-[400px]:bg-none
+        max-[400px]:text-red-700
+
         bg-clip-text 
         text-transparent 
         bg-linear-to-t

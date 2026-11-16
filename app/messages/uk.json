@@ -583,7 +583,7 @@
         "status": {
             "processing": "В обробці",
             "sent": "Відправлено",
-            "shipped": "Відправлено",
+            "shipped": "Доставлено",
             "reported": "Скарга",
             "cancelled": "Скасовано"
         }

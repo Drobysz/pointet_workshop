@@ -87,7 +87,7 @@
     "pending": "In attesa",
     "processing": "In elaborazione",
     "refunded": "Rimborsato",
-    "shipped": "Spedito",
+    "shipped": "Consegnato",
     "visible": "Visibile",
     "hidden": "Nascosto",
     "approved": "Approvata",
@@ -265,7 +265,7 @@
     "back": "Tutti gli ordini",
     "tracking": {
       "title": "Link di tracciamento",
-      "description": "Il primo link imposta anche l’ordine come spedito. Il cliente riceve ogni link via e-mail non appena lo aggiungi.",
+      "description": "Il primo link imposta anche l’ordine come inviato. Il cliente riceve ogni link via e-mail non appena lo aggiungi.",
       "label": "Link di tracciamento",
       "placeholder": "https://carrier.example/track/…",
       "hint": "Incolla il link completo del corriere, che inizia con https://.",

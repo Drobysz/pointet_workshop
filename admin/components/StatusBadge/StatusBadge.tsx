@@ -19,7 +19,7 @@ const tones: Record<string, Tone> = {
   reported: "danger",
   pending: "warning",
   processing: "warning",
-  shipped: "info",
+  shipped: "success",
   sent: "info",
   refunded: "info",
   hidden: "neutral",

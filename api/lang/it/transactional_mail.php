@@ -58,6 +58,15 @@ return [
         'reference' => 'Ordine n. :reference',
         'details' => 'Vedi il tuo ordine',
     ],
+    'status_shipped' => [
+        'subject' => 'Il tuo ordine è stato consegnato — Pointet',
+        'paragraphs' => [
+            'Secondo i nostri dati, il tuo ordine è stato consegnato.',
+            'Speriamo che ti piaccia. Se qualcosa non va, contattaci.',
+        ],
+        'reference' => 'Ordine n. :reference',
+        'details' => 'Vedi il tuo ordine',
+    ],
     'status_reported' => [
         'subject' => 'È stato segnalato un problema con il tuo ordine — Pointet',
         'paragraphs' => [

@@ -39,7 +39,7 @@ return [
         'delivery' => 'Delivery details',
     ],
     'tracking' => [
-        'subject' => 'Your Order Has Been Shipped — Pointet',
+        'subject' => 'Your Order Has Been Sent — Pointet',
         'paragraphs' => [
             'Good news: your order is on its way. You can follow the parcel with the tracking link below.',
             'Tracking details can take a little while to appear after dispatch.',
@@ -61,6 +61,15 @@ return [
         'paragraphs' => [
             'Good news: your order has been handed over for delivery.',
             'If a tracking link is available, we’ll email it to you.',
+        ],
+        'reference' => 'Order #:reference',
+        'details' => 'View your order',
+    ],
+    'status_shipped' => [
+        'subject' => 'Your Order Was Delivered — Pointet',
+        'paragraphs' => [
+            'Our records show that your order has been delivered.',
+            'We hope you enjoy it. If something isn’t right, please contact us.',
         ],
         'reference' => 'Order #:reference',
         'details' => 'View your order',

@@ -148,7 +148,7 @@ class OrderController extends Controller
                 'tracking_url' => $request->validated('tracking_url'),
             ]);
             // The first link means the parcel left. Later links never touch the status, and
-            // orders that are already sent, cancelled or reported keep theirs.
+            // orders that are already sent, shipped, cancelled or reported keep theirs.
             if ($isFirstLink && $locked->status === OrderStatus::Processing) {
                 $locked->update(['status' => OrderStatus::Sent]);
                 $locked->items()->update(['status' => OrderStatus::Sent]);

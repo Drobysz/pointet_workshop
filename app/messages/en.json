@@ -582,8 +582,8 @@
         "trackingLink": "Tracking link No {number}",
         "status": {
             "processing": "Processing",
-            "sent": "Shipped",
-            "shipped": "Shipped",
+            "sent": "Sent",
+            "shipped": "Delivered",
             "reported": "Reported",
             "cancelled": "Cancelled"
         }

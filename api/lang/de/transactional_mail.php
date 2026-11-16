@@ -58,6 +58,15 @@ return [
         'reference' => 'Bestellung Nr. :reference',
         'details' => 'Bestellung ansehen',
     ],
+    'status_shipped' => [
+        'subject' => 'Deine Bestellung wurde zugestellt — Pointet',
+        'paragraphs' => [
+            'Laut unseren Daten wurde deine Bestellung zugestellt.',
+            'Wir hoffen, sie gefällt dir. Falls etwas nicht stimmt, melde dich bitte bei uns.',
+        ],
+        'reference' => 'Bestellung Nr. :reference',
+        'details' => 'Bestellung ansehen',
+    ],
     'status_reported' => [
         'subject' => 'Zu deiner Bestellung wurde ein Problem gemeldet — Pointet',
         'paragraphs' => [

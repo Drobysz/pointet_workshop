@@ -599,18 +599,18 @@ class OrderCheckoutTest extends TestCase
         $this->assertSame(3, TransactionalEmail::where('template', 'tracking')->count());
     }
 
-    public function test_a_tracking_link_never_reopens_a_cancelled_or_reported_order(): void
+    public function test_a_tracking_link_never_reopens_a_cancelled_or_shipped_order(): void
     {
         [, $small] = $this->inventory();
         $admin = User::factory()->create(['role' => 'admin']);
         // Guest checkouts first: the test client keeps the bearer token once an admin request is made.
         $orders = [];
-        foreach (['cancelled', 'reported'] as $status) {
+        foreach (['cancelled', 'shipped'] as $status) {
             $checkout = $this->guestCheckout([['inventory_id' => $small->id, 'quantity' => 1]], $cookie);
             $this->stripeEvent($checkout)->assertOk();
             $orders[$status] = $checkout->fresh()->order_id;
         }
-        foreach (['cancelled', 'reported'] as $index => $status) {
+        foreach (['cancelled', 'shipped'] as $index => $status) {
             $orderId = $orders[$status];
             $this->withToken($this->accessToken($admin))->patchJson("/api/orders/{$orderId}", ['status' => $status])->assertOk();
 
@@ -645,10 +645,10 @@ class OrderCheckoutTest extends TestCase
 
         $patch($orderId, 'sent')->assertOk()->assertJsonPath('data.status', 'sent');
         $patch($orderId, 'sent')->assertOk(); // unchanged: no second email
-        $patch($orderId, 'reported')->assertOk();
+        $patch($orderId, 'shipped')->assertOk();
         $patch($guestOrderId, 'cancelled')->assertOk();
 
-        $this->assertSame(['status_reported', 'status_sent'], TransactionalEmail::where('event_key', 'like', 'status_%:'.$orderId.':%')->orderBy('template')->pluck('template')->all());
+        $this->assertSame(['status_sent', 'status_shipped'], TransactionalEmail::where('event_key', 'like', 'status_%:'.$orderId.':%')->orderBy('template')->pluck('template')->all());
         $this->assertSame(3, TransactionalEmail::where('template', 'like', 'status_%')->count());
         $guestEmail = TransactionalEmail::where('template', 'status_cancelled')->firstOrFail();
         $this->assertSame('guest@example.test', $guestEmail->payload['recipient']);

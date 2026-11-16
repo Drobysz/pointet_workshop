@@ -87,7 +87,7 @@
     "pending": "Ausstehend",
     "processing": "In Bearbeitung",
     "refunded": "Erstattet",
-    "shipped": "Versendet",
+    "shipped": "Geliefert",
     "visible": "Sichtbar",
     "hidden": "Ausgeblendet",
     "approved": "Genehmigt",
@@ -265,7 +265,7 @@
     "back": "Alle Bestellungen",
     "tracking": {
       "title": "Tracking-Links",
-      "description": "Der erste Link setzt die Bestellung außerdem auf „Versandt“. Der Kunde erhält jeden Link per E-Mail, sobald du ihn hinzufügst.",
+      "description": "Der erste Link setzt die Bestellung außerdem auf „Gesendet“. Der Kunde erhält jeden Link per E-Mail, sobald du ihn hinzufügst.",
       "label": "Tracking-Link",
       "placeholder": "https://carrier.example/track/…",
       "hint": "Füge den vollständigen Link des Versanddienstleisters ein, beginnend mit https://.",

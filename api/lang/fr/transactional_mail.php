@@ -58,6 +58,15 @@ return [
         'reference' => 'Commande n° :reference',
         'details' => 'Voir votre commande',
     ],
+    'status_shipped' => [
+        'subject' => 'Votre commande a été livrée — Pointet',
+        'paragraphs' => [
+            'Selon nos informations, votre commande a été livrée.',
+            'Nous espérons qu’elle vous plaira. Si quelque chose ne va pas, contactez-nous.',
+        ],
+        'reference' => 'Commande n° :reference',
+        'details' => 'Voir votre commande',
+    ],
     'status_reported' => [
         'subject' => 'Un problème a été signalé sur votre commande — Pointet',
         'paragraphs' => [

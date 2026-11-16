@@ -58,15 +58,6 @@ return [
         'reference' => 'Заказ № :reference',
         'details' => 'Посмотреть заказ',
     ],
-    'status_being_delivered' => [
-        'subject' => 'Ваш заказ доставляется — Pointet',
-        'paragraphs' => [
-            'Ваш заказ уже в пути и сейчас доставляется.',
-            'Если что-то не так, свяжитесь с нами.',
-        ],
-        'reference' => 'Заказ № :reference',
-        'details' => 'Посмотреть заказ',
-    ],
     'status_reported' => [
         'subject' => 'По вашему заказу зафиксирована проблема — Pointet',
         'paragraphs' => [

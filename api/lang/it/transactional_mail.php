@@ -58,15 +58,6 @@ return [
         'reference' => 'Ordine n. :reference',
         'details' => 'Vedi il tuo ordine',
     ],
-    'status_being_delivered' => [
-        'subject' => 'Il tuo ordine è in consegna — Pointet',
-        'paragraphs' => [
-            'Il tuo ordine è in viaggio e ora è in consegna.',
-            'Se qualcosa non va, contattaci.',
-        ],
-        'reference' => 'Ordine n. :reference',
-        'details' => 'Vedi il tuo ordine',
-    ],
     'status_reported' => [
         'subject' => 'È stato segnalato un problema con il tuo ordine — Pointet',
         'paragraphs' => [

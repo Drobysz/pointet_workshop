@@ -65,15 +65,6 @@ return [
         'reference' => 'Order #:reference',
         'details' => 'View your order',
     ],
-    'status_being_delivered' => [
-        'subject' => 'Your Order Is Being Delivered — Pointet',
-        'paragraphs' => [
-            'Your order is on its way to you and is now being delivered.',
-            'If something doesn’t look right, please contact us.',
-        ],
-        'reference' => 'Order #:reference',
-        'details' => 'View your order',
-    ],
     'status_reported' => [
         'subject' => 'An Issue Was Reported With Your Order — Pointet',
         'paragraphs' => [

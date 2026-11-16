@@ -147,11 +147,11 @@ class OrderController extends Controller
                 'user_id' => $request->user()->id,
                 'tracking_url' => $request->validated('tracking_url'),
             ]);
-            // The first link means the parcel is on its way. Later links never touch the status, and
-            // orders that are already being delivered, cancelled or reported keep theirs.
+            // The first link means the parcel left. Later links never touch the status, and
+            // orders that are already sent, cancelled or reported keep theirs.
             if ($isFirstLink && $locked->status === OrderStatus::Processing) {
-                $locked->update(['status' => OrderStatus::BeingDelivered]);
-                $locked->items()->update(['status' => OrderStatus::BeingDelivered]);
+                $locked->update(['status' => OrderStatus::Sent]);
+                $locked->items()->update(['status' => OrderStatus::Sent]);
             }
             // The tracking email already announces the shipment, so no separate status email is sent here.
             // Committed together with the link; the queue worker performs delivery.

@@ -583,7 +583,6 @@
         "status": {
             "processing": "Обрабатывается",
             "sent": "Отправлен",
-            "being_delivered": "Доставляется",
             "reported": "Жалоба",
             "cancelled": "Отменён"
         }

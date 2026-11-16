@@ -58,15 +58,6 @@ return [
         'reference' => 'Замовлення № :reference',
         'details' => 'Переглянути замовлення',
     ],
-    'status_being_delivered' => [
-        'subject' => 'Ваше замовлення доставляється — Pointet',
-        'paragraphs' => [
-            'Ваше замовлення вже в дорозі й зараз доставляється.',
-            'Якщо щось не так, зв’яжіться з нами.',
-        ],
-        'reference' => 'Замовлення № :reference',
-        'details' => 'Переглянути замовлення',
-    ],
     'status_reported' => [
         'subject' => 'За вашим замовленням зафіксовано проблему — Pointet',
         'paragraphs' => [

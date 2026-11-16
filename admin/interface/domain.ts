@@ -174,7 +174,7 @@ export interface OrderItem {
   status: string;
 }
 
-export const orderStatuses = ["processing", "sent", "being_delivered", "reported", "cancelled"] as const;
+export const orderStatuses = ["processing", "sent", "reported", "cancelled"] as const;
 
 export type OrderStatus = (typeof orderStatuses)[number];
 

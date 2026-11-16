@@ -58,15 +58,6 @@ return [
         'reference' => 'Bestellung Nr. :reference',
         'details' => 'Bestellung ansehen',
     ],
-    'status_being_delivered' => [
-        'subject' => 'Deine Bestellung wird zugestellt — Pointet',
-        'paragraphs' => [
-            'Deine Bestellung ist unterwegs und wird gerade zugestellt.',
-            'Falls etwas nicht stimmt, melde dich bitte bei uns.',
-        ],
-        'reference' => 'Bestellung Nr. :reference',
-        'details' => 'Bestellung ansehen',
-    ],
     'status_reported' => [
         'subject' => 'Zu deiner Bestellung wurde ein Problem gemeldet — Pointet',
         'paragraphs' => [

@@ -84,7 +84,6 @@
     "cancelled": "Annulée",
     "completed": "Terminée",
     "confirmed": "Confirmée",
-    "being_delivered": "En cours de livraison",
     "pending": "En attente",
     "processing": "En traitement",
     "refunded": "Remboursée",
@@ -266,7 +265,7 @@
     "back": "Toutes les commandes",
     "tracking": {
       "title": "Liens de suivi",
-      "description": "Le premier lien passe aussi la commande en « en cours de livraison ». Le client reçoit chaque lien par e-mail dès son ajout.",
+      "description": "Le premier lien passe aussi la commande en « expédiée ». Le client reçoit chaque lien par e-mail dès son ajout.",
       "label": "Lien de suivi",
       "placeholder": "https://carrier.example/track/…",
       "hint": "Collez le lien complet du transporteur, commençant par https://.",

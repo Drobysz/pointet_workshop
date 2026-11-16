@@ -583,7 +583,6 @@
         "status": {
             "processing": "En traitement",
             "sent": "Expédiée",
-            "being_delivered": "En cours de livraison",
             "reported": "Signalée",
             "cancelled": "Annulée"
         }

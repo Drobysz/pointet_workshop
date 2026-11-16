@@ -84,7 +84,6 @@
     "cancelled": "Storniert",
     "completed": "Abgeschlossen",
     "confirmed": "Bestätigt",
-    "being_delivered": "Wird zugestellt",
     "pending": "Ausstehend",
     "processing": "In Bearbeitung",
     "refunded": "Erstattet",
@@ -266,7 +265,7 @@
     "back": "Alle Bestellungen",
     "tracking": {
       "title": "Tracking-Links",
-      "description": "Der erste Link setzt die Bestellung außerdem auf „Wird zugestellt“. Der Kunde erhält jeden Link per E-Mail, sobald du ihn hinzufügst.",
+      "description": "Der erste Link setzt die Bestellung außerdem auf „Versandt“. Der Kunde erhält jeden Link per E-Mail, sobald du ihn hinzufügst.",
       "label": "Tracking-Link",
       "placeholder": "https://carrier.example/track/…",
       "hint": "Füge den vollständigen Link des Versanddienstleisters ein, beginnend mit https://.",

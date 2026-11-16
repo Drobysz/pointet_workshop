@@ -58,15 +58,6 @@ return [
         'reference' => 'Commande n° :reference',
         'details' => 'Voir votre commande',
     ],
-    'status_being_delivered' => [
-        'subject' => 'Votre commande est en cours de livraison — Pointet',
-        'paragraphs' => [
-            'Votre commande est en route et est actuellement en cours de livraison.',
-            'Si quelque chose ne va pas, contactez-nous.',
-        ],
-        'reference' => 'Commande n° :reference',
-        'details' => 'Voir votre commande',
-    ],
     'status_reported' => [
         'subject' => 'Un problème a été signalé sur votre commande — Pointet',
         'paragraphs' => [

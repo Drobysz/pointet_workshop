@@ -554,11 +554,11 @@
         "basket": {
             "title": "Carrello"
         },
-        "preorders": {
-            "title": "Preordini"
+        "orders": {
+            "title": "Ordini"
         },
-        "preorder": {
-            "title": "Preordine n. {id}"
+        "order": {
+            "title": "Ordine n. {id}"
         },
         "orderStatus": {
             "title": "Stato dell’ordine"
@@ -583,7 +583,7 @@
         "status": {
             "processing": "In elaborazione",
             "sent": "Spedito",
-            "delivered": "Consegnato",
+            "being_delivered": "In consegna",
             "reported": "Segnalato",
             "cancelled": "Annullato"
         }

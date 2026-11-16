@@ -554,11 +554,11 @@
         "basket": {
             "title": "Warenkorb"
         },
-        "preorders": {
-            "title": "Vorbestellungen"
+        "orders": {
+            "title": "Bestellungen"
         },
-        "preorder": {
-            "title": "Vorbestellung Nr. {id}"
+        "order": {
+            "title": "Bestellung Nr. {id}"
         },
         "orderStatus": {
             "title": "Bestellstatus"
@@ -583,7 +583,7 @@
         "status": {
             "processing": "In Bearbeitung",
             "sent": "Versendet",
-            "delivered": "Geliefert",
+            "being_delivered": "Wird zugestellt",
             "reported": "Gemeldet",
             "cancelled": "Storniert"
         }

@@ -11,7 +11,7 @@ import { ProductImage } from "./productImages";
 export type OrderStatus =
     | "processing"
     | "sent"
-    | "delivered"
+    | "being_delivered"
     | "reported"
     | "cancelled";
 
@@ -64,7 +64,7 @@ export interface OrderItem {
 
 /**
  * Carrier tracking link added by an administrator. An order can have several;
- * the first one moves it to "sent".
+ * the first one moves it to "being_delivered".
  */
 export interface OrderTrackingLink {
     id: Id;

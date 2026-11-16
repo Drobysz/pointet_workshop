@@ -516,8 +516,8 @@ class OrderCheckoutTest extends TestCase
             ->assertJsonPath('data.user_id', $admin->id);
         $this->assertDatabaseHas('order_tracking_links', ['order_id' => $orderId, 'user_id' => $admin->id, 'tracking_url' => $url]);
         // The first link moves a processing order (and its lines) to "sent".
-        $this->assertDatabaseHas('orders', ['id' => $orderId, 'status' => 'sent']);
-        $this->assertDatabaseHas('order_items', ['order_id' => $orderId, 'status' => 'sent']);
+        $this->assertDatabaseHas('orders', ['id' => $orderId, 'status' => 'being_delivered']);
+        $this->assertDatabaseHas('order_items', ['order_id' => $orderId, 'status' => 'being_delivered']);
 
         // Admins see the link on the order; the owner sees it too, without who added it.
         $this->withToken($this->accessToken($admin))->getJson("/api/orders/{$orderId}")
@@ -563,7 +563,7 @@ class OrderCheckoutTest extends TestCase
         $this->assertSame('en', $email->locale);
     }
 
-    public function test_only_the_first_tracking_link_advances_a_processing_order_to_sent_and_every_link_is_listed(): void
+    public function test_only_the_first_tracking_link_advances_a_processing_order_to_being_delivered_and_every_link_is_listed(): void
     {
         [, $small] = $this->inventory();
         $customer = User::factory()->create();
@@ -578,9 +578,9 @@ class OrderCheckoutTest extends TestCase
             ->postJson("/api/orders/{$orderId}/tracking-links", ['tracking_url' => $url])->assertCreated();
 
         $add('https://tracking.example.test/1');
-        $this->assertDatabaseHas('orders', ['id' => $orderId, 'status' => 'sent']);
+        $this->assertDatabaseHas('orders', ['id' => $orderId, 'status' => 'being_delivered']);
 
-        // An admin rolls the order back; a further link must not push it to "sent" again.
+        // An admin rolls the order back; a further link must not push it to "being_delivered" again.
         $this->withToken($this->accessToken($admin))
             ->patchJson("/api/orders/{$orderId}", ['status' => 'processing'])->assertOk();
         $add('https://tracking.example.test/2');
@@ -599,18 +599,18 @@ class OrderCheckoutTest extends TestCase
         $this->assertSame(3, TransactionalEmail::where('template', 'tracking')->count());
     }
 
-    public function test_a_tracking_link_never_reopens_a_cancelled_or_delivered_order(): void
+    public function test_a_tracking_link_never_reopens_a_cancelled_or_being_delivered_order(): void
     {
         [, $small] = $this->inventory();
         $admin = User::factory()->create(['role' => 'admin']);
         // Guest checkouts first: the test client keeps the bearer token once an admin request is made.
         $orders = [];
-        foreach (['cancelled', 'delivered'] as $status) {
+        foreach (['cancelled', 'being_delivered'] as $status) {
             $checkout = $this->guestCheckout([['inventory_id' => $small->id, 'quantity' => 1]], $cookie);
             $this->stripeEvent($checkout)->assertOk();
             $orders[$status] = $checkout->fresh()->order_id;
         }
-        foreach (['cancelled', 'delivered'] as $index => $status) {
+        foreach (['cancelled', 'being_delivered'] as $index => $status) {
             $orderId = $orders[$status];
             $this->withToken($this->accessToken($admin))->patchJson("/api/orders/{$orderId}", ['status' => $status])->assertOk();
 
@@ -645,10 +645,10 @@ class OrderCheckoutTest extends TestCase
 
         $patch($orderId, 'sent')->assertOk()->assertJsonPath('data.status', 'sent');
         $patch($orderId, 'sent')->assertOk(); // unchanged: no second email
-        $patch($orderId, 'delivered')->assertOk();
+        $patch($orderId, 'being_delivered')->assertOk();
         $patch($guestOrderId, 'cancelled')->assertOk();
 
-        $this->assertSame(['status_delivered', 'status_sent'], TransactionalEmail::where('event_key', 'like', 'status_%:'.$orderId.':%')->orderBy('template')->pluck('template')->all());
+        $this->assertSame(['status_being_delivered', 'status_sent'], TransactionalEmail::where('event_key', 'like', 'status_%:'.$orderId.':%')->orderBy('template')->pluck('template')->all());
         $this->assertSame(3, TransactionalEmail::where('template', 'like', 'status_%')->count());
         $guestEmail = TransactionalEmail::where('template', 'status_cancelled')->firstOrFail();
         $this->assertSame('guest@example.test', $guestEmail->payload['recipient']);

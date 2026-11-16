@@ -9,7 +9,6 @@ type Tone = "success" | "danger" | "warning" | "info" | "neutral";
 const tones: Record<string, Tone> = {
   paid: "success",
   approved: "success",
-  delivered: "success",
   completed: "success",
   confirmed: "success",
   visible: "success",
@@ -21,6 +20,7 @@ const tones: Record<string, Tone> = {
   pending: "warning",
   processing: "warning",
   shipped: "info",
+  being_delivered: "info",
   sent: "info",
   refunded: "info",
   hidden: "neutral",

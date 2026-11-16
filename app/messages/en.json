@@ -554,11 +554,11 @@
         "basket": {
             "title": "Basket"
         },
-        "preorders": {
-            "title": "Pre-orders"
+        "orders": {
+            "title": "Orders"
         },
-        "preorder": {
-            "title": "Pre-order #{id}"
+        "order": {
+            "title": "Order #{id}"
         },
         "orderStatus": {
             "title": "Order status"
@@ -583,7 +583,7 @@
         "status": {
             "processing": "Processing",
             "sent": "Shipped",
-            "delivered": "Delivered",
+            "being_delivered": "Being delivered",
             "reported": "Reported",
             "cancelled": "Cancelled"
         }

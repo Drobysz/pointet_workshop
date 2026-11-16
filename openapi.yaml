@@ -4230,7 +4230,7 @@ components:
       enum:
         - processing
         - sent
-        - delivered
+        - being_delivered
         - reported
         - cancelled
     Order:

@@ -554,11 +554,11 @@
         "basket": {
             "title": "Panier"
         },
-        "preorders": {
-            "title": "Précommandes"
+        "orders": {
+            "title": "Commandes"
         },
-        "preorder": {
-            "title": "Précommande n° {id}"
+        "order": {
+            "title": "Commande n° {id}"
         },
         "orderStatus": {
             "title": "Statut de la commande"
@@ -583,7 +583,7 @@
         "status": {
             "processing": "En traitement",
             "sent": "Expédiée",
-            "delivered": "Livrée",
+            "being_delivered": "En cours de livraison",
             "reported": "Signalée",
             "cancelled": "Annulée"
         }

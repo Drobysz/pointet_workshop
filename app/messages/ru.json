@@ -554,11 +554,11 @@
         "basket": {
             "title": "Корзина"
         },
-        "preorders": {
-            "title": "Предзаказы"
+        "orders": {
+            "title": "Заказы"
         },
-        "preorder": {
-            "title": "Предзаказ №{id}"
+        "order": {
+            "title": "Заказ №{id}"
         },
         "orderStatus": {
             "title": "Статус заказа"
@@ -583,7 +583,7 @@
         "status": {
             "processing": "Обрабатывается",
             "sent": "Отправлен",
-            "delivered": "Доставлен",
+            "being_delivered": "Доставляется",
             "reported": "Жалоба",
             "cancelled": "Отменён"
         }

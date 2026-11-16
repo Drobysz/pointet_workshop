@@ -9,18 +9,18 @@ import { CircularProgress } from "@mui/material";
 export async function generateMetadata({
     params
 }: {
-    params: Promise<{ locale: string; preorder_id: Id }>
+    params: Promise<{ locale: string; order_id: Id }>
 }): Promise<Metadata> {
-    const { locale, preorder_id } = await params;
+    const { locale, order_id } = await params;
     const currentLocale = SeoService.resolveLocale(locale);
     const t = await getTranslations({
         locale: currentLocale,
-        namespace: "seo.preorder",
+        namespace: "seo.order",
     });
 
     return {
         // Route params are strings at runtime: keep the id unformatted.
-        title: t("title", { id: String(preorder_id) }),
+        title: t("title", { id: String(order_id) }),
     };
 }
 

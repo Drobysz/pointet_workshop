@@ -14,7 +14,7 @@ export async function generateMetadata({
     const currentLocale = SeoService.resolveLocale(locale);
     const t = await getTranslations({
         locale: currentLocale,
-        namespace: "seo.preorders",
+        namespace: "seo.orders",
     });
 
     return {

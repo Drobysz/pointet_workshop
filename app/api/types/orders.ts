@@ -11,6 +11,7 @@ import { ProductImage } from "./productImages";
 export type OrderStatus =
     | "processing"
     | "sent"
+    | "shipped"
     | "reported"
     | "cancelled";
 

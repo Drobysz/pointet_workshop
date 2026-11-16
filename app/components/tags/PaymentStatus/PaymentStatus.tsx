@@ -13,6 +13,7 @@ export const PaymentStatus = ({
     return (
         <span className={cn(
             "px-2 text-lg h-fit rounded-lg bg-gray-100", {
+                ["bg-green-100 text-green-700"]: payment_status === "shipped",
                 ["bg-blue-100 text-blue-700"]: payment_status === "sent",
                 ["bg-yellow-100 text-yellow-700"]: payment_status === "processing",
                 ["bg-red-100 text-red-700"]: ["reported", "cancelled"].includes(payment_status),

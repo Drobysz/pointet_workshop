@@ -96,6 +96,7 @@ export const CheckoutWindow = ({
         
         try {
             await basketApi.addItem(requestData);
+            await mutateBasket();
 
             setNotification({
                 status: "success",

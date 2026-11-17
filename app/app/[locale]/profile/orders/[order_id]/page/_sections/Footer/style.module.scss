@@ -37,3 +37,12 @@
     @apply text-zinc-700
         text-4xl;
 }
+
+.tracking_link {
+    @apply flex 
+        items-center 
+        gap-2
+        text-zinc-700 
+        text-3xl
+        hover:underline;
+}

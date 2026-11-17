@@ -5,7 +5,8 @@ import { useTranslations } from "next-intl";
 import { OrderDetail } from "@/api/types/orders";
 import { PaymentStatus } from "@/components";
 import { Link } from "@/i18n/navigation";
-import { SquareArrowUpRight } from "lucide-react";
+import { SquareArrowOutUpRight } from "lucide-react";
+import { UnderlinedInnerLink } from "@/components/animations/UnderlinedLink/UnderlinedInnerLink";
 
 export const Footer = ({
     order
@@ -63,20 +64,18 @@ export const Footer = ({
             />
             {order.tracking_links && 
                 order.tracking_links.map((track, idx)=> (
-                    <Link
+                    <UnderlinedInnerLink
                         key={`tracking-link-${idx}-${order.id}`}
                         href={track.tracking_url}
-                        className={cn(
-                            jersey10.className,
-                            "flex items-center gap-2",
-                            "text-zinc-700 text-3xl"
-                        )}
                     >
-                        <span>
+                        <span className={cn(
+                            jersey10.className,
+                            s.tracking_link,
+                        )}>
                             {tOrder("trackingLink", { number: idx + 1 })}
+                            <SquareArrowOutUpRight />
                         </span>
-                        <SquareArrowUpRight />
-                    </Link>    
+                    </UnderlinedInnerLink>    
                 )
             )}
         </footer>

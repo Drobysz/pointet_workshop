@@ -14,18 +14,18 @@ export const ProfileNavigation = ({
 })=> {
     const {
         basketList,
-        preOrdersList,
+        ordersList,
     } = useContext(GlobalContext);
     const t = useTranslations("navigation.account");
 
     const basketQuantity = (basketList ?? [])
         .reduce((acc, val) => acc + val.quantity, 0);
 
-    const preOrderQuantity = preOrdersList?.length ?? 0;
+    const orderQuantity = ordersList?.length ?? 0;
 
     const profilePages = [
         { label: t("profile"), href: "/profile" },
-        { label: t("orders"), href: "/profile/orders", qntty: preOrderQuantity },
+        { label: t("orders"), href: "/profile/orders", qntty: orderQuantity },
         { label: t("basket"), href: "/profile/basket", qntty: basketQuantity },
     ];
 

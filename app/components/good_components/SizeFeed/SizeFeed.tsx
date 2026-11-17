@@ -39,14 +39,14 @@ export const SizeFeed = ({
                             <>
                                 <span className={cn(
                                     after.className,
-                                    "text-xs"
+                                    "text-sm"
                                 )}>
                                     {invItem.size}
                                 </span>
 
                                 <span className={cn(
                                     tinyFive.className,
-                                    "text-xs"
+                                    "text-base"
                                 )}>
                                     {invItem.quantity}
                                 </span>
